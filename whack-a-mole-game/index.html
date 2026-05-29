@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whack-a-Mole</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <section class="hero">
+      <p class="eyebrow">Reaction Game</p>
+      <h1>Whack-a-Mole</h1>
+      <p class="subtitle">Pick a difficulty, react fast, and chase a new best score.</p>
+    </section>
+
+    <section class="stats" aria-label="Game stats">
+      <div class="stat-card">
+        <span class="stat-label">Score</span>
+        <strong id="score">0</strong>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Time</span>
+        <strong id="timeLeft">30</strong>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Best</span>
+        <strong id="bestScore">0</strong>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Difficulty</span>
+        <strong id="difficultyLabel">Medium</strong>
+      </div>
+    </section>
+
+    <section class="controls">
+      <button id="startBtn" class="primary-btn">Start Game</button>
+      <div class="difficulty-picker" role="group" aria-label="Difficulty levels">
+        <button class="difficulty-btn active" type="button" data-difficulty="easy">Easy</button>
+        <button class="difficulty-btn" type="button" data-difficulty="medium">Medium</button>
+        <button class="difficulty-btn" type="button" data-difficulty="hard">Hard</button>
+      </div>
+      <p id="message" class="message">Click Start to begin a 30 second round.</p>
+    </section>
+
+    <section class="board-wrap" aria-label="Whack a mole board">
+      <div class="board-header">
+        <div>
+          <p class="board-kicker">Hit fast, stay focused</p>
+          <h2>Tap the mole before it disappears</h2>
+        </div>
+        <span class="board-tip">Mobile friendly • Keyboard friendly</span>
+      </div>
+      <div id="board" class="board" role="grid" aria-label="Game grid"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
