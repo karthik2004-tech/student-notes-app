@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="converter-app">
+      <h1>Unit Converter</h1>
+      <p class="subtitle">
+        Convert currencies, lengths, weights, and temperatures using fixed rates and formulas.
+      </p>
+
+      <section class="card">
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="currency">Currency</option>
+          <option value="length">Length</option>
+          <option value="weight">Weight</option>
+          <option value="temperature">Temperature</option>
+        </select>
+
+        <label for="inputValue">Value</label>
+        <input id="inputValue" type="number" step="any" placeholder="Enter value" />
+
+        <div class="unit-row">
+          <div>
+            <label for="fromUnit">From</label>
+            <select id="fromUnit"></select>
+          </div>
+
+          <button id="swapUnits" type="button" aria-label="Swap units">Swap</button>
+
+          <div>
+            <label for="toUnit">To</label>
+            <select id="toUnit"></select>
+          </div>
+        </div>
+
+        <button id="convertBtn" type="button">Convert</button>
+
+        <p id="result" class="result">Result will appear here.</p>
+        <p class="note">Currency rates are fixed sample values (no API calls).</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
