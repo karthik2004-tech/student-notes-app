@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester CGPA Calculator</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background: #1e293b; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-align: center; max-width: 450px; width: 100%; border: 1px solid #334155; }
+        h2 { color: #38bdf8; margin-bottom: 10px; font-size: 24px; }
+        p { color: #94a3b8; margin-bottom: 25px; font-size: 14px; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; font-weight: 500; }
+        input { width: 100%; padding: 12px; background: #334155; border: 1px solid #475569; border-radius: 6px; color: #fff; font-size: 16px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
+        button { background: #0284c7; color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; width: 100%; margin-top: 15px; transition: 0.2s; }
+        button:hover { background: #0369a1; }
+        .result-box { margin-top: 25px; padding: 15px; background: #0f172a; border-radius: 8px; border-left: 5px solid #38bdf8; display: none; text-align: left; }
+        .result-line { font-size: 18px; font-weight: bold; color: #38bdf8; margin-bottom: 5px; }
+        .percent-line { font-size: 15px; color: #34d399; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🎓 Student CGPA Calculator</h2>
+        <p>Enter your Semester Grade Point Average (SGPA) to find total CGPA.</p>
+        
+        <div id="semesters-input">
+            <div class="input-group"><label>Semester 1 SGPA</label><input type="number" class="sgpa-input" placeholder="e.g. 8.5" step="0.01" min="0" max="10"></div>
+            <div class="input-group"><label>Semester 2 SGPA</label><input type="number" class="sgpa-input" placeholder="e.g. 7.9" step="0.01" min="0" max="10"></div>
+            <div class="input-group"><label>Semester 3 SGPA</label><input type="number" class="sgpa-input" placeholder="e.g. 8.2" step="0.01" min="0" max="10"></div>
+            <div class="input-group"><label>Semester 4 SGPA</label><input type="number" class="sgpa-input" placeholder="e.g. 8.0" step="0.01" min="0" max="10"></div>
+        </div>
+        
+        <button onclick="calculateCGPA()">Calculate CGPA & Percentage</button>
+        
+        <div class="result-box" id="result-box">
+            <div class="result-line" id="cgpa-result"></div>
+            <div class="percent-line" id="percent-result"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculateCGPA() {
+            let inputs = document.querySelectorAll('.sgpa-input');
+            let total = 0; 
+            let count = 0;
+            
+            inputs.forEach(input => {
+                if(input.value && !isNaN(input.value)) { 
+                    total += parseFloat(input.value); 
+                    count++; 
+                }
+            });
+            
+            let resultBox = document.getElementById('result-box');
+            if(count === 0) {
+                alert("Please enter at least one semester SGPA.");
+                resultBox.style.display = "none";
+                return;
+            }
+            
+            let cgpa = total / count;
+            let percentage = cgpa * 9.5; // Standard engineering conversion formula
+            
+            document.getElementById('cgpa-result').innerText = `Total CGPA: ${cgpa.toFixed(2)} / 10.00`;
+            document.getElementById('percent-result').innerText = `Equivalent Percentage: ${percentage.toFixed(2)}%`;
+            resultBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>
