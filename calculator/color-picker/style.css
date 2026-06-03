@@ -1,0 +1,145 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1a1a2e;
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+.container {
+  background: #16213e;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+h1 {
+  color: #e2e2e2;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.picker-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+  background: #0f3460;
+  padding: 1rem;
+  border-radius: 14px;
+}
+
+#colorInput {
+  width: 80px;
+  height: 80px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+
+.color-preview {
+  flex: 1;
+  height: 80px;
+  border-radius: 12px;
+  background: #6c63ff;
+  transition: background 0.2s;
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.value-card {
+  background: #0f3460;
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.value-card label {
+  font-size: 11px;
+  color: #a0a0b0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.value-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.value-row span {
+  color: #e2e2e2;
+  font-size: 15px;
+  font-family: monospace;
+}
+
+.value-row button {
+  background: #e94560;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.value-row button:hover { background: #c73652; }
+
+.palette h3 {
+  color: #a0a0b0;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.palette-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.palette-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+
+.palette-swatch:hover {
+  transform: scale(1.15);
+  border-color: white;
+}
+
+.copy-msg {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2ecc71;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.copy-msg.show { opacity: 1; }

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oddly — Find the Odd One Out</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Quicksand:wght@500;700&display=swap');
+
+        :root {
+            --primary: #f97316; /* Vibrant Orange */
+            --secondary: #0ea5e9; /* Sky Blue */
+            --accent: #ec4899; /* Pink */
+            --bg-gradient: linear-gradient(135deg, #fff7ed 0%, #f0f9ff 100%);
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border);
+            padding: 40px 30px;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+            letter-spacing: -1px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .level-badge {
+            background: rgba(14, 165, 233, 0.1);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+
+        .prompt {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--glass-border);
+            padding: 24px 15px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .option-btn:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.2);
+        }
+
+        .option-btn.correct {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .option-btn.wrong {
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            padding: 30px;
+        }
+
+        .btn-start {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-start:hover {
+            transform: scale(1.05);
+            background: #ea580c;
+        }
+
+        .hidden { display: none !important; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-bounce { animation: bounce 2s infinite; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-card">
+        <div id="screen-overlay" class="overlay">
+            <h1 id="overlay-title">Oddly 🍊</h1>
+            <p id="overlay-desc" style="margin-bottom: 30px; color: var(--text-muted);">Can you spot the word that doesn't belong?</p>
+            <button class="btn-start" onclick="startGame()">Start Game</button>
+        </div>
+
+        <div class="stats">
+            <div class="level-badge">Level: <span id="level">1</span>/10</div>
+            <div style="color: var(--accent)">Score: <span id="score">0</span></div>
+        </div>
+
+        <div class="prompt">Which one is the odd one out?</div>
+
+        <div class="options-grid" id="options-container">
+            <!-- Options will be injected here -->
+        </div>
+    </div>
+</div>
+
+<script>
+    const QUESTION_SET = [
+        { w: ["Apple", "Banana", "Orange", "Carrot"], a: "Carrot" },
+        { w: ["London", "Paris", "Berlin", "New York"], a: "New York" },
+        { w: ["Mars", "Venus", "Earth", "Moon"], a: "Moon" },
+        { w: ["Piano", "Guitar", "Violin", "Drum"], a: "Drum" },
+        { w: ["Whale", "Shark", "Dolphin", "Eagle"], a: "Eagle" },
+        { w: ["Gold", "Silver", "Iron", "Wood"], a: "Wood" },
+        { w: ["Square", "Circle", "Rectangle", "Triangle"], a: "Circle" },
+        { w: ["Happy", "Joyful", "Cheerful", "Angry"], a: "Angry" },
+        { w: ["Python", "Java", "Ruby", "HTML"], a: "HTML" },
+        { w: ["Running", "Jumping", "Walking", "Sleeping"], a: "Sleeping" }
+    ];
+
+    let state = { score: 0, level: 0, current: null };
+
+    function startGame() {
+        state.score = 0;
+        state.level = 0;
+        document.getElementById('screen-overlay').classList.add('hidden');
+        updateStats();
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        if (state.level >= QUESTION_SET.length) {
+            return endGame("You Win! 🏆");
+        }
+
+        state.current = QUESTION_SET[state.level];
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        
+        const shuffled = [...state.current.w].sort(() => Math.random() - 0.5);
+        
+        shuffled.forEach(word => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = word;
+            btn.onclick = () => checkAnswer(word, btn);
+            container.appendChild(btn);
+        });
+        updateStats();
+    }
+
+    function checkAnswer(selected, btn) {
+        const isCorrect = selected === state.current.a;
+        const btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if (isCorrect) {
+            btn.classList.add('correct');
+            state.score += 10;
+            state.level++;
+            setTimeout(nextQuestion, 1000);
+        } else {
+            btn.classList.add('wrong');
+            Array.from(btns).find(b => b.innerText === state.current.a).classList.add('correct');
+            setTimeout(() => endGame("Game Over! 🍎"), 1500);
+        }
+    }
+
+    function updateStats() {
+        document.getElementById('score').innerText = state.score;
+        document.getElementById('level').innerText = Math.min(state.level + 1, 10);
+    }
+
+    function endGame(title) {
+        const overlay = document.getElementById('screen-overlay');
+        document.getElementById('overlay-title').innerText = title;
+        document.getElementById('overlay-desc').innerText = `Final Score: ${state.score} | Levels Cleared: ${state.level}`;
+        overlay.classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>

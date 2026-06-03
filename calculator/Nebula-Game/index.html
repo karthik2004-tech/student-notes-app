@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEBULA — Memory Match</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Stars Background -->
+  <canvas id="starsCanvas"></canvas>
+
+  <!-- Nebula Glow Layers -->
+  <div class="nebula">
+    <div class="nebula__cloud nebula__cloud--1"></div>
+    <div class="nebula__cloud nebula__cloud--2"></div>
+    <div class="nebula__cloud nebula__cloud--3"></div>
+  </div>
+
+  <!-- App -->
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header__brand">
+        <span class="brand-icon">✦</span>
+        <span class="brand-name">NEBULA</span>
+      </div>
+      <p class="header__sub">Memory Match</p>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-pill">
+        <span class="stat-pill__icon">◷</span>
+        <span class="stat-pill__val" id="timer">00:00</span>
+        <span class="stat-pill__lbl">Time</span>
+      </div>
+      <div class="stat-pill stat-pill--center">
+        <span class="stat-pill__val stat-pill__val--big" id="matchCount">0/8</span>
+        <span class="stat-pill__lbl">Pairs</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill__icon">⬡</span>
+        <span class="stat-pill__val" id="moveCount">0</span>
+        <span class="stat-pill__lbl">Moves</span>
+      </div>
+    </div>
+
+    <!-- Difficulty -->
+    <div class="difficulty-row">
+      <button class="diff-btn active" data-diff="easy">Easy</button>
+      <button class="diff-btn" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+
+    <!-- Game Board -->
+    <div class="board-wrap">
+      <div class="board" id="board"></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="ctrl-btn" id="restartBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
+        </svg>
+        Restart
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Win Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal__stars" id="confettiContainer"></div>
+      <div class="modal__glow"></div>
+      <div class="modal__icon">🌟</div>
+      <h2 class="modal__title">You Win!</h2>
+      <p class="modal__sub">Memory unlocked</p>
+      <div class="modal__stats">
+        <div class="modal__stat">
+          <span class="modal__stat-val" id="resultTime">—</span>
+          <span class="modal__stat-lbl">Time</span>
+        </div>
+        <div class="modal__stat-divider"></div>
+        <div class="modal__stat">
+          <span class="modal__stat-val" id="resultMoves">—</span>
+          <span class="modal__stat-lbl">Moves</span>
+        </div>
+        <div class="modal__stat-divider"></div>
+        <div class="modal__stat">
+          <span class="modal__stat-val" id="resultScore">—</span>
+          <span class="modal__stat-lbl">Score</span>
+        </div>
+      </div>
+      <button class="modal__btn" id="playAgainBtn">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Particle Burst Container -->
+  <div id="particleContainer" class="particle-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

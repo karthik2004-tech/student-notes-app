@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College Fee Calculator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      min-height:100vh; font-family:'Poppins',sans-serif;
+      background: linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
+      padding:1.5rem 1rem; display:flex; flex-direction:column; align-items:center;
+    }
+    .header { text-align:center; margin-bottom:1.8rem; }
+    .header h1 { font-size:clamp(1.5rem,4vw,2rem); font-weight:700; color:#fff; }
+    .header h1 span { color:#fdcb6e; }
+    .header p { font-size:0.78rem; color:rgba(255,255,255,0.35); margin-top:0.3rem; }
+
+    .wrapper { width:100%; max-width:700px; display:flex; flex-direction:column; gap:1.2rem; }
+
+    .card {
+      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px; padding:1.5rem;
+    }
+    .card h2 { font-size:0.85rem; font-weight:600; color:rgba(255,255,255,0.5);
+      text-transform:uppercase; letter-spacing:0.08em; margin-bottom:1.2rem; }
+
+    /* Semester tabs */
+    .sem-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .sem-tab {
+      padding:0.35rem 1rem; border-radius:999px; border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.5);
+      font-size:0.75rem; font-family:'Poppins',sans-serif; cursor:pointer; transition:all 0.2s;
+    }
+    .sem-tab.active { background:#fdcb6e; border-color:#fdcb6e; color:#1a1a2e; font-weight:700; }
+
+    /* Fee rows */
+    .fee-section { margin-bottom:1.2rem; }
+    .fee-section h3 {
+      font-size:0.8rem; color:rgba(255,255,255,0.6); margin-bottom:0.8rem;
+      display:flex; align-items:center; gap:0.5rem;
+    }
+    .fee-row { display:flex; gap:0.6rem; align-items:center; margin-bottom:0.6rem; }
+    .fee-label { font-size:0.82rem; color:rgba(255,255,255,0.7); width:180px; flex-shrink:0; }
+    .fee-inp {
+      flex:1; padding:0.55rem 1rem; border-radius:10px;
+      border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.07);
+      color:#fff; font-family:'Poppins',sans-serif; font-size:0.85rem; outline:none;
+    }
+    .fee-inp:focus { border-color:#fdcb6e; }
+    .fee-inp::placeholder { color:rgba(255,255,255,0.25); }
+    .rupee { color:rgba(255,255,255,0.4); font-size:0.85rem; }
+
+    /* Summary */
+    .summary { background:rgba(253,203,110,0.07); border:1px solid rgba(253,203,110,0.2); border-radius:16px; padding:1.2rem; }
+    .summary-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.85rem;
+    }
+    .summary-row:last-child { border-bottom:none; }
+    .summary-row .name { color:rgba(255,255,255,0.6); }
+    .summary-row .amount { color:#fff; font-weight:600; }
+    .summary-row.total { margin-top:0.4rem; padding-top:0.8rem; border-top:1px solid rgba(253,203,110,0.3); }
+    .summary-row.total .name { color:#fdcb6e; font-weight:700; font-size:0.95rem; }
+    .summary-row.total .amount { color:#fdcb6e; font-weight:700; font-size:1.2rem; }
+
+    /* Semester breakdown */
+    .breakdown { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:0.7rem; }
+    .sem-box {
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px; padding:0.9rem; text-align:center;
+    }
+    .sem-box .sem-num { font-size:0.7rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.3rem; }
+    .sem-box .sem-amt { font-size:1.1rem; font-weight:700; color:#fdcb6e; }
+
+    /* Calc button */
+    .calc-btn {
+      width:100%; padding:0.9rem; border-radius:14px; border:none;
+      background:linear-gradient(135deg,#fdcb6e,#e67e22); color:#1a1a2e;
+      font-family:'Poppins',sans-serif; font-weight:700; font-size:1rem;
+      cursor:pointer; transition:transform 0.15s; margin-top:0.5rem;
+    }
+    .calc-btn:active { transform:scale(0.98); }
+
+    /* Divider */
+    .divider { height:1px; background:rgba(255,255,255,0.06); margin:0.5rem 0; }
+
+    .tag { display:inline-block; padding:0.2rem 0.7rem; border-radius:999px; font-size:0.68rem; font-weight:600; margin-left:0.5rem; }
+    .tag.academic { background:rgba(108,92,231,0.2); color:#a29bfe; }
+    .tag.hostel   { background:rgba(0,184,148,0.2);  color:#00b894; }
+    .tag.other    { background:rgba(253,121,168,0.2); color:#fd79a8; }
+
+    .footer { text-align:center; margin-top:1rem; font-size:0.7rem; color:rgba(255,255,255,0.2); }
+    .footer span { color:#fdcb6e; font-weight:600; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🎓 College Fee <span>Calculator</span></h1>
+    <p>Calculate your semester-wise college expenses 💰</p>
+  </div>
+
+  <div class="wrapper">
+
+    <!-- Semester Selector -->
+    <div class="card">
+      <h2>📅 Select Semester</h2>
+      <div class="sem-tabs" id="semTabs">
+        <button class="sem-tab active" onclick="setSem(1,this)">Sem 1</button>
+        <button class="sem-tab" onclick="setSem(2,this)">Sem 2</button>
+        <button class="sem-tab" onclick="setSem(3,this)">Sem 3</button>
+        <button class="sem-tab" onclick="setSem(4,this)">Sem 4</button>
+        <button class="sem-tab" onclick="setSem(5,this)">Sem 5</button>
+        <button class="sem-tab" onclick="setSem(6,this)">Sem 6</button>
+        <button class="sem-tab" onclick="setSem(7,this)">Sem 7</button>
+        <button class="sem-tab" onclick="setSem(8,this)">Sem 8</button>
+      </div>
+
+      <!-- Academic Fees -->
+      <div class="fee-section">
+        <h3>📚 Academic Fees <span class="tag academic">Academic</span></h3>
+        <div class="fee-row">
+          <div class="fee-label">Tuition Fee</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="tuition" type="number" placeholder="e.g. 45000" />
+        </div>
+        <div class="fee-row">
+          <div class="fee-label">Exam Fee</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="exam" type="number" placeholder="e.g. 2000" />
+        </div>
+        <div class="fee-row">
+          <div class="fee-label">Library Fee</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="library" type="number" placeholder="e.g. 500" />
+        </div>
+        <div class="fee-row">
+          <div class="fee-label">Lab Fee</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="lab" type="number" placeholder="e.g. 3000" />
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Hostel Fees -->
+      <div class="fee-section" style="margin-top:1rem">
+        <h3>🏠 Hostel & Mess <span class="tag hostel">Hostel</span></h3>
+        <div class="fee-row">
+          <div class="fee-label">Hostel Fee</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="hostel" type="number" placeholder="e.g. 25000" />
+        </div>
+        <div class="fee-row">
+          <div class="fee-label">Mess Fee</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="mess" type="number" placeholder="e.g. 15000" />
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Other Fees -->
+      <div class="fee-section" style="margin-top:1rem">
+        <h3>🚌 Other Expenses <span class="tag other">Other</span></h3>
+        <div class="fee-row">
+          <div class="fee-label">Transport Fee</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="transport" type="number" placeholder="e.g. 5000" />
+        </div>
+        <div class="fee-row">
+          <div class="fee-label">Books & Stationery</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="books" type="number" placeholder="e.g. 2000" />
+        </div>
+        <div class="fee-row">
+          <div class="fee-label">Miscellaneous</div>
+          <span class="rupee">₹</span>
+          <input class="fee-inp" id="misc" type="number" placeholder="e.g. 1000" />
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">💰 Calculate Fee</button>
+    </div>
+
+    <!-- Summary -->
+    <div class="card" id="summaryCard" style="display:none">
+      <h2>📊 Fee Summary — Semester <span id="summarysem">1</span></h2>
+      <div class="summary">
+        <div class="summary-row"><span class="name">📚 Academic Total</span><span class="amount" id="s_academic">₹0</span></div>
+        <div class="summary-row"><span class="name">🏠 Hostel & Mess</span><span class="amount" id="s_hostel">₹0</span></div>
+        <div class="summary-row"><span class="name">🚌 Other Expenses</span><span class="amount" id="s_other">₹0</span></div>
+        <div class="summary-row total"><span class="name">💰 Total Fee</span><span class="amount" id="s_total">₹0</span></div>
+      </div>
+    </div>
+
+    <!-- Semester Breakdown -->
+    <div class="card" id="breakdownCard" style="display:none">
+      <h2>📅 All Semesters Breakdown</h2>
+      <div class="breakdown" id="breakdownGrid"></div>
+      <div class="divider" style="margin:1rem 0"></div>
+      <div class="summary-row total" style="padding:0">
+        <span class="name" style="color:#fdcb6e;font-weight:700">🎓 Total Course Fee</span>
+        <span class="amount" style="color:#fdcb6e;font-size:1.3rem;font-weight:700" id="grandTotal">₹0</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">Made with ❤️ for <span>NSoC '26</span> · Student Notes App</div>
+
+  <script>
+    let currentSem = 1;
+    let semData = {};
+
+    function setSem(n, btn) {
+      // Save current data
+      saveCurrent();
+      currentSem = n;
+      document.querySelectorAll('.sem-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      // Load saved data
+      loadSem(n);
+    }
+
+    function saveCurrent() {
+      semData[currentSem] = {
+        tuition:   parseFloat(document.getElementById('tuition').value)   || 0,
+        exam:      parseFloat(document.getElementById('exam').value)      || 0,
+        library:   parseFloat(document.getElementById('library').value)   || 0,
+        lab:       parseFloat(document.getElementById('lab').value)       || 0,
+        hostel:    parseFloat(document.getElementById('hostel').value)    || 0,
+        mess:      parseFloat(document.getElementById('mess').value)      || 0,
+        transport: parseFloat(document.getElementById('transport').value) || 0,
+        books:     parseFloat(document.getElementById('books').value)     || 0,
+        misc:      parseFloat(document.getElementById('misc').value)      || 0,
+      };
+    }
+
+    function loadSem(n) {
+      const d = semData[n] || {};
+      document.getElementById('tuition').value   = d.tuition   || '';
+      document.getElementById('exam').value      = d.exam      || '';
+      document.getElementById('library').value   = d.library   || '';
+      document.getElementById('lab').value       = d.lab       || '';
+      document.getElementById('hostel').value    = d.hostel    || '';
+      document.getElementById('mess').value      = d.mess      || '';
+      document.getElementById('transport').value = d.transport || '';
+      document.getElementById('books').value     = d.books     || '';
+      document.getElementById('misc').value      = d.misc      || '';
+    }
+
+    function fmt(n) {
+      return '₹' + n.toLocaleString('en-IN');
+    }
+
+    function calculate() {
+      saveCurrent();
+
+      const d = semData[currentSem] || {};
+      const academic = (d.tuition||0) + (d.exam||0) + (d.library||0) + (d.lab||0);
+      const hostel   = (d.hostel||0) + (d.mess||0);
+      const other    = (d.transport||0) + (d.books||0) + (d.misc||0);
+      const total    = academic + hostel + other;
+
+      document.getElementById('summaryCard').style.display = 'block';
+      document.getElementById('summaryem') && (document.getElementById('summaryem').textContent = currentSem);
+      document.getElementById('summaryCard').querySelector('#summaryem') || (document.getElementById('summaryCard').querySelector('h2').innerHTML = `📊 Fee Summary — Semester ${currentSem}`);
+      document.getElementById('s_academic').textContent = fmt(academic);
+      document.getElementById('s_hostel').textContent   = fmt(hostel);
+      document.getElementById('s_other').textContent    = fmt(other);
+      document.getElementById('s_total').textContent    = fmt(total);
+
+      // Breakdown of all sems
+      const grid = document.getElementById('breakdownGrid');
+      let grandTotal = 0;
+      grid.innerHTML = '';
+      for (let i = 1; i <= 8; i++) {
+        const sd = semData[i] || {};
+        const t = (sd.tuition||0)+(sd.exam||0)+(sd.library||0)+(sd.lab||0)+(sd.hostel||0)+(sd.mess||0)+(sd.transport||0)+(sd.books||0)+(sd.misc||0);
+        grandTotal += t;
+        if (t > 0) {
+          grid.innerHTML += `<div class="sem-box"><div class="sem-num">Semester ${i}</div><div class="sem-amt">${fmt(t)}</div></div>`;
+        }
+      }
+      document.getElementById('grandTotal').textContent = fmt(grandTotal);
+      document.getElementById('breakdownCard').style.display = grandTotal > 0 ? 'block' : 'none';
+
+      // Scroll to summary
+      document.getElementById('summaryCard').scrollIntoView({ behavior:'smooth' });
+    }
+  </script>
+
+</body>
+</html>

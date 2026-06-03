@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synonym Sprinter — Match the Meaning</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Quicksand:wght@500;700&display=swap');
+
+        :root {
+            --primary: #ff85a2;
+            --secondary: #a78bfa;
+            --bg: #fff5f7;
+            --text: #4b5563;
+            --text-muted: #9ca3af;
+            --success: #4ade80;
+            --error: #fb7185;
+            --glass: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff5f7 0%, #f3e8ff 100%);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 32px;
+            box-shadow: 0 10px 30px rgba(255, 133, 162, 0.15);
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0 0 10px;
+            font-size: 1.8rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .timer-bar {
+            height: 6px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 3px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 100%;
+            transition: width 0.1s linear;
+        }
+
+        .word-display {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .prompt {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--glass-border);
+            padding: 12px;
+            border-radius: 18px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .option-btn.correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--error) !important; color: white; border-color: var(--error); }
+        .option-btn:disabled { opacity: 0.5; cursor: default; }
+
+        .hint-btn {
+            background: none;
+            border: 1px dashed var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .diff-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .diff-btn {
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 2px solid var(--glass-border);
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .diff-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-card">
+        <div id="screen-overlay" class="overlay">
+            <h1 id="overlay-title">Synonym Sprinter ✨</h1>
+            <p style="font-size: 0.9rem; margin-bottom: 15px;">Pick your challenge level:</p>
+            <div class="diff-selector">
+                <button class="diff-btn active" onclick="setDifficulty('easy', this)">Easy</button>
+                <button class="diff-btn" onclick="setDifficulty('medium', this)">Medium</button>
+                <button class="diff-btn" onclick="setDifficulty('hard', this)">Hard</button>
+            </div>
+            <button class="btn-main" onclick="startGame()">Start Game</button>
+        </div>
+
+        <div class="stats">
+            <div>Score: <span id="score">0</span></div>
+            <div>Level: <span id="difficulty-label">Easy</span></div>
+            <div>Streak: <span id="streak">0</span> 🔥</div>
+        </div>
+
+        <div class="timer-bar"><div id="timer" class="timer-fill"></div></div>
+        <div class="word-display" id="word">READY?</div>
+        <div class="prompt">Select the closest synonym</div>
+
+        <div class="options-grid" id="options"></div>
+        <button class="hint-btn" id="hint-btn" onclick="useHint()">💡 Use Hint (-5 pts)</button>
+    </div>
+</div>
+
+<script>
+    const POOLS = {
+        easy: [
+            { w: "Happy", s: "Joyful", d: ["Sad", "Angry", "Tired"] },
+            { w: "Big", s: "Large", d: ["Small", "Tiny", "Short"] },
+            { w: "Fast", s: "Quick", d: ["Slow", "Steady", "Heavy"] },
+            { w: "Smart", s: "Clever", d: ["Dumb", "Slow", "Lazy"] }
+        ],
+        medium: [
+            { w: "Beautiful", s: "Gorgeous", d: ["Ugly", "Plain", "Dirty"] },
+            { w: "Brave", s: "Courageous", d: ["Fearful", "Afraid", "Weak"] },
+            { w: "Strong", s: "Powerful", d: ["Fragile", "Soft", "Small"] },
+            { w: "Calm", s: "Peaceful", d: ["Wild", "Loud", "Noisy"] }
+        ],
+        hard: [
+            { w: "Abundant", s: "Plentiful", d: ["Scarce", "Rare", "Empty"] },
+            { w: "Cautious", s: "Prudent", d: ["Reckless", "Bold", "Brave"] },
+            { w: "Hostile", s: "Antagonistic", d: ["Friendly", "Kind", "Warm"] },
+            { w: "Sincere", s: "Genuine", d: ["False", "Fake", "Mean"] }
+        ]
+    };
+
+    let state = { score: 0, streak: 0, difficulty: 'easy', timeLeft: 100, timerId: null, current: null };
+
+    function setDifficulty(d, btn) {
+        state.difficulty = d;
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('difficulty-label').innerText = d.charAt(0).toUpperCase() + d.slice(1);
+    }
+
+    function startGame() {
+        state.score = 0; state.streak = 0;
+        document.getElementById('screen-overlay').classList.add('hidden');
+        updateUI();
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        state.timeLeft = 100;
+        const pool = POOLS[state.difficulty];
+        state.current = pool[Math.floor(Math.random() * pool.length)];
+        document.getElementById('word').innerText = state.current.w;
+        
+        const opts = [state.current.s, ...state.current.d].sort(() => Math.random() - 0.5);
+        const container = document.getElementById('options');
+        container.innerHTML = '';
+        opts.forEach(o => {
+            const b = document.createElement('button');
+            b.className = 'option-btn';
+            b.innerText = o;
+            b.onclick = () => check(o, b);
+            container.appendChild(b);
+        });
+        document.getElementById('hint-btn').disabled = false;
+        startTimer();
+    }
+
+    function startTimer() {
+        clearInterval(state.timerId);
+        const speed = state.difficulty === 'hard' ? 2 : state.difficulty === 'medium' ? 1.5 : 1;
+        state.timerId = setInterval(() => {
+            state.timeLeft -= speed;
+            document.getElementById('timer').style.width = state.timeLeft + "%";
+            if (state.timeLeft <= 0) end("Time's Up! ⏰");
+        }, 100);
+    }
+
+    function check(val, btn) {
+        clearInterval(state.timerId);
+        if (val === state.current.s) {
+            btn.classList.add('correct');
+            state.score += 10 + Math.floor(state.timeLeft / 10);
+            state.streak++;
+            setTimeout(nextQuestion, 600);
+        } else {
+            btn.classList.add('wrong');
+            end("Incorrect! 🥺");
+        }
+        updateUI();
+    }
+
+    function useHint() {
+        if (state.score < 5) return alert("Not enough score! 🎀");
+        state.score -= 5;
+        const btns = Array.from(document.querySelectorAll('.option-btn'));
+        const wrong = btns.filter(b => b.innerText !== state.current.s);
+        wrong.slice(0, 2).forEach(b => b.disabled = true);
+        document.getElementById('hint-btn').disabled = true;
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('score').innerText = state.score;
+        document.getElementById('streak').innerText = state.streak;
+    }
+
+    function end(msg) {
+        clearInterval(state.timerId);
+        document.getElementById('overlay-title').innerText = msg;
+        document.getElementById('screen-overlay').classList.remove('hidden');
+    }
+</script>
+</body>
+</html>

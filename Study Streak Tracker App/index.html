@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraStudy - Study Streak Tracker & Productivity Dashboard</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Boxicons CDN -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= MAIN APP CONTAINER ================= -->
+    <div id="app-container" class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar glass" id="app-sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <i class='bx bxs-flame brand-logo'></i>
+                    <span>AuraStudy</span>
+                </div>
+                <button class="sidebar-close-btn d-lg-none" id="sidebar-close">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <!-- Profile / Guest badge section -->
+            <div class="user-profile-badge" id="sidebar-profile-area">
+                <!-- Dynamically injected user badge or guest login CTA -->
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="nav-link active" data-tab="dashboard">
+                            <i class='bx bx-grid-alt'></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-tab="ledger">
+                            <i class='bx bx-notepad'></i>
+                            <span>Study Logs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-tab="badges">
+                            <i class='bx bx-award'></i>
+                            <span>Badges Shelf</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle-row">
+                    <span>Dark Mode</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-switch" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <a href="#" class="btn-logout hidden" id="logout-btn">
+                    <i class='bx bx-log-out-circle'></i>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTAINER -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="app-header glass">
+                <div class="header-left">
+                    <button class="mobile-menu-toggle d-lg-none" id="mobile-menu-trigger">
+                        <i class='bx bx-menu'></i>
+                    </button>
+                    <h1 id="view-title">Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <span class="current-date" id="header-date">Tuesday, June 2, 2026</span>
+                    <button class="btn btn-primary btn-sm" id="quick-log-btn">
+                        <i class='bx bx-plus'></i>
+                        <span>Log Session</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ================= VIEW CONTENT CONTAINER ================= -->
+            <div class="content-body">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="dashboard-view" class="view-section active">
+                    <!-- Guest explore alert banner -->
+                    <div id="guest-explore-banner" class="explore-banner glass mb-4">
+                        <div class="explore-banner-content">
+                            <i class='bx bx-compass explore-icon animate-pulse'></i>
+                            <div>
+                                <h4>Exploring AuraStudy (Guest Mode)</h4>
+                                <p>You are viewing dynamic study metrics with demo data. Create an account to log personal sessions, maintain streaks, and customize targets.</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="guest-join-btn">Sign Up / Sign In</button>
+                    </div>
+
+                    <!-- Quick Stats Cards Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card glass primary-streak-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Current Streak</span>
+                                <h2 id="current-streak" class="amount">0 Days</h2>
+                            </div>
+                            <div class="stat-icon-wrapper fire-streak">
+                                <i class='bx bxs-flame animate-pulse'></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card glass longest-streak-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Longest Streak</span>
+                                <h2 id="longest-streak" class="amount">0 Days</h2>
+                            </div>
+                            <div class="stat-icon-wrapper trophy">
+                                <i class='bx bx-trophy'></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card glass total-hours-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Total Focused Time</span>
+                                <h2 id="total-hours" class="amount">0h 0m</h2>
+                            </div>
+                            <div class="stat-icon-wrapper book">
+                                <i class='bx bx-book-open'></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card glass target-progress-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Daily Goal Progress</span>
+                                <div class="goal-badges-row">
+                                    <span id="daily-goal-status" class="budget-alert-badge safe">0% Done</span>
+                                    <button class="btn-goal-config" id="configure-goals-btn" title="Configure Targets">
+                                        <i class='bx bx-cog'></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="stat-icon-wrapper target">
+                                <i class='bx bx-target-lock'></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Calendar Contribution Heatmap -->
+                    <div class="heatmap-section mt-4">
+                        <div class="section-card glass">
+                            <div class="card-header">
+                                <div>
+                                    <h3>Consistency Heatmap</h3>
+                                    <span class="chart-sub">Your study dedication represented over the past 12 weeks</span>
+                                </div>
+                                <div class="heatmap-legend">
+                                    <span>Less</span>
+                                    <div class="legend-box level-0"></div>
+                                    <div class="legend-box level-1"></div>
+                                    <div class="legend-box level-2"></div>
+                                    <div class="legend-box level-3"></div>
+                                    <div class="legend-box level-4"></div>
+                                    <span>More</span>
+                                </div>
+                            </div>
+                            <div class="heatmap-container-outer">
+                                <div class="days-label">
+                                    <span>Mon</span>
+                                    <span>Wed</span>
+                                    <span>Fri</span>
+                                </div>
+                                <div class="heatmap-grid" id="study-heatmap-grid">
+                                    <!-- Populated dynamically via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Analytics Graphs -->
+                    <div class="charts-grid mt-4">
+                        <div class="chart-card glass">
+                            <div class="chart-header">
+                                <h3>Weekly Study Effort</h3>
+                                <span class="chart-sub">Focused minutes studied daily this week</span>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="weeklyTrendChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-card glass">
+                            <div class="chart-header">
+                                <h3>Subject Concentration</h3>
+                                <span class="chart-sub">Percentage breakdown of focused hours</span>
+                            </div>
+                            <div class="chart-container flex-center">
+                                <canvas id="subjectBreakdownChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. STUDY LOGS LEDGER VIEW -->
+                <section id="ledger-view" class="view-section">
+                    <div class="section-card glass p-4">
+                        <!-- Filters Header -->
+                        <div class="filters-container">
+                            <div class="search-bar">
+                                <i class='bx bx-search search-icon'></i>
+                                <input type="text" id="search-logs" placeholder="Search logs notes or subjects...">
+                            </div>
+                            <div class="filter-controls">
+                                <select id="filter-subject" class="filter-select">
+                                    <option value="all">All Subjects</option>
+                                    <option value="Coding">Coding</option>
+                                    <option value="Math">Math</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Languages">Languages</option>
+                                    <option value="Writing">Writing</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                                <select id="sort-logs" class="filter-select">
+                                    <option value="date-desc">Newest First</option>
+                                    <option value="date-asc">Oldest First</option>
+                                    <option value="duration-desc">Longest Duration</option>
+                                    <option value="duration-asc">Shortest Duration</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Logs Data Table -->
+                        <div class="table-responsive mt-3">
+                            <table class="data-table" id="logs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Subject</th>
+                                        <th>Duration</th>
+                                        <th>Activity Details</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-list-body">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                            <div class="table-empty-state hidden" id="table-empty-state">
+                                <i class='bx bx-note'></i>
+                                <p>No study sessions logged matching the filters.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. BADGES SHELF VIEW -->
+                <section id="badges-view" class="view-section">
+                    <div class="budgets-header-row mb-4">
+                        <div class="header-intro">
+                            <h2>Academic Achievements</h2>
+                            <p class="subtitle">Complete study activities to unlock milestones and level up your status</p>
+                        </div>
+                    </div>
+
+                    <!-- Badges Grid -->
+                    <div class="badges-grid" id="badges-shelf-container">
+                        <!-- Loaded dynamically in app.js -->
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= AUTH MODAL OVERLAY ================= -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-card auth-modal-card glass">
+            <div class="auth-modal-banner">
+                <div class="brand">
+                    <i class='bx bxs-flame brand-logo-auth'></i>
+                    <h2>AuraStudy</h2>
+                </div>
+                <h3 id="auth-modal-prompt">Unlock AuraStudy</h3>
+                <p id="auth-modal-subprompt">Create a persistent scholar profile to save study sessions, construct daily streaks, configure custom targets, and claim badges!</p>
+            </div>
+            
+            <div class="auth-modal-forms">
+                <!-- LOGIN FORM -->
+                <div id="login-form-wrapper" class="modal-form-content active">
+                    <div class="auth-tab-switch mb-4">
+                        <span class="auth-tab active" id="auth-tab-login">Sign In</span>
+                        <span class="auth-tab" id="auth-tab-signup">Register</span>
+                    </div>
+
+                    <form id="login-form" autocomplete="off">
+                        <div class="input-group">
+                            <label for="login-email">Email Address</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-envelope input-icon'></i>
+                                <input type="email" id="login-email" required placeholder="name@domain.com">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="login-password">Password</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-lock-alt input-icon'></i>
+                                <input type="password" id="login-password" required placeholder="••••••••">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+                </div>
+
+                <!-- SIGNUP FORM -->
+                <div id="signup-form-wrapper" class="modal-form-content">
+                    <div class="auth-tab-switch mb-4">
+                        <span class="auth-tab" id="auth-tab-login-back">Sign In</span>
+                        <span class="auth-tab active" id="auth-tab-signup-active">Register</span>
+                    </div>
+                    
+                    <form id="signup-form" autocomplete="off">
+                        <div class="input-group">
+                            <label for="signup-name">Full Name</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-user input-icon'></i>
+                                <input type="text" id="signup-name" required placeholder="Jane Doe">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signup-email">Email Address</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-envelope input-icon'></i>
+                                <input type="email" id="signup-email" required placeholder="name@domain.com">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="signup-password">Password</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-lock-alt input-icon'></i>
+                                <input type="password" id="signup-password" required placeholder="Min. 6 characters">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signup-confirm-password">Confirm Password</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-shield-quarter-alt input-icon'></i>
+                                <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Create Profile</button>
+                    </form>
+                </div>
+            </div>
+            
+            <button class="modal-close" id="close-auth-modal" style="position: absolute; top: 16px; right: 16px;">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= LOG STUDY SESSION MODAL ================= -->
+    <div class="modal-overlay" id="log-modal">
+        <div class="modal-card glass">
+            <div class="modal-header">
+                <h3>Log Study Session</h3>
+                <button class="modal-close" id="close-log-modal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <form id="log-form">
+                <div class="form-row">
+                    <div class="input-group flex-1">
+                        <label for="l-subject">Subject / Activity Category</label>
+                        <select id="l-subject" class="filter-select full-width" required>
+                            <option value="Coding">Coding & Development</option>
+                            <option value="Math">Mathematics & Logic</option>
+                            <option value="Science">Sciences & Physics</option>
+                            <option value="Languages">Languages & Vocab</option>
+                            <option value="Writing">Writing & Humanities</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row mt-3">
+                    <div class="input-group flex-1">
+                        <label for="l-duration">Study Duration (Minutes)</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-time input-icon'></i>
+                            <input type="number" id="l-duration" required min="1" max="1440" placeholder="e.g. 60">
+                        </div>
+                    </div>
+                    <div class="input-group flex-1">
+                        <label for="l-date">Date</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-calendar input-icon'></i>
+                            <input type="date" id="l-date" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row mt-3">
+                    <div class="input-group flex-1">
+                        <label for="l-note">Study Topics / Session Notes</label>
+                        <div class="input-wrapper">
+                            <i class='bx bx-notepad input-icon'></i>
+                            <input type="text" id="l-note" placeholder="Algorithms, calculus homework, chemistry lab prep...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer mt-4">
+                    <button type="button" class="btn btn-secondary" id="cancel-log-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Log Session</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= CONFIGURE GOALS MODAL ================= -->
+    <div class="modal-overlay" id="goal-modal">
+        <div class="modal-card glass">
+            <div class="modal-header">
+                <h3>Configure Productivity Targets</h3>
+                <button class="modal-close" id="close-goal-modal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <form id="goal-form">
+                <div class="input-group mt-3">
+                    <label for="g-daily">Daily Study Target (Minutes)</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-target-lock input-icon'></i>
+                        <input type="number" id="g-daily" required min="5" max="1440" placeholder="e.g. 60">
+                    </div>
+                </div>
+
+                <div class="input-group mt-3">
+                    <label for="g-weekly">Weekly Study Target (Minutes)</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-calendar-star input-icon'></i>
+                        <input type="number" id="g-weekly" required min="30" max="10080" placeholder="e.g. 300">
+                    </div>
+                </div>
+
+                <div class="modal-footer mt-4">
+                    <button type="button" class="btn btn-secondary" id="cancel-goal-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Targets</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast alerts overlay -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Main Logic script -->
+    <script src="app.js"></script>
+</body>
+</html>

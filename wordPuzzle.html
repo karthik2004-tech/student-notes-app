@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LingoSearch — Word Find Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Quicksand:wght@500;700&display=swap');
+
+        :root {
+            --primary: #ff85a2;
+            --secondary: #a78bfa;
+            --accent: #f472b6;
+            --bg: #fff5f7;
+            --text: #4b5563;
+            --text-muted: #9ca3af;
+            --glass: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --success: #4ade80;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff5f7 0%, #f3e8ff 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0;
+            font-size: 2.2rem;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 28px;
+            box-shadow: 0 10px 25px rgba(255, 133, 162, 0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* Grid Styling */
+        #grid {
+            display: grid;
+            gap: 5px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 20px;
+            width: fit-content;
+            touch-action: none;
+        }
+
+        .cell {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cell.selected { background: var(--secondary); color: white; transform: scale(0.9); }
+        .cell.found { background: var(--success); color: white; }
+        .cell.hint { background: var(--primary); color: white; animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Word List */
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .word-item {
+            padding: 5px 15px;
+            background: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .word-item.found {
+            text-decoration: line-through;
+            background: var(--success);
+            color: white;
+            opacity: 0.7;
+        }
+
+        /* Overlays */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 15px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            background: var(--primary);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-hint { background: var(--secondary); font-size: 0.8rem; padding: 8px 15px; }
+
+        .diff-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .diff-btn {
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 2px solid var(--glass-border);
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .diff-btn.active { background: var(--secondary); color: white; border-color: var(--secondary); }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>LingoSearch 🌸</h1>
+        <p>Find the hidden words in the grid!</p>
+    </header>
+
+    <div class="glass-card">
+        <div id="start-screen" class="overlay">
+            <h3>Ready to play? ✨</h3>
+            <div class="diff-select">
+                <button class="diff-btn active" onclick="setDifficulty('easy', this)">Easy</button>
+                <button class="diff-btn" onclick="setDifficulty('medium', this)">Medium</button>
+                <button class="diff-btn" onclick="setDifficulty('hard', this)">Hard</button>
+            </div>
+            <button class="btn" onclick="initGame()">Start Game</button>
+        </div>
+
+        <div id="end-screen" class="overlay hidden">
+            <h2 id="end-title">Fantastic! 🎉</h2>
+            <p id="end-stats"></p>
+            <button class="btn" onclick="initGame()">Play Again</button>
+        </div>
+
+        <div class="stats">
+            <div>Time: <span id="timer">00:00</span></div>
+            <div>Score: <span id="score">0</span></div>
+            <button class="btn-hint" onclick="useHint()">💡 Hint</button>
+        </div>
+
+        <div id="grid"></div>
+
+        <div class="word-list" id="wordList"></div>
+    </div>
+</div>
+
+<script>
+    const WORD_POOLS = {
+        easy: ["CAT", "DOG", "FISH", "BIRD", "CAKE", "PINK"],
+        medium: ["GARDEN", "FLOWER", "SPRING", "CHERRY", "LAVENDER", "KITTEN"],
+        hard: ["GLASSPHORMISM", "VOCABULARY", "DICTIONARY", "PUZZLE", "CHALLENGE", "SYNONYM"]
+    };
+
+    let state = {
+        difficulty: 'easy',
+        gridSize: 8,
+        words: [],
+        foundWords: [],
+        score: 0,
+        seconds: 0,
+        timerId: null,
+        isDragging: false,
+        startCell: null,
+        selectedCells: []
+    };
+
+    function setDifficulty(diff, btn) {
+        state.difficulty = diff;
+        state.gridSize = diff === 'easy' ? 8 : diff === 'medium' ? 10 : 12;
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    function initGame() {
+        state.words = [...WORD_POOLS[state.difficulty]].sort(() => Math.random() - 0.5);
+        state.foundWords = [];
+        state.score = 0;
+        state.seconds = 0;
+        
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.add('hidden');
+        document.getElementById('score').innerText = '0';
+        
+        generateGrid();
+        startTimer();
+    }
+
+    function generateGrid() {
+        const grid = document.getElementById('grid');
+        grid.style.gridTemplateColumns = `repeat(${state.gridSize}, 35px)`;
+        grid.innerHTML = '';
+
+        // Create empty 2D array
+        const matrix = Array(state.gridSize).fill().map(() => Array(state.gridSize).fill(''));
+
+        // Place words
+        state.words.forEach(word => {
+            let placed = false;
+            while (!placed) {
+                const dir = [[0,1], [1,0], [1,1], [0,-1], [-1,0], [-1,-1], [1,-1], [-1,1]][Math.floor(Math.random()*8)];
+                const r = Math.floor(Math.random() * state.gridSize);
+                const c = Math.floor(Math.random() * state.gridSize);
+
+                if (canPlace(matrix, word, r, c, dir)) {
+                    for (let i = 0; i < word.length; i++) {
+                        matrix[r + i*dir[0]][c + i*dir[1]] = word[i];
+                    }
+                    placed = true;
+                }
+            }
+        });
+
+        // Fill random letters & Render
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (let r = 0; r < state.gridSize; r++) {
+            for (let c = 0; c < state.gridSize; c++) {
+                if (matrix[r][c] === '') matrix[r][c] = letters[Math.floor(Math.random() * 26)];
+                
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = matrix[r][c];
+                cell.dataset.r = r;
+                cell.dataset.c = c;
+                
+                cell.addEventListener('pointerdown', startSelection);
+                cell.addEventListener('pointerenter', updateSelection);
+                cell.addEventListener('pointerup', endSelection);
+                
+                grid.appendChild(cell);
+            }
+        }
+        renderWordList();
+    }
+
+    function canPlace(matrix, word, r, c, dir) {
+        for (let i = 0; i < word.length; i++) {
+            const nr = r + i*dir[0], nc = c + i*dir[1];
+            if (nr < 0 || nr >= state.gridSize || nc < 0 || nc >= state.gridSize) return false;
+            if (matrix[nr][nc] !== '' && matrix[nr][nc] !== word[i]) return false;
+        }
+        return true;
+    }
+
+    function renderWordList() {
+        const list = document.getElementById('wordList');
+        list.innerHTML = state.words.map(w => `<div class="word-item" id="list-${w}">${w}</div>`).join('');
+    }
+
+    // --- Selection Logic ---
+    function startSelection(e) {
+        state.isDragging = true;
+        state.startCell = e.target;
+        state.selectedCells = [e.target];
+        e.target.classList.add('selected');
+    }
+
+    function updateSelection(e) {
+        if (!state.isDragging) return;
+        const cell = e.target;
+        if (!cell.classList.contains('cell')) return;
+
+        // Only allow straight lines
+        const r1 = parseInt(state.startCell.dataset.r), c1 = parseInt(state.startCell.dataset.c);
+        const r2 = parseInt(cell.dataset.r), c2 = parseInt(cell.dataset.c);
+        
+        const dr = r2 - r1, dc = c2 - c1;
+        const dist = Math.max(Math.abs(dr), Math.abs(dc));
+        
+        if (dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc)) {
+            document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+            state.selectedCells = [];
+            
+            const stepR = dr === 0 ? 0 : dr / dist;
+            const stepC = dc === 0 ? 0 : dc / dist;
+            
+            for (let i = 0; i <= dist; i++) {
+                const target = document.querySelector(`.cell[data-r="${r1 + i*stepR}"][data-c="${c1 + i*stepC}"]`);
+                target.classList.add('selected');
+                state.selectedCells.push(target);
+            }
+        }
+    }
+
+    function endSelection() {
+        state.isDragging = false;
+        const word = state.selectedCells.map(c => c.innerText).join('');
+        const revWord = word.split('').reverse().join('');
+
+        const match = state.words.find(w => (w === word || w === revWord) && !state.foundWords.includes(w));
+        
+        if (match) {
+            state.foundWords.push(match);
+            state.selectedCells.forEach(c => {
+                c.classList.remove('selected');
+                c.classList.add('found');
+            });
+            document.getElementById(`list-${match}`).classList.add('found');
+            state.score += match.length * 10;
+            document.getElementById('score').innerText = state.score;
+            if (state.foundWords.length === state.words.length) endGame();
+        } else {
+            state.selectedCells.forEach(c => c.classList.remove('selected'));
+        }
+    }
+
+    function useHint() {
+        const hidden = state.words.find(w => !state.foundWords.includes(w));
+        if (!hidden) return;
+        document.querySelectorAll('.cell').forEach(c => {
+            if (c.innerText === hidden[0]) {
+                c.classList.add('hint');
+                setTimeout(() => c.classList.remove('hint'), 2000);
+            }
+        });
+    }
+
+    function startTimer() {
+        clearInterval(state.timerId);
+        state.timerId = setInterval(() => {
+            state.seconds++;
+            const m = Math.floor(state.seconds / 60).toString().padStart(2, '0');
+            const s = (state.seconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer').innerText = `${m}:${s}`;
+        }, 1000);
+    }
+
+    function endGame() {
+        clearInterval(state.timerId);
+        document.getElementById('end-screen').classList.remove('hidden');
+        document.getElementById('end-stats').innerText = `Time: ${document.getElementById('timer').innerText} | Score: ${state.score}`;
+    }
+</script>
+</body>
+</html>

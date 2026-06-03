@@ -1,60 +1,530 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyCast — Minimal Weather</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Notes App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --border: #e8eaed;
+      --text: #111318;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent-light: #eff6ff;
+      --accent-hover: #1d4ed8;
+      --tag-bg: #f1f5f9;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-logo-icon {
+      width: 28px; height: 28px;
+      background: var(--accent);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .nav-link:hover { background: var(--tag-bg); color: var(--text); }
+    .nav-btn {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      background: var(--accent);
+      border: none;
+      padding: 7px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .nav-btn:hover { background: var(--accent-hover); }
+
+    /* HERO */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid #bfdbfe;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .hero-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      max-width: 440px;
+      margin: 0 auto 56px;
+      position: relative;
+    }
+    .search-wrap input {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 44px 12px 16px;
+      font-size: 14px;
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+    .search-wrap input::placeholder { color: #9ca3af; }
+    .search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      margin-bottom: 64px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 480px;
+      margin: 0 auto 64px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .stat {
+      flex: 1;
+      padding: 20px 16px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* SECTION */
+    .section { margin-bottom: 52px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-icon { font-size: 18px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .section-count {
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--tag-bg);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.3s ease both;
+    }
+    .app-card:hover {
+      border-color: #93c5fd;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .app-icon {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .app-info { flex: 1; min-width: 0; }
+    .app-name {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .app-tag {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    /* Icon colors */
+    .ic1 { background: #eff6ff; }
+    .ic2 { background: #f0fdf4; }
+    .ic3 { background: #fff7ed; }
+    .ic4 { background: #fefce8; }
+    .ic5 { background: #f5f3ff; }
+    .ic6 { background: #fdf2f8; }
+
+    /* Hidden for search */
+    .app-card.hidden { display: none; }
+
+    /* NO RESULTS */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .no-results.show { display: block; }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    footer a:hover { text-decoration: underline; }
+  </style>
 </head>
 <body>
-    <div class="aurora-bg"></div>
-    
-    <main class="weather-container">
-        <header class="search-bar">
-            <i class="ph ph-magnifying-glass"></i>
-            <input type="text" id="city-input" placeholder="Search city..." spellcheck="false">
-            <button id="search-btn"><i class="ph ph-arrow-right"></i></button>
-        </header>
 
-        <section class="weather-card" id="weather-card">
-            <div class="main-info">
-                <div class="location">
-                    <h1 id="city-name">London</h1>
-                    <p id="current-date">Monday, 12 June</p>
-                </div>
-                <div class="temp-container">
-                    <span id="temperature">22</span><span class="unit">°C</span>
-                </div>
-                <div class="condition">
-                    <i id="weather-icon" class="ph-fill ph-sun"></i>
-                    <span id="weather-desc">Sunny Day</span>
-                </div>
-            </div>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-icon">📚</div>
+      Student Notes App
+    </div>
+    <div class="nav-right">
+      <a class="nav-link" href="https://github.com/karthik2004-tech/student-notes-app" target="_blank">GitHub</a>
+      <a class="nav-btn" href="https://github.com/karthik2004-tech/student-notes-app/issues" target="_blank">Contribute</a>
+    </div>
+  </nav>
 
-            <div class="details-grid">
-                <div class="detail-item">
-                    <i class="ph ph-drop"></i>
-                    <div class="detail-text">
-                        <span id="humidity">45%</span>
-                        <label>Humidity</label>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <i class="ph ph-wind"></i>
-                    <div class="detail-text">
-                        <span id="wind-speed">12 km/h</span>
-                        <label>Wind</label>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <script src="script.js"></script>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">✦ Open Source Project</div>
+    <h1>All Your Student Tools,<br>In One Place</h1>
+    <p class="hero-sub">A growing collection of web tools, games, and utilities built by contributors for students.</p>
+
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="Search tools and apps..." oninput="filterApps(this.value)" autocomplete="off">
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Apps</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Free & Open</div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main">
+
+    <!-- STUDY TOOLS -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-left">
+          <span class="section-icon">📚</span>
+          <span class="section-title">Study Tools</span>
+        </div>
+        <span class="section-count">12 apps</span>
+      </div>
+      <div class="grid">
+        <a class="app-card" href="note-taking-app/index.html" style="animation-delay:.03s"><div class="app-icon ic1">📝</div><div class="app-info"><div class="app-name">Note Taking App</div><div class="app-tag">Notes</div></div></a>
+        <a class="app-card" href="google-keep-clone/index.html" style="animation-delay:.05s"><div class="app-icon ic2">🗒️</div><div class="app-info"><div class="app-name">Google Keep Clone</div><div class="app-tag">Notes</div></div></a>
+        <a class="app-card" href="sticky-notes-ui/index.html" style="animation-delay:.07s"><div class="app-icon ic4">📌</div><div class="app-info"><div class="app-name">Sticky Notes</div><div class="app-tag">Notes</div></div></a>
+        <a class="app-card" href="flashcard-quiz/index.html" style="animation-delay:.09s"><div class="app-icon ic2">🃏</div><div class="app-info"><div class="app-name">Flashcard Quiz</div><div class="app-tag">Study</div></div></a>
+        <a class="app-card" href="Revision App/revision.html" style="animation-delay:.11s"><div class="app-icon ic1">🔁</div><div class="app-info"><div class="app-name">Revision App</div><div class="app-tag">Study</div></div></a>
+        <a class="app-card" href="smart-planner/index.html" style="animation-delay:.13s"><div class="app-icon ic3">🗓️</div><div class="app-info"><div class="app-name">Smart Planner</div><div class="app-tag">Planning</div></div></a>
+        <a class="app-card" href="Study Progress Assesment System/progress.html" style="animation-delay:.15s"><div class="app-icon ic2">📊</div><div class="app-info"><div class="app-name">Study Progress</div><div class="app-tag">Tracker</div></div></a>
+        <a class="app-card" href="subject-progress-bars/index.html" style="animation-delay:.17s"><div class="app-icon ic3">📈</div><div class="app-info"><div class="app-name">Subject Progress</div><div class="app-tag">Tracker</div></div></a>
+        <a class="app-card" href="focus-flow/index.html" style="animation-delay:.19s"><div class="app-icon ic5">🧘</div><div class="app-info"><div class="app-name">Focus Flow</div><div class="app-tag">Productivity</div></div></a>
+        <a class="app-card" href="exam-timetable/index.html" style="animation-delay:.21s"><div class="app-icon ic4">📅</div><div class="app-info"><div class="app-name">Exam Timetable</div><div class="app-tag">Planning</div></div></a>
+        <a class="app-card" href="exam-countdown/index.html" style="animation-delay:.23s"><div class="app-icon ic3">⏳</div><div class="app-info"><div class="app-name">Exam Countdown</div><div class="app-tag">Timer</div></div></a>
+        <a class="app-card" href="deadline-tracker/index.html" style="animation-delay:.25s"><div class="app-icon ic1">🚨</div><div class="app-info"><div class="app-name">Deadline Tracker</div><div class="app-tag">Planning</div></div></a>
+      </div>
+    </div>
+
+    <!-- CALCULATORS -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-left">
+          <span class="section-icon">🧮</span>
+          <span class="section-title">Calculators</span>
+        </div>
+        <span class="section-count">8 apps</span>
+      </div>
+      <div class="grid">
+        <a class="app-card" href="calculator/index.html" style="animation-delay:.03s"><div class="app-icon ic2">🔢</div><div class="app-info"><div class="app-name">Calculator</div><div class="app-tag">Math</div></div></a>
+        <a class="app-card" href="calculator-priyanshi/index.html" style="animation-delay:.05s"><div class="app-icon ic1">➕</div><div class="app-info"><div class="app-name">Calculator (Priyanshi)</div><div class="app-tag">Math</div></div></a>
+        <a class="app-card" href="bmi-calculator-priyanshi/index.html" style="animation-delay:.07s"><div class="app-icon ic2">⚖️</div><div class="app-info"><div class="app-name">BMI Calculator</div><div class="app-tag">Health</div></div></a>
+        <a class="app-card" href="cgpa-calculator/index.html" style="animation-delay:.09s"><div class="app-icon ic4">🎓</div><div class="app-info"><div class="app-name">CGPA Calculator</div><div class="app-tag">Academic</div></div></a>
+        <a class="app-card" href="gpa-calculator/index.html" style="animation-delay:.11s"><div class="app-icon ic3">📐</div><div class="app-info"><div class="app-name">GPA Calculator</div><div class="app-tag">Academic</div></div></a>
+        <a class="app-card" href="fee-calculator/index.html" style="animation-delay:.13s"><div class="app-icon ic3">💰</div><div class="app-info"><div class="app-name">Fee Calculator</div><div class="app-tag">Finance</div></div></a>
+        <a class="app-card" href="unit-converter/index.html" style="animation-delay:.15s"><div class="app-icon ic2">🔄</div><div class="app-info"><div class="app-name">Unit Converter</div><div class="app-tag">Math</div></div></a>
+        <a class="app-card" href="Bit Converter/index.html" style="animation-delay:.17s"><div class="app-icon ic1">💻</div><div class="app-info"><div class="app-name">Bit Converter</div><div class="app-tag">CS</div></div></a>
+      </div>
+    </div>
+
+    <!-- PRODUCTIVITY -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-left">
+          <span class="section-icon">⚡</span>
+          <span class="section-title">Productivity</span>
+        </div>
+        <span class="section-count">10 apps</span>
+      </div>
+      <div class="grid">
+        <a class="app-card" href="todo-app/index.html" style="animation-delay:.03s"><div class="app-icon ic2">✅</div><div class="app-info"><div class="app-name">Todo App</div><div class="app-tag">Tasks</div></div></a>
+        <a class="app-card" href="todo-app-priyanshi/index.html" style="animation-delay:.05s"><div class="app-icon ic1">☑️</div><div class="app-info"><div class="app-name">Todo (Priyanshi)</div><div class="app-tag">Tasks</div></div></a>
+        <a class="app-card" href="habit_tracker/index.html" style="animation-delay:.07s"><div class="app-icon ic4">🔥</div><div class="app-info"><div class="app-name">Habit Tracker</div><div class="app-tag">Habits</div></div></a>
+        <a class="app-card" href="Task Completion System/task.html" style="animation-delay:.09s"><div class="app-icon ic2">📋</div><div class="app-info"><div class="app-name">Task Completion</div><div class="app-tag">Tasks</div></div></a>
+        <a class="app-card" href="Expense Tracker Web/index.html" style="animation-delay:.11s"><div class="app-icon ic3">💸</div><div class="app-info"><div class="app-name">Expense Tracker</div><div class="app-tag">Finance</div></div></a>
+        <a class="app-card" href="expense-tracker-priyanshi/index.html" style="animation-delay:.13s"><div class="app-icon ic3">💳</div><div class="app-info"><div class="app-name">Expense (Priyanshi)</div><div class="app-tag">Finance</div></div></a>
+        <a class="app-card" href="student-budget-tracker/index.html" style="animation-delay:.15s"><div class="app-icon ic2">🏦</div><div class="app-info"><div class="app-name">Budget Tracker</div><div class="app-tag">Finance</div></div></a>
+        <a class="app-card" href="pomdoroTimer/index.html" style="animation-delay:.17s"><div class="app-icon ic1">🍅</div><div class="app-info"><div class="app-name">Pomodoro Timer</div><div class="app-tag">Focus</div></div></a>
+        <a class="app-card" href="pomodoro-timer/index.html" style="animation-delay:.19s"><div class="app-icon ic5">⏱️</div><div class="app-info"><div class="app-name">Pomodoro Timer 2</div><div class="app-tag">Focus</div></div></a>
+        <a class="app-card" href="studyclock/index.html" style="animation-delay:.21s"><div class="app-icon ic4">🕐</div><div class="app-info"><div class="app-name">Study Clock</div><div class="app-tag">Timer</div></div></a>
+      </div>
+    </div>
+
+    <!-- CODING & CS -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-left">
+          <span class="section-icon">💻</span>
+          <span class="section-title">Coding & CS</span>
+        </div>
+        <span class="section-count">5 apps</span>
+      </div>
+      <div class="grid">
+        <a class="app-card" href="leetcode-tracker/index.html" style="animation-delay:.03s"><div class="app-icon ic1">⚔️</div><div class="app-info"><div class="app-name">LeetCode Tracker</div><div class="app-tag">DSA</div></div></a>
+        <a class="app-card" href="github-explorer/index.html" style="animation-delay:.05s"><div class="app-icon ic3">🐙</div><div class="app-info"><div class="app-name">GitHub Explorer</div><div class="app-tag">Dev</div></div></a>
+        <a class="app-card" href="micro-audit-system/index.html" style="animation-delay:.07s"><div class="app-icon ic2">🔍</div><div class="app-info"><div class="app-name">Micro Audit System</div><div class="app-tag">Dev</div></div></a>
+        <a class="app-card" href="Attendance Tracker/attend.html" style="animation-delay:.09s"><div class="app-icon ic2">📊</div><div class="app-info"><div class="app-name">Attendance Tracker</div><div class="app-tag">Academic</div></div></a>
+        <a class="app-card" href="typing-speed-test/index.html" style="animation-delay:.11s"><div class="app-icon ic4">⌨️</div><div class="app-info"><div class="app-name">Typing Speed Test</div><div class="app-tag">Skills</div></div></a>
+      </div>
+    </div>
+
+    <!-- GAMES -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-left">
+          <span class="section-icon">🎮</span>
+          <span class="section-title">Games & Fun</span>
+        </div>
+        <span class="section-count">12 apps</span>
+      </div>
+      <div class="grid">
+        <a class="app-card" href="snake-game/index.html" style="animation-delay:.03s"><div class="app-icon ic2">🐍</div><div class="app-info"><div class="app-name">Snake Game</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="tic-tac-toe/index.html" style="animation-delay:.05s"><div class="app-icon ic1">❌</div><div class="app-info"><div class="app-name">Tic Tac Toe</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="flappy-bird/index.html" style="animation-delay:.07s"><div class="app-icon ic4">🐦</div><div class="app-info"><div class="app-name">Flappy Bird</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="DotsAndBoxes/index.html" style="animation-delay:.09s"><div class="app-icon ic1">🔵</div><div class="app-info"><div class="app-name">Dots and Boxes</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="memory-match-game/index.html" style="animation-delay:.11s"><div class="app-icon ic3">🧠</div><div class="app-info"><div class="app-name">Memory Match</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="memory-card-game/index.html" style="animation-delay:.13s"><div class="app-icon ic5">🃏</div><div class="app-info"><div class="app-name">Memory Cards</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="whack-a-mole/index.html" style="animation-delay:.15s"><div class="app-icon ic4">🦔</div><div class="app-info"><div class="app-name">Whack-a-Mole</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="word-scramble/index.html" style="animation-delay:.17s"><div class="app-icon ic1">🔤</div><div class="app-info"><div class="app-name">Word Scramble</div><div class="app-tag">Word</div></div></a>
+        <a class="app-card" href="Hangman/hangman.html" style="animation-delay:.19s"><div class="app-icon ic3">🎯</div><div class="app-info"><div class="app-name">Hangman</div><div class="app-tag">Word</div></div></a>
+        <a class="app-card" href="Nebula-Game/index.html" style="animation-delay:.21s"><div class="app-icon ic5">🌌</div><div class="app-info"><div class="app-name">Nebula Game</div><div class="app-tag">Game</div></div></a>
+        <a class="app-card" href="quiz-app-priyanshi/index.html" style="animation-delay:.23s"><div class="app-icon ic2">🧩</div><div class="app-info"><div class="app-name">Quiz App</div><div class="app-tag">Quiz</div></div></a>
+        <a class="app-card" href="Challenge Generation app/challenge.html" style="animation-delay:.25s"><div class="app-icon ic3">🏆</div><div class="app-info"><div class="app-name">Challenge Generator</div><div class="app-tag">Game</div></div></a>
+      </div>
+    </div>
+
+    <!-- UTILITIES -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-left">
+          <span class="section-icon">🛠️</span>
+          <span class="section-title">Utilities</span>
+        </div>
+        <span class="section-count">8 apps</span>
+      </div>
+      <div class="grid">
+        <a class="app-card" href="qr-code-generator/index.html" style="animation-delay:.03s"><div class="app-icon ic1">📷</div><div class="app-info"><div class="app-name">QR Code Generator</div><div class="app-tag">Tool</div></div></a>
+        <a class="app-card" href="password-generator-priyanshi/index.html" style="animation-delay:.05s"><div class="app-icon ic3">🔐</div><div class="app-info"><div class="app-name">Password Generator</div><div class="app-tag">Security</div></div></a>
+        <a class="app-card" href="color-picker-priyanshi/index.html" style="animation-delay:.07s"><div class="app-icon ic4">🎨</div><div class="app-info"><div class="app-name">Color Picker</div><div class="app-tag">Design</div></div></a>
+        <a class="app-card" href="weather-card-priyanshi/index.html" style="animation-delay:.09s"><div class="app-icon ic2">🌤️</div><div class="app-info"><div class="app-name">Weather Card</div><div class="app-tag">Weather</div></div></a>
+        <a class="app-card" href="Digital Diary/diary.html" style="animation-delay:.11s"><div class="app-icon ic5">📔</div><div class="app-info"><div class="app-name">Digital Diary</div><div class="app-tag">Personal</div></div></a>
+        <a class="app-card" href="study-group-ui/index.html" style="animation-delay:.13s"><div class="app-icon ic6">👥</div><div class="app-info"><div class="app-name">Study Group UI</div><div class="app-tag">Social</div></div></a>
+        <a class="app-card" href="study-topic-spinner/index.html" style="animation-delay:.15s"><div class="app-icon ic1">🎡</div><div class="app-info"><div class="app-name">Topic Spinner</div><div class="app-tag">Study</div></div></a>
+        <a class="app-card" href="Performance Measuring App/performance.html" style="animation-delay:.17s"><div class="app-icon ic3">📉</div><div class="app-info"><div class="app-name">Performance Meter</div><div class="app-tag">Analytics</div></div></a>
+      </div>
+    </div>
+
+    <div class="no-results" id="no-results">No apps found for "<span id="search-term"></span>"</div>
+  </main>
+
+  <footer>
+    <p>Built with ❤️ by open source contributors &nbsp;·&nbsp; <a href="https://github.com/karthik2004-tech/student-notes-app" target="_blank">View on GitHub</a> &nbsp;·&nbsp; <a href="https://github.com/karthik2004-tech/student-notes-app/issues" target="_blank">Report an Issue</a></p>
+  </footer>
+
+  <script>
+    function filterApps(query) {
+      const q = query.toLowerCase().trim();
+      let visibleCount = 0;
+      document.querySelectorAll('.app-card').forEach(card => {
+        const name = card.querySelector('.app-name').textContent.toLowerCase();
+        const tag = card.querySelector('.app-tag').textContent.toLowerCase();
+        const show = q === '' || name.includes(q) || tag.includes(q);
+        card.classList.toggle('hidden', !show);
+        if (show) visibleCount++;
+      });
+      const noResults = document.getElementById('no-results');
+      const searchTerm = document.getElementById('search-term');
+      if (q && visibleCount === 0) {
+        noResults.classList.add('show');
+        searchTerm.textContent = query;
+      } else {
+        noResults.classList.remove('show');
+      }
+    }
+  </script>
 </body>
 </html>
-<a href="CGPA Calculator/calculator.html" class="btn">CGPA Calculator</a>
-<a href="Pomodoro Timer/timer.html" class="btn">Pomodoro Timer</a>

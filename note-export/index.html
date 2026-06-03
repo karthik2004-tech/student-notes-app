@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Note Exporter | PDF & TXT Export</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+        }
+
+        /* Editor Section */
+        .editor-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .note-title-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .note-title-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Rich Text Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f7f9fc;
+            border-radius: 10px;
+        }
+
+        .tool-btn {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .tool-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .note-content {
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .note-content:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Export Section */
+        .export-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .export-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .export-pdf {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .export-pdf:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .export-txt {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .export-txt:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+        }
+
+        .filename-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .filename-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e1e8ed;
+        }
+
+        .preview-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .preview-box {
+            background: #f7f9fc;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #666;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-card span {
+            font-size: 1.5rem;
+            display: block;
+        }
+
+        .info-card label {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2ed573;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .toolbar {
+                gap: 5px;
+            }
+            
+            .tool-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles for PDF */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .header, .toolbar, .export-section, .info-cards, .toast {
+                display: none !important;
+            }
+            
+            .main-layout {
+                display: block;
+            }
+            
+            .editor-section {
+                box-shadow: none;
+                padding: 0;
+            }
+            
+            .note-content {
+                border: none;
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                📄 Note Exporter
+            </h1>
+            <p>Write notes & export as PDF or TXT file 📥</p>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="info-cards">
+            <div class="info-card">
+                <span>📝</span>
+                <label>Word Count</label>
+                <strong id="wordCount">0</strong>
+            </div>
+            <div class="info-card">
+                <span>🔤</span>
+                <label>Character Count</label>
+                <strong id="charCount">0</strong>
+            </div>
+            <div class="info-card">
+                <span>💾</span>
+                <label>Last Saved</label>
+                <strong id="lastSaved">Not saved</strong>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Editor Section -->
+            <div class="editor-section">
+                <div class="section-title">
+                    ✏️ Note Editor
+                </div>
+                <input type="text" id="noteTitle" class="note-title-input" placeholder="Note Title...">
+                
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <button class="tool-btn" onclick="formatText('bold')"><b>B</b></button>
+                    <button class="tool-btn" onclick="formatText('italic')"><i>I</i></button>
+                    <button class="tool-btn" onclick="formatText('underline')"><u>U</u></button>
+                    <button class="tool-btn" onclick="formatText('insertOrderedList')">1.</button>
+                    <button class="tool-btn" onclick="formatText('insertUnorderedList')">•</button>
+                    <button class="tool-btn" onclick="formatText('justifyLeft')">⬅️</button>
+                    <button class="tool-btn" onclick="formatText('justifyCenter')">⬌</button>
+                    <button class="tool-btn" onclick="formatText('justifyRight')">➡️</button>
+                </div>
+                
+                <div id="noteContent" class="note-content" contenteditable="true"></div>
+            </div>
+
+            <!-- Export Section -->
+            <div class="export-section">
+                <div class="section-title">
+                    📥 Export Options
+                </div>
+                
+                <div class="export-options">
+                    <input type="text" id="fileName" class="filename-input" placeholder="File name (without extension)">
+                    
+                    <button class="export-btn export-pdf" onclick="exportAsPDF()">
+                        📄 Export as PDF
+                    </button>
+                    
+                    <button class="export-btn export-txt" onclick="exportAsTXT()">
+                        📝 Export as TXT
+                    </button>
+                </div>
+                
+                <div class="preview-section">
+                    <div class="preview-title">📋 Export Preview</div>
+                    <div class="preview-box" id="previewBox">
+                        Your note preview will appear here...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Format text function
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            updateStats();
+            updatePreview();
+        }
+
+        // Update word count, character count, and preview
+        function updateStats() {
+            const content = document.getElementById('noteContent').innerText || '';
+            const title = document.getElementById('noteTitle').value || '';
+            
+            // Remove extra spaces and count words
+            const words = content.trim().split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+            const charCount = content.length;
+            
+            document.getElementById('wordCount').textContent = wordCount;
+            document.getElementById('charCount').textContent = charCount;
+            
+            // Update last saved time
+            const now = new Date();
+            document.getElementById('lastSaved').textContent = now.toLocaleTimeString();
+        }
+        
+        // Update preview
+        function updatePreview() {
+            const title = document.getElementById('noteTitle').value || 'Untitled';
+            const content = document.getElementById('noteContent').innerHTML || '';
+            const previewBox = document.getElementById('previewBox');
+            
+            if (content) {
+                previewBox.innerHTML = `
+                    <strong style="font-size: 1rem;">${escapeHtml(title)}</strong>
+                    <hr style="margin: 8px 0;">
+                    ${content}
+                `;
+            } else {
+                previewBox.innerHTML = 'Your note preview will appear here...';
+            }
+        }
+        
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Get plain text from contenteditable
+        function getPlainText() {
+            const title = document.getElementById('noteTitle').value || 'Untitled';
+            const contentDiv = document.getElementById('noteContent');
+            const content = contentDiv.innerText || '';
+            
+            let plainText = `${title}\n`;
+            plainText += `${'='.repeat(title.length)}\n\n`;
+            plainText += content;
+            plainText += `\n\n---\n`;
+            plainText += `Exported on: ${new Date().toLocaleString()}\n`;
+            
+            return plainText;
+        }
+        
+        // Get HTML content for PDF
+        function getHTMLForPDF() {
+            const title = document.getElementById('noteTitle').value || 'Untitled';
+            const content = document.getElementById('noteContent').innerHTML || '';
+            
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${escapeHtml(title)}</title>
+                    <style>
+                        body {
+                            font-family: 'Segoe UI', Arial, sans-serif;
+                            max-width: 800px;
+                            margin: 50px auto;
+                            padding: 20px;
+                            line-height: 1.6;
+                        }
+                        h1 {
+                            color: #667eea;
+                            border-bottom: 3px solid #667eea;
+                            padding-bottom: 10px;
+                        }
+                        .content {
+                            margin-top: 20px;
+                        }
+                        .footer {
+                            margin-top: 50px;
+                            padding-top: 20px;
+                            border-top: 1px solid #ddd;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #999;
+                        }
+                        ul, ol {
+                            margin: 10px 0;
+                            padding-left: 20px;
+                        }
+                        b, strong {
+                            font-weight: bold;
+                        }
+                        i, em {
+                            font-style: italic;
+                        }
+                        u {
+                            text-decoration: underline;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${escapeHtml(title)}</h1>
+                    <div class="content">
+                        ${content || '<p><em>No content</em></p>'}
+                    </div>
+                    <div class="footer">
+                        Exported on: ${new Date().toLocaleString()}
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+        
+        // Export as PDF using window.print()
+        function exportAsPDF() {
+            const title = document.getElementById('noteTitle').value || 'untitled';
+            const fileName = document.getElementById('fileName').value || title;
+            
+            // Create a new iframe for printing
+            const printWindow = window.open('', '_blank');
+            const htmlContent = getHTMLForPDF();
+            
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+            
+            printWindow.onload = function() {
+                printWindow.print();
+                showToast('PDF export initiated! Check print dialog 📄');
+            };
+        }
+        
+        // Export as TXT file
+        function exportAsTXT() {
+            const title = document.getElementById('noteTitle').value || 'untitled';
+            let fileName = document.getElementById('fileName').value || title;
+            
+            // Remove invalid characters from filename
+            fileName = fileName.replace(/[<>:"/\\|?*]/g, '');
+            if (!fileName) fileName = 'note';
+            
+            const plainText = getPlainText();
+            
+            // Create blob and download
+            const blob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.href = url;
+            link.download = `${fileName}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showToast('TXT file downloaded successfully! 📝');
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        // Auto-save to localStorage
+        function autoSave() {
+            const title = document.getElementById('noteTitle').value;
+            const content = document.getElementById('noteContent').innerHTML;
+            
+            localStorage.setItem('exportNoteTitle', title);
+            localStorage.setItem('exportNoteContent', content);
+            updateStats();
+            updatePreview();
+        }
+        
+        // Load from localStorage
+        function loadFromLocalStorage() {
+            const savedTitle = localStorage.getItem('exportNoteTitle');
+            const savedContent = localStorage.getItem('exportNoteContent');
+            
+            if (savedTitle) {
+                document.getElementById('noteTitle').value = savedTitle;
+            }
+            if (savedContent) {
+                document.getElementById('noteContent').innerHTML = savedContent;
+            }
+            
+            updateStats();
+            updatePreview();
+        }
+        
+        // Event listeners for auto-save
+        document.getElementById('noteTitle').addEventListener('input', () => {
+            autoSave();
+        });
+        
+        document.getElementById('noteContent').addEventListener('input', () => {
+            autoSave();
+            updateStats();
+            updatePreview();
+        });
+        
+        // Set default filename when title changes
+        document.getElementById('noteTitle').addEventListener('input', () => {
+            const title = document.getElementById('noteTitle').value;
+            const fileNameInput = document.getElementById('fileName');
+            if (!fileNameInput.value || fileNameInput.value === fileNameInput.defaultValue) {
+                fileNameInput.value = title.replace(/[<>:"/\\|?*]/g, '');
+            }
+        });
+        
+        // Load saved data
+        loadFromLocalStorage();
+        
+        // Set default placeholder text if empty
+        const contentDiv = document.getElementById('noteContent');
+        if (!contentDiv.innerHTML.trim()) {
+            contentDiv.innerHTML = '<p>Start writing your note here... 📝</p>';
+        }
+        
+        // Initial stats update
+        updateStats();
+        updatePreview();
+    </script>
+</body>
+</html>

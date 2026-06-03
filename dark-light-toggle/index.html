@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Dark/Light Mode | Theme Toggle</title>
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            /* Light Mode (Default) */
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #666666;
+            --border-color: #e1e8ed;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+            --accent: #667eea;
+            --accent-hover: #5a67d8;
+            --danger: #ff6b6b;
+            --danger-hover: #ff4757;
+            --success: #2ed573;
+        }
+
+        body.dark {
+            /* Dark Mode */
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --border-color: #2c3e50;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --gradient-start: #4a47a3;
+            --gradient-end: #5a4a8a;
+            --accent: #7c73e6;
+            --accent-hover: #6c63d6;
+            --danger: #e74c3c;
+            --danger-hover: #c0392b;
+            --success: #27ae60;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: var(--bg-secondary);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .title-section h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .title-section p {
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .toggle-icon {
+            font-size: 2rem;
+            transition: transform 0.5s ease;
+        }
+
+        .theme-toggle:hover .toggle-icon {
+            transform: rotate(15deg);
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Add Note Section */
+        .add-note-section {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .add-note-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .note-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .textarea-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: inherit;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .textarea-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .add-note-btn {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .add-note-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        /* Notes Grid */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .note-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .note-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .delete-note {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .delete-note:hover {
+            background: var(--danger-hover);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Theme Info Bar */
+        .theme-info {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .theme-toggle {
+                width: 55px;
+                height: 55px;
+            }
+            
+            .toggle-icon {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Theme Toggle -->
+        <div class="header">
+            <div class="header-content">
+                <div class="title-section">
+                    <h1>✨ Notes App with Theme Toggle</h1>
+                    <p>Dark/Light mode with localStorage persistence</p>
+                </div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">
+                    <span class="toggle-icon" id="toggleIcon">☀️</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>📝 Total Notes</h3>
+                <div class="stat-value" id="totalNotes">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>🎨 Current Theme</h3>
+                <div class="stat-value" id="currentTheme">Light</div>
+            </div>
+            <div class="stat-card">
+                <h3>💾 Saved Preference</h3>
+                <div class="stat-value" id="savedPreference">Yes</div>
+            </div>
+        </div>
+
+        <!-- Add Note Section -->
+        <div class="add-note-section">
+            <div class="add-note-title">➕ Add New Note</div>
+            <input type="text" id="newNoteTitle" class="note-input" placeholder="Note title...">
+            <textarea id="newNoteContent" class="textarea-input" rows="3" placeholder="Note content..."></textarea>
+            <button class="add-note-btn" onclick="notesApp.addNote()">Add Note</button>
+        </div>
+
+        <!-- Notes Display -->
+        <div id="notesContainer" class="notes-grid"></div>
+
+        <!-- Theme Info Bar -->
+        <div class="theme-info">
+            🌓 Theme preference saved automatically | Your choice persists after page refresh
+        </div>
+    </div>
+
+    <script>
+        class NotesWithThemeApp {
+            constructor() {
+                this.notes = [];
+                this.isDarkMode = false;
+                this.loadFromLocalStorage();
+                this.setupTheme();
+                this.render();
+            }
+
+            // Load notes from localStorage
+            loadFromLocalStorage() {
+                // Load notes
+                const savedNotes = localStorage.getItem('themeNotes');
+                if (savedNotes) {
+                    this.notes = JSON.parse(savedNotes);
+                } else {
+                    // Sample notes
+                    this.notes = [
+                        {
+                            id: Date.now(),
+                            title: "Welcome to Notes App!",
+                            content: "This app remembers your theme preference. Try switching between Dark and Light mode!"
+                        },
+                        {
+                            id: Date.now() + 1,
+                            title: "Theme Persistence",
+                            content: "Your theme choice is saved in localStorage. Refresh the page and see it persists!"
+                        },
+                        {
+                            id: Date.now() + 2,
+                            title: "Smooth Transitions",
+                            content: "All theme changes have smooth CSS transitions for a better user experience."
+                        }
+                    ];
+                    this.saveNotes();
+                }
+                
+                // Load theme preference
+                const savedTheme = localStorage.getItem('themePreference');
+                if (savedTheme === 'dark') {
+                    this.isDarkMode = true;
+                } else if (savedTheme === 'light') {
+                    this.isDarkMode = false;
+                } else {
+                    // Check system preference
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        this.isDarkMode = true;
+                    }
+                }
+            }
+
+            // Save notes to localStorage
+            saveNotes() {
+                localStorage.setItem('themeNotes', JSON.stringify(this.notes));
+            }
+
+            // Save theme preference
+            saveThemePreference() {
+                localStorage.setItem('themePreference', this.isDarkMode ? 'dark' : 'light');
+            }
+
+            // Setup theme toggle
+            setupTheme() {
+                if (this.isDarkMode) {
+                    document.body.classList.add('dark');
+                    document.getElementById('toggleIcon').textContent = '🌙';
+                    document.getElementById('currentTheme').textContent = 'Dark';
+                } else {
+                    document.body.classList.remove('dark');
+                    document.getElementById('toggleIcon').textContent = '☀️';
+                    document.getElementById('currentTheme').textContent = 'Light';
+                }
+                
+                // Add event listener to toggle button
+                const toggleBtn = document.getElementById('themeToggle');
+                toggleBtn.addEventListener('click', () => this.toggleTheme());
+            }
+
+            // Toggle theme
+            toggleTheme() {
+                this.isDarkMode = !this.isDarkMode;
+                
+                if (this.isDarkMode) {
+                    document.body.classList.add('dark');
+                    document.getElementById('toggleIcon').textContent = '🌙';
+                    document.getElementById('currentTheme').textContent = 'Dark';
+                } else {
+                    document.body.classList.remove('dark');
+                    document.getElementById('toggleIcon').textContent = '☀️';
+                    document.getElementById('currentTheme').textContent = 'Light';
+                }
+                
+                this.saveThemePreference();
+                
+                // Optional: Add a subtle animation effect
+                this.showThemeToast();
+            }
+
+            // Show theme change feedback
+            showThemeToast() {
+                const toast = document.createElement('div');
+                toast.textContent = this.isDarkMode ? '🌙 Dark Mode Enabled' : '☀️ Light Mode Enabled';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: var(--bg-card);
+                    color: var(--text-primary);
+                    padding: 12px 20px;
+                    border-radius: 10px;
+                    box-shadow: var(--shadow);
+                    z-index: 1000;
+                    animation: fadeInOut 2s ease;
+                    font-weight: 500;
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 2000);
+            }
+
+            // Add new note
+            addNote() {
+                const titleInput = document.getElementById('newNoteTitle');
+                const contentInput = document.getElementById('newNoteContent');
+                
+                const title = titleInput.value.trim();
+                const content = contentInput.value.trim();
+                
+                if (!title && !content) {
+                    alert('Please enter a title or content for your note!');
+                    return;
+                }
+                
+                const newNote = {
+                    id: Date.now(),
+                    title: title || 'Untitled Note',
+                    content: content || 'No content'
+                };
+                
+                this.notes.unshift(newNote);
+                this.saveNotes();
+                
+                // Clear inputs
+                titleInput.value = '';
+                contentInput.value = '';
+                
+                this.render();
+            }
+
+            // Delete note
+            deleteNote(id) {
+                this.notes = this.notes.filter(note => note.id !== id);
+                this.saveNotes();
+                this.render();
+            }
+
+            // Render notes
+            render() {
+                const container = document.getElementById('notesContainer');
+                const totalNotesSpan = document.getElementById('totalNotes');
+                
+                totalNotesSpan.textContent = this.notes.length;
+                
+                if (this.notes.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div style="font-size: 4rem;">📭</div>
+                            <h3>No notes yet!</h3>
+                            <p>Add your first note above ✨</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = this.notes.map(note => `
+                    <div class="note-card">
+                        <div class="note-title">${this.escapeHtml(note.title)}</div>
+                        <div class="note-content">${this.escapeHtml(note.content)}</div>
+                        <button class="delete-note" onclick="notesApp.deleteNote(${note.id})">Delete</button>
+                    </div>
+                `).join('');
+            }
+
+            // Escape HTML
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Add CSS animation for toast
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                15% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                85% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize app
+        const notesApp = new NotesWithThemeApp();
+    </script>
+</body>
+</html>

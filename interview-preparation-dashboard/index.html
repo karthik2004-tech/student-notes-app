@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraPrep - Premium Technical Placement & Mock Interview Platform</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Boxicons CDN -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= APP WRAPPER ================= -->
+    <div id="app-container" class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar glass" id="app-sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <img src="auraprep_portal_logo.png" alt="AuraPrep Logo" class="brand-logo-img">
+                    <span>AuraPrep</span>
+                </div>
+                <button class="sidebar-close-btn d-lg-none" id="sidebar-close">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <!-- Profile area showing Guest or Scholar profile -->
+            <div class="user-profile-badge" id="sidebar-profile-area">
+                <!-- Injected via JS -->
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="nav-link active" data-tab="dashboard">
+                            <i class='bx bx-grid-alt'></i>
+                            <span>Overview Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-tab="coding">
+                            <i class='bx bx-terminal'></i>
+                            <span>Coding Playground</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-tab="assessment">
+                            <i class='bx bx-desktop'></i>
+                            <span>Mock Assessment Portal</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-tab="ats">
+                            <i class='bx bx-receipt'></i>
+                            <span>ATS Resume Scanner</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-tab="qa">
+                            <i class='bx bx-conversation'></i>
+                            <span>Interview Q&A Simulator</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle-row">
+                    <span>Dark Theme</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-switch" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <a href="#" class="btn-logout hidden" id="logout-btn">
+                    <i class='bx bx-log-out-circle'></i>
+                    <span>Exit Platform</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN WINDOW -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="app-header glass">
+                <div class="header-left">
+                    <button class="mobile-menu-toggle d-lg-none" id="mobile-menu-trigger">
+                        <i class='bx bx-menu'></i>
+                    </button>
+                    <h1 id="view-title">Placement Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <span class="current-date" id="header-date">Tuesday, June 2, 2026</span>
+                    <div class="header-badge-group">
+                        <div class="header-badge">
+                            <i class='bx bxs-check-shield text-emerald'></i>
+                            <span>ATS Secured</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ================= VIEW CONTAINER ================= -->
+            <div class="content-body">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="dashboard-view" class="view-section active">
+                    <!-- Guest explore mode indicator -->
+                    <div id="guest-explore-banner" class="explore-banner glass mb-4" style="background: linear-gradient(90deg, rgba(16, 20, 31, 0.95) 30%, rgba(16, 20, 31, 0.7) 100%), url('placement_banner.png') no-repeat center center; background-size: cover; border: 1.5px solid rgba(99, 102, 241, 0.4); box-shadow: 0 4px 30px rgba(99, 102, 241, 0.15);">
+                        <div class="explore-banner-content">
+                            <i class='bx bx-compass explore-icon animate-pulse'></i>
+                            <div>
+                                <h4>Exploring AuraPrep (Guest Explore Mode)</h4>
+                                <p>You are analyzing placment indices using baseline demo files. Register a persistent scholar profile to save coding submissions, track assessments, and analyze ATS resumes.</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="guest-join-btn">Create Scholar Account</button>
+                    </div>
+
+                    <!-- Grid Stats Indicators -->
+                    <div class="stats-grid">
+                        <div class="stat-card glass primary-readiness-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Overall Placement Index</span>
+                                <h2 id="placement-index" class="amount">0%</h2>
+                            </div>
+                            <div class="stat-icon-wrapper star-readiness">
+                                <i class='bx bxs-graduation animate-pulse'></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card glass dsa-solved-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Playground Challenges Solved</span>
+                                <h2 id="dsa-solved-count" class="amount">0 / 30 Solved</h2>
+                            </div>
+                            <div class="stat-icon-wrapper code-box">
+                                <i class='bx bx-code'></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card glass aptitude-taken-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Assessment Average</span>
+                                <h2 id="aptitude-avg-score" class="amount">0% Score</h2>
+                            </div>
+                            <div class="stat-icon-wrapper brain-stats">
+                                <i class='bx bx-desktop'></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card glass checklist-progress-card">
+                            <div class="stat-info">
+                                <span class="stat-label">ATS Resume Score</span>
+                                <h2 id="dashboard-ats-score" class="amount">0 / 100</h2>
+                            </div>
+                            <div class="stat-icon-wrapper check-stats">
+                                <i class='bx bx-receipt'></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Analytics Graphs -->
+                    <div class="charts-grid mt-4">
+                        <div class="chart-card glass">
+                            <div class="chart-header">
+                                <h3>DSA Playground Analytics</h3>
+                                <span class="chart-sub">Challenges completed by difficulty metrics</span>
+                            </div>
+                            <div class="chart-container flex-center">
+                                <canvas id="dsaDifficultyChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-card glass">
+                            <div class="chart-header">
+                                <h3>Assessment Scoring Ledger</h3>
+                                <span class="chart-sub">Quant, Logical & Verbal mock scores trend</span>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="aptitudeTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Syllabus Completion Boards -->
+                    <div class="dashboard-panels-row mt-4">
+                        <div class="section-card glass p-4">
+                            <div class="card-header">
+                                <h3>Coding Challenges Progress</h3>
+                                <span class="chart-sub">Track syllabus topic completion counts</span>
+                            </div>
+                            <div class="dsa-dashboard-topics" id="dashboard-dsa-progress-container">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. CODING PLAYGROUND VIEW (PROPER DSA IDE) -->
+                <section id="coding-view" class="view-section">
+                    <div class="coding-playground-layout">
+                        <!-- Left Panel: Problem Selector and Details -->
+                        <div class="playground-left-panel section-card glass p-4">
+                            <div class="playground-header">
+                                <h3>Technical Problems Library</h3>
+                                <p class="subtitle mb-3">Select a challenge to open the compiler sandbox</p>
+                            </div>
+                            <div class="problems-list-stack" id="dsa-problems-list">
+                                <!-- Dynamic challenge items -->
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Mock Compiler / Code Editor Interface -->
+                        <div class="playground-right-panel glass" id="code-editor-panel">
+                            <div class="editor-header">
+                                <div class="editor-title-row">
+                                    <i class='bx bx-terminal text-primary'></i>
+                                    <h4 id="editor-problem-title">Find Duplicate Element</h4>
+                                    <span class="dsa-diff-tag medium" id="editor-problem-diff">Medium</span>
+                                </div>
+                                <div class="editor-controls-row">
+                                    <select id="editor-lang" class="filter-select">
+                                        <option value="python">Python 3.10</option>
+                                        <option value="javascript">JavaScript (ES6)</option>
+                                        <option value="java">Java (JDK 17)</option>
+                                        <option value="cpp">C++ (GCC 11)</option>
+                                    </select>
+                                    <button class="btn btn-secondary btn-sm" id="btn-reset-code">Reset</button>
+                                </div>
+                            </div>
+
+                            <!-- Mock Code IDE area -->
+                            <div class="editor-container">
+                                <div class="editor-line-numbers">
+                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                                </div>
+                                <textarea id="mock-code-editor" spellcheck="false" class="code-textarea">// Write your code here...</textarea>
+                            </div>
+
+                            <!-- Compiler Output Console -->
+                            <div class="editor-console">
+                                <div class="console-header">
+                                    <span>Compiler Logs Console</span>
+                                    <i class='bx bx-chevron-up' id="console-toggle"></i>
+                                </div>
+                                <div class="console-output" id="console-logs-output">
+                                    <span class="log-info">[SYSTEM] Compiler ready. Select a challenge and run tests.</span>
+                                </div>
+                            </div>
+
+                            <!-- Action Triggers Footer -->
+                            <div class="editor-footer">
+                                <span class="problem-status-indicator" id="editor-status-text">Unsolved</span>
+                                <div class="footer-btn-group">
+                                    <button class="btn btn-secondary" id="btn-run-tests">Run Sample Tests</button>
+                                    <button class="btn btn-primary" id="btn-submit-code">Submit Solution</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. MOCK ASSESSMENT PORTAL VIEW -->
+                <section id="assessment-view" class="view-section">
+                    <!-- Assessment Setup Screen -->
+                    <div id="assessment-setup-screen" class="section-card glass p-4 text-center max-width-600">
+                        <i class='bx bx-desktop text-primary animate-pulse' style="font-size: 64px; margin-bottom: 20px; display: block;"></i>
+                        <h2>Aptitude Placement Mock Assessments</h2>
+                        <p class="subtitle mb-4">Simulate standard company aptitude placement papers with multiple-choice questions, timers, and automatic score logging.</p>
+                        
+                        <div class="setup-controls mt-4">
+                            <label for="test-select">Select Assessment Topic</label>
+                            <select id="test-select" class="filter-select full-width mt-2 mb-4">
+                                <option value="Quantitative">Quantitative Aptitude Paper 1</option>
+                                <option value="Logical">Logical Reasoning Paper 1</option>
+                                <option value="Verbal">Verbal Ability Paper 1</option>
+                            </select>
+                            
+                            <button class="btn btn-primary btn-block" id="btn-start-test">Launch Assessment Engine</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Active Test Interface -->
+                    <div id="active-test-panel" class="section-card glass p-4 hidden">
+                        <div class="test-header mb-4">
+                            <div>
+                                <h3 id="active-test-title">Quantitative Aptitude Paper 1</h3>
+                                <span class="chart-sub" id="active-test-subtitle">Question 1 of 5</span>
+                            </div>
+                            <div class="test-timer" id="test-timer-badge">
+                                <i class='bx bx-time'></i>
+                                <span id="timer-text">05:00</span>
+                            </div>
+                        </div>
+
+                        <!-- Question Box -->
+                        <div class="test-question-box mb-4">
+                            <h4 id="question-text" class="mb-3">A train covers a distance of 360 km at a uniform speed. If the speed had been 5 km/hr more, it would have taken 1 hour less. Find speed?</h4>
+                            <div class="test-options-stack" id="question-options-container">
+                                <!-- Radios dynamic options -->
+                            </div>
+                        </div>
+
+                        <!-- Test Navigation Buttons -->
+                        <div class="test-footer mt-4">
+                            <button class="btn btn-secondary" id="btn-prev-question" disabled>Previous</button>
+                            <button class="btn btn-primary" id="btn-next-question">Next Question</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. ATS RESUME SCANNER VIEW -->
+                <section id="ats-view" class="view-section">
+                    <div class="ats-scanner-layout">
+                        <!-- Left Panel: Text Input & Scanner Trigger -->
+                        <div class="section-card glass p-4">
+                            <h3>ATS Resume Optimizer</h3>
+                            <p class="subtitle mb-4">Copy and paste your resume plaintext below to evaluate formatting, keyword matches, and score ATS eligibility.</p>
+                            
+                            <div class="input-group">
+                                <label for="resume-input">Resume Plaintext Content</label>
+                                <textarea id="resume-input" class="resume-textarea" placeholder="Paste your complete resume text here (Education, Projects, Skills, Professional Experience)..."></textarea>
+                            </div>
+
+                            <button class="btn btn-primary btn-block mt-3" id="btn-scan-resume">
+                                <i class='bx bx-radar'></i>
+                                <span>Scan & Analyze Resume</span>
+                            </button>
+                        </div>
+
+                        <!-- Right Panel: ATS Analysis scorecard -->
+                        <div class="section-card glass p-4" id="ats-results-panel">
+                            <div class="ats-score-row mb-4">
+                                <div class="ats-circle-gauge">
+                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="circle" id="ats-gauge-circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <text x="18" y="20.35" class="percentage" id="ats-score-percentage">0%</text>
+                                    </svg>
+                                </div>
+                                <div class="score-meta">
+                                    <h3>Resume Rating Score</h3>
+                                    <p class="subtitle">Calculated based on structure, action metrics, and key placement terms matching</p>
+                                </div>
+                            </div>
+
+                            <!-- Rating Badges Shelf -->
+                            <div class="checklist-items-stack" id="ats-criteria-shelf">
+                                <!-- Checkpoints -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. INTERVIEW Q&A SIMULATOR VIEW (FLASHCARD SIM) -->
+                <section id="qa-view" class="view-section">
+                    <div class="qa-simulator-layout">
+                        <!-- Left Panel: Selector Subjects -->
+                        <div class="section-card glass p-4">
+                            <h3>Technical Core Simulator</h3>
+                            <p class="subtitle mb-4">Select interview topics to populate flashcard boards</p>
+                            
+                            <div class="dsa-topics-list-container">
+                                <div class="dsa-topic-card qa-subject-trigger active" data-subject="OS">
+                                    <div class="progress-details">
+                                        <span class="sub-name">Operating Systems (OS)</span>
+                                        <i class='bx bx-chevron-right'></i>
+                                    </div>
+                                </div>
+                                <div class="dsa-topic-card qa-subject-trigger" data-subject="DBMS">
+                                    <div class="progress-details">
+                                        <span class="sub-name">Database Systems (DBMS)</span>
+                                        <i class='bx bx-chevron-right'></i>
+                                    </div>
+                                </div>
+                                <div class="dsa-topic-card qa-subject-trigger" data-subject="Networks">
+                                    <div class="progress-details">
+                                        <span class="sub-name">Computer Networks (CN)</span>
+                                        <i class='bx bx-chevron-right'></i>
+                                    </div>
+                                </div>
+                                <div class="dsa-topic-card qa-subject-trigger" data-subject="System">
+                                    <div class="progress-details">
+                                        <span class="sub-name">System Design Basics</span>
+                                        <i class='bx bx-chevron-right'></i>
+                                    </div>
+                                </div>
+                                <div class="dsa-topic-card qa-subject-trigger" data-subject="STAR">
+                                    <div class="progress-details">
+                                        <span class="sub-name">STAR Behavioral Competency</span>
+                                        <i class='bx bx-chevron-right'></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Interactive Q&A Card Interface -->
+                        <div class="qa-interactive-column">
+                            <div class="section-card glass p-4 qa-card" id="qa-interactive-card">
+                                <div class="qa-card-meta mb-3">
+                                    <span class="budget-alert-badge safe" id="qa-card-topic">Operating Systems</span>
+                                    <span class="chart-sub" id="qa-card-index">Question 1 of 5</span>
+                                </div>
+
+                                <h3 class="mb-4" id="qa-question-text">Explain the critical difference between a Process and a Thread?</h3>
+
+                                <!-- Answer input area -->
+                                <div class="input-group">
+                                    <label for="qa-user-answer">Draft your conceptual answer below</label>
+                                    <textarea id="qa-user-answer" class="resume-textarea" placeholder="Formulate your response as you would speak to the technical interviewer..."></textarea>
+                                </div>
+
+                                <!-- Model Answer Reveal Grid -->
+                                <div class="model-answer-reveal mt-3 hidden" id="model-answer-block">
+                                    <h4 class="text-emerald mb-2">Model Placement Answer:</h4>
+                                    <p id="qa-model-answer-text">A process represents an independent executing program with its own dedicated memory space (heap, stack). A thread represents the smallest unit of execution within a parent process, sharing the parent process's memory space and heap, making context switching lighter but raising synchronization requirements.</p>
+                                </div>
+
+                                <!-- Action buttons -->
+                                <div class="qa-card-footer mt-4">
+                                    <button class="btn btn-secondary" id="btn-reveal-answer">Reveal Model Answer</button>
+                                    <div class="footer-btn-group">
+                                        <button class="btn btn-secondary" id="btn-qa-review">Mark for Review</button>
+                                        <button class="btn btn-primary" id="btn-qa-master">Mark as Mastered</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= AUTH MODAL OVERLAY ================= -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-card auth-modal-card glass">
+            <div class="auth-modal-banner">
+                <div class="brand" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <img src="auraprep_portal_logo.png" alt="AuraPrep Logo" class="brand-logo-img-auth">
+                    <h2>AuraPrep</h2>
+                </div>
+                <h3 id="auth-modal-prompt">Unlock AuraPrep Placement Platform</h3>
+                <p id="auth-modal-subprompt">Create a profile to save personal DSA problems logs, mock test scorecard trends, and resume checks progress!</p>
+            </div>
+            
+            <div class="auth-modal-forms">
+                <!-- LOGIN FORM -->
+                <div id="login-form-wrapper" class="modal-form-content active">
+                    <div class="auth-tab-switch mb-4">
+                        <span class="auth-tab active" id="auth-tab-login">Sign In</span>
+                        <span class="auth-tab" id="auth-tab-signup">Register</span>
+                    </div>
+
+                    <form id="login-form" autocomplete="off">
+                        <div class="input-group">
+                            <label for="login-email">Email Address</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-envelope input-icon'></i>
+                                <input type="email" id="login-email" required placeholder="name@domain.com">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="login-password">Password</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-lock-alt input-icon'></i>
+                                <input type="password" id="login-password" required placeholder="••••••••">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+                </div>
+
+                <!-- SIGNUP FORM -->
+                <div id="signup-form-wrapper" class="modal-form-content">
+                    <div class="auth-tab-switch mb-4">
+                        <span class="auth-tab" id="auth-tab-login-back">Sign In</span>
+                        <span class="auth-tab active" id="auth-tab-signup-active">Register</span>
+                    </div>
+                    
+                    <form id="signup-form" autocomplete="off">
+                        <div class="input-group">
+                            <label for="signup-name">Full Name</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-user input-icon'></i>
+                                <input type="text" id="signup-name" required placeholder="Jane Doe">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signup-email">Email Address</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-envelope input-icon'></i>
+                                <input type="email" id="signup-email" required placeholder="name@domain.com">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="signup-password">Password</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-lock-alt input-icon'></i>
+                                <input type="password" id="signup-password" required placeholder="Min. 6 characters">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signup-confirm-password">Confirm Password</label>
+                            <div class="input-wrapper">
+                                <i class='bx bx-shield-quarter-alt input-icon'></i>
+                                <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Create Profile</button>
+                    </form>
+                </div>
+            </div>
+            
+            <button class="modal-close" id="close-auth-modal" style="position: absolute; top: 16px; right: 16px;">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Logic script -->
+    <script src="app.js"></script>
+</body>
+</html>

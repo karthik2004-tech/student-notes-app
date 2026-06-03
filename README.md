@@ -1,193 +1,294 @@
-# NSOC'26 — 20 Days 20 Projects 🚀
+# 🚀 NSOC'26 — 20 Days • 20 Projects Challenge
 
-Welcome to the official **NSOC'26 Beginner-Friendly Project Repository**.
+<div align="center">
 
-Due to a very large number of pull requests and continuous merge conflicts in the previous repository, the old project structure has been removed to maintain better organization and contribution flow.
+### Build • Learn • Contribute • Grow
 
-We apologize for the inconvenience caused to contributors and participants.
+A beginner-friendly open-source repository where contributors can showcase creativity by building mini-projects, UI components, tools, games, and web applications.
 
----
+**No contribution limit. No project size restrictions. Just build and learn.**
 
-# 🎯 20 Days • 20 Projects
-
-NSOC'26 is ending in the next **20 days**.
-
-So instead of continuing with one large conflicting codebase, this repository is now transformed into:
-
-# 🚀 20 Days • 20 Projects Challenge
-
-Every contributor can:
-- Create a completely new mini-project
-- Build UI components
-- Create animations
-- Build utilities/tools
-- Make beginner-friendly web projects
-- Experiment and showcase creativity
-
-Even a small component counts as a project.
+</div>
 
 ---
 
-# 🔥 No Contribution Limit
+## 🌟 What is NSOC'26?
 
-There is **NO LIMIT** on contributions.
+NSOC'26 has been transformed into a **20 Days • 20 Projects Challenge** to provide a smoother and more organized contribution experience.
 
-You can raise:
-- Multiple projects
-- Multiple UI components
-- Multiple ideas
-- Multiple improvements
+Instead of contributing to one large codebase with frequent merge conflicts, contributors can now create and maintain their own independent projects inside dedicated folders.
 
-The more you build, the more you learn.
-
-This repository is focused on:
-- Encouraging beginners
-- Reducing contribution fear
-- Helping everyone contribute easily
-- Allowing all skill levels to showcase their talent
+This approach makes contributing easier, especially for beginners.
 
 ---
 
-# 📁 Contribution Structure
+## 🎯 Why Participate?
 
-Each contributor should:
+### ✅ Beginner Friendly
 
-1. Create a new folder inside the repository.
+Perfect for first-time contributors and students exploring open source.
 
-Example:
+### ✅ Unlimited Contributions
+
+Submit as many projects, improvements, or components as you like.
+
+### ✅ Learn by Building
+
+Create real projects while improving your HTML, CSS, JavaScript, React, and frontend development skills.
+
+### ✅ Showcase Your Creativity
+
+Build anything from calculators and weather apps to games, dashboards, utilities, and UI components.
+
+---
+
+## ⚡ Quick Start
+
+### 1. Fork the Repository
+
+Click the **Fork** button at the top-right corner.
+
+### 2. Clone Your Fork
 
 ```bash
-/weather-card
-/calculator
-/navbar-component
+git clone https://github.com/YOUR_USERNAME/student-notes-app.git
 ```
 
-2. Keep all project files inside that folder only.
+### 3. Create a New Project Folder
 
 Example:
 
-```b
-weather-card/
+```text
+student-notes-app/
+│
+├── calculator/
+├── weather-app/
+├── study-timer/
+└── your-project/
+```
+
+### 4. Add Your Files
+
+```text
+your-project/
 ├── index.html
 ├── style.css
 └── script.js
 ```
 
-3. Do NOT modify other contributor folders unless asked.
+### 5. Commit and Create a Pull Request
+
+Push your changes and open a PR.
 
 ---
 
-# 🏆 Levels & Points System
+## 📂 Project Structure
 
-| Level | Requirements | Points |
-|---|---|---|
-| Level 1 | HTML + Basic CSS | 3 Points |
-| Level 2 | HTML + Advanced CSS  | 5 Points |
-| Level 3 | HTML + CSS + JavaScript Functionality | 10 Points |
+Each contributor should create a separate folder.
 
----
+Example:
 
-# 💡 Level Examples
+```text
+/project-name
+│
+├── index.html
+├── style.css
+└── script.js
+```
 
-## 🟢 Level 1
-Basic project structure with:
-- HTML
-- Basic CSS
+### Important
 
-Examples:
-- Landing Page
-- Simple Card UI
-- Static Portfolio
-- Basic Navbar
+* Keep all files inside your project folder.
+* Do not modify other contributors' projects.
+* Use meaningful folder names.
+* Keep pull requests focused on a single project or improvement.
 
 ---
 
-## 🔵 Level 2
-Projects using:
-- HTML
-- Advanced CSS
-- Responsive Design
-- Animations/UI improvements
+## 🏆 Levels & Points System
 
-Examples:
-- Responsive Website
-- Animated Components
-- Dashboard UI
-- Glassmorphism UI
-- Modern Landing Pages
+| Level      | Requirements            | Points    |
+| ---------- | ----------------------- | --------- |
+| 🟢 Level 1 | HTML + Basic CSS        | 3 Points  |
+| 🔵 Level 2 | HTML + Advanced CSS     | 5 Points  |
+| 🟣 Level 3 | HTML + CSS + JavaScript | 10 Points |
 
 ---
 
-## 🟣 Level 3
-Projects using:
-- HTML
-- CSS
-- JavaScript
+## 💡 Project Ideas
 
-Examples:
-- Calculator
-- Weather App
-- To-Do App
-- Quiz App
-- Interactive Components
+### 🟢 Level 1
+
+* Landing Page
+* Portfolio Page
+* Navigation Bar
+* Profile Card
+* Static Website
+
+### 🔵 Level 2
+
+* Responsive Dashboard
+* Animated UI Components
+* Glassmorphism Designs
+* Pricing Cards
+* Modern Landing Pages
+
+### 🟣 Level 3
+
+* Calculator
+* To-Do App
+* Quiz App
+* Weather App
+* Expense Tracker
+* Habit Tracker
+* Games
+* Productivity Tools
+
+---
+## 📂 Featured Projects in This Repository
+
+This repository already contains a growing collection of projects built by contributors across different categories.
+
+### 🎮 Games
+
+* Hangman
+* Snake Game
+* Tic-Tac-Toe
+* Memory Match Game
+* Memory Card Game
+* Flappy Bird
+* Whack-a-Mole
+* Dots and Boxes
+* Word Scramble
+* Word Completion Game
+* Identify Word Game
+* Maths Calculation Game
+* Nebula Game
+
+### 📚 Study & Productivity
+
+* Student Notes App
+* Study Streak Tracker
+* Study Progress Assessment System
+* Revision App
+* Study Clock
+* Smart Planner
+* Deadline Tracker
+* Exam Countdown
+* Exam Timetable
+* Flashcard Quiz
+* Focus Flow
+* Pomodoro Timer
+* Study Topic Spinner
+* Interview Preparation Dashboard
+* LeetCode Tracker
+
+### ✅ Task & Notes Management
+
+* Todo App
+* Google Keep Clone
+* Sticky Notes UI
+* Digital Diary
+* Task Completion System
+
+### 💰 Finance & Calculators
+
+* Expense Tracker
+* Student Budget Tracker
+* CGPA Calculator
+* GPA Calculator
+* Fee Calculator
+* BMI Calculator
+* Calculator
+* Unit Converter
+* Bit Converter
+
+### 🌐 Utilities & Tools
+
+* GitHub User Finder
+* GitHub Explorer
+* QR Code Generator
+* Password Generator
+* Color Picker
+* Weather Card
+* Utility App
+* Calendar
+
+### 📈 Tracking & Monitoring
+
+* Attendance Tracker
+* Habit Tracker
+* Subject Progress Bars
+* Performance Measuring App
+* Syllabus Tracker
+
+### 🎨 UI & Frontend Components
+
+* Coding Hub
+* Study Group UI
+* PatternWise App
+
+### 🚀 And Many More...
+
+New projects are added regularly by contributors. Feel free to explore the repository folders and contribute your own project.
+
+## 🛠 Supported Technologies
+
+You are free to use:
+
+* HTML
+* CSS
+* JavaScript
+* React
+* Tailwind CSS
+* Bootstrap
+* Vite
+* Any Frontend Framework or Library
 
 ---
 
-# 🛠 Tech Stack
+## 📜 Contribution Guidelines
 
-You can use:
-- HTML
-- CSS
-- JavaScript
-- React
-- Tailwind CSS
-- Any frontend framework/library
+Before submitting a PR:
 
----
-
-# ✅ Beginner Friendly Rules
-
-- Small projects are accepted
-- Components are accepted
-- Creative UI ideas are accepted
-- Animation projects are accepted
-- Experimental ideas are accepted
-
-This repository is made to help beginners start contributing confidently.
+* Create a dedicated folder for your project.
+* Follow clean folder naming conventions.
+* Avoid unnecessary dependency additions.
+* Do not overwrite existing work.
+* Test your project before submission.
+* Keep pull requests small and focused.
 
 ---
 
-# 📌 Important Rules
+## 🎯 Repository Goals
 
-- One project per folder
-- Keep folder names meaningful
-- Avoid editing root files unnecessarily
-- Do not overwrite others' work
-- Keep PRs clean and focused
-- Avoid unnecessary dependency additions
+This repository aims to:
 
----
-
-# 🎯 Goal of This Repository
-
-Instead of competing on complexity, the goal is to:
-- Learn
-- Build consistently
-- Collaborate
-- Explore ideas
-- Showcase creativity publicly
-
-Every contributor, from beginner to advanced, can participate here.
+* Help beginners start contributing confidently.
+* Encourage consistent project building.
+* Reduce contribution barriers.
+* Promote collaboration and learning.
+* Create a collection of creative community projects.
 
 ---
 
-# 🚀 Let's Build Together
+## 📈 Roadmap
 
-Show your creativity.
-Build something useful.
-Build something fun.
-Build something weird.
+* [ ] Reach 100+ community projects
+* [ ] Add project showcase section
+* [ ] Add contributor leaderboard
+* [ ] Improve project categorization
+* [ ] Add contribution statistics
+* [ ] Create project gallery page
+
+---
+
+## 🤝 Contributing
 
 Every contribution matters.
 
-Happy Contributing 🚀
+Whether you build a complete application, a reusable component, or a creative experiment, your work helps grow the community.
+
+**Build something useful. Build something fun. Build something unique.**
+
+Happy Contributing! 🚀

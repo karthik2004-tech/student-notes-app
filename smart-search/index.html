@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Smart Search | Search & Highlight Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .clear-btn {
+            padding: 15px 25px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .clear-btn:hover {
+            background: #ff4757;
+            transform: scale(1.02);
+        }
+
+        /* Search Stats */
+        .search-stats {
+            padding: 10px 15px;
+            background: #f7f9fc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .matches-count {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .search-term {
+            color: #ffa502;
+            font-weight: bold;
+        }
+
+        /* Notes Grid */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .note-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .note-content {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Highlight Styles */
+        .highlight {
+            background-color: #ffeb3b;
+            color: #333;
+            font-weight: bold;
+            padding: 0 2px;
+            border-radius: 3px;
+            box-shadow: 0 0 0 1px #ffc107;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            color: #999;
+        }
+
+        .no-results svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Add Note Section */
+        .add-note-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .add-note-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .note-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .textarea-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .textarea-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .add-note-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .add-note-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        /* Delete Button */
+        .delete-note {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .delete-note:hover {
+            background: #ff4757;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .clear-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                🔍 Smart Search
+            </h1>
+            <p>Search through notes with real-time highlighting 🎯</p>
+        </div>
+
+        <!-- Add Note Section -->
+        <div class="add-note-section">
+            <div class="add-note-title">➕ Add New Note</div>
+            <input type="text" id="newNoteTitle" class="note-input" placeholder="Note title...">
+            <textarea id="newNoteContent" class="textarea-input" rows="3" placeholder="Note content..."></textarea>
+            <button class="add-note-btn" onclick="searchApp.addNote()">Add Note</button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Type to search in notes... 🔍" autocomplete="off">
+                <button class="clear-btn" onclick="searchApp.clearSearch()">Clear</button>
+            </div>
+            <div class="search-stats" id="searchStats">
+                <span>📊 <span id="totalNotes">0</span> notes available</span>
+                <span id="matchInfo">✨ Start typing to search</span>
+            </div>
+        </div>
+
+        <!-- Notes Display -->
+        <div id="notesContainer" class="notes-grid"></div>
+    </div>
+
+    <script>
+        class SmartSearchApp {
+            constructor() {
+                this.notes = [];
+                this.currentSearchTerm = '';
+                this.loadFromLocalStorage();
+                this.setupSearch();
+                this.render();
+            }
+
+            // Load notes from localStorage
+            loadFromLocalStorage() {
+                const saved = localStorage.getItem('smartSearchNotes');
+                if (saved) {
+                    this.notes = JSON.parse(saved);
+                } else {
+                    // Sample notes
+                    this.notes = [
+                        {
+                            id: Date.now(),
+                            title: "JavaScript Basics",
+                            content: "JavaScript is a programming language used for web development. It supports functions, objects, and arrays."
+                        },
+                        {
+                            id: Date.now() + 1,
+                            title: "CSS Styling Tips",
+                            content: "CSS is used to style HTML elements. You can use flexbox, grid, and animations to create beautiful designs."
+                        },
+                        {
+                            id: Date.now() + 2,
+                            title: "React Framework",
+                            content: "React is a popular JavaScript library for building user interfaces. It uses components and hooks."
+                        },
+                        {
+                            id: Date.now() + 3,
+                            title: "Python Programming",
+                            content: "Python is great for data science and machine learning. It has simple syntax and many libraries."
+                        },
+                        {
+                            id: Date.now() + 4,
+                            title: "HTML Structure",
+                            content: "HTML provides the structure of web pages. Common elements include div, span, and heading tags."
+                        }
+                    ];
+                    this.saveToLocalStorage();
+                }
+            }
+
+            // Save to localStorage
+            saveToLocalStorage() {
+                localStorage.setItem('smartSearchNotes', JSON.stringify(this.notes));
+            }
+
+            // Add new note
+            addNote() {
+                const titleInput = document.getElementById('newNoteTitle');
+                const contentInput = document.getElementById('newNoteContent');
+                
+                const title = titleInput.value.trim();
+                const content = contentInput.value.trim();
+                
+                if (!title && !content) {
+                    alert('Please enter a title or content for your note!');
+                    return;
+                }
+                
+                const newNote = {
+                    id: Date.now(),
+                    title: title || 'Untitled Note',
+                    content: content || 'No content'
+                };
+                
+                this.notes.unshift(newNote);
+                this.saveToLocalStorage();
+                
+                // Clear inputs
+                titleInput.value = '';
+                contentInput.value = '';
+                
+                // Re-render with current search
+                this.render();
+            }
+
+            // Delete note
+            deleteNote(id) {
+                this.notes = this.notes.filter(note => note.id !== id);
+                this.saveToLocalStorage();
+                this.render();
+            }
+
+            // Setup search with real-time
+            setupSearch() {
+                const searchInput = document.getElementById('searchInput');
+                searchInput.addEventListener('input', (e) => {
+                    this.currentSearchTerm = e.target.value;
+                    this.render();
+                });
+            }
+
+            // Clear search
+            clearSearch() {
+                document.getElementById('searchInput').value = '';
+                this.currentSearchTerm = '';
+                this.render();
+            }
+
+            // Highlight text in content
+            highlightText(text, searchTerm) {
+                if (!searchTerm || searchTerm.trim() === '') {
+                    return text;
+                }
+                
+                // Escape special regex characters
+                const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`(${escapedTerm})`, 'gi');
+                
+                return text.replace(regex, `<mark class="highlight">$1</mark>`);
+            }
+
+            // Get preview of content with surrounding context
+            getHighlightPreview(content, searchTerm, maxLength = 150) {
+                if (!searchTerm || searchTerm.trim() === '') {
+                    return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
+                }
+                
+                const lowerContent = content.toLowerCase();
+                const lowerTerm = searchTerm.toLowerCase();
+                const index = lowerContent.indexOf(lowerTerm);
+                
+                if (index === -1) {
+                    return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
+                }
+                
+                // Get context around the match
+                let start = Math.max(0, index - 50);
+                let end = Math.min(content.length, index + searchTerm.length + 50);
+                
+                let preview = content.substring(start, end);
+                if (start > 0) preview = '...' + preview;
+                if (end < content.length) preview = preview + '...';
+                
+                return this.highlightText(preview, searchTerm);
+            }
+
+            // Search notes and get matches
+            searchNotes() {
+                if (!this.currentSearchTerm || this.currentSearchTerm.trim() === '') {
+                    return this.notes.map(note => ({
+                        ...note,
+                        matches: 0,
+                        highlightedTitle: note.title,
+                        highlightedContent: note.content
+                    }));
+                }
+                
+                const term = this.currentSearchTerm.toLowerCase().trim();
+                const results = [];
+                
+                for (const note of this.notes) {
+                    let matches = 0;
+                    const titleLower = note.title.toLowerCase();
+                    const contentLower = note.content.toLowerCase();
+                    
+                    // Count matches in title
+                    const titleMatches = (titleLower.match(new RegExp(term, 'gi')) || []).length;
+                    matches += titleMatches;
+                    
+                    // Count matches in content
+                    const contentMatches = (contentLower.match(new RegExp(term, 'gi')) || []).length;
+                    matches += contentMatches;
+                    
+                    if (matches > 0) {
+                        results.push({
+                            ...note,
+                            matches,
+                            highlightedTitle: this.highlightText(note.title, this.currentSearchTerm),
+                            highlightedContent: this.getHighlightPreview(note.content, this.currentSearchTerm)
+                        });
+                    } else {
+                        results.push({
+                            ...note,
+                            matches: 0,
+                            highlightedTitle: note.title,
+                            highlightedContent: note.content.length > 150 ? note.content.substring(0, 150) + '...' : note.content
+                        });
+                    }
+                }
+                
+                // Sort by matches (highest first)
+                results.sort((a, b) => b.matches - a.matches);
+                
+                return results;
+            }
+
+            // Get total matches count
+            getTotalMatches() {
+                if (!this.currentSearchTerm || this.currentSearchTerm.trim() === '') {
+                    return 0;
+                }
+                
+                const term = this.currentSearchTerm.toLowerCase().trim();
+                let total = 0;
+                
+                for (const note of this.notes) {
+                    const titleMatches = (note.title.toLowerCase().match(new RegExp(term, 'gi')) || []).length;
+                    const contentMatches = (note.content.toLowerCase().match(new RegExp(term, 'gi')) || []).length;
+                    total += titleMatches + contentMatches;
+                }
+                
+                return total;
+            }
+
+            // Get matching notes count
+            getMatchingNotesCount() {
+                if (!this.currentSearchTerm || this.currentSearchTerm.trim() === '') {
+                    return this.notes.length;
+                }
+                
+                const term = this.currentSearchTerm.toLowerCase().trim();
+                let count = 0;
+                
+                for (const note of this.notes) {
+                    if (note.title.toLowerCase().includes(term) || note.content.toLowerCase().includes(term)) {
+                        count++;
+                    }
+                }
+                
+                return count;
+            }
+
+            // Render notes and update stats
+            render() {
+                const container = document.getElementById('notesContainer');
+                const totalNotesSpan = document.getElementById('totalNotes');
+                const matchInfoSpan = document.getElementById('matchInfo');
+                
+                // Update total notes
+                totalNotesSpan.textContent = this.notes.length;
+                
+                const searchResults = this.searchNotes();
+                const matchingNotes = this.getMatchingNotesCount();
+                const totalMatches = this.getTotalMatches();
+                
+                // Update search stats
+                if (this.currentSearchTerm && this.currentSearchTerm.trim() !== '') {
+                    if (matchingNotes === 0) {
+                        matchInfoSpan.innerHTML = `🔍 No matches found for "<span class="search-term">${this.escapeHtml(this.currentSearchTerm)}</span>"`;
+                    } else {
+                        matchInfoSpan.innerHTML = `🎯 Found <span class="matches-count">${matchingNotes}</span> matching notes with <span class="matches-count">${totalMatches}</span> total matches for "<span class="search-term">${this.escapeHtml(this.currentSearchTerm)}</span>"`;
+                    }
+                } else {
+                    matchInfoSpan.innerHTML = '✨ Start typing to search through your notes';
+                }
+                
+                // Filter notes with matches
+                let notesToShow = searchResults;
+                if (this.currentSearchTerm && this.currentSearchTerm.trim() !== '') {
+                    notesToShow = searchResults.filter(n => n.matches > 0);
+                }
+                
+                if (notesToShow.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <div style="font-size: 4rem;">🔍</div>
+                            <h3>No matching notes found</h3>
+                            <p>Try searching with different keywords</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = notesToShow.map(note => `
+                    <div class="note-card">
+                        <div class="note-title">${note.highlightedTitle || this.escapeHtml(note.title)}</div>
+                        <div class="note-content">${note.highlightedContent || this.escapeHtml(note.content)}</div>
+                        ${note.matches > 0 && this.currentSearchTerm ? `<div style="margin-top: 10px; font-size: 0.75rem; color: #667eea;">🎯 ${note.matches} match(es)</div>` : ''}
+                        <button class="delete-note" onclick="searchApp.deleteNote(${note.id})">Delete</button>
+                    </div>
+                `).join('');
+            }
+
+            // Escape HTML
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize app
+        const searchApp = new SmartSearchApp();
+    </script>
+</body>
+</html>

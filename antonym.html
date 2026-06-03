@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antonym Ally — The Opposite Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Quicksand:wght@500;700&display=swap');
+
+        :root {
+            --primary: #ff85a2;
+            --secondary: #a78bfa;
+            --bg: #fff5f7;
+            --text: #4b5563;
+            --text-muted: #9ca3af;
+            --success: #4ade80;
+            --error: #fb7185;
+            --glass: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff5f7 0%, #f3e8ff 100%);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border);
+            padding: 40px 30px;
+            border-radius: 32px;
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.15);
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 0 0 10px;
+            font-size: 2rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .timer-bar {
+            height: 8px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 100%;
+            transition: width 0.1s linear;
+        }
+
+        .word-display {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .prompt {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--secondary);
+            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.1);
+        }
+
+        .option-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--error); color: white; border-color: var(--error); }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .btn-start {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-start:hover { transform: scale(1.05); }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-card">
+        <!-- Start/Game Over Overlay -->
+        <div id="screen-overlay" class="overlay">
+            <h1 id="overlay-title">Antonym Ally 🌸</h1>
+            <p id="overlay-desc" style="margin-bottom: 30px;">How many opposites can you find?</p>
+            <button class="btn-start" onclick="startGame()">Play Game</button>
+        </div>
+
+        <div class="stats">
+            <div>Score: <span id="score">0</span></div>
+            <div>Streak: <span id="streak">0</span> 🔥</div>
+        </div>
+
+        <div class="timer-bar"><div id="timer" class="timer-fill"></div></div>
+
+        <div class="word-display" id="current-word">READY?</div>
+        <div class="prompt">What is the opposite of this word?</div>
+
+        <div class="options-grid" id="options-container">
+            <button class="option-btn">Option 1</button>
+            <button class="option-btn">Option 2</button>
+            <button class="option-btn">Option 3</button>
+            <button class="option-btn">Option 4</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const WORD_POOL = [
+        { w: "BRAVE", a: "COWARDLY", d: ["FEARLESS", "STRONG", "BOLD"] },
+        { w: "ANCIENT", a: "MODERN", d: ["OLD", "HISTORIC", "AGED"] },
+        { w: "GENEROUS", a: "SELFISH", d: ["KIND", "GIVING", "STINGY"] },
+        { w: "OPTIMISTIC", a: "PESSIMISTIC", d: ["HOPEFUL", "HAPPY", "BRIGHT"] },
+        { w: "ARROGANT", a: "HUMBLE", d: ["PROUD", "LOUD", "VAIN"] },
+        { w: "FRAGILE", a: "DURABLE", d: ["WEAK", "SOFT", "THIN"] },
+        { w: "VICTORY", a: "DEFEAT", d: ["WIN", "GLORY", "SUCCESS"] },
+        { w: "ABUNDANT", a: "SCARCE", d: ["PLENTY", "RICH", "FULL"] },
+        { w: "INTENTIONAL", a: "ACCIDENTAL", d: ["PLANNED", "DIRECT", "FAST"] },
+        { w: "TRANSPARENT", a: "OPAQUE", d: ["CLEAR", "GLASSY", "THIN"] }
+    ];
+
+    let state = { score: 0, streak: 0, timeLeft: 100, timerId: null, currentPair: null };
+
+    function startGame() {
+        state.score = 0;
+        state.streak = 0;
+        document.getElementById('screen-overlay').classList.add('hidden');
+        updateStats();
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        state.timeLeft = 100;
+        const pair = WORD_POOL[Math.floor(Math.random() * WORD_POOL.length)];
+        state.currentPair = pair;
+        
+        document.getElementById('current-word').innerText = pair.w;
+        
+        const options = [pair.a, ...pair.d.slice(0, 3)].sort(() => Math.random() - 0.5);
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(opt, btn);
+            container.appendChild(btn);
+        });
+
+        startTimer();
+    }
+
+    function startTimer() {
+        clearInterval(state.timerId);
+        state.timerId = setInterval(() => {
+            state.timeLeft -= 1.5;
+            document.getElementById('timer').style.width = state.timeLeft + "%";
+            if (state.timeLeft <= 0) endGame("Time's Up! ⏰");
+        }, 100);
+    }
+
+    function checkAnswer(selected, btn) {
+        clearInterval(state.timerId);
+        const isCorrect = selected === state.currentPair.a;
+        
+        if (isCorrect) {
+            btn.classList.add('correct');
+            state.score += 10 + Math.floor(state.timeLeft / 10);
+            state.streak++;
+            setTimeout(nextQuestion, 600);
+        } else {
+            btn.classList.add('wrong');
+            endGame("Wrong Answer! 🥺");
+        }
+        updateStats();
+    }
+
+    function updateStats() {
+        document.getElementById('score').innerText = state.score;
+        document.getElementById('streak').innerText = state.streak;
+    }
+
+    function endGame(reason) {
+        clearInterval(state.timerId);
+        document.getElementById('overlay-title').innerText = reason;
+        document.getElementById('overlay-desc').innerText = `Final Score: ${state.score} | Best Streak: ${state.streak}`;
+        document.getElementById('screen-overlay').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>

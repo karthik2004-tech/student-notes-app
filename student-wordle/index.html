@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Student Wordle | Educational Word Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Category Selector */
+        .category-section {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .category-title {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cat-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cat-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .cat-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Game Info */
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            border-radius: 15px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .attempts-left {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .current-word {
+            font-weight: bold;
+            color: #ffa502;
+        }
+
+        .new-game-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Word Grid */
+        .word-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .word-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .letter-cell {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: white;
+            transition: all 0.3s;
+            animation: flip 0.5s ease;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(0deg); }
+            50% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        .cell-correct {
+            background: #2ed573;
+            border-color: #2ed573;
+            color: white;
+        }
+
+        .cell-present {
+            background: #ffa502;
+            border-color: #ffa502;
+            color: white;
+        }
+
+        .cell-absent {
+            background: #747d8c;
+            border-color: #747d8c;
+            color: white;
+        }
+
+        /* On-screen Keyboard */
+        .keyboard {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .key {
+            background: #f0f0f0;
+            border: none;
+            width: 40px;
+            height: 50px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .key:hover {
+            background: #ddd;
+            transform: scale(1.02);
+        }
+
+        .key-wide {
+            width: 60px;
+        }
+
+        .key-correct {
+            background: #2ed573;
+            color: white;
+        }
+
+        .key-present {
+            background: #ffa502;
+            color: white;
+        }
+
+        .key-absent {
+            background: #747d8c;
+            color: white;
+        }
+
+        /* Message */
+        .message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .message.win {
+            background: #2ed573;
+            color: white;
+        }
+
+        .message.lose {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .letter-cell {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+            
+            .key {
+                width: 32px;
+                height: 45px;
+                font-size: 0.8rem;
+            }
+            
+            .key-wide {
+                width: 50px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                🎓 Student Wordle
+            </h1>
+            <p>Guess the 5-letter word! Subject: <span id="currentCategory">Science</span></p>
+        </div>
+
+        <!-- Category Selector -->
+        <div class="category-section">
+            <div class="category-title">📚 Select Category</div>
+            <div class="category-buttons">
+                <button class="cat-btn active" data-cat="science">🔬 Science</button>
+                <button class="cat-btn" data-cat="maths">📐 Maths</button>
+                <button class="cat-btn" data-cat="cs">💻 Computer Science</button>
+                <button class="cat-btn" data-cat="history">📜 History</button>
+            </div>
+        </div>
+
+        <!-- Game Info -->
+        <div class="game-info">
+            <span>🎯 Attempts Left: <span id="attemptsLeft">6</span></span>
+            <span>📝 Guesses: <span id="guessCount">0</span>/6</span>
+            <button class="new-game-btn" onclick="resetGame()">🔄 New Game</button>
+        </div>
+
+        <!-- Word Grid -->
+        <div id="wordGrid" class="word-grid"></div>
+
+        <!-- On-screen Keyboard -->
+        <div class="keyboard" id="keyboard"></div>
+
+        <!-- Message -->
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Word lists by category
+        const wordsByCategory = {
+            science: ['ATOMS', 'CELLS', 'FORCE', 'ENERGY', 'MATTER', 'PLANTS', 'ANIMAL', 'WATER', 'LIGHT', 'SOUND', 'EARTH', 'SPACE', 'GENES', 'FOSSIL', 'MAGNET'],
+            maths: ['ANGLE', 'DIVIDE', 'FRACT', 'NUMBER', 'SHAPE', 'ALGEBRA', 'CALCULUS', 'DIGITS', 'GRAPH', 'PROOF', 'RATIOS', 'SCALE', 'THESIS', 'VECTOR', 'ZERO'],
+            cs: ['ARRAY', 'BYTES', 'CLOUD', 'DATA', 'EMAIL', 'FILES', 'HARDWARE', 'INTERNET', 'JAVAS', 'KERNEL', 'LOGIC', 'MOUSE', 'PIXELS', 'ROBOT', 'SORT'],
+            history: ['ANCIENT', 'BRONZE', 'CIVIL', 'EMPIRE', 'GREECE', 'INDIA', 'KINGS', 'MEDIEVAL', 'NAPOLEON', 'ROME', 'SLAVE', 'TEMPLE', 'WAR', 'ZENITH']
+        };
+
+        // Current game state
+        let currentCategory = 'science';
+        let currentWord = '';
+        let guesses = [];
+        let currentGuess = '';
+        let gameOver = false;
+        let attempts = 6;
+        let keyboardState = {};
+
+        // Get random word from category
+        function getRandomWord(category) {
+            const words = wordsByCategory[category];
+            return words[Math.floor(Math.random() * words.length)];
+        }
+
+        // Initialize game
+        function initGame() {
+            currentWord = getRandomWord(currentCategory);
+            guesses = [];
+            currentGuess = '';
+            gameOver = false;
+            attempts = 6;
+            keyboardState = {};
+            
+            document.getElementById('attemptsLeft').textContent = attempts;
+            document.getElementById('guessCount').textContent = guesses.length;
+            document.getElementById('currentCategory').textContent = getCategoryDisplayName(currentCategory);
+            document.getElementById('message').style.display = 'none';
+            
+            renderGrid();
+            renderKeyboard();
+        }
+
+        // Get category display name
+        function getCategoryDisplayName(category) {
+            const names = {
+                science: 'Science 🔬',
+                maths: 'Maths 📐',
+                cs: 'Computer Science 💻',
+                history: 'History 📜'
+            };
+            return names[category];
+        }
+
+        // Render word grid
+        function renderGrid() {
+            const grid = document.getElementById('wordGrid');
+            grid.innerHTML = '';
+            
+            // Show all guesses + current row
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement('div');
+                row.className = 'word-row';
+                
+                if (i < guesses.length) {
+                    // Completed guess
+                    const guess = guesses[i];
+                    const result = getGuessResult(guess);
+                    for (let j = 0; j < 5; j++) {
+                        const cell = document.createElement('div');
+                        cell.className = `letter-cell ${result[j]}`;
+                        cell.textContent = guess[j];
+                        row.appendChild(cell);
+                    }
+                } else if (i === guesses.length && !gameOver) {
+                    // Current guess
+                    for (let j = 0; j < 5; j++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'letter-cell';
+                        cell.textContent = currentGuess[j] || '';
+                        row.appendChild(cell);
+                    }
+                } else {
+                    // Empty row
+                    for (let j = 0; j < 5; j++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'letter-cell';
+                        cell.textContent = '';
+                        row.appendChild(cell);
+                    }
+                }
+                
+                grid.appendChild(row);
+            }
+        }
+
+        // Get result for a guess
+        function getGuessResult(guess) {
+            const result = [];
+            const wordArray = currentWord.split('');
+            const guessArray = guess.split('');
+            
+            // First pass: mark correct positions
+            for (let i = 0; i < 5; i++) {
+                if (guessArray[i] === wordArray[i]) {
+                    result[i] = 'cell-correct';
+                    wordArray[i] = null;
+                    guessArray[i] = null;
+                }
+            }
+            
+            // Second pass: mark present positions
+            for (let i = 0; i < 5; i++) {
+                if (guessArray[i] !== null) {
+                    const index = wordArray.indexOf(guessArray[i]);
+                    if (index !== -1) {
+                        result[i] = 'cell-present';
+                        wordArray[index] = null;
+                    } else {
+                        result[i] = 'cell-absent';
+                    }
+                }
+            }
+            
+            // Update keyboard state
+            for (let i = 0; i < 5; i++) {
+                const letter = guess[i];
+                const status = result[i];
+                if (!keyboardState[letter] || 
+                    (status === 'cell-correct') ||
+                    (status === 'cell-present' && keyboardState[letter] !== 'cell-correct')) {
+                    keyboardState[letter] = status;
+                }
+            }
+            
+            return result;
+        }
+
+        // Submit guess
+        function submitGuess() {
+            if (gameOver) {
+                showMessage('Game over! Start a new game!', 'lose');
+                return;
+            }
+            
+            if (currentGuess.length !== 5) {
+                showMessage('Word must be 5 letters long!', 'lose');
+                return;
+            }
+            
+            guesses.push(currentGuess);
+            attempts--;
+            document.getElementById('attemptsLeft').textContent = attempts;
+            document.getElementById('guessCount').textContent = guesses.length;
+            
+            // Check win/loss
+            if (currentGuess === currentWord) {
+                gameOver = true;
+                showMessage(`🎉 You won! The word was ${currentWord}! 🎉`, 'win');
+                renderGrid();
+                renderKeyboard();
+                return;
+            }
+            
+            if (guesses.length === 6) {
+                gameOver = true;
+                showMessage(`😔 Game Over! The word was ${currentWord}. Better luck next time!`, 'lose');
+                renderGrid();
+                renderKeyboard();
+                return;
+            }
+            
+            currentGuess = '';
+            renderGrid();
+            renderKeyboard();
+        }
+
+        // Add letter to current guess
+        function addLetter(letter) {
+            if (gameOver) return;
+            if (currentGuess.length < 5) {
+                currentGuess += letter;
+                renderGrid();
+            }
+        }
+
+        // Remove last letter
+        function removeLetter() {
+            if (gameOver) return;
+            currentGuess = currentGuess.slice(0, -1);
+            renderGrid();
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            const msgDiv = document.getElementById('message');
+            msgDiv.textContent = text;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Render keyboard
+        function renderKeyboard() {
+            const keyboard = document.getElementById('keyboard');
+            const rows = [
+                ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+                ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+                ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'backspace']
+            ];
+            
+            keyboard.innerHTML = '';
+            
+            for (const row of rows) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'keyboard-row';
+                
+                for (const key of row) {
+                    const btn = document.createElement('button');
+                    btn.className = 'key';
+                    
+                    if (key === 'enter') {
+                        btn.textContent = '↵';
+                        btn.classList.add('key-wide');
+                        btn.onclick = () => submitGuess();
+                    } else if (key === 'backspace') {
+                        btn.textContent = '⌫';
+                        btn.classList.add('key-wide');
+                        btn.onclick = () => removeLetter();
+                    } else {
+                        btn.textContent = key.toUpperCase();
+                        const status = keyboardState[key.toUpperCase()];
+                        if (status === 'cell-correct') btn.classList.add('key-correct');
+                        else if (status === 'cell-present') btn.classList.add('key-present');
+                        else if (status === 'cell-absent') btn.classList.add('key-absent');
+                        btn.onclick = () => addLetter(key.toUpperCase());
+                    }
+                    
+                    rowDiv.appendChild(btn);
+                }
+                
+                keyboard.appendChild(rowDiv);
+            }
+        }
+
+        // Reset game
+        function resetGame() {
+            initGame();
+        }
+
+        // Change category
+        function changeCategory(category) {
+            currentCategory = category;
+            initGame();
+            
+            // Update active button
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.cat === category) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Keyboard support
+        function handleKeyPress(e) {
+            if (gameOver) return;
+            
+            const key = e.key.toLowerCase();
+            
+            if (key >= 'a' && key <= 'z') {
+                addLetter(key.toUpperCase());
+            } else if (key === 'enter') {
+                submitGuess();
+            } else if (key === 'backspace') {
+                removeLetter();
+            }
+        }
+
+        // Event listeners
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.addEventListener('click', () => changeCategory(btn.dataset.cat));
+        });
+        
+        document.addEventListener('keydown', handleKeyPress);
+        
+        // Start game
+        initGame();
+    </script>
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Mood Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #141720;
+      --surface2: #1c2030;
+      --border: #252a3a;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --accent: #7c6ef5;
+      --accent2: #f5a623;
+
+      --happy:   #4ade80;
+      --calm:    #60a5fa;
+      --stressed:#f87171;
+      --tired:   #a78bfa;
+      --sad:     #94a3b8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background blobs */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 40% at 15% 20%, rgba(124,110,245,.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 85% 75%, rgba(245,166,35,.08) 0%, transparent 60%);
+    }
+
+    .wrap {
+      position: relative; z-index: 1;
+      max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+    .logo { display: flex; align-items: center; gap: .75rem; }
+    .logo-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #b97cf5);
+      display: grid; place-items: center; font-size: 1.4rem;
+    }
+    .logo h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--text) 40%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .logo p { font-size: .75rem; color: var(--muted); margin-top: 1px; }
+    .streak {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 999px; padding: .4rem 1rem;
+      font-size: .8rem; font-weight: 500; display: flex; align-items: center; gap: .4rem;
+    }
+    .streak span { color: var(--accent2); }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: .5rem; margin-bottom: 2rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: .35rem;
+    }
+    .tab-btn {
+      flex: 1; padding: .55rem; border: none; background: transparent;
+      color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: .875rem;
+      border-radius: 8px; cursor: pointer; transition: all .2s; font-weight: 500;
+    }
+    .tab-btn.active {
+      background: var(--surface2); color: var(--text);
+      box-shadow: 0 1px 8px rgba(0,0,0,.4);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeUp .3s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700;
+      margin-bottom: 1.25rem; color: var(--text);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .card-title .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
+
+    /* ── MOOD PICKER ── */
+    .mood-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: .75rem;
+      margin-bottom: 1.5rem;
+    }
+    @media(max-width: 480px) { .mood-grid { grid-template-columns: repeat(3, 1fr); } }
+    .mood-btn {
+      border: 2px solid var(--border); background: var(--surface2);
+      border-radius: 16px; padding: 1rem .5rem;
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif;
+    }
+    .mood-btn .emoji { font-size: 2rem; line-height: 1; }
+    .mood-btn .label { font-size: .72rem; font-weight: 500; color: var(--muted); }
+    .mood-btn:hover { transform: translateY(-3px); }
+    .mood-btn.selected { transform: translateY(-3px); }
+    .mood-btn[data-mood="Happy"].selected    { border-color: var(--happy);   background: rgba(74,222,128,.1); }
+    .mood-btn[data-mood="Calm"].selected     { border-color: var(--calm);    background: rgba(96,165,250,.1); }
+    .mood-btn[data-mood="Stressed"].selected { border-color: var(--stressed);background: rgba(248,113,113,.1); }
+    .mood-btn[data-mood="Tired"].selected    { border-color: var(--tired);   background: rgba(167,139,250,.1); }
+    .mood-btn[data-mood="Sad"].selected      { border-color: var(--sad);     background: rgba(148,163,184,.1); }
+
+    /* ── TEXTAREA ── */
+    textarea {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: .9rem 1rem;
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .9rem;
+      resize: vertical; min-height: 90px; margin-bottom: 1.25rem;
+      transition: border-color .2s; outline: none;
+    }
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: var(--muted); }
+
+    /* ── BUTTON ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: linear-gradient(135deg, var(--accent), #b97cf5);
+      color: #fff; border: none; border-radius: 12px;
+      padding: .75rem 1.75rem; font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; font-weight: 600; cursor: pointer;
+      transition: opacity .2s, transform .15s; width: 100%;
+      justify-content: center;
+    }
+    .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ── MOTIVATIONAL BANNER ── */
+    #motivation-banner {
+      display: none;
+      border-radius: 16px; padding: 1.1rem 1.25rem;
+      margin-bottom: 1.25rem; font-size: .9rem;
+      border-left: 4px solid; animation: fadeUp .3s ease;
+    }
+    #motivation-banner .mot-emoji { font-size: 1.4rem; }
+    #motivation-banner .mot-text  { margin-top: .3rem; color: var(--muted); font-size: .82rem; }
+
+    /* ── HISTORY ── */
+    #history-list { display: flex; flex-direction: column; gap: .75rem; }
+    .entry-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1rem 1.25rem;
+      display: flex; align-items: flex-start; gap: 1rem; animation: fadeUp .3s ease;
+    }
+    .entry-emoji { font-size: 1.8rem; flex-shrink: 0; line-height: 1; margin-top: .1rem; }
+    .entry-info { flex: 1; min-width: 0; }
+    .entry-top { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .entry-mood {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem;
+    }
+    .entry-date { font-size: .75rem; color: var(--muted); }
+    .entry-note { font-size: .82rem; color: var(--muted); margin-top: .3rem; line-height: 1.5; }
+    .mood-chip {
+      font-size: .7rem; font-weight: 600; border-radius: 999px;
+      padding: .15rem .65rem; text-transform: uppercase; letter-spacing: .04em;
+    }
+    .no-entries { color: var(--muted); text-align: center; padding: 2rem; font-size: .9rem; }
+
+    /* ── STATS ── */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    @media(min-width: 500px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stat-box {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1rem; text-align: center;
+    }
+    .stat-value {
+      font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800;
+      color: var(--accent);
+    }
+    .stat-label { font-size: .72rem; color: var(--muted); margin-top: .25rem; }
+
+    .chart-wrap { position: relative; height: 220px; }
+
+    /* ── WEEKLY HEAT ── */
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: .5rem; }
+    .week-cell {
+      aspect-ratio: 1; border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; font-size: .7rem; gap: .2rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      transition: transform .15s;
+    }
+    .week-cell:hover { transform: scale(1.07); }
+    .week-cell .day-label { color: var(--muted); font-size: .65rem; }
+    .week-cell .day-emoji { font-size: 1.3rem; }
+
+    /* mood colour helpers */
+    .c-happy   { color: var(--happy); }
+    .c-calm    { color: var(--calm); }
+    .c-stressed{ color: var(--stressed); }
+    .c-tired   { color: var(--tired); }
+    .c-sad     { color: var(--sad); }
+    .bg-happy   { background: rgba(74,222,128,.15);  border-color: rgba(74,222,128,.3); }
+    .bg-calm    { background: rgba(96,165,250,.15);  border-color: rgba(96,165,250,.3); }
+    .bg-stressed{ background: rgba(248,113,113,.15); border-color: rgba(248,113,113,.3); }
+    .bg-tired   { background: rgba(167,139,250,.15); border-color: rgba(167,139,250,.3); }
+    .bg-sad     { background: rgba(148,163,184,.15); border-color: rgba(148,163,184,.3); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🧠</div>
+      <div>
+        <h1>MoodTrack</h1>
+        <p>Your daily mental wellness companion</p>
+      </div>
+    </div>
+    <div class="streak">🔥 <span id="streak-count">0</span> day streak</div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="log">📝 Log Mood</button>
+    <button class="tab-btn" data-tab="history">📅 History</button>
+    <button class="tab-btn" data-tab="stats">📊 Stats</button>
+  </div>
+
+  <!-- ── TAB: LOG ── -->
+  <div class="tab-panel active" id="tab-log">
+
+    <!-- Motivational banner -->
+    <div id="motivation-banner">
+      <div class="mot-emoji" id="mot-emoji"></div>
+      <strong id="mot-title"></strong>
+      <div class="mot-text" id="mot-body"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span> How are you feeling today?</div>
+      <div class="mood-grid" id="mood-grid">
+        <button class="mood-btn" data-mood="Happy">
+          <span class="emoji">😄</span><span class="label">Happy</span>
+        </button>
+        <button class="mood-btn" data-mood="Calm">
+          <span class="emoji">😌</span><span class="label">Calm</span>
+        </button>
+        <button class="mood-btn" data-mood="Stressed">
+          <span class="emoji">😰</span><span class="label">Stressed</span>
+        </button>
+        <button class="mood-btn" data-mood="Tired">
+          <span class="emoji">😴</span><span class="label">Tired</span>
+        </button>
+        <button class="mood-btn" data-mood="Sad">
+          <span class="emoji">😢</span><span class="label">Sad</span>
+        </button>
+      </div>
+
+      <textarea id="mood-note" placeholder="Add a note about your day (optional)…"></textarea>
+
+      <button class="btn-primary" id="save-btn">
+        ✨ Save Today's Mood
+      </button>
+    </div>
+  </div>
+
+  <!-- ── TAB: HISTORY ── -->
+  <div class="tab-panel" id="tab-history">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span> Weekly Overview</div>
+      <div class="week-grid" id="week-grid"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span> All Entries</div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+  <!-- ── TAB: STATS ── -->
+  <div class="tab-panel" id="tab-stats">
+    <div class="stats-grid" id="stats-grid"></div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span> Mood Distribution</div>
+      <div class="chart-wrap">
+        <canvas id="mood-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── DATA ─────────────────────────────────────────── */
+const MOODS = {
+  Happy:   { emoji:'😄', color:'#4ade80', cls:'happy' },
+  Calm:    { emoji:'😌', color:'#60a5fa', cls:'calm' },
+  Stressed:{ emoji:'😰', color:'#f87171', cls:'stressed' },
+  Tired:   { emoji:'😴', color:'#a78bfa', cls:'tired' },
+  Sad:     { emoji:'😢', color:'#94a3b8', cls:'sad' },
+};
+const MESSAGES = {
+  Happy:   { title:'Keep shining! 🌟', body:'Great day vibes! Ride this energy into your studies.' },
+  Calm:    { title:'Peaceful mind, clear focus 🍃', body:'This is the perfect state for deep work. Make the most of it!' },
+  Stressed:{ title:'Take a breath 🫁', body:'Stress is temporary. Try the 4-7-8 breathing technique: inhale 4s, hold 7s, exhale 8s.' },
+  Tired:   { title:'Rest is productive 😴', body:'Your brain needs downtime. Even a 20-min nap can refresh your focus significantly.' },
+  Sad:     { title:'It\'s okay to not be okay 💙', body:'Rough days are part of the journey. Reach out to a friend or take a short walk outside.' },
+};
+const BG_COLORS = {
+  Happy:'rgba(74,222,128,.08)',Calm:'rgba(96,165,250,.08)',
+  Stressed:'rgba(248,113,113,.08)',Tired:'rgba(167,139,250,.08)',Sad:'rgba(148,163,184,.08)'
+};
+
+function load(){ return JSON.parse(localStorage.getItem('moodEntries')||'[]'); }
+function save(d){ localStorage.setItem('moodEntries', JSON.stringify(d)); }
+function todayStr(){
+  const d=new Date();
+  return d.toISOString().split('T')[0];
+}
+
+/* ── STATE ─────────────────────────────────────────── */
+let entries = load();
+let selectedMood = null;
+let chartInstance = null;
+
+/* ── TABS ─────────────────────────────────────────── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    if(btn.dataset.tab==='history') renderHistory();
+    if(btn.dataset.tab==='stats')   renderStats();
+  });
+});
+
+/* ── MOOD PICKER ─────────────────────────────────── */
+document.querySelectorAll('.mood-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedMood = btn.dataset.mood;
+    showMotivation(selectedMood);
+  });
+});
+
+function showMotivation(mood){
+  const m = MESSAGES[mood];
+  const banner = document.getElementById('motivation-banner');
+  document.getElementById('mot-emoji').textContent  = MOODS[mood].emoji;
+  document.getElementById('mot-title').textContent  = m.title;
+  document.getElementById('mot-body').textContent   = m.body;
+  banner.style.display = 'block';
+  banner.style.background = BG_COLORS[mood];
+  banner.style.borderLeftColor = MOODS[mood].color;
+  banner.style.color = MOODS[mood].color;
+}
+
+/* ── SAVE ─────────────────────────────────────────── */
+document.getElementById('save-btn').addEventListener('click', () => {
+  if(!selectedMood){ alert('Please pick a mood first!'); return; }
+  const note = document.getElementById('mood-note').value.trim();
+  const today = todayStr();
+  // Replace existing entry for today
+  entries = entries.filter(e=>e.date!==today);
+  entries.unshift({ date:today, mood:selectedMood, note });
+  save(entries);
+  updateStreak();
+  document.getElementById('mood-note').value='';
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+  selectedMood=null;
+  document.getElementById('motivation-banner').style.display='none';
+
+  // Animate button
+  const btn = document.getElementById('save-btn');
+  btn.textContent = '✅ Saved!';
+  setTimeout(()=>{ btn.textContent='✨ Save Today\'s Mood'; }, 1800);
+});
+
+/* ── STREAK ─────────────────────────────────────────── */
+function updateStreak(){
+  let streak=0, d=new Date();
+  while(true){
+    const s=d.toISOString().split('T')[0];
+    if(entries.find(e=>e.date===s)){ streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  document.getElementById('streak-count').textContent=streak;
+}
+
+/* ── HISTORY ─────────────────────────────────────────── */
+function renderHistory(){
+  // Weekly grid
+  const grid = document.getElementById('week-grid');
+  grid.innerHTML='';
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const today=new Date();
+  for(let i=6;i>=0;i--){
+    const d=new Date(today); d.setDate(today.getDate()-i);
+    const s=d.toISOString().split('T')[0];
+    const entry=entries.find(e=>e.date===s);
+    const cell=document.createElement('div');
+    cell.className='week-cell'+(entry?' bg-'+MOODS[entry.mood].cls:'');
+    cell.innerHTML=`<span class="day-label">${days[d.getDay()]}</span>
+      <span class="day-emoji">${entry?MOODS[entry.mood].emoji:'—'}</span>`;
+    if(entry) cell.title=entry.mood+(entry.note?': '+entry.note:'');
+    grid.appendChild(cell);
+  }
+
+  // All entries
+  const list = document.getElementById('history-list');
+  list.innerHTML='';
+  if(!entries.length){
+    list.innerHTML='<div class="no-entries">No entries yet. Log your first mood! 🌱</div>';
+    return;
+  }
+  entries.forEach(e=>{
+    const m=MOODS[e.mood];
+    const div=document.createElement('div');
+    div.className='entry-card';
+    div.innerHTML=`
+      <span class="entry-emoji">${m.emoji}</span>
+      <div class="entry-info">
+        <div class="entry-top">
+          <span class="entry-mood c-${m.cls}">${e.mood}</span>
+          <span class="mood-chip bg-${m.cls} c-${m.cls}">${e.mood}</span>
+          <span class="entry-date">${formatDate(e.date)}</span>
+        </div>
+        ${e.note?`<div class="entry-note">"${e.note}"</div>`:''}
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function formatDate(s){
+  const d=new Date(s+'T12:00:00');
+  return d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+}
+
+/* ── STATS ─────────────────────────────────────────── */
+function renderStats(){
+  // Stat boxes
+  const last7=entries.filter(e=>{
+    const d=new Date(e.date+'T12:00:00');
+    return (new Date()-d)/864e5<=7;
+  });
+  const counts={};
+  Object.keys(MOODS).forEach(k=>counts[k]=0);
+  entries.forEach(e=>counts[e.mood]=(counts[e.mood]||0)+1);
+  const topMood=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-box">
+      <div class="stat-value">${entries.length}</div>
+      <div class="stat-label">Total Entries</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">${last7.length}</div>
+      <div class="stat-label">Last 7 Days</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">${topMood?MOODS[topMood[0]].emoji:'—'}</div>
+      <div class="stat-label">Most Common</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">${document.getElementById('streak-count').textContent}</div>
+      <div class="stat-label">Day Streak 🔥</div>
+    </div>`;
+
+  // Chart
+  const labels=Object.keys(MOODS);
+  const data=labels.map(k=>counts[k]||0);
+  const colors=labels.map(k=>MOODS[k].color);
+
+  if(chartInstance) chartInstance.destroy();
+  const ctx=document.getElementById('mood-chart').getContext('2d');
+  chartInstance=new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels,
+      datasets:[{data,backgroundColor:colors.map(c=>c+'99'),borderColor:colors,borderWidth:2,hoverOffset:8}]
+    },
+    options:{
+      plugins:{ legend:{ position:'bottom', labels:{ color:'#6b7280', font:{family:'DM Sans',size:12}, padding:16 }}},
+      cutout:'65%',
+      animation:{ animateScale:true }
+    }
+  });
+}
+
+/* ── INIT ─────────────────────────────────────────── */
+updateStreak();
+// Pre-select today if already logged
+const todayEntry = entries.find(e=>e.date===todayStr());
+if(todayEntry){
+  const btn=document.querySelector(`.mood-btn[data-mood="${todayEntry.mood}"]`);
+  if(btn){ btn.classList.add('selected'); selectedMood=todayEntry.mood; showMotivation(todayEntry.mood); }
+  if(todayEntry.note) document.getElementById('mood-note').value=todayEntry.note;
+}
+</script>
+</body>
+</html>

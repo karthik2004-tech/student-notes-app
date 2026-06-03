@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Picker</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Color Picker</h1>
+    <div class="picker-box">
+      <input type="color" id="colorInput" value="#6c63ff"/>
+      <div class="color-preview" id="colorPreview"></div>
+    </div>
+    <div class="values">
+      <div class="value-card">
+        <label>HEX</label>
+        <div class="value-row">
+          <span id="hexValue">#6C63FF</span>
+          <button onclick="copyValue('hexValue')">Copy</button>
+        </div>
+      </div>
+      <div class="value-card">
+        <label>RGB</label>
+        <div class="value-row">
+          <span id="rgbValue">rgb(108, 99, 255)</span>
+          <button onclick="copyValue('rgbValue')">Copy</button>
+        </div>
+      </div>
+      <div class="value-card">
+        <label>HSL</label>
+        <div class="value-row">
+          <span id="hslValue">hsl(243, 100%, 69%)</span>
+          <button onclick="copyValue('hslValue')">Copy</button>
+        </div>
+      </div>
+    </div>
+    <div class="palette">
+      <h3>Recent Colors</h3>
+      <div class="palette-colors" id="paletteColors"></div>
+    </div>
+    <div id="copyMsg" class="copy-msg">Copied!</div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

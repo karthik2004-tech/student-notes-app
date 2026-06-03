@@ -25,6 +25,9 @@ const failedAudits = document.getElementById("failedAudits");
 const completionPercentage =
     document.getElementById("completionPercentage");
 
+const statsContainer =
+    document.querySelector(".stats-container");
+
 const themeToggle = document.getElementById("themeToggle");
 
 const searchInput = document.getElementById("searchInput");
@@ -41,12 +44,18 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 const userGreeting = document.getElementById("userGreeting");
 
+const roleBadge = document.getElementById("roleBadge");
+
 let currentFilter = "all";
 
 let editingAuditId = null;
 
 const currentUser =
     JSON.parse(localStorage.getItem("currentUser")) || null;
+
+const currentUserRole = currentUser
+    ? currentUser.role || "User"
+    : "";
 
 const isDashboardPage = Boolean(auditList);
 
@@ -79,6 +88,11 @@ function setFormMessage(element, message, type){
 function isValidEmail(email){
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isAdmin(){
+
+    return currentUserRole === "Admin";
 }
 
 function redirectToDashboard(){
@@ -128,6 +142,18 @@ if(userGreeting && currentUser){
     userGreeting.textContent = `Welcome, ${currentUser.username}`;
 }
 
+if(roleBadge && currentUser){
+
+    roleBadge.textContent = currentUserRole;
+
+    roleBadge.classList.add(currentUserRole.toLowerCase());
+}
+
+if(statsContainer && currentUser && !isAdmin()){
+
+    statsContainer.classList.add("hidden");
+}
+
 if(logoutBtn){
 
     logoutBtn.addEventListener("click", logoutUser);
@@ -172,6 +198,9 @@ function registerUser(event){
 
     const confirmPassword =
         document.getElementById("confirmPassword").value;
+
+    const role =
+        document.getElementById("registerRole").value;
 
     const registerMessage =
         document.getElementById("registerMessage");
@@ -231,7 +260,8 @@ function registerUser(event){
         id: Date.now(),
         username: username,
         email: email,
-        password: password
+        password: password,
+        role: role
     });
 
     saveUsers(users);
@@ -297,7 +327,8 @@ function loginUser(event){
         JSON.stringify({
             id: user.id,
             username: user.username,
-            email: user.email
+            email: user.email,
+            role: user.role || "User"
         })
     );
 
@@ -647,33 +678,7 @@ sortedAudits.forEach((audit)=>{
 
             <div class="audit-actions">
 
-                <button 
-                    class="pass-btn"
-                    onclick="markPass(${audit.id})"
-                >
-                    Pass
-                </button>
-
-                <button 
-                    class="fail-btn"
-                    onclick="markFail(${audit.id})"
-                >
-                    Fail
-                </button>
-
-                <button 
-                    class="edit-btn"
-                    onclick="editAudit(${audit.id})"
-                >
-                    Edit
-                </button>
-
-                <button 
-                    class="delete-btn"
-                    onclick="deleteAudit(${audit.id})"
-                >
-                    Delete
-                </button>
+                ${getAuditActions(audit.id)}
 
             </div>
         `;
@@ -685,9 +690,58 @@ sortedAudits.forEach((audit)=>{
     updateStats();
 }
 
+function getAuditActions(id){
+
+    if(!isAdmin()){
+
+        return `
+            <span class="permission-note">
+                View Only
+            </span>
+        `;
+    }
+
+    return `
+        <button
+            class="pass-btn"
+            onclick="markPass(${id})"
+        >
+            Pass
+        </button>
+
+        <button
+            class="fail-btn"
+            onclick="markFail(${id})"
+        >
+            Fail
+        </button>
+
+        <button
+            class="edit-btn"
+            onclick="editAudit(${id})"
+        >
+            Edit
+        </button>
+
+        <button
+            class="delete-btn"
+            onclick="deleteAudit(${id})"
+        >
+            Delete
+        </button>
+    `;
+}
+
 /* Edit Audit */
 
 function editAudit(id){
+
+    if(!isAdmin()){
+
+        alert("Only admins can edit audits");
+
+        return;
+    }
 
     editingAuditId = id;
 
@@ -695,6 +749,13 @@ function editAudit(id){
 }
 
 function saveEditAudit(id){
+
+    if(!isAdmin()){
+
+        alert("Only admins can edit audits");
+
+        return;
+    }
 
     const editTaskInput =
         document.getElementById(`editTask-${id}`);
@@ -757,6 +818,13 @@ function escapeHTML(value){
 
 function markPass(id){
 
+    if(!isAdmin()){
+
+        alert("Only admins can update audit status");
+
+        return;
+    }
+
     audits = audits.map((audit)=>{
 
         if(audit.id === id){
@@ -776,6 +844,13 @@ function markPass(id){
 
 function markFail(id){
 
+    if(!isAdmin()){
+
+        alert("Only admins can update audit status");
+
+        return;
+    }
+
     audits = audits.map((audit)=>{
 
         if(audit.id === id){
@@ -794,6 +869,13 @@ function markFail(id){
 /* Delete Audit */
 
 function deleteAudit(id){
+
+    if(!isAdmin()){
+
+        alert("Only admins can delete audits");
+
+        return;
+    }
 
     audits = audits.filter((audit)=> audit.id !== id);
 

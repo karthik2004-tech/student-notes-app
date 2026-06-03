@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Auto-Save Notes | Smart Notes App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Sidebar - Notes List */
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            height: fit-content;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .new-note-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .new-note-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .notes-list {
+            list-style: none;
+        }
+
+        .note-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f7f9fc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-item:hover {
+            background: #e8ecf1;
+            transform: translateX(5px);
+        }
+
+        .note-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .note-title {
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        .delete-note {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+
+        .note-item:hover .delete-note {
+            opacity: 1;
+        }
+
+        .delete-note:hover {
+            background: #ff4757;
+            transform: scale(1.1);
+        }
+
+        /* Main Editor Area */
+        .editor-area {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        /* Title Input */
+        .note-title-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.5rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .note-title-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Rich Text Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f7f9fc;
+            border-radius: 10px;
+        }
+
+        .tool-btn {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .tool-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Content Editor */
+        .note-content {
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .note-content:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Status Indicator */
+        .save-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .save-status.saving {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+
+        .save-status.saved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                max-height: 300px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .toolbar {
+                gap: 5px;
+            }
+            
+            .tool-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                ✍️ Auto-Save Notes
+            </h1>
+            <p>Your thoughts, automatically saved 📝</p>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h3>
+                    📋 My Notes
+                    <button class="new-note-btn" onclick="notesApp.createNewNote()">+ New Note</button>
+                </h3>
+                <div id="notesListContainer"></div>
+            </div>
+
+            <!-- Editor -->
+            <div class="editor-area">
+                <input type="text" id="noteTitle" class="note-title-input" placeholder="Note Title...">
+                
+                <div class="toolbar">
+                    <button class="tool-btn" onclick="notesApp.formatText('bold')">B</button>
+                    <button class="tool-btn" onclick="notesApp.formatText('italic')">I</button>
+                    <button class="tool-btn" onclick="notesApp.formatText('underline')">U</button>
+                    <button class="tool-btn" onclick="notesApp.formatText('insertOrderedList')">📋</button>
+                    <button class="tool-btn" onclick="notesApp.formatText('insertUnorderedList')">•</button>
+                    <button class="tool-btn" onclick="notesApp.formatText('justifyLeft')">⬅️</button>
+                    <button class="tool-btn" onclick="notesApp.formatText('justifyCenter')">⬌</button>
+                    <button class="tool-btn" onclick="notesApp.formatText('justifyRight')">➡️</button>
+                </div>
+                
+                <div id="noteContent" class="note-content" contenteditable="true" placeholder="Start writing your note here..."></div>
+                
+                <div id="saveStatus" class="save-status saved">
+                    ✓ Saved
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class NotesApp {
+            constructor() {
+                this.notes = [];
+                this.currentNoteId = null;
+                this.saveTimeout = null;
+                this.loadFromLocalStorage();
+                this.renderNotesList();
+                
+                // Add event listeners for auto-save
+                this.setupAutoSave();
+            }
+
+            // Load notes from localStorage
+            loadFromLocalStorage() {
+                const saved = localStorage.getItem('autoSaveNotes');
+                if (saved) {
+                    this.notes = JSON.parse(saved);
+                    if (this.notes.length > 0) {
+                        this.currentNoteId = this.notes[0].id;
+                        this.loadNoteToEditor(this.currentNoteId);
+                    }
+                } else {
+                    // Sample notes
+                    this.notes = [
+                        {
+                            id: Date.now(),
+                            title: "Welcome to Auto-Save Notes! 🎉",
+                            content: "<p>This is your first note. Start typing and watch it auto-save!</p><p><b>Features:</b></p><ul><li>Auto-save with debounce</li><li>Rich text editing</li><li>Multiple notes support</li><li>Local storage persistence</li></ul>",
+                            lastModified: new Date().toISOString()
+                        }
+                    ];
+                    this.currentNoteId = this.notes[0].id;
+                    this.saveToLocalStorage();
+                }
+            }
+
+            // Save to localStorage
+            saveToLocalStorage() {
+                localStorage.setItem('autoSaveNotes', JSON.stringify(this.notes));
+            }
+
+            // Setup auto-save with debounce
+            setupAutoSave() {
+                const titleInput = document.getElementById('noteTitle');
+                const contentDiv = document.getElementById('noteContent');
+                
+                // Debounced save function (500ms delay)
+                const debouncedSave = this.debounce(() => {
+                    this.saveCurrentNote();
+                }, 500);
+                
+                titleInput.addEventListener('input', () => {
+                    this.showSavingStatus();
+                    debouncedSave();
+                });
+                
+                contentDiv.addEventListener('input', () => {
+                    this.showSavingStatus();
+                    debouncedSave();
+                });
+            }
+
+            // Debounce utility
+            debounce(func, delay) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, delay);
+                };
+            }
+
+            // Show saving status
+            showSavingStatus() {
+                const statusDiv = document.getElementById('saveStatus');
+                statusDiv.className = 'save-status saving';
+                statusDiv.innerHTML = '💾 Saving...';
+            }
+
+            // Show saved status
+            showSavedStatus() {
+                const statusDiv = document.getElementById('saveStatus');
+                statusDiv.className = 'save-status saved';
+                statusDiv.innerHTML = '✓ Saved!';
+                
+                // Revert to normal after 2 seconds
+                setTimeout(() => {
+                    if (statusDiv.className === 'save-status saved') {
+                        statusDiv.innerHTML = '✓ Saved';
+                    }
+                }, 2000);
+            }
+
+            // Save current note
+            saveCurrentNote() {
+                if (!this.currentNoteId) return;
+                
+                const title = document.getElementById('noteTitle').value;
+                const content = document.getElementById('noteContent').innerHTML;
+                
+                const noteIndex = this.notes.findIndex(n => n.id === this.currentNoteId);
+                if (noteIndex !== -1) {
+                    this.notes[noteIndex].title = title || 'Untitled Note';
+                    this.notes[noteIndex].content = content || '';
+                    this.notes[noteIndex].lastModified = new Date().toISOString();
+                    this.saveToLocalStorage();
+                    this.renderNotesList();
+                    this.showSavedStatus();
+                }
+            }
+
+            // Load note to editor
+            loadNoteToEditor(noteId) {
+                const note = this.notes.find(n => n.id === noteId);
+                if (note) {
+                    document.getElementById('noteTitle').value = note.title;
+                    document.getElementById('noteContent').innerHTML = note.content || '';
+                    this.currentNoteId = noteId;
+                    this.renderNotesList();
+                }
+            }
+
+            // Create new note
+            createNewNote() {
+                const newNote = {
+                    id: Date.now(),
+                    title: `Note ${this.notes.length + 1}`,
+                    content: "<p>Start writing your note here...</p>",
+                    lastModified: new Date().toISOString()
+                };
+                this.notes.unshift(newNote);
+                this.currentNoteId = newNote.id;
+                this.saveToLocalStorage();
+                this.loadNoteToEditor(this.currentNoteId);
+                this.renderNotesList();
+            }
+
+            // Delete note
+            deleteNote(noteId, event) {
+                event.stopPropagation();
+                
+                if (this.notes.length === 1) {
+                    // Create a new note if deleting the last one
+                    this.deleteNoteConfirm(noteId);
+                    this.createNewNote();
+                } else {
+                    this.deleteNoteConfirm(noteId);
+                }
+            }
+
+            deleteNoteConfirm(noteId) {
+                const noteIndex = this.notes.findIndex(n => n.id === noteId);
+                if (noteIndex !== -1) {
+                    this.notes.splice(noteIndex, 1);
+                    
+                    if (this.currentNoteId === noteId) {
+                        this.currentNoteId = this.notes[0]?.id || null;
+                        if (this.currentNoteId) {
+                            this.loadNoteToEditor(this.currentNoteId);
+                        } else {
+                            this.clearEditor();
+                        }
+                    }
+                    
+                    this.saveToLocalStorage();
+                    this.renderNotesList();
+                }
+            }
+
+            // Clear editor
+            clearEditor() {
+                document.getElementById('noteTitle').value = '';
+                document.getElementById('noteContent').innerHTML = '';
+                document.getElementById('saveStatus').className = 'save-status saved';
+                document.getElementById('saveStatus').innerHTML = '✓ Saved';
+            }
+
+            // Format text (rich text editing)
+            formatText(command) {
+                document.execCommand(command, false, null);
+                this.showSavingStatus();
+                this.debounce(() => {
+                    this.saveCurrentNote();
+                }, 500)();
+            }
+
+            // Render notes list
+            renderNotesList() {
+                const container = document.getElementById('notesListContainer');
+                
+                if (this.notes.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <p>📭 No notes yet</p>
+                            <p style="font-size: 0.8rem;">Click "New Note" to start</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <ul class="notes-list">
+                        ${this.notes.map(note => `
+                            <li class="note-item ${this.currentNoteId === note.id ? 'active' : ''}" onclick="notesApp.loadNoteToEditor(${note.id})">
+                                <span class="note-title">${this.escapeHtml(note.title || 'Untitled')}</span>
+                                <button class="delete-note" onclick="notesApp.deleteNote(${note.id}, event)">×</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+
+            // Escape HTML
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize app
+        const notesApp = new NotesApp();
+    </script>
+</body>
+</html>

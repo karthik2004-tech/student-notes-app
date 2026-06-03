@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusFlow | Premium Pomodoro & Productivity Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating Background Particles (Aesthetic) -->
+    <div class="bg-glow-orb orb-1"></div>
+    <div class="bg-glow-orb orb-2"></div>
+    <div class="bg-glow-orb orb-3"></div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-logo">
+                <div class="logo-icon">
+                    <i class="ph-fill ph-compass"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>FocusFlow</h1>
+                    <span class="logo-tag">NSOC '26 Special Edition</span>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <div class="quote-ticker" id="quote-ticker">
+                    <i class="ph-bold ph-quotes quote-icon"></i>
+                    <span id="quote-text">"Your focus determines your reality."</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="streak-widget" title="Daily Focus Streak">
+                    <i class="ph-fill ph-fire streak-fire"></i>
+                    <span id="streak-count">0</span> Days
+                </div>
+                <button class="icon-btn" id="theme-toggle" title="Toggle Light/Dark Mode">
+                    <i class="ph-bold ph-sun" id="theme-icon"></i>
+                </button>
+                <button class="icon-btn" id="badge-menu-btn" title="View Badges & Achievements">
+                    <i class="ph-bold ph-medal"></i>
+                </button>
+                <button class="icon-btn" id="settings-btn" title="Timer Settings">
+                    <i class="ph-bold ph-gear"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main class="app-main">
+            <!-- LEFT COLUMN: TIMER & SOUNDS & GAMIFICATION -->
+            <section class="left-column">
+                <!-- GAMIFICATION BANNER -->
+                <div class="widget gamification-card">
+                    <div class="level-badge" id="level-badge">LVL 1</div>
+                    <div class="xp-details">
+                        <div class="xp-header">
+                            <span class="xp-title" id="xp-rank">Focus Initiate</span>
+                            <span class="xp-numbers"><span id="current-xp">0</span> / <span id="next-level-xp">100</span> XP</span>
+                        </div>
+                        <div class="xp-progress-bar">
+                            <div class="xp-progress-fill" id="xp-progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIMER WIDGET -->
+                <div class="widget timer-widget">
+                    <div class="timer-tabs">
+                        <button class="timer-tab active" data-mode="focus">
+                            <i class="ph-bold ph-brain"></i> Focus
+                        </button>
+                        <button class="timer-tab" data-mode="shortBreak">
+                            <i class="ph-bold ph-coffee"></i> Short Break
+                        </button>
+                        <button class="timer-tab" data-mode="longBreak">
+                            <i class="ph-bold ph-hourglass"></i> Long Break
+                        </button>
+                    </div>
+
+                    <div class="timer-display-container">
+                        <!-- SVG Circular Progress -->
+                        <svg class="progress-ring" width="280" height="280">
+                            <circle class="progress-ring-circle-bg" stroke="var(--timer-bg-ring)" stroke-width="8" fill="transparent" r="130" cx="140" cy="140" />
+                            <circle class="progress-ring-circle" id="timer-progress" stroke="var(--accent-color)" stroke-dasharray="816.8" stroke-dashoffset="0" stroke-width="12" stroke-linecap="round" fill="transparent" r="130" cx="140" cy="140" />
+                        </svg>
+                        
+                        <div class="timer-time-overlay">
+                            <span class="time-string" id="timer-time">25:00</span>
+                            <span class="time-label" id="timer-status">Get Ready!</span>
+                        </div>
+                    </div>
+
+                    <div class="timer-controls">
+                        <button class="timer-btn btn-secondary" id="timer-reset" title="Reset Timer">
+                            <i class="ph-bold ph-arrows-counter-clockwise"></i>
+                        </button>
+                        <button class="timer-btn btn-primary" id="timer-toggle">
+                            <i class="ph-fill ph-play" id="play-icon"></i> <span id="play-text">Start Focus</span>
+                        </button>
+                        <button class="timer-btn btn-secondary" id="timer-skip" title="Skip Session">
+                            <i class="ph-bold ph-skip-forward"></i>
+                        </button>
+                    </div>
+
+                    <!-- Ambient Sound Center -->
+                    <div class="ambient-sound-control">
+                        <div class="sound-header">
+                            <i class="ph-bold ph-speaker-hifi"></i>
+                            <span>Binaural Ambient Sounds</span>
+                        </div>
+                        <div class="sound-selectors">
+                            <button class="sound-tab active" data-sound="none" title="Mute Ambient Sounds">
+                                <i class="ph-bold ph-speaker-none"></i>
+                            </button>
+                            <button class="sound-tab" data-sound="rain" title="Synthesized Rainfall">
+                                <i class="ph-bold ph-cloud-rain"></i> Rain
+                            </button>
+                            <button class="sound-tab" data-sound="white" title="Soothing White Noise">
+                                <i class="ph-bold ph-waveform-slash"></i> Noise
+                            </button>
+                            <button class="sound-tab" data-sound="forest" title="Ambient Woodland Wind">
+                                <i class="ph-bold ph-tree"></i> Forest
+                            </button>
+                            <button class="sound-tab" data-sound="cafe" title="Cosy Cafe Chatter & Clinks">
+                                <i class="ph-bold ph-storefront"></i> Cafe
+                            </button>
+                        </div>
+                        <div class="volume-slider-container">
+                            <i class="ph-bold ph-speaker-low"></i>
+                            <input type="range" id="ambient-volume" min="0" max="100" value="40">
+                            <i class="ph-bold ph-speaker-high"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: TASK MANAGER & ANALYTICS & LOG -->
+            <section class="right-column">
+                <!-- TASK MANAGER -->
+                <div class="widget task-widget">
+                    <div class="widget-header">
+                        <div class="widget-title-area">
+                            <i class="ph-bold ph-list-checks"></i>
+                            <h2>Focus Tasks</h2>
+                        </div>
+                        <div class="task-summary-badge" id="task-completed-fraction">0/0 Tasks</div>
+                    </div>
+
+                    <!-- Task Progress -->
+                    <div class="task-progress-mini">
+                        <div class="task-progress-fill" id="task-progress-fill" style="width: 0%"></div>
+                    </div>
+
+                    <!-- New Task Input Form -->
+                    <form id="task-form" class="task-form">
+                        <div class="form-row-primary">
+                            <input type="text" id="task-input" placeholder="What are you working on today?" required autocomplete="off">
+                            <button type="submit" class="add-task-btn">
+                                <i class="ph-bold ph-plus"></i> Add
+                            </button>
+                        </div>
+                        <div class="form-row-secondary">
+                            <div class="input-group">
+                                <label for="task-priority">Priority</label>
+                                <select id="task-priority">
+                                    <option value="low">Low Priority</option>
+                                    <option value="medium" selected>Medium Priority</option>
+                                    <option value="high">High Priority</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="task-est">Est. Pomodoros</label>
+                                <div class="est-picker">
+                                    <button type="button" class="est-btn" id="est-minus">-</button>
+                                    <span id="est-count">1</span>
+                                    <button type="button" class="est-btn" id="est-plus">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Active Task Status Display -->
+                    <div class="active-task-container" id="active-task-container">
+                        <span class="active-task-label">Active Focus Task:</span>
+                        <div class="active-task-box">
+                            <span id="active-task-name">No active task selected</span>
+                            <div class="active-task-poms">
+                                <i class="ph-fill ph-clock"></i>
+                                <span id="active-task-progress">0/1</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task List -->
+                    <ul class="task-list" id="task-list">
+                        <!-- Dynamic content -->
+                    </ul>
+                </div>
+
+                <!-- ANALYTICS DASHBOARD -->
+                <div class="widget analytics-widget">
+                    <div class="widget-header">
+                        <div class="widget-title-area">
+                            <i class="ph-bold ph-chart-bar"></i>
+                            <h2>Productivity Insights</h2>
+                        </div>
+                        <button class="stats-toggle-btn" id="export-csv-btn" title="Export Focus Data to CSV">
+                            <i class="ph-bold ph-download-simple"></i> Export
+                        </button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-num" id="stat-total-minutes">0</span>
+                            <span class="stat-label">Focus Minutes</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-num" id="stat-completed-poms">0</span>
+                            <span class="stat-label">Pomodoros Done</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-num" id="stat-tasks-completed">0</span>
+                            <span class="stat-label">Tasks Done</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-num" id="stat-user-tier">Bronze</span>
+                            <span class="stat-label">Efficiency Rank</span>
+                        </div>
+                    </div>
+
+                    <!-- Charts Area -->
+                    <div class="analytics-charts">
+                        <div class="chart-box">
+                            <h3>Weekly Focus (Minutes)</h3>
+                            <div class="chart-canvas-container" id="weekly-chart-container">
+                                <!-- Programmatically injected SVG Chart -->
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Focus Hour Distribution</h3>
+                            <div class="chart-canvas-container" id="hourly-chart-container">
+                                <!-- Programmatically injected SVG Heatmap/Histogram -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Focus History Log -->
+                    <div class="history-section">
+                        <div class="history-header">
+                            <h3>Completed Session Logs</h3>
+                            <button id="clear-history-btn" class="text-btn">Clear Logs</button>
+                        </div>
+                        <div class="history-list-wrapper">
+                            <ul class="history-list" id="history-list">
+                                <li class="empty-history">No sessions logged yet. Complete your first focus block to start!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2><i class="ph-bold ph-sliders"></i> FocusFlow Settings</h2>
+                <button class="modal-close" id="settings-close"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="settings-form">
+                    <div class="settings-group">
+                        <h3>Session Durations (Minutes)</h3>
+                        <div class="settings-durations">
+                            <div class="duration-input">
+                                <label for="setting-focus">Focus</label>
+                                <input type="number" id="setting-focus" min="1" max="180" value="25" required>
+                            </div>
+                            <div class="duration-input">
+                                <label for="setting-short">Short Break</label>
+                                <input type="number" id="setting-short" min="1" max="60" value="5" required>
+                            </div>
+                            <div class="duration-input">
+                                <label for="setting-long">Long Break</label>
+                                <input type="number" id="setting-long" min="1" max="120" value="15" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Automation Preferences</h3>
+                        <div class="toggle-setting">
+                            <div class="toggle-info">
+                                <span class="setting-title">Auto-start Breaks</span>
+                                <span class="setting-desc">Automatically trigger breaks when focus sessions end.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setting-auto-breaks">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-setting">
+                            <div class="toggle-info">
+                                <span class="setting-title">Auto-start Pomodoros</span>
+                                <span class="setting-desc">Automatically trigger new focus intervals when break ends.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setting-auto-poms">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Audio & System</h3>
+                        <div class="toggle-setting">
+                            <div class="toggle-info">
+                                <span class="setting-title">Notification Sound</span>
+                                <span class="setting-desc">Play a notification chime when timer reaches zero.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setting-sound-chime" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-setting">
+                            <div class="toggle-info">
+                                <span class="setting-title">Ticking Audio Feedback</span>
+                                <span class="setting-desc">A subtle, soothing rhythmic clock tick during focus blocks.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setting-sound-ticking">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" id="settings-reset-defaults">Reset Defaults</button>
+                        <button type="submit" class="btn-save">Apply Settings</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- BADGES MODAL -->
+    <div class="modal-overlay" id="badges-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2><i class="ph-bold ph-shield-star"></i> Achievement Badges</h2>
+                <button class="modal-close" id="badges-close"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="badge-modal-intro">
+                    <p>Earn experience points (XP) and unlock focus tiers by logging sessions. Here are your milestones:</p>
+                </div>
+                <div class="badges-grid" id="badges-grid">
+                    <!-- Dynamic badges go here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Notification Toast -->
+    <div class="toast" id="app-toast">
+        <i class="ph-bold ph-check-circle" id="toast-icon"></i>
+        <div class="toast-message">
+            <span id="toast-title">Session Complete!</span>
+            <span id="toast-body">Well done, take a deep breath.</span>
+        </div>
+    </div>
+</body>
+</html>

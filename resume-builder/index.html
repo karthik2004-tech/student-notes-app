@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Resume Builder | Create Professional Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 20px;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        /* Dynamic List Styles */
+        .skill-item, .edu-item, .project-item {
+            background: #f7f9fc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .skill-item input, 
+        .edu-item input,
+        .project-item input,
+        .project-item textarea {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .remove-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: #ff4757;
+            transform: scale(1.1);
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Resume Preview Section */
+        .preview-section {
+            background: #f0f2f5;
+            border-radius: 20px;
+            padding: 20px;
+            height: 80vh;
+            overflow-y: auto;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .preview-header h3 {
+            color: #667eea;
+        }
+
+        .print-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Resume Card */
+        .resume-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .resume-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .resume-name {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .resume-title {
+            font-size: 1.1rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .resume-contact {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .resume-section {
+            margin-bottom: 20px;
+        }
+
+        .resume-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .resume-summary {
+            color: #555;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .edu-item-card, .project-item-card {
+            margin-bottom: 15px;
+        }
+
+        .edu-degree {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .edu-institution {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .project-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .project-desc {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-section, .preview-section {
+                height: auto;
+                max-height: 500px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .form-section, .preview-header, .print-btn, .header {
+                display: none !important;
+            }
+            
+            .preview-section {
+                padding: 0;
+                height: auto;
+            }
+            
+            .resume-card {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                📄 Student Resume Builder
+            </h1>
+            <p>Fill details & get a professional resume instantly ✨</p>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Form Section -->
+            <div class="form-section">
+                <div class="section-title">👤 Personal Information</div>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Professional Title</label>
+                    <input type="text" id="title" placeholder="Software Developer | Student">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="phone" placeholder="+91 98765 43210">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="address" placeholder="City, State">
+                </div>
+                <div class="form-group">
+                    <label>Professional Summary</label>
+                    <textarea id="summary" rows="3" placeholder="A brief summary about yourself..."></textarea>
+                </div>
+
+                <div class="section-title">🎓 Education</div>
+                <div id="educationList"></div>
+                <button class="add-btn" onclick="addEducation()">+ Add Education</button>
+
+                <div class="section-title">⚡ Skills</div>
+                <div id="skillsList"></div>
+                <button class="add-btn" onclick="addSkill()">+ Add Skill</button>
+
+                <div class="section-title">📁 Projects</div>
+                <div id="projectsList"></div>
+                <button class="add-btn" onclick="addProject()">+ Add Project</button>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <div class="preview-header">
+                    <h3>📄 Resume Preview</h3>
+                    <button class="print-btn" onclick="printResume()">🖨️ Print / Download PDF</button>
+                </div>
+                <div id="resumePreview"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data arrays
+        let skills = [];
+        let education = [];
+        let projects = [];
+
+        // Initialize with sample data
+        function initSampleData() {
+            skills = ['JavaScript', 'React', 'HTML/CSS', 'Python'];
+            education = [
+                { degree: 'B.Tech in Computer Science', institution: 'University Name', year: '2024' }
+            ];
+            projects = [
+                { title: 'Portfolio Website', description: 'Personal portfolio using HTML, CSS, JavaScript' },
+                { title: 'Notes App', description: 'Full-stack notes application with localStorage' }
+            ];
+        }
+
+        // Render all dynamic lists
+        function renderSkills() {
+            const container = document.getElementById('skillsList');
+            container.innerHTML = skills.map((skill, index) => `
+                <div class="skill-item">
+                    <input type="text" value="${escapeHtml(skill)}" onchange="updateSkill(${index}, this.value)">
+                    <button class="remove-btn" onclick="removeSkill(${index})">×</button>
+                </div>
+            `).join('');
+            updateResume();
+        }
+
+        function renderEducation() {
+            const container = document.getElementById('educationList');
+            container.innerHTML = education.map((edu, index) => `
+                <div class="edu-item">
+                    <input type="text" placeholder="Degree" value="${escapeHtml(edu.degree)}" onchange="updateEducation(${index}, 'degree', this.value)">
+                    <input type="text" placeholder="Institution" value="${escapeHtml(edu.institution)}" onchange="updateEducation(${index}, 'institution', this.value)">
+                    <input type="text" placeholder="Year" value="${escapeHtml(edu.year)}" onchange="updateEducation(${index}, 'year', this.value)" style="width: 80px;">
+                    <button class="remove-btn" onclick="removeEducation(${index})">×</button>
+                </div>
+            `).join('');
+            updateResume();
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('projectsList');
+            container.innerHTML = projects.map((project, index) => `
+                <div class="project-item">
+                    <input type="text" placeholder="Project Title" value="${escapeHtml(project.title)}" onchange="updateProject(${index}, 'title', this.value)">
+                    <textarea placeholder="Project Description" rows="2" onchange="updateProject(${index}, 'description', this.value)">${escapeHtml(project.description)}</textarea>
+                    <button class="remove-btn" onclick="removeProject(${index})">×</button>
+                </div>
+            `).join('');
+            updateResume();
+        }
+
+        // CRUD operations for skills
+        function addSkill() {
+            skills.push('');
+            renderSkills();
+        }
+
+        function removeSkill(index) {
+            skills.splice(index, 1);
+            renderSkills();
+        }
+
+        function updateSkill(index, value) {
+            skills[index] = value;
+            updateResume();
+        }
+
+        // CRUD operations for education
+        function addEducation() {
+            education.push({ degree: '', institution: '', year: '' });
+            renderEducation();
+        }
+
+        function removeEducation(index) {
+            education.splice(index, 1);
+            renderEducation();
+        }
+
+        function updateEducation(index, field, value) {
+            education[index][field] = value;
+            updateResume();
+        }
+
+        // CRUD operations for projects
+        function addProject() {
+            projects.push({ title: '', description: '' });
+            renderProjects();
+        }
+
+        function removeProject(index) {
+            projects.splice(index, 1);
+            renderProjects();
+        }
+
+        function updateProject(index, field, value) {
+            projects[index][field] = value;
+            updateResume();
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Update resume preview
+        function updateResume() {
+            const name = document.getElementById('fullName').value || 'Your Name';
+            const title = document.getElementById('title').value || 'Student / Developer';
+            const email = document.getElementById('email').value || 'email@example.com';
+            const phone = document.getElementById('phone').value || '+91 98765 43210';
+            const address = document.getElementById('address').value || 'Your Location';
+            const summary = document.getElementById('summary').value || 'A passionate student eager to learn and grow in the tech industry.';
+
+            const resumeHtml = `
+                <div class="resume-card">
+                    <div class="resume-header">
+                        <div class="resume-name">${escapeHtml(name)}</div>
+                        <div class="resume-title">${escapeHtml(title)}</div>
+                        <div class="resume-contact">
+                            <span>📧 ${escapeHtml(email)}</span>
+                            <span>📞 ${escapeHtml(phone)}</span>
+                            <span>📍 ${escapeHtml(address)}</span>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3>Professional Summary</h3>
+                        <div class="resume-summary">${escapeHtml(summary)}</div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3>Education</h3>
+                        ${education.map(edu => `
+                            <div class="edu-item-card">
+                                <div class="edu-degree">${escapeHtml(edu.degree)}</div>
+                                <div class="edu-institution">${escapeHtml(edu.institution)} ${edu.year ? '| ' + edu.year : ''}</div>
+                            </div>
+                        `).join('')}
+                        ${education.length === 0 ? '<p style="color: #999;">No education added yet</p>' : ''}
+                    </div>
+
+                    <div class="resume-section">
+                        <h3>Skills</h3>
+                        <div class="skill-tags">
+                            ${skills.filter(s => s.trim()).map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('')}
+                            ${skills.filter(s => s.trim()).length === 0 ? '<p style="color: #999;">No skills added yet</p>' : ''}
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3>Projects</h3>
+                        ${projects.map(project => `
+                            <div class="project-item-card">
+                                <div class="project-title">📌 ${escapeHtml(project.title)}</div>
+                                <div class="project-desc">${escapeHtml(project.description)}</div>
+                            </div>
+                        `).join('')}
+                        ${projects.length === 0 ? '<p style="color: #999;">No projects added yet</p>' : ''}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('resumePreview').innerHTML = resumeHtml;
+        }
+
+        // Print / Download as PDF
+        function printResume() {
+            window.print();
+        }
+
+        // Add event listeners to form inputs
+        function attachFormListeners() {
+            const inputs = ['fullName', 'title', 'email', 'phone', 'address', 'summary'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', () => updateResume());
+            });
+        }
+
+        // Load saved data from localStorage
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('resumeBuilderData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                document.getElementById('fullName').value = data.fullName || '';
+                document.getElementById('title').value = data.title || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phone').value = data.phone || '';
+                document.getElementById('address').value = data.address || '';
+                document.getElementById('summary').value = data.summary || '';
+                skills = data.skills || ['JavaScript', 'React', 'HTML/CSS'];
+                education = data.education || [{ degree: 'B.Tech CSE', institution: 'University', year: '2024' }];
+                projects = data.projects || [{ title: 'Sample Project', description: 'Project description here' }];
+            } else {
+                initSampleData();
+            }
+            renderSkills();
+            renderEducation();
+            renderProjects();
+            updateResume();
+        }
+
+        // Save to localStorage
+        function saveToLocalStorage() {
+            const data = {
+                fullName: document.getElementById('fullName').value,
+                title: document.getElementById('title').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                summary: document.getElementById('summary').value,
+                skills: skills,
+                education: education,
+                projects: projects
+            };
+            localStorage.setItem('resumeBuilderData', JSON.stringify(data));
+        }
+
+        // Auto-save on any change
+        function setupAutoSave() {
+            const inputs = ['fullName', 'title', 'email', 'phone', 'address', 'summary'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', () => saveToLocalStorage());
+            });
+        }
+
+        // Initialize
+        loadFromLocalStorage();
+        attachFormListeners();
+        setupAutoSave();
+
+        // Save on dynamic changes
+        setInterval(() => saveToLocalStorage(), 1000);
+    </script>
+</body>
+</html>

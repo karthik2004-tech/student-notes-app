@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LingoLink — Word Chain Challenge</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #818cf8;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --success: #4ade80;
+      --error: #fb7185;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .mesh-bg {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 10% 20%, rgba(129, 140, 248, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.1) 0%, transparent 40%);
+    }
+
+    .game-card {
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      width: 90%;
+      max-width: 480px;
+      padding: 32px;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border: 1px solid var(--glass-border);
+      position: relative;
+      text-align: center;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .badge {
+      background: rgba(129, 140, 248, 0.15);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .current-word-box {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .last-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .word-display {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+
+    .highlight { color: var(--accent); text-shadow: 0 0 15px rgba(129, 140, 248, 0.5); }
+    
+    input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 18px;
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      outline: none;
+      transition: all 0.3s;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    input:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.08); }
+
+    .timer-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 100%;
+      margin-bottom: 25px;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .timer-progress {
+      height: 100%;
+      background: var(--accent);
+      width: 100%;
+      transition: width 1s linear, background 0.3s;
+    }
+
+    .screen-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      border-radius: 24px;
+      padding: 32px;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 16px 48px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(129, 140, 248, 0.4); }
+    .hidden { display: none !important; }
+    #feedback { height: 24px; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="mesh-bg"></div>
+  
+  <div class="game-card">
+    <div id="start-screen" class="screen-overlay">
+      <h1 style="font-size: 42px; margin: 0; letter-spacing: -1px;">LingoLink</h1>
+      <p style="color: var(--muted); margin: 20px 0 40px; line-height: 1.6;">A test of vocabulary and speed. Connect words by their last letter!</p>
+      <button class="primary-btn" onclick="initGame()">Start Challenge</button>
+    </div>
+
+    <div id="end-screen" class="screen-overlay hidden">
+      <h2 style="font-size: 32px; margin-bottom: 8px;">Time's Up!</h2>
+      <p style="color: var(--muted); margin-bottom: 20px;">Your Chain Master Score</p>
+      <div style="font-size: 64px; font-weight: 800; color: var(--accent); margin-bottom: 40px;" id="final-score">0</div>
+      <button class="primary-btn" onclick="initGame()">Try Again</button>
+    </div>
+
+    <div class="header">
+      <div class="badge">Word Chain</div>
+      <div style="font-weight: 600;">Score: <span id="score-val" style="color: var(--accent)">0</span></div>
+    </div>
+
+    <div class="timer-bar"><div id="timer-progress" class="timer-progress"></div></div>
+
+    <div class="current-word-box">
+      <div class="last-label">Connect to:</div>
+      <div class="word-display" id="target-word">---</div>
+    </div>
+
+    <div id="feedback"></div>
+    <input type="text" id="user-input" placeholder="Type word here..." autocomplete="off">
+    <p style="color: var(--muted); font-size: 12px; margin-top: 15px;">Enter word starting with the <span style="color: var(--accent)">highlighted</span> letter.</p>
+  </div>
+
+  <script>
+    const START_WORDS = ["PLANET", "DRAGON", "COFFEE", "GUITAR", "WIZARD", "ORANGE", "ENERGY", "BRIGHT", "GHOST", "PIZZA"];
+    let state = { score: 0, chain: [], timeLeft: 20, timer: null };
+
+    const elements = {
+      input: document.getElementById('user-input'),
+      target: document.getElementById('target-word'),
+      score: document.getElementById('score-val'),
+      feedback: document.getElementById('feedback'),
+      timer: document.getElementById('timer-progress'),
+      start: document.getElementById('start-screen'),
+      end: document.getElementById('end-screen'),
+      finalScore: document.getElementById('final-score')
+    };
+
+    function initGame() {
+      state.score = 0;
+      state.timeLeft = 20;
+      const startWord = START_WORDS[Math.floor(Math.random() * START_WORDS.length)];
+      state.chain = [startWord];
+      
+      elements.score.textContent = "0";
+      elements.target.innerHTML = formatWord(startWord);
+      elements.input.value = "";
+      elements.feedback.textContent = "";
+      
+      elements.start.classList.add('hidden');
+      elements.end.classList.add('hidden');
+      elements.input.focus();
+      
+      resetTimer();
+    }
+
+    function formatWord(word) {
+      const last = word.slice(-1);
+      return word.slice(0, -1) + `<span class="highlight">${last}</span>`;
+    }
+
+    function resetTimer() {
+      clearInterval(state.timer);
+      state.timeLeft = 20;
+      updateTimerUI();
+      state.timer = setInterval(() => {
+        state.timeLeft--;
+        updateTimerUI();
+        if (state.timeLeft <= 0) endGame();
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const percent = (state.timeLeft / 20) * 100;
+      elements.timer.style.width = percent + "%";
+      if (state.timeLeft <= 5) elements.timer.style.background = "var(--error)";
+      else elements.timer.style.background = "var(--accent)";
+    }
+
+    function submitWord() {
+      const val = elements.input.value.trim().toUpperCase();
+      if (!val) return;
+
+      const lastWord = state.chain[state.chain.length - 1];
+      const requiredLetter = lastWord.slice(-1);
+
+      if (val[0] !== requiredLetter) {
+        showFeedback(`Must start with ${requiredLetter}`, "var(--error)");
+        return;
+      }
+
+      if (state.chain.includes(val)) {
+        showFeedback("Already used!", "var(--error)");
+        return;
+      }
+
+      if (val.length < 3) {
+        showFeedback("Too short! (min 3)", "var(--error)");
+        return;
+      }
+
+      // Success logic
+      state.chain.push(val);
+      state.score += val.length * 10;
+      elements.score.textContent = state.score;
+      elements.target.innerHTML = formatWord(val);
+      elements.input.value = "";
+      showFeedback("Excellent! +Time", "var(--success)");
+      
+      // Reward with some extra time
+      state.timeLeft = Math.min(state.timeLeft + 6, 20);
+      updateTimerUI();
+    }
+
+    function showFeedback(msg, color) {
+      elements.feedback.textContent = msg;
+      elements.feedback.style.color = color;
+      setTimeout(() => {
+        if (elements.feedback.textContent === msg) elements.feedback.textContent = "";
+      }, 1500);
+    }
+
+    function endGame() {
+      clearInterval(state.timer);
+      elements.finalScore.textContent = state.score;
+      elements.end.classList.remove('hidden');
+    }
+
+    elements.input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') submitWord();
+    });
+  </script>
+</body>
+</html>

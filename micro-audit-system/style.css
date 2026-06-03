@@ -57,6 +57,42 @@ body{
     font-weight:600;
 }
 
+.role-badge{
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    letter-spacing:0.4px;
+}
+
+.role-badge.admin{
+    background:#fee2e2;
+
+    color:#b91c1c;
+}
+
+.role-badge.user{
+    background:#dbeafe;
+
+    color:#1d4ed8;
+}
+
+.hidden{
+    display:none;
+}
+
+.stats-container.hidden{
+    display:none;
+}
+
 /* Theme Toggle */
 
 #themeToggle{
@@ -136,7 +172,8 @@ body{
         0px 4px 20px rgba(0,0,0,0.06);
 }
 
-.auth-form input{
+.auth-form input,
+.auth-form select{
     padding:16px;
 
     border:none;
@@ -441,6 +478,14 @@ body{
     background:#64748b;
 }
 
+.permission-note{
+    color:#64748b;
+
+    font-size:14px;
+
+    font-weight:700;
+}
+
 .edit-audit-info{
     display:flex;
 
@@ -518,7 +563,8 @@ body.dark-mode #themeToggle{
         0px 4px 20px rgba(255,255,255,0.05);
 }
 
-body.dark-mode .auth-form input{
+body.dark-mode .auth-form input,
+body.dark-mode .auth-form select{
     background:rgba(2,6,23,0.75);
 
     color:white;
@@ -528,6 +574,22 @@ body.dark-mode .auth-form input{
 }
 
 body.dark-mode .auth-link{
+    color:#cbd5e1;
+}
+
+body.dark-mode .role-badge.user{
+    background:rgba(37,99,235,0.22);
+
+    color:#bfdbfe;
+}
+
+body.dark-mode .role-badge.admin{
+    background:rgba(220,38,38,0.22);
+
+    color:#fecaca;
+}
+
+body.dark-mode .permission-note{
     color:#cbd5e1;
 }
 
