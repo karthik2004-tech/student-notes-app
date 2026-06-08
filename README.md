@@ -1,327 +1,139 @@
-# 🚀 NSOC'26 — 20 Days • 20 Projects Challenge
+# GPA Calculator
 
-<div align="center">
+A modern, efficient web-based GPA calculator built with semantic HTML, responsive CSS, and vanilla JavaScript using advanced patterns like event delegation and template cloning.
 
-### Build • Learn • Contribute • Grow
+## Features
 
-A beginner-friendly open-source repository where contributors can showcase creativity by building mini-projects, UI components, tools, games, and web applications.
+✨ **Real-Time Calculation** – Instant GPA updates as you type
+🎨 **Visual Status Indicators** – Color-coded feedback (Green: Excellent, Orange: Good, Red: Needs Improvement)
+📱 **Fully Responsive** – Works seamlessly on desktop, tablet, and mobile
+⚡ **Performance Optimized** – Event delegation prevents memory bloat; template cloning avoids costly DOM re-parsing
+♿ **Accessible** – Semantic HTML with proper ARIA labels
+🎯 **Graceful Validation** – Incomplete rows are skipped; filled rows are validated instantly
 
-**No contribution limit. No project size restrictions. Just build and learn.**
+## GPA Calculation Formula
 
-</div>
+The calculator uses the **Semester GPA (SGPA)** formula:
 
----
+$$\text{SGPA} = \frac{\sum (\text{Course Credits} \times \text{Grade Points})}{\sum \text{Total Credits}}$$
 
-## 🌟 What is NSOC'26?
+### Grade Scale
 
-NSOC'26 has been transformed into a **20 Days • 20 Projects Challenge** to provide a smoother and more organized contribution experience.
+| Grade | Points |
+|-------|--------|
+| O     | 10     |
+| A+    | 9      |
+| A     | 8      |
+| B+    | 7      |
+| B     | 6      |
+| C     | 5      |
+| F     | 0      |
 
-Sorry for the inconvenience. The previous **Student Notes App** project was frequently running into large merge conflicts due to the high number of PRs. Because of that, I've changed it to **20 Days, 20 Projects**.
+## Architectural Highlights
 
-Drop your crazy frontend projects, UI designs, landing pages, components, dashboards, animations, and anything else you've built. Let's create and showcase as many projects as possible!
+### Event Delegation
+Instead of attaching listeners to every input, a single event listener on the parent `<tbody>` catches all bubbling events. This is significantly more memory-efficient.
 
-
----
-
-## 🎯 Why Participate?
-
-### ✅ Beginner Friendly
-
-Perfect for first-time contributors and students exploring open source.
-
-### ✅ Unlimited Contributions
-
-Submit as many projects, improvements, or components as you like.
-
-### ✅ Learn by Building
-
-Create real projects while improving your HTML, CSS, JavaScript, React, and frontend development skills.
-
-### ✅ Showcase Your Creativity
-
-Build anything from calculators and weather apps to games, dashboards, utilities, and UI components.
-
----
-
-## ⚡ Quick Start
-
-### 1. Fork the Repository
-
-Click the **Fork** button at the top-right corner.
-
-### 2. Clone Your Fork
-
-```bash
-git clone https://github.com/YOUR_USERNAME/student-notes-app.git
-cd student-notes-app
-npm install
-npm run dev
+```javascript
+// One listener captures all delete clicks and input changes
+DOM.courseTableBody.addEventListener('click', handleTableEvent);
+DOM.courseTableBody.addEventListener('input', handleTableEvent);
 ```
 
-### 3. Create a New Project Folder
+### Template Cloning
+Uses the HTML `<template>` tag for efficient row creation. Cloning a template is faster than constructing HTML strings and using `innerHTML +=`, which forces the browser to re-parse the entire DOM tree.
 
-Example:
-
-```text
-student-notes-app/
-│
-├── calculator/
-├── weather-app/
-├── study-timer/
-└── your-project/
+```javascript
+const clone = DOM.courseRowTemplate.content.cloneNode(true);
+DOM.courseTableBody.appendChild(clone);
 ```
 
-### 4. Add Your Files
+### Graceful Validation
+- Empty rows are silently ignored
+- Incomplete rows (missing course name, credits, or grade) are skipped during calculation
+- The calculator corrects itself instantly if a student deletes data mid-entry
 
-```text
-your-project/
-├── index.html
-├── style.css
-└── script.js
+### State Synchronization
+The GPA is always calculated directly from the current DOM state. No hidden state means no out-of-sync bugs.
+
+## File Structure
+
+```
+gpa-calculator/
+├── index.html      # Semantic HTML structure with template tag
+├── styles.css      # Design tokens, responsive layout, state colors
+├── app.js          # Calculation engine, event delegation, DOM manipulation
+└── README.md       # This file
 ```
 
-### 5. Link your Project to the Main Dashboard
+## Implementation Phases
 
-Open the root `index.html` file, locate the `<div class="card-container">` section, and add a new HTML card block that hyperlinks to your newly created folder.
+### Phase 1: Foundation
+- ✅ Repository structure with semantic HTML
+- ✅ CSS design tokens for colors, typography, spacing
+- ✅ Responsive layout using flexbox and CSS grid
 
-### 6. Commit and Create a Pull Request
+### Phase 2: State & DOM Manipulation
+- ✅ Template setup for course rows
+- ✅ Row management: `addNewRow()`, `deleteRow()`, `resetAllRows()`
+- ✅ Event delegation on table body
 
-Push your changes and open a PR.
+### Phase 3: Calculation Engine
+- ✅ Data scraper: `scrapeCourseData()` reads DOM and returns validated courses
+- ✅ SGPA formula: `calculateSGPA(courses)` computes weighted average
+- ✅ Defensive guardrails: Division by zero handling, validation, clamping to [0, 10]
 
-### ⚠️ Crucial: Linking Your Project to the Main Grid
-To prevent severe Git merge conflicts, **DO NOT modify `index.html` directly!** As multiple contributors submit projects simultaneously, directly editing the main HTML file will cause your Pull Request to conflict and fail. 
-* **To add your project to the main showcase:** Please add a new entry to the `projects.json` file (or follow the repository's designated safe-linking process). 
+### Phase 4: UI Polish
+- ✅ Dynamic color indicators based on GPA thresholds (>8.5: Green, >7.0: Orange, else: Red)
+- ✅ Real-time status messages
+- ✅ Smooth transitions and animations
+- ✅ Responsive design with media queries
 
----
+## Usage
 
-## 📂 Project Structure
+1. **Add Course**: Click the "+ Add Course" button to append a new row
+2. **Fill Details**: Enter course name, credits, and select a grade
+3. **View GPA**: Your SGPA updates in real-time at the top
+4. **Delete Course**: Click the 🗑️ button to remove a course
+5. **Reset All**: Click "Reset All" to clear the entire table
 
-Each contributor should create a separate folder.
+## Browser Compatibility
 
-Example:
+- ✅ Chrome/Edge (latest)
+- ✅ Firefox (latest)
+- ✅ Safari (latest)
+- ✅ Requires ES6 support (template literals, arrow functions, const/let)
 
-```text
-/project-name
-│
-├── index.html
-├── style.css
-└── script.js
+## Performance Characteristics
+
+- **Memory**: O(n) where n = number of courses
+- **Calculation**: O(n) – single pass through courses
+- **Event Handlers**: O(1) – constant number regardless of row count
+- **DOM Operations**: Optimized through template cloning
+
+## Design Tokens
+
+The color system uses CSS custom properties for consistency:
+
+```css
+--color-success: #10b981     /* Green: GPA ≥ 8.5 */
+--color-warning: #f59e0b     /* Orange: GPA 7.0–8.4 */
+--color-danger: #ef4444      /* Red: GPA < 7.0 */
+--color-primary: #2563eb     /* Primary action color */
 ```
 
-### Important
+## Future Enhancements
 
-* Keep all files inside your project folder.
-* Do not modify other contributors' projects.
-* Use meaningful folder names.
-* Keep pull requests focused on a single project or improvement.
+- 📊 Download GPA history as CSV
+- 🔄 Cumulative GPA tracking across semesters
+- 💾 Local storage to persist data between sessions
+- 🌙 Dark mode toggle
+- 📋 Course presets for common universities
 
----
+## License
 
-## 🏆 Levels & Points System
-
-| Level      | Requirements            | Points    |
-| ---------- | ----------------------- | --------- |
-| 🟢 Level 1 | HTML + Basic CSS        | 3 Points  |
-| 🔵 Level 2 | HTML + Advanced CSS     | 5 Points  |
-| 🟣 Level 3 | HTML + CSS + JavaScript | 10 Points |
+MIT
 
 ---
 
-## 💡 Project Ideas
-
-### 🟢 Level 1
-
-* Landing Page
-* Portfolio Page
-* Navigation Bar
-* Profile Card
-* Static Website
-
-### 🔵 Level 2
-
-* Responsive Dashboard
-* Animated UI Components
-* Glassmorphism Designs
-* Pricing Cards
-* Modern Landing Pages
-
-### 🟣 Level 3
-
-* Calculator
-* To-Do App
-* Quiz App
-* Weather App
-* Expense Tracker
-* Habit Tracker
-* Games
-* Productivity Tools
-
----
-## 📂 Featured Projects in This Repository
-
-This repository already contains a growing collection of projects built by contributors across different categories.
-
-### 🎮 Games
-
-* Hangman
-* Snake Game
-* Tic-Tac-Toe
-* Memory Match Game
-* Memory Card Game
-* Flappy Bird
-* Whack-a-Mole
-* Dots and Boxes
-* Word Scramble
-* Word Completion Game
-* Identify Word Game
-* Maths Calculation Game
-* Nebula Game
-
-### 📚 Study & Productivity
-
-* Student Notes App
-* Study Streak Tracker
-* Study Progress Assessment System
-* Revision App
-* Study Clock
-* Smart Planner
-* Deadline Tracker
-* Exam Countdown
-* Exam Timetable
-* Flashcard Quiz
-* Focus Flow
-* Pomodoro Timer
-* Study Topic Spinner
-* Interview Preparation Dashboard
-* LeetCode Tracker
-
-### ✅ Task & Notes Management
-
-* Todo App
-* Google Keep Clone
-* Sticky Notes UI
-* Digital Diary
-* Task Completion System
-
-### 💰 Finance & Calculators
-
-* Expense Tracker
-* Student Budget Tracker
-* CGPA Calculator
-* GPA Calculator
-* Fee Calculator
-* BMI Calculator
-* Calculator
-* Unit Converter
-* Bit Converter
-
-### 🌐 Utilities & Tools
-
-* GitHub User Finder
-* GitHub Explorer
-* QR Code Generator
-* Password Generator
-* Color Picker
-* Weather Card
-* Utility App
-* Calendar
-* Decision Wheel
-
-### 📈 Tracking & Monitoring
-
-* Attendance Tracker
-* Habit Tracker
-* Subject Progress Bars
-* Performance Measuring App
-* Syllabus Tracker
-
-### 🎨 UI & Frontend Components
-
-* Coding Hub
-* Study Group UI
-* PatternWise App
-
-### 🚀 And Many More...
-
-New projects are added regularly by contributors. Feel free to explore the repository folders and contribute your own project.
-
-## 🛠 Supported Technologies
-
-You are free to use:
-
-* HTML
-* CSS
-* JavaScript
-* React
-* Tailwind CSS
-* Bootstrap
-* Vite
-* Any Frontend Framework or Library
-
----
-
-## 📜 Contribution Guidelines
-
-### 📁 Where to Put Your Project
-To keep this repository organized, **all new projects must be placed in their own dedicated folder at the ROOT level of the repository.** **❌ DO NOT:**
-* Do not place your project inside  other existing project's folder.
-* Do not place your files loosely in the root directory without a containing folder.
-
-**✅ DO:**
-* Create a new folder at the root level named after your project (e.g., `student-notes-app/my-awesome-game/`).
-* Place all your HTML, CSS, and JS files strictly inside that new folder.
-
-Before submitting a PR:
-
-* Create a dedicated folder for your project.
-* Follow clean folder naming conventions.
-* Avoid unnecessary dependency additions.
-* Do not overwrite existing work.
-* Test your project before submission.
-* Keep pull requests small and focused.
-
-### 🎨 Centralized Theme Management
-To maintain a consistent UI/UX across all projects, **do not write custom dark mode toggles**. Instead, link the global theme files in your project's `index.html`:
-1. Add `<link rel="stylesheet" href="../global-theme.css">` inside your `<head>`.
-2. Add `<script src="../global-theme.js"></script>` before the closing `</body>` tag.
-3. Use the CSS variables (`var(--bg-color)`, `var(--text-color)`, etc.) in your local CSS files instead of hardcoding colors.
-
----
-
-## 🎯 Repository Goals
-
-This repository aims to:
-
-* Help beginners start contributing confidently.
-* Encourage consistent project building.
-* Reduce contribution barriers.
-* Promote collaboration and learning.
-* Create a collection of creative community projects.
-
----
-
-## 📈 Roadmap
-
-* [ ] Reach 100+ community projects
-* [ ] Add project showcase section
-* [ ] Add contributor leaderboard
-* [ ] Improve project categorization
-* [ ] Add contribution statistics
-* [ ] Create project gallery page
-
----
-
-## 🤝 Contributing
-
-Every contribution matters.
-
-Whether you build a complete application, a reusable component, or a creative experiment, your work helps grow the community.
-
-**Build something useful. Build something fun. Build something unique.**
-
-Happy Contributing! 🚀
-
-## Responsive Design & Testing Guidelines
-
-To ensure all applications provide a consistent user experience across devices, contributors must adhere to the following mobile-first design and testing guidelines:
 
