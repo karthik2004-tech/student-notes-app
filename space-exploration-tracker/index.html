@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Exploration Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="twinkling"></div>
+
+    <div class="container">
+        <header>
+            <h1>Space Exploration Tracker</h1>
+            <p>Live data from NASA APIs</p>
+        </header>
+
+        <main>
+            <section class="apod-section">
+                <div class="section-header">
+                    <h2>Astronomy Picture of the Day</h2>
+                    <span class="date" id="apod-date">Loading...</span>
+                </div>
+                
+                <div class="apod-content" id="apod-content">
+                    <div class="loader">Fetching from NASA...</div>
+                </div>
+                
+                <div class="apod-info hidden" id="apod-info">
+                    <h3 id="apod-title">Title</h3>
+                    <p id="apod-desc">Description</p>
+                    <p class="copyright" id="apod-copyright"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
