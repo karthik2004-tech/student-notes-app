@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Management Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Tesseract.js for OCR -->
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h2>Expense<span class="highlight">Dash</span></h2>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#">Dashboard</a></li>
+                    <li><a href="#">Transactions</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="balance-card">
+                <p>Total Expenses</p>
+                <h3 id="total-expense">$0.00</h3>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Dashboard Overview</h1>
+            </header>
+
+            <div class="content-grid">
+                <!-- Add Expense Form -->
+                <div class="card form-card">
+                    <h3>Add New Expense</h3>
+                    
+                    <div class="ocr-section">
+                        <p class="section-desc">Auto-fill from receipt using AI:</p>
+                        <input type="file" id="receipt-upload" accept="image/*" class="file-input">
+                        <label for="receipt-upload" class="upload-btn">Upload Receipt Image</label>
+                        <div id="ocr-status" class="status-msg"></div>
+                        <div id="ocr-preview" class="image-preview"></div>
+                    </div>
+
+                    <form id="expense-form">
+                        <div class="form-group">
+                            <label for="expense-name">Description</label>
+                            <input type="text" id="expense-name" required placeholder="e.g. Office Supplies">
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-amount">Amount ($)</label>
+                            <input type="number" id="expense-amount" step="0.01" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-category">Category</label>
+                            <select id="expense-category" required>
+                                <option value="Food">Food & Dining</option>
+                                <option value="Transport">Transportation</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="submit-btn">Add Expense</button>
+                    </form>
+                </div>
+
+                <!-- Expense Chart -->
+                <div class="card chart-card">
+                    <h3>Expense by Category</h3>
+                    <div class="chart-container">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="card table-card">
+                    <h3>Recent Transactions</h3>
+                    <div class="table-container">
+                        <table id="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                        <div id="empty-state" class="empty-state">
+                            No expenses yet. Add one above!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
