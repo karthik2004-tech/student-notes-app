@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="wrapper">
+    <h1 class="title">Calculator</h1>
+
+    <div class="calculator">
+
+      <!-- Display -->
+      <div class="display">
+        <div class="expression" id="expression"></div>
+        <div class="result" id="result">0</div>
+      </div>
+
+      <!-- History Panel -->
+      <div class="history-box">
+        <div class="history-header">
+          <span>History</span>
+          <button onclick="clearHistory()">Clear</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <p class="no-history">No calculations yet</p>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="buttons">
+
+        <!-- Row 1 -->
+        <button class="btn special" onclick="clearAll()">AC</button>
+        <button class="btn special" onclick="deleteLast()">⌫</button>
+        <button class="btn special" onclick="toggleSign()">+/−</button>
+        <button class="btn operator" onclick="appendToDisplay('/')">÷</button>
+
+        <!-- Row 2 -->
+        <button class="btn" onclick="appendToDisplay('7')">7</button>
+        <button class="btn" onclick="appendToDisplay('8')">8</button>
+        <button class="btn" onclick="appendToDisplay('9')">9</button>
+        <button class="btn operator" onclick="appendToDisplay('*')">×</button>
+
+        <!-- Row 3 -->
+        <button class="btn" onclick="appendToDisplay('4')">4</button>
+        <button class="btn" onclick="appendToDisplay('5')">5</button>
+        <button class="btn" onclick="appendToDisplay('6')">6</button>
+        <button class="btn operator" onclick="appendToDisplay('-')">−</button>
+
+        <!-- Row 4 -->
+        <button class="btn" onclick="appendToDisplay('1')">1</button>
+        <button class="btn" onclick="appendToDisplay('2')">2</button>
+        <button class="btn" onclick="appendToDisplay('3')">3</button>
+        <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+
+        <!-- Row 5 -->
+        <button class="btn zero" onclick="appendToDisplay('0')">0</button>
+        <button class="btn" onclick="appendToDisplay('.')">.</button>
+        <button class="btn equals" onclick="calculate()">=</button>
+
+        <!-- Row 6 - Extra Operations -->
+        <button class="btn extra" onclick="appendToDisplay('%')">%</button>
+        <button class="btn extra" onclick="squareRoot()">√</button>
+        <button class="btn extra" onclick="square()">x²</button>
+        <button class="btn extra" onclick="inverse()">1/x</button>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

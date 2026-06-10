@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hangman Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <div class="header">
+      <h1 class="title">Hangman</h1>
+      <p class="subtitle">Guess the word before time runs out!</p>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-num" id="winsCount">0</div>
+        <div class="stat-label">Wins</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="lossCount">0</div>
+        <div class="stat-label">Losses</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="streakNum">0</div>
+        <div class="stat-label">Streak</div>
+      </div>
+    </div>
+
+    <div class="game-area">
+
+      <!-- Left: Hangman Drawing -->
+      <div class="left-panel">
+        <div class="category-badge" id="categoryBadge">Category</div>
+        <svg class="hangman-svg" viewBox="0 0 200 250">
+          <!-- Gallows -->
+          <line x1="20" y1="240" x2="180" y2="240" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>
+          <line x1="60" y1="240" x2="60" y2="20" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>
+          <line x1="60" y1="20" x2="130" y2="20" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>
+          <line x1="130" y1="20" x2="130" y2="50" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>
+          <!-- Body parts (hidden by default) -->
+          <circle id="p-head" cx="130" cy="70" r="20" stroke="#f87171" stroke-width="3" fill="none" class="body-part hidden"/>
+          <line id="p-body" x1="130" y1="90" x2="130" y2="150" stroke="#f87171" stroke-width="3" stroke-linecap="round" class="body-part hidden"/>
+          <line id="p-larm" x1="130" y1="110" x2="100" y2="135" stroke="#f87171" stroke-width="3" stroke-linecap="round" class="body-part hidden"/>
+          <line id="p-rarm" x1="130" y1="110" x2="160" y2="135" stroke="#f87171" stroke-width="3" stroke-linecap="round" class="body-part hidden"/>
+          <line id="p-lleg" x1="130" y1="150" x2="105" y2="185" stroke="#f87171" stroke-width="3" stroke-linecap="round" class="body-part hidden"/>
+          <line id="p-rleg" x1="130" y1="150" x2="155" y2="185" stroke="#f87171" stroke-width="3" stroke-linecap="round" class="body-part hidden"/>
+        </svg>
+
+        <!-- Lives -->
+        <div class="lives-row">
+          <span id="life1" class="life">❤️</span>
+          <span id="life2" class="life">❤️</span>
+          <span id="life3" class="life">❤️</span>
+          <span id="life4" class="life">❤️</span>
+          <span id="life5" class="life">❤️</span>
+          <span id="life6" class="life">❤️</span>
+        </div>
+        <p class="lives-text"><span id="livesLeft">6</span> lives remaining</p>
+      </div>
+
+      <!-- Right: Word + Keyboard -->
+      <div class="right-panel">
+
+        <!-- Hint -->
+        <div class="hint-box">
+          <span class="hint-label">Hint</span>
+          <span class="hint-text" id="hintText">—</span>
+        </div>
+
+        <!-- Word Display -->
+        <div class="word-display" id="wordDisplay"></div>
+
+        <!-- Wrong Letters -->
+        <div class="wrong-box">
+          <span class="wrong-label">Wrong guesses:</span>
+          <span class="wrong-letters" id="wrongLetters">—</span>
+        </div>
+
+        <!-- Keyboard -->
+        <div class="keyboard" id="keyboard"></div>
+
+        <!-- Message -->
+        <div class="message hidden" id="message">
+          <div class="msg-icon" id="msgIcon"></div>
+          <div class="msg-text" id="msgText"></div>
+          <div class="msg-word" id="msgWord"></div>
+          <button class="play-again-btn" onclick="startNewGame()">Play Again</button>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="new-game-btn" onclick="startNewGame()">New Game</button>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
