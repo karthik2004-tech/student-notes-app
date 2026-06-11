@@ -108,20 +108,27 @@ function displayRepos(repos) {
         card.className =
             "repo-card fade-in";
 
-        card.innerHTML = `
-            <h3>${repo.name}</h3>
+        const title = document.createElement("h3");
+        title.textContent = repo.name;
+        card.appendChild(title);
 
-            <p>⭐ ${repo.stargazers_count} Stars</p>
+        const stars = document.createElement("p");
+        stars.textContent = `⭐ ${repo.stargazers_count} Stars`;
+        card.appendChild(stars);
 
-            <p>🍴 ${repo.forks_count} Forks</p>
+        const forks = document.createElement("p");
+        forks.textContent = `🍴 ${repo.forks_count} Forks`;
+        card.appendChild(forks);
 
-            <p>💻 ${repo.language || "N/A"}</p>
+        const lang = document.createElement("p");
+        lang.textContent = `💻 ${repo.language || "N/A"}`;
+        card.appendChild(lang);
 
-            <a href="${repo.html_url}"
-               target="_blank">
-               Open Repository
-            </a>
-        `;
+        const link = document.createElement("a");
+        link.href = repo.html_url;
+        link.target = "_blank";
+        link.textContent = "Open Repository";
+        card.appendChild(link);
 
         container.appendChild(card);
     });

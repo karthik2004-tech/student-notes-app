@@ -197,7 +197,11 @@
 </div>
 
 <script>
+        af
     const escapeHTML = (str) => { const node = document.createElement('div'); node.textContent = str; return node.innerHTML; };
+
+    const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        main
     let entries = JSON.parse(localStorage.getItem('journal_entries')) || [];
     let selectedMood = '😊';
     let isLocked = true;
