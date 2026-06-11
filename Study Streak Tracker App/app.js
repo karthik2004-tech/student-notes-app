@@ -4,6 +4,17 @@
  * ==========================================================================
  */
 
+const escapeHTML = (str) => {
+    if (!str) return '';
+    return str.toString().replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    }[tag] || tag));
+};
+
 // Subject categories configuration
 const SUBJECTS = {
     Coding: { color: '#a855f7', icon: 'bx-code-alt' },
@@ -320,10 +331,10 @@ function checkAuthSession() {
         const initials = state.currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
         
         profileArea.innerHTML = `
-            <div class="avatar" id="user-avatar-initials">${initials}</div>
+            <div class="avatar" id="user-avatar-initials">${escapeHTML(initials)}</div>
             <div class="profile-info">
-                <h4 id="user-profile-name">${state.currentUser.name}</h4>
-                <span id="user-profile-email">${state.currentUser.email}</span>
+                <h4 id="user-profile-name">${escapeHTML(state.currentUser.name)}</h4>
+                <span id="user-profile-email">${escapeHTML(state.currentUser.email)}</span>
             </div>
         `;
     } else {
@@ -686,12 +697,6 @@ function renderAnalyticsCharts(logs) {
  * STUDY LOGS CRUD LEDGER
  * ==========================================================================
  */
-function escapeHTML(str) {
-    if (!str) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
 
 function renderLogsTable() {
     const listBody = document.getElementById('logs-list-body');

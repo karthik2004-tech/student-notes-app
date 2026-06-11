@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Notes App</title>
+  <link rel="manifest" href="./manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="store.js"></script>
@@ -539,6 +540,60 @@
       }
     }
   </script>
+  <!-- Settings Modal for Backup/Restore -->
+  <div id="settings-modal" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:#fff; padding:20px; border:1px solid #ccc; z-index:1000; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+      <h2>Data Management</h2>
+      <button id="backup-btn">Backup Data</button>
+      <button id="restore-btn" onclick="document.getElementById('import-file').click()">Restore Data</button>
+      <input type="file" id="import-file" style="display:none" accept=".json">
+      <button onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:10px;">Close</button>
+  </div>
+  <button onclick="document.getElementById('settings-modal').style.display='block'" style="position:fixed; bottom:10px; right:10px; z-index:999;">⚙️ Settings</button>
+
+  <script>
+      // Export Logic
+      document.getElementById('backup-btn').addEventListener('click', () => {
+          const data = JSON.stringify(localStorage);
+          const blob = new Blob([data], {type: 'application/json'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'app_backup.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+      });
+
+      // Import Logic
+      document.getElementById('import-file').addEventListener('change', (event) => {
+          const file = event.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+              try {
+                  const data = JSON.parse(e.target.result);
+                  localStorage.clear();
+                  for (let key in data) {
+                      localStorage.setItem(key, data[key]);
+                  }
+                  alert('Data restored successfully!');
+                  location.reload();
+              } catch (err) {
+                  alert('Invalid backup file.');
+                  console.error(err);
+              }
+          };
+          reader.readAsText(file);
+      });
+  </script>
   <script src="grid-renderer.js"></script>
+</body>
+</html>
+addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.error('SW registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>

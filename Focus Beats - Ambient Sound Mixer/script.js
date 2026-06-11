@@ -474,15 +474,30 @@ function saveToStorage() {
     localStorage.setItem('focusBeats_volumes', JSON.stringify(state.volumes));
     localStorage.setItem('focusBeats_cycles', String(state.focusCycles));
     localStorage.setItem('focusBeats_muted', JSON.stringify(state.muted));
-  } catch (_) {}
+  } catch (e) {
+    console.warn("LocalStorage is unavailable or full. Settings will not be saved across sessions.");
+  }
 }
 
 function loadFromStorage() {
+  let volumes, cycles, muted;
   try {
-    const volumes = localStorage.getItem('focusBeats_volumes');
-    const cycles = localStorage.getItem('focusBeats_cycles');
-    const muted = localStorage.getItem('focusBeats_muted');
+    volumes = localStorage.getItem('focusBeats_volumes');
+  } catch (e) {
+    volumes = null;
+  }
+  try {
+    cycles = localStorage.getItem('focusBeats_cycles');
+  } catch (e) {
+    cycles = null;
+  }
+  try {
+    muted = localStorage.getItem('focusBeats_muted');
+  } catch (e) {
+    muted = null;
+  }
 
+  try {
     if (volumes) {
       const p = JSON.parse(volumes);
       state.volumes = { rain: 0, cafe: 0, whiteNoise: 0, train: 0 };
@@ -505,7 +520,9 @@ function loadFromStorage() {
       if (typeof p.whiteNoise === 'boolean') state.muted.whiteNoise = p.whiteNoise;
       if (typeof p.train === 'boolean') state.muted.train = p.train;
     }
-  } catch (_) {}
+  } catch (e) {
+    // Silently ignore parse errors to maintain default state
+  }
 }
 
 playBtn.addEventListener('click', startTimer);

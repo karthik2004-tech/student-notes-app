@@ -92,6 +92,14 @@ Push your changes and open a PR.
 To prevent severe Git merge conflicts, **DO NOT modify `index.html` directly!** As multiple contributors submit projects simultaneously, directly editing the main HTML file will cause your Pull Request to conflict and fail. 
 * **To add your project to the main showcase:** Please add a new entry to the `projects.json` file (or follow the repository's designated safe-linking process). 
 
+### Backend Setup
+If you are working with the Node.js backend components, you will need to install the dependencies and start the local server. Run the following commands:
+```bash
+cd calculator/patternwise-app/backend
+npm install
+npm start
+```
+
 ---
 
 ## 📂 Project Structure
@@ -324,4 +332,33 @@ Happy Contributing! 🚀
 ## Responsive Design & Testing Guidelines
 
 To ensure all applications provide a consistent user experience across devices, contributors must adhere to the following mobile-first design and testing guidelines:
+
+### LocalStorage Utility Standard
+When implementing `localStorage` across any component, you **must** use `try/catch` blocks to prevent the application from crashing if the browser's storage quota is exceeded or if storage is restricted (e.g., in Private/Incognito mode).
+
+Use the following standard utility pattern for all LocalStorage interactions:
+
+\`\`\`javascript
+const StorageUtil = {
+  set(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (error) {
+      console.error('LocalStorage quota exceeded or unavailable:', error);
+      // Optional: Alert the user or fallback to memory storage
+      return false;
+    }
+  },
+  get(key, defaultValue = null) {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch (error) {
+      console.error('Error reading from LocalStorage:', error);
+      return defaultValue;
+    }
+  }
+};
+\`\`\`
 
