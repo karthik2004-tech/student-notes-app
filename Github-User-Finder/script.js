@@ -126,14 +126,14 @@ searchBtn.addEventListener("click", function (e) {
   let username = usernameinp.value.trim();
   if (username.length > 0) {
     // Show a temporary loading state
-    card.innerHTML = `<p class="text-center text-gray-400">Searching for ${username}...</p>`;
+    card.innerHTML = `<p class="text-center text-gray-400">Searching for ${escapeHTML(username)}...</p>`;
 
     Promise.all([getProfileData(username), getRepos(username)])
       .then(([details, repos]) => {
         decorateProfileData(details, repos);
       })
       .catch((error) => {
-        card.innerHTML = `<div class="error-card"><h2>${error.message}</h2></div>`;
+        card.innerHTML = `<div class="error-card"><h2>${escapeHTML(error.message)}</h2></div>`;
       });
   } else {
     alert("Please enter a GitHub username!");

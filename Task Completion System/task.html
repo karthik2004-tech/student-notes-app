@@ -473,6 +473,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
+const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 /* ═══════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════ */
@@ -649,9 +650,9 @@ function renderCard(subjectId) {
   card.innerHTML = `
     <!-- Header -->
     <div class="card-header">
-      <div class="subject-icon" style="background:${c.bg}">${subj.emoji}</div>
+      <div class="subject-icon" style="background:${c.bg}">${escapeHTML(subj.emoji)}</div>
       <div class="card-title-group">
-        <div class="subject-name">${escHtml(subj.name)}</div>
+        <div class="subject-name">${escapeHTML(subj.name)}</div>
         <div class="topic-count">${total} topic${total!==1?'s':''} &nbsp;·&nbsp; ${done} completed</div>
       </div>
       <div id="badge-${subjectId}" class="complete-badge${allDone?' show':''}">
@@ -697,7 +698,7 @@ function topicHTML(t, subjectId, c) {
   const cbBg      = t.done ? `background:${c.fill}` : '';
   return `<div class="topic-item${doneClass}" id="topic-${t.id}" onclick="toggleTopic(${subjectId},${t.id})">
     <div class="check-box${cbClass}" style="${cbBg}"></div>
-    <span class="topic-label">${escHtml(t.text)}</span>
+    <span class="topic-label">${escapeHTML(t.text)}</span>
     <button class="topic-remove" onclick="removeTopic(${subjectId},${t.id},event)" title="Remove">×</button>
   </div>`;
 }

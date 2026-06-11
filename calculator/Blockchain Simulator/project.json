@@ -1,0 +1,19 @@
+{
+  "title": "Blockchain Simulator",
+  "description": "A cryptographic blockchain workbench featuring native SHA-256 mining via crypto.subtle.digest, adjustable proof-of-work difficulty (1–4 zero bits), chain validation with tamper cascade detection, horizontal block card track with live editing, and real-time telemetry.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["blockchain", "cryptography", "sha-256", "proof-of-work", "mining", "chain-validation", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "SHA-256 mining: async mineBlock() loops in batches of 200 hashes yielding to UI via setTimeout(0), increments nonce until hex digest matches difficulty prefix ('0'.repeat(difficulty)). Uses crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)) with ArrayBuffer→hex conversion via Uint8Array",
+    "Block chain structure: each block stores {index, timestamp, data, nonce, previousHash, hash}. Genesis block hardcoded with 64-char zero previousHash. Chain stored as array, new blocks appended via createBlock() copying previous block's hash",
+    "Proof-of-work difficulty: slider 1–4 adjusts prefix length (1='0', 2='00', etc.). Mining card animated with pulseMine CSS keyframe (box-shadow oscillation 0.6s). Hash rate displayed as 'N h/s' based on hashCount / elapsed seconds",
+    "Chain validation: validateChain() loops i=1..n verifying block.previousHash === chain[i-1].hash and block.hash is non-empty. Invalid blocks get .invalid CSS class (crimson border #ff2a5f). Integrity telemetry shows 'OK' (green) or 'CORRUPT' (red)",
+    "Live block editing: textarea change triggers data update, resets nonce+hash to 0/'—', re-runs validation cascade marking all subsequent blocks invalid until re-mined",
+    "Inspector panel: click any block card to view full details (index, timestamp, data, nonce, previousHash, currentHash) with color-coded labels. Genesis block data textarea is disabled to prevent tampering",
+    "Consolidation audit: audit() re-computes SHA-256 for all blocks sequentially, updates hashes, re-renders chain, re-runs validation — useful after editing data fields",
+    "Purge & Re-Seed: resets chain to genesis block only, zeroes hash counter and timer, restores integrity status"
+  ]
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Blockchain Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="topBar">
+    <div class="pg"><span class="pl">DIFFICULTY</span><input type="range" id="diffSlider" min="1" max="4" value="2" step="1"><span id="diffVal" class="pv">2</span></div>
+    <div class="tm"><span class="tl">INTEGRITY</span><span id="intVal" class="tv">OK</span></div>
+    <div class="tm"><span class="tl">BLOCKS</span><span id="blockVal" class="tv">1</span></div>
+    <div class="tm"><span class="tl">HASH RATE</span><span id="rateVal" class="tv">—</span></div>
+  </div>
+
+  <div id="midRow">
+    <!-- Chain -->
+    <div id="chainWrap"><div id="chainTrack"></div></div>
+
+    <!-- Inspector -->
+    <div id="inspector">
+      <div class="sectionLabel">BLOCK DETAILS</div>
+      <div id="inspBody"><span style="color:#334155;font-size:clamp(5px,0.55vmin,7px)">Click a block to inspect</span></div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <button id="addBtn">APPEND BLOCK</button>
+    <button id="auditBtn">CONSOLIDATION AUDIT</button>
+    <button id="resetBtn">PURGE & RE-SEED</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
