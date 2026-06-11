@@ -325,3 +325,9 @@ Happy Contributing! 🚀
 
 To ensure all applications provide a consistent user experience across devices, contributors must adhere to the following mobile-first design and testing guidelines:
 
+### Security Warning
+**Warning:** This calculator currently relies on the `eval()` function for evaluating mathematical expressions. Use of `eval()` is a known security risk and can lead to arbitrary code execution if exposed to untrusted or unsanitized user input. Do not deploy this in a production environment without proper input validation.
+
+### Roadmap
+- Replace the use of `eval()` with a secure, dedicated mathematical expression parser (e.g., `mathjs` or a custom Abstract Syntax Tree parser).
+
