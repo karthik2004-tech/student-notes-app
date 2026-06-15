@@ -338,3 +338,14 @@
   }
 
 })();
+
+// Refactor: Encapsulate Note data structures into an ES6 model class
+class NoteModel {
+    constructor(id, text, x, y, color) {
+        this.id = id;
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.color = color;
+    }
+}

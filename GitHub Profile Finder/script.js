@@ -376,3 +376,8 @@
   }
 
 })();
+
+// Security: Sanitize input parameters to prevent unsafe query executions
+function sanitizeQuery(query) {
+    return query.trim().replace(/[^a-zA-Z0-9-]/g, '');
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography & Hashing Playground</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="logo">
+            <i class="fas fa-user-secret"></i>
+            <h1>CryptoLab Playground</h1>
+        </div>
+        <button class="theme-toggle" onclick="window.toggleGlobalTheme()" title="Toggle Theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <main class="container">
+        
+        <!-- SECTION 1: Hashing Sandbox -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-hashtag"></i> Live Hashing Sandbox</h2>
+                <p>Observe how different algorithms generate fixed-length digests, and how a single character change drastically alters the binary output (Avalanche Effect).</p>
+            </div>
+            
+            <div class="hash-layout">
+                <div class="input-area">
+                    <label>Cleartext Input</label>
+                    <textarea id="hash-input" rows="4" placeholder="Type a message to hash..."></textarea>
+                </div>
+                
+                <div class="output-area">
+                    <div class="hash-box">
+                        <div class="hash-title">MD5 <span>(128-bit)</span></div>
+                        <div class="hash-value code" id="out-md5">d41d8cd98f00b204e9800998ecf8427e</div>
+                    </div>
+                    
+                    <div class="hash-box">
+                        <div class="hash-title">SHA-1 <span>(160-bit)</span></div>
+                        <div class="hash-value code" id="out-sha1">da39a3ee5e6b4b0d3255bfef95601890afd80709</div>
+                    </div>
+                    
+                    <div class="hash-box highlight">
+                        <div class="hash-title">SHA-256 <span>(256-bit)</span></div>
+                        <div class="hash-value code" id="out-sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</div>
+                        <div class="binary-title">SHA-256 Binary Matrix Visualization</div>
+                        <div class="binary-matrix code" id="out-binary"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Cipher Tools -->
+        <section class="panel mt">
+            <div class="panel-header">
+                <h2><i class="fas fa-key"></i> Interactive Cipher Lab</h2>
+                <p>Encrypt and decrypt messages using classic cryptographic substitution and encoding algorithms.</p>
+            </div>
+
+            <div class="cipher-controls">
+                <div class="control-group">
+                    <label>Cipher Algorithm</label>
+                    <select id="cipher-select">
+                        <option value="caesar">Caesar Cipher</option>
+                        <option value="vigenere">Vigenère Cipher</option>
+                        <option value="base64">Base64 Encoding</option>
+                    </select>
+                </div>
+                
+                <div class="control-group" id="caesar-controls">
+                    <label>Shift Value (0-25): <span id="shift-val-display" class="highlight-text">3</span></label>
+                    <input type="range" id="caesar-shift" min="0" max="25" value="3">
+                </div>
+
+                <div class="control-group" id="vigenere-controls" style="display:none;">
+                    <label>Keyword</label>
+                    <input type="text" id="vigenere-key" value="KEY" placeholder="e.g. SECRET">
+                </div>
+            </div>
+
+            <div class="cipher-io">
+                <div class="io-box">
+                    <label>Plaintext</label>
+                    <textarea id="cipher-plain" rows="4" placeholder="Enter text to encrypt..."></textarea>
+                </div>
+                <div class="io-center">
+                    <button id="btn-encrypt"><i class="fas fa-arrow-right"></i> Encrypt</button>
+                    <button id="btn-decrypt"><i class="fas fa-arrow-left"></i> Decrypt</button>
+                </div>
+                <div class="io-box">
+                    <label>Ciphertext</label>
+                    <textarea id="cipher-crypt" rows="4" placeholder="Encrypted output..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Strength Analyzer -->
+        <section class="panel mt">
+            <div class="panel-header">
+                <h2><i class="fas fa-shield-alt"></i> Security Strength Analyzer</h2>
+                <p>Evaluate password entropy to estimate how long a brute-force cracking attempt would take.</p>
+            </div>
+
+            <div class="analyzer-layout">
+                <div class="input-area w-100">
+                    <input type="text" id="password-input" class="large-input code" placeholder="Type a password to test..." autocomplete="off">
+                </div>
+                
+                <div class="strength-meter mt-small">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="strength-fill"></div>
+                    </div>
+                </div>
+
+                <div class="analyzer-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Estimated Crack Time</div>
+                        <div class="stat-value" id="crack-time">Instant</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Entropy (Bits)</div>
+                        <div class="stat-value" id="entropy-bits">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Character Pool Size</div>
+                        <div class="stat-value" id="char-pool">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Theme JS -->
+    <script src="../global-theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
