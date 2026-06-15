@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Lab Inventory Manager | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px 25px;
+            text-align: center;
+            min-width: 130px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        /* Add Item Section */
+        .add-section {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border: 1px solid #00ffcc;
+        }
+
+        .add-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,180,219,0.4);
+        }
+
+        /* Search and Filter */
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            outline: none;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Inventory Grid */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Inventory Card */
+        .inventory-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 18px;
+            transition: 0.3s;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .inventory-card.low-stock {
+            border-left: 4px solid #ff4444;
+            background: rgba(255,68,68,0.1);
+        }
+
+        .card-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .category-chemicals { background: #ff6b6b; }
+        .category-glassware { background: #4d96ff; }
+        .category-electronics { background: #20c997; }
+        .category-other { background: #ffd200; color: #333; }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 12px;
+            padding-right: 80px;
+        }
+
+        .item-details {
+            margin-bottom: 15px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .detail-value {
+            color: white;
+            font-weight: 500;
+        }
+
+        .stock-value {
+            font-weight: bold;
+        }
+
+        .stock-value.low {
+            color: #ff4444;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .update-stock {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+        }
+
+        .stock-input {
+            width: 60px;
+            padding: 6px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-align: center;
+        }
+
+        .update-btn, .delete-btn, .use-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .update-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .use-btn {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .last-used {
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            color: rgba(255,255,255,0.5);
+            grid-column: 1 / -1;
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .inventory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Digital Lab Inventory Manager</h1>
+            <div class="subtitle">Track Equipment | Chemicals | Glassware | Stock Alerts</div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">0</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="lowStockCount">0</div>
+                <div class="stat-label">Low Stock ⚠️</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalStock">0</div>
+                <div class="stat-label">Total Units</div>
+            </div>
+        </div>
+
+        <!-- Add Item Section -->
+        <div class="add-section">
+            <div class="section-title">➕ Add New Item</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="itemName" placeholder="e.g., Microscope, Beaker">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="itemCategory">
+                        <option value="chemicals">🧪 Chemicals</option>
+                        <option value="glassware">🔬 Glassware</option>
+                        <option value="electronics">⚡ Electronics</option>
+                        <option value="other">📦 Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="itemQuantity" value="10" min="0">
+                </div>
+            </div>
+            <button class="add-btn" id="addItemBtn">✨ Add to Inventory</button>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="search-filter">
+            <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search equipment...">
+            <select class="filter-select" id="filterSelect">
+                <option value="all">📋 All Categories</option>
+                <option value="chemicals">🧪 Chemicals</option>
+                <option value="glassware">🔬 Glassware</option>
+                <option value="electronics">⚡ Electronics</option>
+                <option value="other">📦 Other</option>
+            </select>
+        </div>
+
+        <!-- Inventory Grid -->
+        <div class="inventory-grid" id="inventoryGrid">
+            <!-- Dynamic items -->
+        </div>
+
+        <button class="reset-btn" id="resetBtn">🗑️ Reset All Inventory</button>
+    </div>
+
+    <script>
+        let inventory = [];
+        let nextId = 1;
+
+        // Load from localStorage
+        function loadInventory() {
+            const saved = localStorage.getItem('labInventory');
+            if(saved) {
+                inventory = JSON.parse(saved);
+                if(inventory.length > 0) {
+                    nextId = Math.max(...inventory.map(i => i.id)) + 1;
+                }
+            } else {
+                // Default items
+                inventory = [
+                    { id: nextId++, name: "Microscope", category: "electronics", quantity: 5, lastUsed: new Date().toLocaleDateString() },
+                    { id: nextId++, name: "Beaker 250ml", category: "glassware", quantity: 12, lastUsed: new Date().toLocaleDateString() },
+                    { id: nextId++, name: "Sodium Chloride", category: "chemicals", quantity: 3, lastUsed: new Date().toLocaleDateString() },
+                    { id: nextId++, name: "Test Tube", category: "glassware", quantity: 25, lastUsed: new Date().toLocaleDateString() },
+                    { id: nextId++, name: "Digital Balance", category: "electronics", quantity: 2, lastUsed: new Date().toLocaleDateString() },
+                    { id: nextId++, name: "Hydrochloric Acid", category: "chemicals", quantity: 1, lastUsed: new Date().toLocaleDateString() }
+                ];
+            }
+            renderInventory();
+            updateStats();
+        }
+
+        // Save to localStorage
+        function saveInventory() {
+            localStorage.setItem('labInventory', JSON.stringify(inventory));
+        }
+
+        // Add item
+        function addItem() {
+            const name = document.getElementById('itemName').value.trim();
+            const category = document.getElementById('itemCategory').value;
+            const quantity = parseInt(document.getElementById('itemQuantity').value);
+
+            if(!name) {
+                alert('Please enter item name!');
+                return;
+            }
+
+            if(isNaN(quantity) || quantity < 0) {
+                alert('Please enter valid quantity!');
+                return;
+            }
+
+            const newItem = {
+                id: nextId++,
+                name: name,
+                category: category,
+                quantity: quantity,
+                lastUsed: new Date().toLocaleDateString()
+            };
+
+            inventory.unshift(newItem);
+            saveInventory();
+            renderInventory();
+            updateStats();
+
+            // Clear inputs
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemQuantity').value = '10';
+        }
+
+        // Delete item
+        function deleteItem(id) {
+            if(confirm('Delete this item from inventory?')) {
+                inventory = inventory.filter(i => i.id !== id);
+                saveInventory();
+                renderInventory();
+                updateStats();
+            }
+        }
+
+        // Update quantity
+        function updateQuantity(id, newQuantity) {
+            const item = inventory.find(i => i.id === id);
+            if(item) {
+                item.quantity = Math.max(0, newQuantity);
+                if(newQuantity !== item.quantity) {
+                    item.lastUsed = new Date().toLocaleDateString();
+                }
+                saveInventory();
+                renderInventory();
+                updateStats();
+            }
+        }
+
+        // Use item (decrease by 1)
+        function useItem(id) {
+            const item = inventory.find(i => i.id === id);
+            if(item && item.quantity > 0) {
+                item.quantity--;
+                item.lastUsed = new Date().toLocaleDateString();
+                saveInventory();
+                renderInventory();
+                updateStats();
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            const total = inventory.length;
+            const lowStock = inventory.filter(i => i.quantity <= 3 && i.quantity > 0).length;
+            const totalStock = inventory.reduce((sum, i) => sum + i.quantity, 0);
+
+            document.getElementById('totalItems').textContent = total;
+            document.getElementById('lowStockCount').textContent = lowStock;
+            document.getElementById('totalStock').textContent = totalStock;
+        }
+
+        // Get category class
+        function getCategoryClass(category) {
+            const classes = {
+                chemicals: 'category-chemicals',
+                glassware: 'category-glassware',
+                electronics: 'category-electronics',
+                other: 'category-other'
+            };
+            return classes[category] || 'category-other';
+        }
+
+        // Get category emoji
+        function getCategoryEmoji(category) {
+            const emojis = {
+                chemicals: '🧪',
+                glassware: '🔬',
+                electronics: '⚡',
+                other: '📦'
+            };
+            return emojis[category] || '📦';
+        }
+
+        // Render inventory
+        function renderInventory() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filterCategory = document.getElementById('filterSelect').value;
+
+            let filtered = inventory;
+
+            if(searchTerm) {
+                filtered = filtered.filter(i => i.name.toLowerCase().includes(searchTerm));
+            }
+
+            if(filterCategory !== 'all') {
+                filtered = filtered.filter(i => i.category === filterCategory);
+            }
+
+            const grid = document.getElementById('inventoryGrid');
+
+            if(filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state">📭 No items found!<br>Add equipment to start tracking your lab inventory.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="inventory-card ${item.quantity <= 3 && item.quantity > 0 ? 'low-stock' : ''}">
+                    <div class="card-category ${getCategoryClass(item.category)}">${getCategoryEmoji(item.category)} ${item.category}</div>
+                    <div class="item-name">${escapeHtml(item.name)}</div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-label">📦 Quantity:</span>
+                            <span class="detail-value stock-value ${item.quantity <= 3 ? 'low' : ''}">${item.quantity} units</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📅 Last Used:</span>
+                            <span class="detail-value">${item.lastUsed}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <div class="update-stock">
+                            <input type="number" class="stock-input" id="stockInput-${item.id}" value="${item.quantity}" min="0">
+                            <button class="update-btn" onclick="updateQuantity(${item.id}, parseInt(document.getElementById('stockInput-${item.id}').value))">Update</button>
+                        </div>
+                        <button class="use-btn" onclick="useItem(${item.id})">Use +1</button>
+                        <button class="delete-btn" onclick="deleteItem(${item.id})">Delete</button>
+                    </div>
+                    ${item.quantity <= 3 && item.quantity > 0 ? '<div class="last-used" style="color:#ff4444;">⚠️ LOW STOCK! Reorder soon!</div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        // Reset all inventory
+        function resetAll() {
+            if(confirm('⚠️ Delete ALL items from inventory? This cannot be undone!')) {
+                inventory = [];
+                saveInventory();
+                renderInventory();
+                updateStats();
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.getElementById('addItemBtn').addEventListener('click', addItem);
+        document.getElementById('resetBtn').addEventListener('click', resetAll);
+        document.getElementById('searchInput').addEventListener('input', renderInventory);
+        document.getElementById('filterSelect').addEventListener('change', renderInventory);
+
+        document.getElementById('itemName').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') addItem();
+        });
+
+        // Make functions global
+        window.updateQuantity = updateQuantity;
+        window.useItem = useItem;
+        window.deleteItem = deleteItem;
+
+        // Initialize
+        loadInventory();
+    </script>
+</body>
+</html>

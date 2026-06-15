@@ -1,0 +1,6 @@
+{
+  "title": "Interactive CSS Grid & Flexbox Layout Builder",
+  "description": "A visual layout builder helper allowing developers to design responsive grid panels and flex layouts visually, and export ready-to-use CSS/HTML.",
+  "technologies": ["HTML", "CSS", "JavaScript"],
+  "author": "MistryVishwa"
+}

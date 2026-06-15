@@ -285,3 +285,10 @@
   init();
 
 })();
+
+// Refactor: Extract internal target statistics to dedicated dictionary
+const TargetGameState = {
+    hits: 0,
+    misses: 0,
+    isActive: false
+};

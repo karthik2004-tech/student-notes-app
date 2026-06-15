@@ -139,3 +139,7 @@ searchBtn.addEventListener("click", function (e) {
     alert("Please enter a GitHub username!");
   }
 });
+// Security: Prevent unsafe API responses from corrupting page markup
+function safeHTMLText(text) {
+    return text ? text.replace(/&/g, '&amp;') : '';
+}

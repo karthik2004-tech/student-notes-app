@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Design Architecture Sandbox</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="logo">
+            <i class="fas fa-server"></i>
+            <h1>System Design Sandbox</h1>
+        </div>
+        <div class="topbar-actions">
+            <button class="btn btn-clear" id="btn-clear"><i class="fas fa-trash"></i> Clear Canvas</button>
+            <button class="theme-toggle" onclick="window.toggleGlobalTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        
+        <!-- Left Panel: Toolbox -->
+        <aside class="toolbox-panel">
+            <h2>Components</h2>
+            <p class="helper-text">Drag components onto the canvas.</p>
+            
+            <div class="toolbox-grid" id="toolbox">
+                <div class="tool-node" draggable="true" data-type="client" data-cap="0" data-cost="0">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Client</span>
+                </div>
+                <div class="tool-node" draggable="true" data-type="lb" data-cap="10000" data-cost="20">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Load Balancer</span>
+                </div>
+                <div class="tool-node" draggable="true" data-type="web" data-cap="500" data-cost="40">
+                    <i class="fas fa-desktop"></i>
+                    <span>Web Server</span>
+                </div>
+                <div class="tool-node" draggable="true" data-type="db" data-cap="2000" data-cost="100">
+                    <i class="fas fa-database"></i>
+                    <span>Database</span>
+                </div>
+                <div class="tool-node" draggable="true" data-type="cache" data-cap="15000" data-cost="50">
+                    <i class="fas fa-memory"></i>
+                    <span>Redis Cache</span>
+                </div>
+                <div class="tool-node" draggable="true" data-type="storage" data-cap="5000" data-cost="10">
+                    <i class="fas fa-hdd"></i>
+                    <span>Object Storage</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center: Canvas -->
+        <main class="canvas-panel" id="drop-canvas">
+            <div class="canvas-placeholder" id="canvas-placeholder">
+                <i class="fas fa-layer-group"></i>
+                <p>Drop your infrastructure components here</p>
+            </div>
+        </main>
+
+        <!-- Right Panel: Simulation & Properties -->
+        <aside class="simulation-panel">
+            <div class="panel-section">
+                <h2>Traffic Simulator</h2>
+                <div class="input-group">
+                    <label>Simulated Traffic (RPS)</label>
+                    <input type="number" id="input-rps" value="1000" min="0" step="100">
+                </div>
+                <button class="btn btn-simulate" id="btn-simulate"><i class="fas fa-play"></i> Run Simulation</button>
+            </div>
+
+            <div class="panel-section results-section">
+                <h2>Simulation Results</h2>
+                
+                <div class="result-card">
+                    <div class="result-title">System Status</div>
+                    <div class="result-value" id="res-status">Pending...</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-title">Total Infrastructure Cost</div>
+                    <div class="result-value cost" id="res-cost">$0 / mo</div>
+                </div>
+
+                <div class="alerts-container" id="alerts-container">
+                    <!-- Alerts injected via JS -->
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Global Theme JS -->
+    <script src="../global-theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
