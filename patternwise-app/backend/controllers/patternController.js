@@ -1,8 +1,11 @@
 const patterns = require('../data/patterns.json');
 const { fetchLeetCodeProblem } = require('../utils/leetcode');
+const { formatSuccess, formatError } = require('../utils/responseFormatter');
+const { getHttpStatusCode } = require('../config/httpStatusMap');
 
 exports.getPatterns = (req, res) => {
-  res.json(patterns);
+  const response = formatSuccess(patterns, 'SUCCESS');
+  res.status(response.statusCode).json(response);
 };
 
 exports.getPatternDetails = async (req, res) => {
@@ -10,7 +13,13 @@ exports.getPatternDetails = async (req, res) => {
   const pattern = patterns.find(p => p.id === id);
   
   if (!pattern) {
-    return res.status(404).json({ error: 'Pattern not found' });
+    const response = formatError(
+      'Pattern not found',
+      'PATTERN_NOT_FOUND',
+      null,
+      { patternId: id }
+    );
+    return res.status(response.statusCode).json(response);
   }
 
   try {
@@ -39,8 +48,15 @@ exports.getPatternDetails = async (req, res) => {
       problems: problemsWithStats
     };
 
-    res.json(fullPattern);
+    const response = formatSuccess(fullPattern, 'SUCCESS');
+    res.status(response.statusCode).json(response);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch pattern details' });
+    const response = formatError(
+      'Failed to fetch pattern details',
+      'EXTERNAL_API_FAILURE',
+      null,
+      { error: err.message }
+    );
+    res.status(response.statusCode).json(response);
   }
 };
