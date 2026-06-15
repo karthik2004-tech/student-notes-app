@@ -299,3 +299,12 @@ body {
   .metric { min-width: 30px; }
   .sky { height: 60vh; min-height: 240px; }
 }
+
+/* UI/UX: Pop keyframe animations for popped balloons */
+@keyframes balloon-pop {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+.popped {
+    animation: balloon-pop 0.2s ease-out forwards !important;
+}
