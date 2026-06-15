@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Progress Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Phosphor Icons for modern icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="ph ph-graduation-cap"></i>
+                <span>EduDash</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i class="ph ph-squares-four"></i> Dashboard</a>
+                <a href="#" class="nav-item"><i class="ph ph-book-open"></i> Courses</a>
+                <a href="#" class="nav-item"><i class="ph ph-calendar-check"></i> Schedule</a>
+                <a href="#" class="nav-item"><i class="ph ph-chart-line-up"></i> Performance</a>
+                <a href="#" class="nav-item"><i class="ph ph-gear"></i> Settings</a>
+            </nav>
+            <div class="user-profile">
+                <img src="https://i.pravatar.cc/150?img=32" alt="Student" class="avatar">
+                <div class="user-info">
+                    <h4>Alex Carter</h4>
+                    <p>Computer Science</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="welcome-text">
+                    <h1>Welcome back, Alex! 👋</h1>
+                    <p>Here is your learning progress for this week.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <input type="text" placeholder="Search courses...">
+                    </div>
+                    <button class="notification-btn">
+                        <i class="ph ph-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon courses"><i class="ph ph-books"></i></div>
+                    <div class="stat-details">
+                        <p>Courses Enrolled</p>
+                        <h3>12</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon completed"><i class="ph ph-check-circle"></i></div>
+                    <div class="stat-details">
+                        <p>Tasks Completed</p>
+                        <h3>48</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon hours"><i class="ph ph-clock"></i></div>
+                    <div class="stat-details">
+                        <p>Study Hours</p>
+                        <h3>124h</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon gpa"><i class="ph ph-star"></i></div>
+                    <div class="stat-details">
+                        <p>Current GPA</p>
+                        <h3>3.8</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Content Layout -->
+            <div class="content-layout">
+                <!-- Left Column (Chart & Progress) -->
+                <div class="left-column">
+                    <!-- Chart Section -->
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Study Activity</h3>
+                            <select class="filter-select">
+                                <option>This Week</option>
+                                <option>Last Week</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Course Progress Section -->
+                    <div class="card progress-card">
+                        <div class="card-header">
+                            <h3>Course Progress</h3>
+                            <a href="#" class="view-all">View All</a>
+                        </div>
+                        <div class="course-list">
+                            <!-- Course 1 -->
+                            <div class="course-item">
+                                <div class="course-info">
+                                    <div class="course-icon" style="background: #e0e7ff; color: #4f46e5;">
+                                        <i class="ph ph-code"></i>
+                                    </div>
+                                    <div class="course-text">
+                                        <h4>Web Development</h4>
+                                        <p>Module 4: React JS</p>
+                                    </div>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-header">
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%; background: #4f46e5;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Course 2 -->
+                            <div class="course-item">
+                                <div class="course-info">
+                                    <div class="course-icon" style="background: #fce7f3; color: #db2777;">
+                                        <i class="ph ph-database"></i>
+                                    </div>
+                                    <div class="course-text">
+                                        <h4>Database Systems</h4>
+                                        <p>Module 2: SQL Basics</p>
+                                    </div>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-header">
+                                        <span>40%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 40%; background: #db2777;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Upcoming Tasks) -->
+                <div class="right-column">
+                    <div class="card tasks-card">
+                        <div class="card-header">
+                            <h3>Upcoming Deadlines</h3>
+                        </div>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="task-date due-soon">
+                                    <span class="day">18</span>
+                                    <span class="month">Oct</span>
+                                </div>
+                                <div class="task-info">
+                                    <h4>React Project Submission</h4>
+                                    <p>Web Development</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <div class="task-date">
+                                    <span class="day">20</span>
+                                    <span class="month">Oct</span>
+                                </div>
+                                <div class="task-info">
+                                    <h4>Midterm Exam</h4>
+                                    <p>Database Systems</p>
+                                </div>
+                            </li>
+                            <li class="task-item">
+                                <div class="task-date">
+                                    <span class="day">25</span>
+                                    <span class="month">Oct</span>
+                                </div>
+                                <div class="task-info">
+                                    <h4>UI/UX Assignment</h4>
+                                    <p>Design Fundamentals</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
