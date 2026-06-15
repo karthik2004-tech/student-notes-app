@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonial Carousel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="testimonial-carousel">
+        <div class="carousel-container">
+            <!-- Slide 1 -->
+            <div class="testimonial-slide active">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"This product has completely transformed the way we work. Highly recommended for its user-friendly interface and robust features!"</p>
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?img=1" alt="Sarah Johnson" class="user-image">
+                        <div class="user-details">
+                            <h3 class="user-name">Sarah Johnson</h3>
+                            <p class="user-role">Product Manager</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"An absolute game-changer. The support team is fantastic, and the performance is top-notch. I couldn't be happier with our decision."</p>
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?img=11" alt="Michael Chen" class="user-image">
+                        <div class="user-details">
+                            <h3 class="user-name">Michael Chen</h3>
+                            <p class="user-role">Software Engineer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"Exceptional quality and incredible value. It's rare to find a service that delivers exactly what it promises, but this one does."</p>
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?img=5" alt="Emily Davis" class="user-image">
+                        <div class="user-details">
+                            <h3 class="user-name">Emily Davis</h3>
+                            <p class="user-role">Marketing Director</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button class="nav-btn prev-btn" aria-label="Previous testimonial">&#10094;</button>
+        <button class="nav-btn next-btn" aria-label="Next testimonial">&#10095;</button>
+
+        <!-- Dots -->
+        <div class="dots-container">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
