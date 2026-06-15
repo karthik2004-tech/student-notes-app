@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro-SaaS ROI Calculator</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="logo">
+            <i class="fas fa-chart-line"></i>
+            <h1>Micro-SaaS ROI Calculator</h1>
+        </div>
+        <div class="topbar-actions">
+            <button class="theme-toggle" onclick="window.toggleGlobalTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        
+        <!-- Left Panel: Builder & Assumptions -->
+        <aside class="controls-panel">
+            
+            <div class="section-block">
+                <h2>1. Pricing Tiers (Monthly)</h2>
+                <div class="pricing-grid">
+                    <div class="price-input">
+                        <label>Starter</label>
+                        <div class="input-wrapper">
+                            <span>$</span>
+                            <input type="number" id="price-starter" value="9" min="0">
+                        </div>
+                    </div>
+                    <div class="price-input">
+                        <label>Pro</label>
+                        <div class="input-wrapper">
+                            <span>$</span>
+                            <input type="number" id="price-pro" value="29" min="0">
+                        </div>
+                    </div>
+                    <div class="price-input">
+                        <label>Enterprise</label>
+                        <div class="input-wrapper">
+                            <span>$</span>
+                            <input type="number" id="price-ent" value="99" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <h2>2. User Distribution (%)</h2>
+                <p class="helper-text">What percentage of your active users are on each tier? (Must total 100%)</p>
+                <div class="dist-grid">
+                    <div class="dist-input">
+                        <label>Free</label>
+                        <input type="number" id="dist-free" value="80" min="0" max="100">
+                    </div>
+                    <div class="dist-input">
+                        <label>Starter</label>
+                        <input type="number" id="dist-starter" value="15" min="0" max="100">
+                    </div>
+                    <div class="dist-input">
+                        <label>Pro</label>
+                        <input type="number" id="dist-pro" value="4" min="0" max="100">
+                    </div>
+                    <div class="dist-input">
+                        <label>Ent</label>
+                        <input type="number" id="dist-ent" value="1" min="0" max="100">
+                    </div>
+                </div>
+                <div id="dist-warning" class="warning-msg" style="display:none;">Total must equal 100%</div>
+            </div>
+
+            <div class="section-block">
+                <h2>3. Growth & Cost Assumptions</h2>
+                
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Total Active Users</label>
+                        <span id="val-users">1000</span>
+                    </div>
+                    <input type="range" id="slider-users" min="10" max="50000" step="10" value="1000">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Monthly Churn Rate (%)</label>
+                        <span id="val-churn">5.0%</span>
+                    </div>
+                    <input type="range" id="slider-churn" min="0.5" max="30" step="0.5" value="5">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Monthly Infra Cost ($)</label>
+                        <span id="val-cost">$150</span>
+                    </div>
+                    <input type="range" id="slider-cost" min="0" max="5000" step="10" value="150">
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Right Panel: Dashboard -->
+        <main class="dashboard-panel">
+            
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">Monthly Recurring Rev (MRR)</div>
+                    <div class="kpi-value" id="kpi-mrr">$0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Annual Recurring Rev (ARR)</div>
+                    <div class="kpi-value" id="kpi-arr">$0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Net Profit (Monthly)</div>
+                    <div class="kpi-value" id="kpi-profit">$0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Customer LTV</div>
+                    <div class="kpi-value" id="kpi-ltv">$0</div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h2>12-Month Profit Projection</h2>
+                <div class="chart-container" id="svg-chart-container">
+                    <!-- SVG Chart injected via JS -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Global Theme JS -->
+    <script src="../global-theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

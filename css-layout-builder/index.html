@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid & Flexbox Layout Builder</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="logo">
+            <i class="fas fa-border-all"></i>
+            <h1>CSS Layout Builder</h1>
+        </div>
+        <div class="topbar-actions">
+            <button class="theme-toggle" onclick="window.toggleGlobalTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        
+        <!-- SIDEBAR CONTROLS -->
+        <aside class="sidebar-controls">
+            <div class="control-header">
+                <h2>Layout Mode</h2>
+                <div class="mode-toggle">
+                    <button id="btn-mode-flex" class="active">Flexbox</button>
+                    <button id="btn-mode-grid">CSS Grid</button>
+                </div>
+            </div>
+
+            <!-- Flex Controls -->
+            <div id="flex-controls" class="control-section">
+                <div class="input-group">
+                    <label>flex-direction</label>
+                    <select id="flex-direction">
+                        <option value="row">row</option>
+                        <option value="column">column</option>
+                        <option value="row-reverse">row-reverse</option>
+                        <option value="column-reverse">column-reverse</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>justify-content</label>
+                    <select id="flex-justify">
+                        <option value="flex-start">flex-start</option>
+                        <option value="flex-end">flex-end</option>
+                        <option value="center">center</option>
+                        <option value="space-between">space-between</option>
+                        <option value="space-around">space-around</option>
+                        <option value="space-evenly">space-evenly</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>align-items</label>
+                    <select id="flex-align">
+                        <option value="stretch">stretch</option>
+                        <option value="flex-start">flex-start</option>
+                        <option value="flex-end">flex-end</option>
+                        <option value="center">center</option>
+                        <option value="baseline">baseline</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>flex-wrap</label>
+                    <select id="flex-wrap">
+                        <option value="nowrap">nowrap</option>
+                        <option value="wrap">wrap</option>
+                        <option value="wrap-reverse">wrap-reverse</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>gap</label>
+                    <input type="text" id="flex-gap" value="10px" placeholder="e.g. 10px or 1rem">
+                </div>
+            </div>
+
+            <!-- Grid Controls -->
+            <div id="grid-controls" class="control-section" style="display: none;">
+                <div class="input-group">
+                    <label>grid-template-columns</label>
+                    <input type="text" id="grid-cols" value="1fr 1fr 1fr" placeholder="e.g. repeat(3, 1fr)">
+                </div>
+                <div class="input-group">
+                    <label>grid-template-rows</label>
+                    <input type="text" id="grid-rows" value="auto" placeholder="e.g. 100px auto">
+                </div>
+                <div class="input-group">
+                    <label>justify-items</label>
+                    <select id="grid-justify">
+                        <option value="stretch">stretch</option>
+                        <option value="start">start</option>
+                        <option value="end">end</option>
+                        <option value="center">center</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>align-items</label>
+                    <select id="grid-align">
+                        <option value="stretch">stretch</option>
+                        <option value="start">start</option>
+                        <option value="end">end</option>
+                        <option value="center">center</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>gap</label>
+                    <input type="text" id="grid-gap" value="15px" placeholder="e.g. 15px">
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CANVAS -->
+        <main class="main-content">
+            
+            <div class="canvas-header">
+                <h2>Live Preview</h2>
+                <div class="canvas-actions">
+                    <button id="btn-add-item" class="btn-primary"><i class="fas fa-plus"></i> Add Item</button>
+                    <button id="btn-remove-item" class="btn-danger"><i class="fas fa-minus"></i> Remove</button>
+                </div>
+            </div>
+
+            <div class="canvas-wrapper">
+                <div id="preview-container" class="preview-container">
+                    <!-- Default Items -->
+                    <div class="preview-item">1</div>
+                    <div class="preview-item">2</div>
+                    <div class="preview-item">3</div>
+                    <div class="preview-item">4</div>
+                </div>
+            </div>
+
+            <!-- CODE EXPORT -->
+            <div class="code-export">
+                <div class="code-header">
+                    <h2><i class="fas fa-code"></i> Generated Code</h2>
+                    <button id="btn-copy" class="btn-copy"><i class="fas fa-copy"></i> Copy CSS</button>
+                </div>
+                <div class="code-panels">
+                    <div class="code-block">
+                        <div class="code-title">CSS</div>
+                        <pre><code id="code-css"></code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-title">HTML</div>
+                        <pre><code id="code-html"></code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Global Theme JS -->
+    <script src="../global-theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
