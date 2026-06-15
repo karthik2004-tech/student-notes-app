@@ -1,50 +1,42 @@
 # 🎨 Canvas Grapher
 
-A lightweight, local-first canvas graphing terminal for data-structure analysis and student metric visualization. This project uses the HTML5 Canvas API directly, avoiding external charting libraries and DOM-heavy SVG to keep the interface fast, dependency-free, and self-contained.
+A professional local-first visualization utility built with vanilla HTML5 Canvas. It renders student performance metrics using raw pixel drawing, coordinate transforms, and custom hover interaction, without external chart libraries.
 
-## 🚀 What it does
+## 🚀 Project Overview
 
-- Renders a custom chart using raw Canvas pixel drawing.
-- Uses `requestAnimationFrame` for smooth frame updates.
-- Supports high-DPI screens by dynamically scaling the canvas.
-- Maps relational metric arrays onto Cartesian pixel coordinates.
-- Implements custom collision detection for interactive hover labels.
-- Keeps the visualization self-contained with only HTML, CSS, and JavaScript.
+Canvas Grapher is designed as a lightweight graphing terminal for academic metrics, study progression, and relational data analysis. The application focuses on:
 
-## 📈 Technical architecture blueprint
+- native canvas rendering for smooth performance
+- responsive high-DPI scaling
+- modular code structure for readability and extension
+- minimal external dependency footprint
 
-1. **Asynchronous frame render loop**
-   - Uses the native `requestAnimationFrame` lifecycle.
-   - Redraws the chart efficiently on each frame during data or resize changes.
+## ✨ Features
 
-2. **Cartesian vector space transformation**
-   - Translates arrays of values into 2D pixel coordinates.
-   - Handles canvas scaling and coordinate transforms for responsive rendering.
+- Custom line chart rendered using Canvas 2D API
+- Responsive pixel-perfect layout for Retina/high-DPI screens
+- Interactive hover states with tooltip display
+- Dynamic coordinate mapping of raw data values
+- Modular architecture for clean separation of concerns
+- Touch and mouse support for modern devices
 
-3. **Manual geometric collision detection**
-   - Calculates hit regions and distances from mouse coordinates.
-   - Shows hover details without relying on DOM element overlays.
+## 🧠 Architecture
 
-4. **High-DPI canvas support**
-   - Recalculates canvas pixel density on resize.
-   - Prevents stretching and preserves crisp rendering on Retina displays.
+The project is broken into single-responsibility modules:
 
-## 🧩 Implementation architecture
+- `CanvasManager` — handles canvas sizing, device pixel ratio, and drawing context setup
+- `CoordinateMapper` — converts raw metric values into chart coordinates with axis padding and normalization
+- `ChartRenderer` — encapsulates all drawing behavior for grid lines, axes, line series, and markers
+- `InteractionController` — manages pointer and touch events, hover detection, tooltip placement, and state updates
+- `CanvasGrapher` — orchestrates rendering, resize handling, frame invalidation, and overall app lifecycle
 
-This project is organized into responsibility-focused components:
-- `CanvasManager` handles device-pixel scaling, canvas sizing, and drawing context setup.
-- `CoordinateMapper` transforms raw data values into chart coordinates with padding and range normalization.
-- `ChartRenderer` draws the grid, axes, line series, and point decorations.
-- `InteractionController` handles mouse and touch events, hover detection, and tooltip placement.
-- `CanvasGrapher` orchestrates rendering, resize events, and the dirty-frame loop.
-
-## 📂 System file architecture
+## 📂 File structure
 
 ```text
 canvas grapher/
 ├── index.html          # App shell and module entry point
-├── style.css           # Dark-theme UI and tooltip styling
-├── script.js           # Entrypoint wiring browser imports
+├── style.css           # Theme styling, layout, and tooltip UI
+├── script.js           # Browser entrypoint loading the module graph
 └── src/
     ├── canvas-manager.js
     ├── coordinate-mapper.js
@@ -55,9 +47,41 @@ canvas grapher/
     └── data.js
 ```
 
-## 💡 Why this project exists
+## 🚦 How to run
 
-Students and contributors need a small, self-contained visualization utility for academic performance patterns. This project demonstrates pixel-level graphics math, canvas coordinate transforms, and responsive rendering without pulling in a heavy external library.
+1. Open `canvas grapher/index.html` in a browser.
+2. If browser modules are blocked over `file://`, serve the folder using a simple local server:
+
+```bash
+cd "c:/Users/Admin/simple_calculator/canvas grapher"
+python -m http.server 8080
+```
+
+3. Open `http://localhost:8080` in your browser.
+
+## 🔧 Customize data
+
+Update `src/data.js` with your own dataset. Each entry should follow the shape:
+
+```js
+{
+  label: 'Week 1',
+  value: 72,
+  studyHours: 7,
+}
+```
+
+## 🧩 Extension ideas
+
+- add a second series for study hours or attendance
+- support multiple chart types (bar, area, scatter)
+- add configurable axis labels and units
+- add animation easing for new data updates
+- add export-to-image or snapshot mode
+
+## 💡 Why this is professional
+
+This project demonstrates a readable modular architecture, explicit responsibility boundaries, and a high-quality implementation strategy for a local-first canvas visualization component.
 
 ## 🛠️ Tech stack
 
@@ -68,6 +92,6 @@ Students and contributors need a small, self-contained visualization utility for
 
 ## 📌 Notes
 
-- No external graphing libraries are used.
-- The visualization is designed to be fast and easy to extend.
-- Ideal for learning how low-level canvas rendering works.
+- No third-party graphing libraries are used.
+- The application is fully self-contained and browser-native.
+- Focus is on maintainability, extensibility, and performance.
