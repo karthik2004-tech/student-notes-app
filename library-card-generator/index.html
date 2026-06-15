@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Member Card Generator | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Two Column Layout */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Card Common */
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #ffd200;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            outline: none;
+        }
+
+        /* Template Selector */
+        .template-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .template-option {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .template-option.selected {
+            border-color: #00ffcc;
+            background: rgba(0,255,204,0.1);
+        }
+
+        .template-option span {
+            font-size: 24px;
+            display: block;
+        }
+
+        .template-option p {
+            color: white;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        /* Library Card Preview */
+        .card-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .library-card {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Template 1 - Classic Blue */
+        .library-card.template1 {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+        }
+
+        /* Template 2 - Dark Premium */
+        .library-card.template2 {
+            background: linear-gradient(135deg, #232526, #414345);
+            color: white;
+        }
+
+        /* Template 3 - Modern Red */
+        .library-card.template3 {
+            background: linear-gradient(135deg, #cb2d3e, #ef473a);
+            color: white;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-logo {
+            font-size: 28px;
+        }
+
+        .card-title-text {
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .member-photo {
+            width: 70px;
+            height: 70px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 15px;
+        }
+
+        .member-name {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .member-details {
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .detail-label {
+            opacity: 0.7;
+        }
+
+        .detail-value {
+            font-weight: bold;
+        }
+
+        .barcode {
+            text-align: center;
+            font-family: monospace;
+            font-size: 24px;
+            letter-spacing: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .card-footer {
+            text-align: center;
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ffd200, #ff9800);
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .print-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background: #17a2b8;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🪪 Library Member Card Generator</h1>
+            <div class="subtitle">Create Digital Library Cards | QR-style ID | Download as PNG</div>
+        </div>
+
+        <div class="two-columns">
+            <!-- Left: Form -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📝</span> Member Details
+                </div>
+
+                <div class="form-group">
+                    <label>👤 Full Name</label>
+                    <input type="text" id="memberName" placeholder="e.g., Shivam Gupta" value="Shivam Gupta">
+                </div>
+
+                <div class="form-group">
+                    <label>🆓 Library Card Number</label>
+                    <input type="text" id="memberId" placeholder="e.g., LIB-2024-001" value="LIB-2024-001">
+                </div>
+
+                <div class="form-group">
+                    <label>📅 Valid Till</label>
+                    <input type="date" id="validityDate">
+                </div>
+
+                <div class="form-group">
+                    <label>🎨 Select Card Template</label>
+                    <div class="template-selector">
+                        <div class="template-option selected" data-template="1">
+                            <span>🔵</span>
+                            <p>Classic Blue</p>
+                        </div>
+                        <div class="template-option" data-template="2">
+                            <span>⚫</span>
+                            <p>Dark Premium</p>
+                        </div>
+                        <div class="template-option" data-template="3">
+                            <span>🔴</span>
+                            <p>Modern Red</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generateBtn">✨ Generate Member Card</button>
+            </div>
+
+            <!-- Right: Card Preview -->
+            <div class="card">
+                <div class="card-title">
+                    <span>🪪</span> Card Preview
+                </div>
+                <div class="card-preview" id="cardPreview">
+                    <!-- Dynamic card preview -->
+                </div>
+                <div class="action-buttons">
+                    <button class="download-btn" id="downloadBtn">📸 Download as PNG</button>
+                    <button class="print-btn" id="printBtn">🖨️ Print Card</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        let currentTemplate = '1';
+
+        // Set default validity date (1 year from now)
+        function setDefaultValidity() {
+            const today = new Date();
+            const nextYear = new Date(today);
+            nextYear.setFullYear(today.getFullYear() + 1);
+            const dateStr = nextYear.toISOString().split('T')[0];
+            document.getElementById('validityDate').value = dateStr;
+        }
+
+        // Generate random card number
+        function generateCardNumber() {
+            const randomNum = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+            document.getElementById('memberId').value = `LIB-${randomNum}`;
+        }
+
+        // Generate barcode style ID
+        function generateBarcode(id) {
+            return id.replace(/[^A-Z0-9]/g, '').split('').map(c => c.charCodeAt(0) % 10).join('');
+        }
+
+        // Get member since date
+        function getMemberSince() {
+            const date = new Date();
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+        }
+
+        // Render card preview
+        function renderCard() {
+            const name = document.getElementById('memberName').value.trim() || "Member Name";
+            const memberId = document.getElementById('memberId').value.trim() || "LIB-000000";
+            const validity = document.getElementById('validityDate').value;
+            const memberSince = getMemberSince();
+            const barcodeId = generateBarcode(memberId);
+
+            const previewDiv = document.getElementById('cardPreview');
+            
+            previewDiv.innerHTML = `
+                <div class="library-card template${currentTemplate}" id="libraryCard">
+                    <div class="card-header">
+                        <div class="card-logo">📚</div>
+                        <div class="card-title-text">LIBRARY MEMBERSHIP</div>
+                    </div>
+                    
+                    <div class="member-photo">
+                        👤
+                    </div>
+                    
+                    <div class="member-name">${escapeHtml(name)}</div>
+                    
+                    <div class="member-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Card Number:</span>
+                            <span class="detail-value">${escapeHtml(memberId)}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Member Since:</span>
+                            <span class="detail-value">${memberSince}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Valid Till:</span>
+                            <span class="detail-value">${validity || 'Not Set'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="barcode">
+                        ||||||| ${barcodeId} |||||||
+                    </div>
+                    
+                    <div class="card-footer">
+                        This card is the property of the library. Please present upon entry.
+                    </div>
+                </div>
+            `;
+        }
+
+        // Download card as PNG
+        async function downloadCard() {
+            const card = document.getElementById('libraryCard');
+            if(!card) {
+                alert('Generate a card first!');
+                return;
+            }
+
+            try {
+                const canvas = await html2canvas(card, {
+                    scale: 2,
+                    backgroundColor: null,
+                    logging: false
+                });
+                
+                const link = document.createElement('a');
+                link.download = `library_card_${document.getElementById('memberName').value.trim() || 'member'}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch(err) {
+                alert('Error generating image. Please try again.');
+            }
+        }
+
+        // Print card
+        function printCard() {
+            const card = document.getElementById('libraryCard');
+            if(!card) {
+                alert('Generate a card first!');
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Library Card</title>
+                    <style>
+                        body {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-height: 100vh;
+                            margin: 0;
+                            padding: 20px;
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        }
+                        @media print {
+                            body { margin: 0; padding: 0; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${card.outerHTML}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Template selection
+        function setupTemplateSelector() {
+            document.querySelectorAll('.template-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.template-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    currentTemplate = opt.dataset.template;
+                    renderCard();
+                });
+            });
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.getElementById('generateBtn').addEventListener('click', renderCard);
+        document.getElementById('downloadBtn').addEventListener('click', downloadCard);
+        document.getElementById('printBtn').addEventListener('click', printCard);
+        
+        // Real-time update on input
+        document.getElementById('memberName').addEventListener('input', renderCard);
+        document.getElementById('memberId').addEventListener('input', renderCard);
+        document.getElementById('validityDate').addEventListener('change', renderCard);
+
+        // Initialize
+        setDefaultValidity();
+        setupTemplateSelector();
+        renderCard();
+    </script>
+</body>
+</html>

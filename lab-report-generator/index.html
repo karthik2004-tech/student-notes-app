@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Report Generator | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Two Column Layout */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Card Common */
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #ffd200;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Template Selector */
+        .template-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .template-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .template-btn:hover {
+            background: rgba(0,180,219,0.5);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .generate-btn { background: #28a745; color: white; }
+        .copy-btn { background: #ffc107; color: #333; }
+        .print-btn { background: #17a2b8; color: white; }
+        .save-btn { background: #6f42c1; color: white; }
+
+        /* Report Preview */
+        .report-preview {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            min-height: 500px;
+            max-height: 600px;
+            overflow-y: auto;
+            color: #333;
+        }
+
+        .report-preview h1 {
+            color: #1a2980;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .report-preview h2 {
+            color: #1a2980;
+            font-size: 18px;
+            margin: 15px 0 10px;
+            border-bottom: 2px solid #1a2980;
+            padding-bottom: 5px;
+        }
+
+        .report-preview .section {
+            margin-bottom: 15px;
+        }
+
+        .report-preview .section-label {
+            font-weight: bold;
+            color: #1a2980;
+        }
+
+        .report-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Saved Reports */
+        .saved-reports {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .saved-report-item {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .report-name {
+            color: white;
+            font-size: 12px;
+        }
+
+        .load-report {
+            background: #28a745;
+            border: none;
+            border-radius: 15px;
+            padding: 4px 12px;
+            color: white;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Lab Report Generator</h1>
+            <div class="subtitle">Create Professional Lab Reports | Live Preview | Download & Print</div>
+        </div>
+
+        <div class="two-columns">
+            <!-- Left: Form -->
+            <div class="card">
+                <div class="card-title">
+                    <span>✏️</span> Report Details
+                </div>
+
+                <div class="template-buttons">
+                    <button class="template-btn" data-template="bio">🧬 Biology Template</button>
+                    <button class="template-btn" data-template="chem">🧪 Chemistry Template</button>
+                    <button class="template-btn" data-template="phy">⚡ Physics Template</button>
+                </div>
+
+                <div class="form-group">
+                    <label>📝 Report Title</label>
+                    <input type="text" id="reportTitle" placeholder="e.g., Osmosis in Potato Cells">
+                </div>
+
+                <div class="form-group">
+                    <label>📅 Date</label>
+                    <input type="date" id="reportDate">
+                </div>
+
+                <div class="form-group">
+                    <label>🎯 Objective / Aim</label>
+                    <textarea id="reportObjective" placeholder="What was the purpose of this experiment?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>🧪 Materials Required</label>
+                    <textarea id="reportMaterials" placeholder="List all materials and equipment used..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>📖 Procedure / Method</label>
+                    <textarea id="reportProcedure" placeholder="Step-by-step procedure..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>👀 Observations</label>
+                    <textarea id="reportObservation" placeholder="What did you observe during the experiment?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>📊 Results / Conclusion</label>
+                    <textarea id="reportResult" placeholder="Final results and conclusion..."></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn generate-btn" id="generateReportBtn">📄 Generate Report</button>
+                    <button class="action-btn copy-btn" id="copyReportBtn">📋 Copy to Clipboard</button>
+                    <button class="action-btn print-btn" id="printReportBtn">🖨️ Print Report</button>
+                    <button class="action-btn save-btn" id="saveReportBtn">💾 Save Report</button>
+                </div>
+
+                <div class="card-title" style="margin-top: 20px;">
+                    <span>📁</span> Saved Reports
+                </div>
+                <div class="saved-reports" id="savedReportsList">
+                    <!-- Dynamic saved reports -->
+                </div>
+            </div>
+
+            <!-- Right: Report Preview -->
+            <div class="card">
+                <div class="card-title">
+                    <span>🔍</span> Live Report Preview
+                </div>
+                <div class="report-preview" id="reportPreview">
+                    <p style="text-align: center; color: #999;">Fill the form and click "Generate Report" to see preview</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let savedReports = [];
+
+        // Set default date
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reportDate').value = today;
+        }
+
+        // Load saved reports from localStorage
+        function loadSavedReports() {
+            const saved = localStorage.getItem('labReports');
+            if(saved) {
+                savedReports = JSON.parse(saved);
+            }
+            renderSavedReports();
+        }
+
+        // Save reports to localStorage
+        function saveReportsToStorage() {
+            localStorage.setItem('labReports', JSON.stringify(savedReports));
+            renderSavedReports();
+        }
+
+        // Render saved reports list
+        function renderSavedReports() {
+            const container = document.getElementById('savedReportsList');
+            if(savedReports.length === 0) {
+                container.innerHTML = '<div style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">No saved reports yet</div>';
+                return;
+            }
+
+            container.innerHTML = savedReports.map((report, idx) => `
+                <div class="saved-report-item">
+                    <span class="report-name">📄 ${escapeHtml(report.title)} (${report.date})</span>
+                    <button class="load-report" onclick="loadReport(${idx})">Load</button>
+                </div>
+            `).join('');
+        }
+
+        // Generate report HTML
+        function generateReportHTML() {
+            const title = document.getElementById('reportTitle').value.trim() || "Untitled Experiment";
+            const date = document.getElementById('reportDate').value || new Date().toISOString().split('T')[0];
+            const objective = document.getElementById('reportObjective').value.trim() || "Not specified";
+            const materials = document.getElementById('reportMaterials').value.trim() || "Not specified";
+            const procedure = document.getElementById('reportProcedure').value.trim() || "Not specified";
+            const observation = document.getElementById('reportObservation').value.trim() || "Not specified";
+            const result = document.getElementById('reportResult').value.trim() || "Not specified";
+
+            return `
+                <h1>${escapeHtml(title)}</h1>
+                <div style="text-align: center; margin-bottom: 20px; color: #666;">Date: ${escapeHtml(date)}</div>
+                
+                <div class="section">
+                    <div class="section-label">🎯 OBJECTIVE / AIM:</div>
+                    <p>${escapeHtml(objective).replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="section">
+                    <div class="section-label">🧪 MATERIALS REQUIRED:</div>
+                    <p>${escapeHtml(materials).replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="section">
+                    <div class="section-label">📖 PROCEDURE / METHOD:</div>
+                    <p>${escapeHtml(procedure).replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="section">
+                    <div class="section-label">👀 OBSERVATIONS:</div>
+                    <p>${escapeHtml(observation).replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="section">
+                    <div class="section-label">📊 RESULTS & CONCLUSION:</div>
+                    <p>${escapeHtml(result).replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                <div class="report-footer">
+                    Generated by Lab Report Generator | ${new Date().toLocaleString()}
+                </div>
+            `;
+        }
+
+        // Update live preview
+        function updatePreview() {
+            const previewDiv = document.getElementById('reportPreview');
+            previewDiv.innerHTML = generateReportHTML();
+        }
+
+        // Copy to clipboard
+        async function copyToClipboard() {
+            const reportHTML = generateReportHTML();
+            const textContent = document.getElementById('reportPreview').innerText;
+            
+            try {
+                await navigator.clipboard.writeText(textContent);
+                alert('✅ Report copied to clipboard!');
+            } catch(err) {
+                alert('Failed to copy');
+            }
+        }
+
+        // Print report
+        function printReport() {
+            const reportHTML = generateReportHTML();
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Lab Report</title>
+                    <style>
+                        body {
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            padding: 40px;
+                            max-width: 800px;
+                            margin: 0 auto;
+                        }
+                        h1 { color: #1a2980; }
+                        .section-label { font-weight: bold; color: #1a2980; margin-top: 15px; }
+                        .report-footer { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 12px; }
+                        @media print {
+                            body { padding: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${reportHTML}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Save current report
+        function saveCurrentReport() {
+            const title = document.getElementById('reportTitle').value.trim();
+            if(!title) {
+                alert('Please enter a report title before saving!');
+                return;
+            }
+
+            const date = document.getElementById('reportDate').value;
+            const objective = document.getElementById('reportObjective').value;
+            const materials = document.getElementById('reportMaterials').value;
+            const procedure = document.getElementById('reportProcedure').value;
+            const observation = document.getElementById('reportObservation').value;
+            const result = document.getElementById('reportResult').value;
+
+            const newReport = {
+                title: title,
+                date: date,
+                objective: objective,
+                materials: materials,
+                procedure: procedure,
+                observation: observation,
+                result: result,
+                savedAt: new Date().toLocaleString()
+            };
+
+            savedReports.unshift(newReport);
+            if(savedReports.length > 10) savedReports.pop();
+            saveReportsToStorage();
+            alert('✅ Report saved successfully!');
+        }
+
+        // Load saved report
+        function loadReport(index) {
+            const report = savedReports[index];
+            if(report) {
+                document.getElementById('reportTitle').value = report.title;
+                document.getElementById('reportDate').value = report.date;
+                document.getElementById('reportObjective').value = report.objective;
+                document.getElementById('reportMaterials').value = report.materials;
+                document.getElementById('reportProcedure').value = report.procedure;
+                document.getElementById('reportObservation').value = report.observation;
+                document.getElementById('reportResult').value = report.result;
+                updatePreview();
+            }
+        }
+
+        // Load template
+        function loadTemplate(template) {
+            const templates = {
+                bio: {
+                    title: "Study of Osmosis in Potato Cells",
+                    objective: "To observe the process of osmosis in potato cells using different salt concentrations.",
+                    materials: "Potato, Salt solution, Beakers, Knife, Ruler, Stopwatch",
+                    procedure: "1. Cut potato into equal pieces\n2. Place in different salt concentrations\n3. Wait 30 minutes\n4. Measure change in size and weight",
+                    observation: "Potato in pure water became turgid (gained weight)\nPotato in salt solution became flaccid (lost weight)",
+                    result: "Osmosis caused water to move from high concentration to low concentration across the semi-permeable membrane."
+                },
+                chem: {
+                    title: "Acid-Base Titration",
+                    objective: "To determine the concentration of HCl using NaOH solution.",
+                    materials: "Burette, Pipette, Conical flask, Phenolphthalein, NaOH, HCl",
+                    procedure: "1. Fill burette with NaOH\n2. Take HCl in conical flask\n3. Add phenolphthalein\n4. Titrate until pink color appears",
+                    observation: "Solution turned pink at equivalence point. Volume of NaOH used: 25mL",
+                    result: "The concentration of HCl is 0.1M."
+                },
+                phy: {
+                    title: "Ohm's Law Verification",
+                    objective: "To verify Ohm's law and determine the resistance of a resistor.",
+                    materials: "Resistor, Battery, Voltmeter, Ammeter, Wires",
+                    procedure: "1. Connect circuit as shown\n2. Vary voltage\n3. Measure current at each voltage\n4. Plot V-I graph",
+                    observation: "Current increased linearly with voltage.\nV/I ratio remained constant.",
+                    result: "Ohm's law verified. Resistance = 50Ω"
+                }
+            };
+
+            const t = templates[template];
+            if(t) {
+                document.getElementById('reportTitle').value = t.title;
+                document.getElementById('reportObjective').value = t.objective;
+                document.getElementById('reportMaterials').value = t.materials;
+                document.getElementById('reportProcedure').value = t.procedure;
+                document.getElementById('reportObservation').value = t.observation;
+                document.getElementById('reportResult').value = t.result;
+                updatePreview();
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.getElementById('generateReportBtn').addEventListener('click', updatePreview);
+        document.getElementById('copyReportBtn').addEventListener('click', copyToClipboard);
+        document.getElementById('printReportBtn').addEventListener('click', printReport);
+        document.getElementById('saveReportBtn').addEventListener('click', saveCurrentReport);
+
+        // Template buttons
+        document.querySelectorAll('.template-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                loadTemplate(btn.dataset.template);
+            });
+        });
+
+        // Real-time preview (optional)
+        const inputs = ['reportTitle', 'reportDate', 'reportObjective', 'reportMaterials', 'reportProcedure', 'reportObservation', 'reportResult'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+
+        // Make loadReport global
+        window.loadReport = loadReport;
+
+        // Initialize
+        setDefaultDate();
+        loadSavedReports();
+        updatePreview();
+    </script>
+</body>
+</html>
