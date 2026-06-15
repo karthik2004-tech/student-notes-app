@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ASCII Art Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🎨 ASCII Art Generator</h1>
+
+    <div class="controls">
+      <input type="text" id="inputText" placeholder="Type your text here">
+      <select id="fontSelect">
+        <option value="block">Block</option>
+        <option value="bubble">Bubble</option>
+        <option value="shadow">Shadow</option>
+        <option value="standard">Standard</option>
+      </select>
+      <button onclick="generateArt()">Generate</button>
+      <button onclick="copyArt()">Copy</button>
+      <button onclick="downloadArt()">Download</button>
+    </div>
+
+    <pre id="output" class="output"></pre>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
