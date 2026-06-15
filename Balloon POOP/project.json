@@ -1,0 +1,19 @@
+{
+  "title": "Balloon POOP",
+  "description": "A neon cyberpunk balloon-popping arcade game with procedural floating, difficulty scaling, 45-second countdown, particle burst effects, and localStorage high-score persistence.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["balloon-pop", "arcade", "clicker", "cyberpunk", "canvas", "vanilla-js", "game"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Procedural floating engine: balloons spawn at random X positions at the bottom threshold and ascend via CSS transition with linear timing",
+    "Difficulty progression curves: spawn interval drops from 1200ms→200ms and float duration drops from 4000ms→1200ms per 40-point tier",
+    "Click-pop telemetry: single-tap with state lock flag via dataset.popped to prevent multi-pop exploits",
+    "Particle burst system: 6-12 radial neon particles per pop with CSS custom property --px/--py controlled fly-away vectors",
+    "Score popup floats: transient +points element with animated upward drift and fade-out",
+    "45-second countdown chronometer with automatic game-over freeze and premium stats modal",
+    "localStorage high-score sync on boot and every game end",
+    "3-miss threshold triggers sky shake animation as penalty mechanic"
+  ]
+}

@@ -1,0 +1,314 @@
+:root {
+    /* Light Mode Variables */
+    --bg-color: #f0f2f5;
+    --container-bg: #ffffff;
+    --text-color: #1e293b;
+    --text-muted: #64748b;
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+    --btn-bg: #ffffff;
+    --btn-border: #cbd5e1;
+    --btn-hover-bg: #f8fafc;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --list-bullet: #3b82f6;
+    --spinner-track: #e2e8f0;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode Variables matching the provided image style */
+    --bg-color: #0b0f19;
+    --container-bg: #111827;
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary-color: #3b82f6;
+    --primary-hover: #60a5fa;
+    --btn-bg: #1f2937;
+    --btn-border: #334155;
+    --btn-hover-bg: #334155;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    --list-bullet: #f8fafc;
+    --spinner-track: #334155;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: var(--transition);
+    padding: 2rem;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.theme-toggle button {
+    background: var(--container-bg);
+    border: 1px solid var(--btn-border);
+    color: var(--text-color);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.theme-toggle button:hover {
+    background: var(--btn-hover-bg);
+    transform: scale(1.05);
+}
+
+.theme-toggle button:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+.container {
+    background: var(--container-bg);
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 800px;
+    transition: var(--transition);
+}
+
+header {
+    margin-bottom: 2.5rem;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.info-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.feature-list {
+    list-style: none;
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.feature-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--list-bullet);
+    font-weight: bold;
+}
+
+.demo-section {
+    border-top: 1px solid var(--btn-border);
+    padding-top: 2rem;
+}
+
+/* --- Spinner Showcase Layout --- */
+.spinners-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.spinner-row {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-color);
+    border-radius: 8px;
+    border: 1px solid var(--btn-border);
+}
+
+.spinner-row h4 {
+    width: 180px;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    font-weight: 500;
+    margin: 0;
+}
+
+.spinner-group {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* --- Spinner Component Styles --- */
+
+/* Sizes */
+.spinner-sm { width: 16px; height: 16px; }
+.spinner-md { width: 32px; height: 32px; }
+.spinner-lg { width: 48px; height: 48px; }
+
+/* 1. Standard Spinner */
+.spinner-standard {
+    border: 3px solid var(--spinner-track);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+.spinner-standard.spinner-sm { border-width: 2px; }
+.spinner-standard.spinner-lg { border-width: 4px; }
+.spinner-light { 
+    border-color: rgba(255, 255, 255, 0.3); 
+    border-top-color: #ffffff; 
+}
+
+/* 2. Dots Spinner */
+.spinner-dots {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    height: 32px; /* Fixed height to match medium spinner bounding box */
+}
+.spinner-dots .dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    animation: dots-bounce 1.4s infinite ease-in-out both;
+}
+.spinner-dots .dot:nth-child(1) { animation-delay: -0.32s; }
+.spinner-dots .dot:nth-child(2) { animation-delay: -0.16s; }
+
+/* 3. Pulse Spinner */
+.spinner-pulse {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    animation: pulse 1.2s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+/* 4. Dual Ring Spinner */
+.spinner-dual-ring {
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    animation: spin 1.2s linear infinite;
+}
+.spinner-dual-ring.spinner-sm { border-width: 2px; }
+.spinner-dual-ring.spinner-lg { border-width: 4px; }
+
+/* Animations */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes dots-bounce {
+    0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+/* --- Demo Button with Spinner --- */
+.demo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    min-width: 140px;
+    gap: 0.5rem;
+}
+
+.demo-btn:hover {
+    background: var(--primary-hover);
+}
+
+.demo-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+.demo-btn:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.btn-spinner {
+    display: none; /* Hidden by default */
+}
+
+/* Button Loading State */
+.demo-btn.is-loading .btn-text {
+    display: none;
+}
+
+.demo-btn.is-loading .btn-spinner {
+    display: block;
+}
+
+/* Responsive Layout */
+@media (max-width: 640px) {
+    .info-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 2rem 1.5rem;
+    }
+    
+    .spinner-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}

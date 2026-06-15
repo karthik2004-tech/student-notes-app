@@ -280,3 +280,11 @@ body {
     font-size: 8px;
   }
 }
+
+/* UI/UX Enhancement: Dashboard layouts and typography alignments */
+#scoreboard {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+}

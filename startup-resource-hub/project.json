@@ -1,0 +1,17 @@
+{
+  "title": "Startup Resource Hub with Business Planning & Entrepreneurship Toolkit",
+  "description": "A comprehensive web dashboard equipped with business planning builders, financial break-even calculators, pitch deck outline compilers, curated guides, and custom checklists for startup founders.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "tags": [
+    "vanilla-js",
+    "business",
+    "dashboard",
+    "calculator",
+    "toolkit"
+  ],
+  "level": 3,
+  "entry": "index.html"
+}

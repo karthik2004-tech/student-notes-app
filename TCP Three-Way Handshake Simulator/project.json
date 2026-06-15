@@ -1,0 +1,19 @@
+{
+  "title": "TCP Three-Way Handshake Simulator",
+  "description": "A transport-layer training tool simulating the RFC 793 TCP three-way handshake with client/server state machines, rAF-animated packet capsules (SYN/SYN-ACK/ACK) moving across a canvas bandwidth pipe, stochastic packet drop fault injection with timeout overlay, and a Wireshark-style segment ledger.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["tcp", "handshake", "networking", "state-machine", "syn", "syn-ack", "ack", "packet", "canvas", "animation", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "RFC 793 state machine: Client (CLOSED → SYN_SENT → ESTABLISHED) and Server (LISTEN → SYN_RECEIVED → ESTABLISHED) with randomized ISN (x=1000-8999, y=5000-9999). States update via DOM elements with color-coded text",
+    "4-phase handshake pipeline: async/await initiateHandshake() sequences SYN (client→server, seq=x, ack=0), SYN-ACK (server→client, seq=y, ack=x+1), ACK (client→server, seq=x+1, ack=y+1), then both ESTABLISHED",
+    "Canvas packet animation: roundRect capsules with shadowBlur=10 glow, lerping from clientX to serverX (0.018 speed). Each packet displays its flag name ([SYN] cyan, [SYN-ACK] magenta, [ACK] green). Bandwidth pipe rendered as dashed line between nodes",
+    "Drop fault injection: toggle button sets dropEnabled flag. On next handshake initiation, injectDrop() dissolves active packet midway (dissolved=true, renders as 6 random crimson particle dots), halts handshakePhase, shows modal timeout overlay with 'Connection Timeout: Packet Dropped'",
+    "Retransmit: clicking RETRANSMIT clears packets, resets handshakePhase to 0, calls initiateHandshake() to restart from SYN. Disabled when no timeout active",
+    "Wireshark-style ledger: addLedger() appends rows to scrolling table with columns SRC, DST, FLAGS (color-coded: SYN=cyan, SYN-ACK=magenta, ACK=green, DROP=amber), SEQ, ACK, WIN. Each row scrolls into view on append",
+    "Sequence math: client.seq starts at ISN x, server.seq at ISN y. After SYN: server.ack = client.seq + 1. After SYN-ACK: client.ack = server.seq + 1. After ACK: both ack values validated. Displayed live in 'SEQ MAP' telemetry as 'x=N y=N'",
+    "Telemetry panel: Client State, Server State, Active Sequence Matrix (x/y), Last Transmitted Segment Type — all updated synchronously with phase transitions"
+  ]
+}

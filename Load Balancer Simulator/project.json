@@ -1,0 +1,18 @@
+{
+  "title": "Load Balancer Simulator",
+  "description": "An interactive load balancing simulation featuring 3 routing algorithms (Round Robin, Least Connections, Weighted Routing), animated packet particles flowing through a Traffic Generator → Load Balancer → Backend Server topology via rAF canvas rendering, server health controls with crash/degrade/heal toggles, and real-time telemetry.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["load-balancer", "networking", "routing", "round-robin", "least-connections", "weighted-routing", "canvas", "animation", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "3 routing algorithms: Round Robin (cycling rrIndex % healthy.length pointer), Least Connections (O(n) scan for min activeConn), Weighted Routing (weight-proportional pool array, random pick from pool)",
+    "Canvas particle system: spawnRequest() creates packet objects with 3-phase lifecycle (gen→LB: phase=0, LB→server+processing: phase=1, server→gen: phase=2), lerping along (genX,lbX,svX) coordinates with glow effect (shadowBlur=8) and trail halo",
+    "Server health controls: per-card CRASH (sets health to CRASHED, forces bypass), SLOW (toggles DEGRADED, adds +800ms processing delay), HEAL (restores HEALTHY + resets connections). All-crashed routing returns null → drops packet with crimson fly-off-canvas animation",
+    "Stochastic processing: each request assigned delay = 500–1000ms random + DEGRADED penalty (800ms). Packet pulses at server node during processing (phase=1), then returns to generator on completion",
+    "Spike Storm: injects 20 simultaneous requests via spawnRequest loop, demonstrating burst handling",
+    "Telemetry panel: total inbound requests, drop rate % (totalDrops/totalRequests), peak server load (max activeConn across all servers), efficiency ratio (healthyCount/total servers × 100)",
+    "Weight sliders: per-server 1–5 weight range mapped to pool expansion count in weighted routing algorithm, updated live"
+  ]
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slidinnng Puzzle</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="telemetry">
+      <div class="tm"><span class="tl">MOVES</span><span id="movesVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">TIME</span><span id="timeVal" class="tv">00:00</span></div>
+      <div class="tm"><span class="tl">BEST</span><span id="bestVal" class="tv">--</span></div>
+    </div>
+
+    <div id="board">
+      <div id="gridContainer"></div>
+    </div>
+
+    <div id="toolbar">
+      <button id="shuffleBtn">SHUFFLE</button>
+      <div class="tg">
+        <span class="tl">GRID</span>
+        <button class="dimBtn active" data-dim="3">3×3</button>
+        <button class="dimBtn" data-dim="4">4×4</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal" class="hidden">
+    <div class="mb">
+      <div class="mb-title">PUZZLE SOLVED</div>
+      <div id="mbStats" class="mb-st"></div>
+      <button id="playAgainBtn">PLAY AGAIN</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

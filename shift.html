@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Shift — Reflex Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+        :root {
+            --bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --primary: #8b5cf6;
+            --accent: #00f2fe;
+            --error: #f43f5e;
+            --success: #10b981;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 40px 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            background: linear-gradient(to bottom right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .rule-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 35px;
+            border: 1px solid var(--glass-border);
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.1rem;
+            box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.05);
+        }
+
+        #game-orb {
+            width: 160px;
+            height: 160px;
+            background: #fff;
+            border-radius: 50%;
+            margin: 0 auto 40px;
+            cursor: pointer;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+            transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 10px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #game-orb:active {
+            transform: scale(0.92);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 24px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-main:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        .hidden { display: none !important; }
+
+        .feedback-text {
+            font-weight: 800;
+            font-size: 1.4rem;
+            height: 30px;
+            margin-top: 20px;
+            transition: opacity 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-card">
+        <div id="start-screen" class="overlay">
+            <h1>Color Shift</h1>
+            <p style="margin-bottom: 30px; opacity: 0.7;">Neural Reflex Training. React only when the sequence matches the rule.</p>
+            <button class="btn-main" onclick="startGame()">Sync Neural Link</button>
+        </div>
+
+        <div id="game-over-screen" class="overlay hidden">
+            <h1 id="over-title" style="color: var(--error)">Connection Failed</h1>
+            <p id="final-stats" style="margin-bottom: 30px; color: #94a3b8; font-size: 1.1rem;"></p>
+            <button class="btn-main" onclick="startGame()">Retry Protocol</button>
+        </div>
+
+        <div class="stats">
+            <span>Score: <span id="score-val">0</span></span>
+            <span>Avg Reflex: <span id="avg-reflex">0</span>ms</span>
+        </div>
+
+        <div class="rule-box" id="rule-display">Scanning...</div>
+
+        <div id="game-orb" onclick="handleTap()"></div>
+
+        <div id="feedback" class="feedback-text"></div>
+    </div>
+</div>
+
+<script>
+    const COLORS = [
+        { name: 'RED', hex: '#f43f5e' },
+        { name: 'BLUE', hex: '#3b82f6' },
+        { name: 'GREEN', hex: '#10b981' },
+        { name: 'YELLOW', hex: '#fbbf24' },
+        { name: 'PURPLE', hex: '#8b5cf6' }
+    ];
+
+    let state = {
+        score: 0,
+        active: false,
+        previousColor: null,
+        currentColor: null,
+        rule: null,
+        timer: null,
+        lastShiftTime: 0,
+        reflexTimes: [],
+        interval: 1500,
+        hasReacted: false
+    };
+
+    function startGame() {
+        state.score = 0;
+        state.active = true;
+        state.reflexTimes = [];
+        state.interval = 1500;
+        state.previousColor = null;
+        state.currentColor = null;
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('game-over-screen').classList.add('hidden');
+        document.getElementById('score-val').innerText = '0';
+        document.getElementById('avg-reflex').innerText = '0';
+        document.getElementById('feedback').innerText = '';
+        
+        generateRule();
+        shiftColor();
+    }
+
+    function generateRule() {
+        const prev = Math.floor(Math.random() * COLORS.length);
+        let curr = Math.floor(Math.random() * COLORS.length);
+        while(curr === prev) curr = Math.floor(Math.random() * COLORS.length);
+        
+        state.rule = { prev, curr };
+        document.getElementById('rule-display').innerText = `TAP WHEN ${COLORS[curr].name} FOLLOWS ${COLORS[prev].name}`;
+    }
+
+    function shiftColor() {
+        if(!state.active) return;
+
+        // Penalty if player missed a correct sequence
+        if(state.previousColor === state.rule.prev && state.currentColor === state.rule.curr && !state.hasReacted) {
+            endGame("MISSED CONNECTION! ⌛");
+            return;
+        }
+
+        state.hasReacted = false;
+        state.previousColor = state.currentColor;
+        
+        // Force the rule condition occasionally
+        const forceMatch = Math.random() < 0.25 && state.previousColor === state.rule.prev;
+        
+        if(forceMatch) {
+            state.currentColor = state.rule.curr;
+        } else {
+            let next = Math.floor(Math.random() * COLORS.length);
+            while(next === state.currentColor) next = Math.floor(Math.random() * COLORS.length);
+            state.currentColor = next;
+        }
+
+        const orb = document.getElementById('game-orb');
+        orb.style.backgroundColor = COLORS[state.currentColor].hex;
+        orb.style.boxShadow = `0 0 60px ${COLORS[state.currentColor].hex}66`;
+        
+        state.lastShiftTime = Date.now();
+        state.interval = Math.max(550, state.interval - 15);
+        state.timer = setTimeout(shiftColor, state.interval);
+    }
+
+    function handleTap() {
+        if(!state.active || state.hasReacted) return;
+        state.hasReacted = true;
+
+        const isCorrect = (state.previousColor === state.rule.prev && state.currentColor === state.rule.curr);
+        const feedback = document.getElementById('feedback');
+
+        if(isCorrect) {
+            const reflex = Date.now() - state.lastShiftTime;
+            state.reflexTimes.push(reflex);
+            state.score += Math.max(10, Math.round(1000 - reflex / 2));
+            
+            feedback.innerText = `HIT! ${reflex}ms`;
+            feedback.style.color = 'var(--success)';
+            updateStats();
+        } else {
+            endGame("FALSE TRIGGER! 🛑");
+        }
+    }
+
+    function updateStats() {
+        document.getElementById('score-val').innerText = state.score;
+        const avg = Math.round(state.reflexTimes.reduce((a, b) => a + b, 0) / state.reflexTimes.length);
+        document.getElementById('avg-reflex').innerText = avg;
+    }
+
+    function endGame(msg) {
+        state.active = false;
+        clearTimeout(state.timer);
+        
+        const avg = state.reflexTimes.length ? Math.round(state.reflexTimes.reduce((a, b) => a + b, 0) / state.reflexTimes.length) : 0;
+        
+        document.getElementById('over-title').innerText = msg;
+        document.getElementById('final-stats').innerText = `Score: ${state.score} | Avg Reflex: ${avg}ms`;
+        document.getElementById('game-over-screen').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>

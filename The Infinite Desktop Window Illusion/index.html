@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinite Desktop Window Illusion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="telemetry">
+      <div class="tstat"><span class="tlbl">NESTING</span><span class="tval" id="tDepth">Layer 0</span></div>
+      <div class="tstat"><span class="tlbl">WINDOWS</span><span class="tval" id="tCount">0</span></div>
+      <div class="tstat"><span class="tlbl">PEAK</span><span class="tval" id="tPeak">Layer 0</span></div>
+    </div>
+
+    <div id="workspace">
+      <div id="desktopIcons" class="desk-icons">
+        <div class="icon-item" data-name="System Drive">
+          <div class="icon-shape drive"></div>
+          <span class="icon-label">System Drive</span>
+        </div>
+        <div class="icon-item" data-name="Recursive Network">
+          <div class="icon-shape network"></div>
+          <span class="icon-label">Recursive Network</span>
+        </div>
+        <div class="icon-item" data-name="Trash Console">
+          <div class="icon-shape trash"></div>
+          <span class="icon-label">Trash Console</span>
+        </div>
+      </div>
+
+      <div id="rootChildren" class="win-children"></div>
+
+      <div id="rootTaskbar" class="desk-taskbar">
+        <span class="tb-left">ROOT</span>
+        <span class="tb-right clock" id="rootClock">00:00:00</span>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

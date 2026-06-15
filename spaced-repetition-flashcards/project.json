@@ -1,0 +1,17 @@
+{
+  "title": "Spaced-Repetition Flashcards Mode (Leitner Study System)",
+  "description": "An offline-first study companion utilizing the Leitner spaced-repetition system. Create cards in custom decks, flip to reveal answers, and sort cards into 5 Leitner boxes based on study performance. Local storage syncing and visual progress tracking included.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "tags": [
+    "vanilla-js",
+    "spaced-repetition",
+    "leitner-system",
+    "flashcards",
+    "study-tool"
+  ],
+  "level": 3,
+  "entry": "index.html"
+}

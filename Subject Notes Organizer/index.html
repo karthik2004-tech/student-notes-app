@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subject-wise Notes Organizer</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Subject-wise Notes Organizer</h1>
+
+    <form id="note-form">
+      <input type="text" id="note-input" placeholder="Write your note..." required>
+      <select id="subject-select">
+        <option value="Maths">Maths</option>
+        <option value="Science">Science</option>
+        <option value="CS">Computer Science</option>
+        <option value="History">History</option>
+      </select>
+      <button type="submit">➕ Add Note</button>
+    </form>
+
+    <div class="filters">
+      <select id="filter-subject">
+        <option value="All">All Subjects</option>
+        <option value="Maths">Maths</option>
+        <option value="Science">Science</option>
+        <option value="CS">Computer Science</option>
+        <option value="History">History</option>
+      </select>
+      <input type="text" id="search-input" placeholder="🔍 Search notes...">
+    </div>
+
+    <div id="notes-list"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

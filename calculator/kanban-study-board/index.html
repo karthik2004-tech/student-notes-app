@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Study Board | Asia Productivity Style | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Add Task Section */
+        .add-task-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #newTaskInput {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        #newTaskInput::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        #newTaskInput:focus {
+            border: 1px solid #00ffcc;
+        }
+
+        .add-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,180,219,0.4);
+        }
+
+        /* Kanban Board - 4 Columns */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            overflow-x: auto;
+        }
+
+        /* Column Styles */
+        .column {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            min-width: 250px;
+        }
+
+        .column-header {
+            padding: 18px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .column-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .column-count {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #00ffcc;
+        }
+
+        /* Column-specific header colors */
+        .column.to-study .column-header { border-top: 3px solid #ff6b6b; }
+        .column.learning .column-header { border-top: 3px solid #ffd93d; }
+        .column.revision .column-header { border-top: 3px solid #6bcb77; }
+        .column.done .column-header { border-top: 3px solid #4d96ff; }
+
+        /* Tasks Container */
+        .tasks-container {
+            padding: 15px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Task Card */
+        .task-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.3s ease;
+            cursor: grab;
+        }
+
+        .task-card:active {
+            cursor: grabbing;
+        }
+
+        .task-card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(3px);
+        }
+
+        .task-title {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 12px;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .move-btn {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: white;
+        }
+
+        .move-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .delete-btn {
+            background: rgba(220,53,69,0.5);
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #dc3545;
+        }
+
+        /* Empty column message */
+        .empty-column {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+        }
+
+        /* Reset Button */
+        .reset-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .reset-all-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .reset-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(220,53,69,0.4);
+        }
+
+        /* Scrollbar */
+        .tasks-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tasks-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .tasks-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .kanban-board {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Kanban Study Board</h1>
+            <div class="subtitle">Asia Productivity Style | To Study → Learning → Revision → Done</div>
+        </div>
+
+        <div class="add-task-section">
+            <input type="text" id="newTaskInput" placeholder="Enter a new study task... (e.g., Complete Chapter 3)">
+            <button class="add-btn" id="addTaskBtn">➕ Add Task</button>
+        </div>
+
+        <div class="kanban-board" id="kanbanBoard">
+            <!-- Column 1: To Study -->
+            <div class="column to-study" data-column="toStudy">
+                <div class="column-header">
+                    <span class="column-title">📚 To Study</span>
+                    <span class="column-count" id="toStudyCount">0</span>
+                </div>
+                <div class="tasks-container" id="toStudyTasks"></div>
+            </div>
+
+            <!-- Column 2: Learning -->
+            <div class="column learning" data-column="learning">
+                <div class="column-header">
+                    <span class="column-title">⚡ Learning</span>
+                    <span class="column-count" id="learningCount">0</span>
+                </div>
+                <div class="tasks-container" id="learningTasks"></div>
+            </div>
+
+            <!-- Column 3: Revision -->
+            <div class="column revision" data-column="revision">
+                <div class="column-header">
+                    <span class="column-title">🔄 Revision</span>
+                    <span class="column-count" id="revisionCount">0</span>
+                </div>
+                <div class="tasks-container" id="revisionTasks"></div>
+            </div>
+
+            <!-- Column 4: Done -->
+            <div class="column done" data-column="done">
+                <div class="column-header">
+                    <span class="column-title">✅ Done</span>
+                    <span class="column-count" id="doneCount">0</span>
+                </div>
+                <div class="tasks-container" id="doneTasks"></div>
+            </div>
+        </div>
+
+        <div class="reset-section">
+            <button class="reset-all-btn" id="resetAllBtn">🗑️ Reset All Tasks</button>
+        </div>
+    </div>
+
+    <script>
+        // Data structure
+        let tasks = {
+            toStudy: [],
+            learning: [],
+            revision: [],
+            done: []
+        };
+
+        let nextId = 1;
+        let draggedTask = null;
+
+        // Load from localStorage
+        function loadTasks() {
+            const saved = localStorage.getItem('kanbanStudyBoard');
+            if(saved) {
+                tasks = JSON.parse(saved);
+                // Ensure nextId is greater than any existing id
+                const allTasks = [...tasks.toStudy, ...tasks.learning, ...tasks.revision, ...tasks.done];
+                if(allTasks.length > 0) {
+                    nextId = Math.max(...allTasks.map(t => t.id)) + 1;
+                }
+            } else {
+                // Default tasks
+                tasks = {
+                    toStudy: [
+                        { id: nextId++, title: "Complete Calculus Chapter 3", createdAt: new Date().toLocaleDateString() },
+                        { id: nextId++, title: "Read Physics: Thermodynamics", createdAt: new Date().toLocaleDateString() }
+                    ],
+                    learning: [
+                        { id: nextId++, title: "Practice English Grammar", createdAt: new Date().toLocaleDateString() }
+                    ],
+                    revision: [
+                        { id: nextId++, title: "Review Japanese Kanji", createdAt: new Date().toLocaleDateString() }
+                    ],
+                    done: [
+                        { id: nextId++, title: "Submit Math Assignment", createdAt: new Date().toLocaleDateString() }
+                    ]
+                };
+            }
+            renderAllColumns();
+        }
+
+        // Save to localStorage
+        function saveTasks() {
+            localStorage.setItem('kanbanStudyBoard', JSON.stringify(tasks));
+        }
+
+        // Add new task
+        function addTask() {
+            const input = document.getElementById('newTaskInput');
+            const title = input.value.trim();
+            
+            if(!title) {
+                alert('Please enter a task!');
+                return;
+            }
+            
+            const newTask = {
+                id: nextId++,
+                title: title,
+                createdAt: new Date().toLocaleDateString()
+            };
+            
+            tasks.toStudy.unshift(newTask);
+            saveTasks();
+            renderAllColumns();
+            
+            input.value = '';
+        }
+
+        // Delete task
+        function deleteTask(column, taskId) {
+            if(confirm('Delete this task?')) {
+                tasks[column] = tasks[column].filter(task => task.id !== taskId);
+                saveTasks();
+                renderAllColumns();
+            }
+        }
+
+        // Move task
+        function moveTask(taskId, fromColumn, toColumn) {
+            const taskIndex = tasks[fromColumn].findIndex(t => t.id === taskId);
+            if(taskIndex === -1) return;
+            
+            const task = tasks[fromColumn][taskIndex];
+            tasks[fromColumn].splice(taskIndex, 1);
+            tasks[toColumn].push(task);
+            
+            saveTasks();
+            renderAllColumns();
+        }
+
+        // Get next column
+        function getNextColumn(currentColumn) {
+            const order = ['toStudy', 'learning', 'revision', 'done'];
+            const currentIndex = order.indexOf(currentColumn);
+            if(currentIndex < order.length - 1) {
+                return order[currentIndex + 1];
+            }
+            return null;
+        }
+
+        // Get previous column
+        function getPrevColumn(currentColumn) {
+            const order = ['toStudy', 'learning', 'revision', 'done'];
+            const currentIndex = order.indexOf(currentColumn);
+            if(currentIndex > 0) {
+                return order[currentIndex - 1];
+            }
+            return null;
+        }
+
+        // Render single column
+        function renderColumn(columnName, containerId, countId) {
+            const container = document.getElementById(containerId);
+            const columnTasks = tasks[columnName];
+            const countSpan = document.getElementById(countId);
+            
+            countSpan.textContent = columnTasks.length;
+            
+            if(columnTasks.length === 0) {
+                container.innerHTML = '<div class="empty-column">✨ No tasks here<br>Add or move tasks</div>';
+                return;
+            }
+            
+            container.innerHTML = columnTasks.map(task => `
+                <div class="task-card" data-id="${task.id}" draggable="true">
+                    <div class="task-title">📌 ${escapeHtml(task.title)}</div>
+                    <div class="task-actions">
+                        ${getPrevColumn(columnName) ? `<button class="move-btn" onclick="moveTask(${task.id}, '${columnName}', '${getPrevColumn(columnName)}')">◀ Previous</button>` : ''}
+                        ${getNextColumn(columnName) ? `<button class="move-btn" onclick="moveTask(${task.id}, '${columnName}', '${getNextColumn(columnName)}')">Next ▶</button>` : ''}
+                        <button class="delete-btn" onclick="deleteTask('${columnName}', ${task.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add drag and drop event listeners
+            const cards = container.querySelectorAll('.task-card');
+            cards.forEach(card => {
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+            });
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Render all columns
+        function renderAllColumns() {
+            renderColumn('toStudy', 'toStudyTasks', 'toStudyCount');
+            renderColumn('learning', 'learningTasks', 'learningCount');
+            renderColumn('revision', 'revisionTasks', 'revisionCount');
+            renderColumn('done', 'doneTasks', 'doneCount');
+        }
+
+        // Reset all tasks
+        function resetAllTasks() {
+            if(confirm('⚠️ Delete ALL tasks from all columns? This cannot be undone!')) {
+                tasks = {
+                    toStudy: [],
+                    learning: [],
+                    revision: [],
+                    done: []
+                };
+                nextId = 1;
+                saveTasks();
+                renderAllColumns();
+            }
+        }
+
+        // Drag and Drop functionality
+        function handleDragStart(e) {
+            const card = e.target.closest('.task-card');
+            if(!card) return;
+            
+            draggedTask = {
+                id: parseInt(card.dataset.id),
+                column: null
+            };
+            
+            // Find which column this task belongs to
+            for(let col of ['toStudy', 'learning', 'revision', 'done']) {
+                if(tasks[col].some(t => t.id === draggedTask.id)) {
+                    draggedTask.column = col;
+                    break;
+                }
+            }
+            
+            e.dataTransfer.setData('text/plain', JSON.stringify(draggedTask));
+            e.target.style.opacity = '0.5';
+        }
+        
+        function handleDragEnd(e) {
+            e.target.style.opacity = '';
+            draggedTask = null;
+        }
+        
+        // Add drop zones
+        function setupDropZones() {
+            const columns = ['toStudy', 'learning', 'revision', 'done'];
+            columns.forEach(column => {
+                const container = document.getElementById(`${column}Tasks`);
+                container.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                
+                container.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if(!draggedTask) return;
+                    
+                    const targetColumn = column;
+                    if(draggedTask.column !== targetColumn) {
+                        moveTask(draggedTask.id, draggedTask.column, targetColumn);
+                    }
+                });
+            });
+        }
+
+        // Event listeners
+        document.getElementById('addTaskBtn').addEventListener('click', addTask);
+        document.getElementById('resetAllBtn').addEventListener('click', resetAllTasks);
+        document.getElementById('newTaskInput').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') addTask();
+        });
+
+        // Initialize
+        loadTasks();
+        setupDropZones();
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bisection Root Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="mainRow">
+      <div id="panel">
+        <div class="pg">
+          <span class="pl">EQUATION</span>
+          <select id="eqnSel">
+            <option value="x*x-4">x² - 4</option>
+            <option value="x*x*x-x-2">x³ - x - 2</option>
+            <option value="Math.cos(x)-x">cos(x) - x</option>
+          </select>
+        </div>
+        <div class="pg">
+          <span class="pl">LEFT a</span>
+          <input id="inputA" type="number" step="0.1" value="0">
+        </div>
+        <div class="pg">
+          <span class="pl">RIGHT b</span>
+          <input id="inputB" type="number" step="0.1" value="4">
+        </div>
+        <div class="pg">
+          <span class="pl">TOLERANCE</span>
+          <input id="tolSlider" type="range" min="0.0001" max="0.1" step="0.0001" value="0.01">
+          <span id="tolVal" class="tv">0.01</span>
+        </div>
+        <div id="ivtWarn" class="warn hidden">IVT Condition Violated: No Sign Change between endpoints</div>
+      </div>
+
+      <div id="vizArea">
+        <div class="vz-label">INTERVAL BRACKET</div>
+        <div id="vizTrack">
+          <div id="vizBar">
+            <div id="markA" class="mark mark-a">a</div>
+            <div id="markM" class="mark mark-m hidden">c</div>
+            <div id="markB" class="mark mark-b">b</div>
+          </div>
+          <div id="vizLabels">
+            <span id="valA" class="vl">0.0000</span>
+            <span id="valM" class="vl vm hidden">0.0000</span>
+            <span id="valB" class="vl">4.0000</span>
+          </div>
+        </div>
+        <div id="currentRoot" class="root-display hidden">ROOT ≈ <span id="rootVal"></span></div>
+      </div>
+
+      <div id="logPanel">
+        <div class="pl">ITERATION LOG</div>
+        <div id="logScroll">
+          <table id="logTable">
+            <thead><tr><th>#</th><th>a</th><th>b</th><th>c</th><th>f(c)</th><th>|b-a|</th></tr></thead>
+            <tbody id="logBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <button id="stepBtn">SINGLE STEP</button>
+      <button id="runBtn">RUN TO CONVERGENCE</button>
+      <button id="clearBtn">CLEAR</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

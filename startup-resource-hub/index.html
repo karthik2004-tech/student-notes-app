@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startup Resource Hub & Founder Toolkit</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Global Theme CSS -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark">
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <i class="fa-solid fa-lightbulb logo-icon"></i>
+        <span class="logo-text">Hub Founder</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="checklist">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Launch Checklist</span>
+        </button>
+        <button class="nav-item" data-tab="planner">
+          <i class="fa-solid fa-file-pen"></i>
+          <span>Business Plan</span>
+        </button>
+        <button class="nav-item" data-tab="finance">
+          <i class="fa-solid fa-calculator"></i>
+          <span>Financial Tool</span>
+        </button>
+        <button class="nav-item" data-tab="pitch">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>Pitch Builder</span>
+        </button>
+        <button class="nav-item" data-tab="guides">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Guides Hub</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn" onclick="window.toggleGlobalTheme()">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          <span>Toggle Theme</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top header bar -->
+      <header class="top-header">
+        <div class="header-welcome">
+          <h1 id="welcome-message">Startup Resource Hub</h1>
+          <p class="current-date" id="date-string">Wednesday, June 10, 2026</p>
+        </div>
+      </header>
+
+      <!-- TAB 1: LAUNCH CHECKLIST -->
+      <section class="tab-panel active" id="tab-checklist">
+        <div class="checklist-layout">
+          <!-- Create Task Form -->
+          <div class="glass-card glow-orange">
+            <h2>Add Launch Milestone</h2>
+            <form id="checklist-form">
+              <div class="form-group">
+                <label for="chk-title">Milestone Title</label>
+                <input type="text" id="chk-title" required placeholder="e.g. Purchase domain name">
+              </div>
+              <div class="form-group">
+                <label for="chk-priority">Priority</label>
+                <select id="chk-priority">
+                  <option value="high">High Priority</option>
+                  <option value="medium" selected>Medium Priority</option>
+                  <option value="low">Low Priority</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary w-full">Add to Checklist</button>
+            </form>
+          </div>
+
+          <!-- Progress and list -->
+          <div class="checklist-display">
+            <div class="glass-card status-summary glow-cyan" style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
+              <div class="progress-details">
+                <h2>Launch Readiness</h2>
+                <p class="text-muted">Complete milestones to prepare for product launch.</p>
+              </div>
+              <div class="circular-score-wrapper">
+                <svg width="80" height="80" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="var(--input-border)" stroke-width="8"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="var(--cyan-solid)" stroke-width="8" 
+                          stroke-dasharray="251.2" stroke-dashoffset="251.2" id="launch-progress-ring"
+                          stroke-linecap="round" transform="rotate(-90 50 50)"/>
+                </svg>
+                <div class="score-number" id="launch-progress-text">0%</div>
+              </div>
+            </div>
+
+            <div class="checklist-scroll-box" id="checklist-wrapper">
+              <!-- Dynamically mapped milestones -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: BUSINESS PLAN -->
+      <section class="tab-panel" id="tab-planner">
+        <div class="glass-card planner-card glow-purple">
+          <div class="card-header-flex">
+            <h2>Business Canvas Builder</h2>
+            <button class="btn btn-primary btn-glow-purple" id="save-plan-btn">
+              <i class="fa-solid fa-floppy-disk"></i> Save Draft
+            </button>
+          </div>
+          
+          <div class="canvas-grid">
+            <div class="form-group">
+              <label for="bp-executive">1. Executive Summary</label>
+              <textarea id="bp-executive" rows="4" placeholder="Briefly state your company vision, mission, and the product/service you offer..."></textarea>
+            </div>
+            <div class="form-group">
+              <label for="bp-audience">2. Target Market & Audience</label>
+              <textarea id="bp-audience" rows="4" placeholder="Describe your demographic, buyer personas, and problem you solve for them..."></textarea>
+            </div>
+            <div class="form-group">
+              <label for="bp-revenue">3. Revenue & Monetization Model</label>
+              <textarea id="bp-revenue" rows="4" placeholder="How will your business generate cash flows? (e.g. SaaS subscription, marketplace commission, ads)..."></textarea>
+            </div>
+            <div class="form-group">
+              <label for="bp-marketing">4. Marketing & Acquisition Strategy</label>
+              <textarea id="bp-marketing" rows="4" placeholder="How will you find customers? (e.g. SEO, social advertisements, content marketing, cold sales)..."></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: FINANCIAL TOOL -->
+      <section class="tab-panel" id="tab-finance">
+        <div class="finance-layout">
+          <!-- Inputs Form -->
+          <div class="glass-card glow-cyan">
+            <h2>Financial Projections Inputs</h2>
+            <form id="finance-form">
+              <div class="form-group">
+                <label for="fin-investment">Initial Investment ($)</label>
+                <input type="number" id="fin-investment" required value="5000">
+              </div>
+              <div class="form-group">
+                <label for="fin-overhead">Monthly Operating Expenses ($)</label>
+                <input type="number" id="fin-overhead" required value="800">
+              </div>
+              <div class="form-group">
+                <label for="fin-unitcost">Product Unit Cost ($)</label>
+                <input type="number" id="fin-unitcost" required value="20">
+              </div>
+              <div class="form-group">
+                <label for="fin-price">Product Sale Price ($)</label>
+                <input type="number" id="fin-price" required value="50">
+              </div>
+              <div class="form-group">
+                <label for="fin-predicted">Estimated Monthly Units Sold</label>
+                <input type="number" id="fin-predicted" required value="40">
+              </div>
+            </form>
+          </div>
+
+          <!-- Outputs Stats Cards -->
+          <div class="finance-outputs">
+            <div class="glass-card metrics-box glow-orange">
+              <h2>Calculated Outcomes</h2>
+              
+              <div class="metric-outcome-row">
+                <div class="outcome-card">
+                  <span class="outcome-label">Monthly Gross Revenue</span>
+                  <strong class="outcome-val text-cyan" id="calc-revenue">$0</strong>
+                </div>
+                <div class="outcome-card">
+                  <span class="outcome-label">Monthly Net Profit</span>
+                  <strong class="outcome-val text-purple" id="calc-profit">$0</strong>
+                </div>
+                <div class="outcome-card">
+                  <span class="outcome-label">Break-even Units/Mo</span>
+                  <strong class="outcome-val text-orange" id="calc-breakeven">0 units</strong>
+                </div>
+                <div class="outcome-card">
+                  <span class="outcome-label">Net Profit Margin</span>
+                  <strong class="outcome-val text-green" id="calc-margin">0%</strong>
+                </div>
+              </div>
+              
+              <div class="wellbeing-alert-info" style="margin-top: 24px;">
+                <i class="fa-solid fa-chart-line text-cyan"></i>
+                <span id="breakeven-verdict-msg">You are operating at a net profit! Keep scaling.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: PITCH BUILDER -->
+      <section class="tab-panel" id="tab-pitch">
+        <div class="pitch-layout">
+          <!-- Text fields for slides -->
+          <div class="glass-card glow-purple">
+            <h2>Pitch Slide Drafts</h2>
+            <form id="pitch-form">
+              <div class="form-group">
+                <label for="pitch-problem">1. The Problem (What is broken?)</label>
+                <input type="text" id="pitch-problem" required placeholder="e.g. Aspiring founders lack step-by-step tools.">
+              </div>
+              <div class="form-group">
+                <label for="pitch-solution">2. The Solution (How do you fix it?)</label>
+                <input type="text" id="pitch-solution" required placeholder="e.g. A comprehensive glassmorphic hub for business planning.">
+              </div>
+              <div class="form-group">
+                <label for="pitch-market">3. Market Size (TAM/SAM/SOM)</label>
+                <input type="text" id="pitch-market" required placeholder="e.g. 50M new startups created annually.">
+              </div>
+              <div class="form-group">
+                <label for="pitch-monetization">4. Monetization (Business model)</label>
+                <input type="text" id="pitch-monetization" required placeholder="e.g. $10/mo SaaS subscription tier.">
+              </div>
+              <div class="form-group">
+                <label for="pitch-ask">5. The Ask (Funding required)</label>
+                <input type="text" id="pitch-ask" required placeholder="e.g. Seeking $100k pre-seed for core dev.">
+              </div>
+              <button type="button" class="btn btn-primary w-full" id="export-pitch-btn">Export Pitch Summary</button>
+            </form>
+          </div>
+
+          <!-- Compiled Pitch box -->
+          <div class="glass-card compiled-pitch-card glow-cyan">
+            <div class="card-header-flex">
+              <h2>Pitch Deck Summary</h2>
+              <button class="btn btn-secondary btn-small" id="copy-pitch-btn"><i class="fa-solid fa-copy"></i> Copy</button>
+            </div>
+            <pre class="pitch-pre-block" id="pitch-pre-summary">Select Export on the left to compile your slides summary...</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: GUIDES HUB -->
+      <section class="tab-panel" id="tab-guides">
+        <div class="guides-tabs">
+          <button class="guide-tab-btn active" data-cat="ideation">Ideation & Validation</button>
+          <button class="guide-tab-btn" data-cat="funding">Funding & Finance</button>
+          <button class="guide-tab-btn" data-cat="marketing">Marketing & Sales</button>
+        </div>
+
+        <div class="guides-cards-grid" id="guides-container">
+          <!-- Dynamically populated cards with read status -->
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Global Theme Script -->
+  <script src="../global-theme.js"></script>
+  <!-- Local Application script -->
+  <script src="script.js"></script>
+</body>
+</html>

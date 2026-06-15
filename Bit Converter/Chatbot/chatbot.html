@@ -705,7 +705,7 @@ function addMsg(role, content, isHTML = false) {
   const av = document.createElement('div'); av.className = 'm-ava';
   av.innerHTML = role === 'user' ? '<i class="ti ti-user"></i>' : '<i class="ti ti-robot"></i>';
   const bub = document.createElement('div'); bub.className = 'bubble';
-  if (isHTML) bub.innerHTML = content; else bub.textContent = content;
+  bub.textContent = content;
   const tm = document.createElement('div'); tm.className = 'time-lbl'; tm.textContent = nowTime();
   const inner = document.createElement('div'); inner.className = 'msg-inner';
   inner.appendChild(bub); inner.appendChild(tm);

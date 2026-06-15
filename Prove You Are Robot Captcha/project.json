@@ -1,0 +1,17 @@
+{
+  "title": "Prove You Are Robot — CAPTCHA",
+  "description": "A satirical cybernetic CAPTCHA suite that tasks the user with proving they are a robot through two inhuman-precision challenges: drawing a perfectly straight line (deviation ≤ 0.5px) and clicking at exactly 750ms (±3ms window). Built with HTML5, CSS3, and JavaScript ES6+.",
+  "author": {
+    "name": "Girish Madarkar",
+    "github": "Girish0902"
+  },
+  "tags": [
+    "captcha",
+    "satire",
+    "game",
+    "cyberpunk",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

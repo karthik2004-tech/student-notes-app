@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Budget Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="planner-container">
+    <h1>📊 Student Budget Planner</h1>
+    
+    <div class="budget-input">
+      <label>Monthly Budget: </label>
+      <input id="monthlyBudget" type="number" placeholder="Enter amount">
+      <button onclick="setBudget()">Set Budget</button>
+    </div>
+
+    <div class="category-input">
+      <input id="categoryName" type="text" placeholder="Category (e.g. Food)">
+      <input id="plannedAmount" type="number" placeholder="Planned">
+      <input id="actualAmount" type="number" placeholder="Actual">
+      <button onclick="addCategory()">Add Category</button>
+    </div>
+
+    <table id="budgetTable">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Planned</th>
+          <th>Actual</th>
+          <th>Difference</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div id="balanceDisplay">Remaining Balance: ₹0</div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

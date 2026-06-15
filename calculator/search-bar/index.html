@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Search Bar</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-btn" aria-label="Toggle dark mode">
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Component Name</h1>
+            <h2 class="subtitle">Search Bar</h2>
+        </header>
+
+        <div class="info-section">
+            <div class="column">
+                <h3>Features</h3>
+                <ul class="feature-list">
+                    <li>Search input field</li>
+                    <li>Search icon</li>
+                    <li>Clear button</li>
+                    <li>Responsive design</li>
+                    <li>Smooth focus animations</li>
+                    <li>Light and dark mode support</li>
+                </ul>
+            </div>
+            
+            <div class="column">
+                <h3>Use Cases</h3>
+                <ul class="feature-list">
+                    <li>Dashboards</li>
+                    <li>E-commerce websites</li>
+                    <li>Documentation sites</li>
+                    <li>Content management systems</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Interactive Demo</h3>
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-input" class="search-input" placeholder="Search for anything..." autocomplete="off">
+                    <button id="clear-btn" class="clear-btn" aria-label="Clear search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div id="search-results" class="search-results">
+                    <!-- Results will be displayed here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

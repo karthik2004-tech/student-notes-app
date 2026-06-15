@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Countdown Timer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="timer-container">
+    <h1>Study Countdown Timer</h1>
+    <div class="inputs">
+      <input id="hours" type="number" min="0" placeholder="HH">
+      <input id="minutes" type="number" min="0" max="59" placeholder="MM">
+      <input id="seconds" type="number" min="0" max="59" placeholder="SS">
+    </div>
+    <div id="display">00:00:00</div>
+    <div class="controls">
+      <button id="start">Start</button>
+      <button id="pause">Pause</button>
+      <button id="reset">Reset</button>
+      <button id="fullscreen">Fullscreen</button>
+    </div>
+    <audio id="alertSound" src="alert.mp3" preload="auto"></audio>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

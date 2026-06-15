@@ -301,16 +301,23 @@
         // Update history UI
         function updateHistoryDisplay() {
             const historyList = document.getElementById('historyList');
+            historyList.innerHTML = ''; // Clear current list safely
+
             if (history.length === 0) {
-                historyList.innerHTML = '<li style="color:#999; text-align:center;">No history yet</li>';
+                const li = document.createElement('li');
+                li.style.color = '#999';
+                li.style.textAlign = 'center';
+                li.textContent = 'No history yet';
+                historyList.appendChild(li);
                 return;
             }
             
-            historyList.innerHTML = history.map(item => 
-                `<li onclick="useHistory('${item.expression.replace(/'/g, "\\'")}')">
-                    ${item.expression} = ${item.result}
-                </li>`
-            ).join('');
+            history.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.expression} = ${item.result}`;
+                li.onclick = () => useHistory(item.expression);
+                historyList.appendChild(li);
+            });
         }
 
         // Use history item

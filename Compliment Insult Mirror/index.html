@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Compliment/Insult Mirror</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="splash">
+    <div class="s-card">
+      <div class="s-ascii">
+<span class="s-c1">╔═══</span><span class="s-c2">═══════════════════════</span><span class="s-c1">═══╗</span>
+<span class="s-c1">║</span>  INITIALIZE: CAMERA MESH  <span class="s-c1">║</span>
+<span class="s-c1">╚═══</span><span class="s-c2">═══════════════════════</span><span class="s-c1">═══╝</span>
+      </div>
+      <div class="s-title">AUTHORIZATION REQUIRED</div>
+      <div class="s-sub">This application requires access to your camera stream.<br>All processing runs locally — no data is transmitted.</div>
+      <button id="authBtn">[ GRANT PERMISSION ]</button>
+      <div id="authStatus" class="s-status">WAITING FOR USER INPUT</div>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <div id="topBar">
+      <div class="t-label">CAMERA MESH v2.4</div>
+      <div class="t-controls">
+        <button id="modeBtn" class="cbtn" data-mode="kind">MODE: KIND</button>
+        <button id="freezeBtn" class="cbtn">FREEZE</button>
+      </div>
+    </div>
+
+    <div id="telemetry">
+      <div class="tm"><span class="tm-l">CAMERA</span><span id="tmCam" class="tm-v tm-off">OFFLINE</span></div>
+      <div class="tm"><span class="tm-l">MESH</span><span id="tmMesh" class="tm-v">--</span></div>
+      <div class="tm"><span class="tm-l">MOOD</span><span id="tmMood" class="tm-v">--</span></div>
+      <div class="tm"><span class="tm-l">LUMEN</span><span id="tmLumen" class="tm-v">--</span></div>
+      <div class="tm"><span class="tm-l">FPS</span><span id="tmFps" class="tm-v">--</span></div>
+    </div>
+
+    <div id="viewport">
+      <canvas id="mainCanvas"></canvas>
+    </div>
+
+    <div id="mirrorLine">
+      <span id="mirrorText">AWAITING ANALYSIS…</span>
+    </div>
+
+    <div id="diag">
+      <div id="diagLog"></div>
+    </div>
+  </div>
+
+  <video id="videoSrc" autoplay playsinline muted></video>
+  <script src="script.js"></script>
+</body>
+</html>

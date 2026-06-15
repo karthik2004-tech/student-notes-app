@@ -1,0 +1,19 @@
+{
+  "title": "Sorting Algorithm Orchestration",
+  "description": "An audio-visual sorting algorithm laboratory with async/await step-by-step execution, Web Audio API sonification, canvas bar rendering with state-based color coding, and real-time telemetry across 4 algorithms.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["sorting", "algorithm", "visualizer", "audio", "web-audio", "canvas", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Four sorting algorithms: Bubble Sort (O(n²)), Insertion Sort (O(n²)), Quick Sort (O(n log n) with Hoare partition scheme), Selection Sort (O(n²)) — all implemented as async generators",
+    "Async step throttle: custom delay() returning Promise with setTimeout(ms = 100 - speed) inside while loops, yielding to event loop for live rendering without thread lock",
+    "Web Audio sonification: per-comparison OscillatorNode (sine/triangle/sawtooth) with frequency = 200 + (val/maxVal) × 800 Hz, exponentialRampToValueAtTime 0.08s decay envelope",
+    "Color-coded bar states: default=#6a5acd violet, scanning pointer=#ff2a5f magenta, evaluating pair=#00f0ff cyan, sorted=#00ff66 emerald — reset per frame draw cycle",
+    "Telemetry panel: live comparisons counter, swaps counter, elapsed time (computed on sort completion via Date.now), algorithm complexity label",
+    "Abort-safe stop: abort boolean flag checked at every loop iteration, instant kill + re-seed via stopReset() without page reload",
+    "Size/speed sliders: array size 15-150 triggers fresh array, speed 1-100 maps to delay ms = max(1, 100 - speed) for real-time pacing",
+    "Canvas resize: buffer re-mapped to CSS bounding rect, generateArray() re-scales values proportional to new height"
+  ]
+}

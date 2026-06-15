@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Regex Tester Playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Regex Tester Playground</h1>
+    <p class="subtitle">Test your regex patterns with live highlighting</p>
+
+    <div class="card">
+      <label>Regex Pattern</label>
+      <input type="text" id="regex-input" placeholder="Enter regex (e.g. \\d+)">
+    </div>
+
+    <div class="card">
+      <label>Test String</label>
+      <textarea id="test-string" placeholder="Enter text to test..."></textarea>
+    </div>
+
+    <div class="card results">
+      <h2>Results</h2>
+      <p><strong>Match Count:</strong> <span id="match-count">0</span></p>
+      <p><strong>Groups:</strong></p>
+      <ul id="groups-list"></ul>
+      <div id="highlighted-output"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

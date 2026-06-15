@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Toast System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Toast Notification System</h1>
+    <p>Click a button to trigger notifications</p>
+
+    <div class="buttons">
+      <button class="success" onclick="toast.success('Success saved!')">Success</button>
+      <button class="error" onclick="toast.error('Something failed!')">Error</button>
+      <button class="warning" onclick="toast.warning('Warning message')">Warning</button>
+      <button class="info" onclick="toast.info('Info message')">Info</button>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Translator | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.3s;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        body.light .container {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        body.light h1 {
+            color: #1a1a2e;
+            text-shadow: none;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 15px;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+        }
+
+        body.light .theme-toggle {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50px;
+            padding: 5px;
+        }
+
+        body.light .mode-switch {
+            background: #e0e0e0;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            transition: 0.3s;
+        }
+
+        body.light .mode-btn {
+            color: #666;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+        }
+
+        .translator-box {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        body.light label {
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 120px;
+            outline: none;
+        }
+
+        body.light textarea {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        textarea:focus {
+            border: 1px solid #00ffcc;
+        }
+
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 15px;
+            min-height: 120px;
+            color: white;
+            font-size: 18px;
+            word-break: break-word;
+        }
+
+        body.light .output-box {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.light .action-btn {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+        }
+
+        .suggestions {
+            margin: 20px 0;
+        }
+
+        .suggestions h4 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        body.light .suggestions h4 {
+            color: #333;
+        }
+
+        .suggestion-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-btn {
+            padding: 6px 15px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        body.light .suggestion-btn {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .suggestion-btn:hover {
+            background: #00b4db;
+            color: white;
+        }
+
+        .emoji-fact {
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        body.light .emoji-fact {
+            background: #e0e0e0;
+        }
+
+        .fact-text {
+            color: #00ffcc;
+            font-size: 13px;
+        }
+
+        body.light .fact-text {
+            color: #0083b0;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>😀 Emoji Translator</h1>
+            <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+        </div>
+
+        <div class="mode-switch">
+            <button class="mode-btn active" data-mode="textToEmoji">📝 Text → 😀 Emoji</button>
+            <button class="mode-btn" data-mode="emojiToText">😀 Emoji → 📝 Text</button>
+        </div>
+
+        <div class="translator-box">
+            <label id="inputLabel">Enter your text:</label>
+            <textarea id="inputText" placeholder="Type something here..."></textarea>
+        </div>
+
+        <div class="translator-box">
+            <label>Translated Output:</label>
+            <div class="output-box" id="outputText">Your translation will appear here</div>
+            <div class="action-buttons">
+                <button class="action-btn" id="copyBtn">📋 Copy</button>
+                <button class="action-btn" id="shareBtn">📤 Share</button>
+                <button class="action-btn primary" id="translateBtn">🔄 Translate</button>
+            </div>
+        </div>
+
+        <div class="suggestions">
+            <h4>💡 Try these phrases:</h4>
+            <div class="suggestion-buttons" id="suggestionButtons">
+                <button class="suggestion-btn">Good morning</button>
+                <button class="suggestion-btn">I love you</button>
+                <button class="suggestion-btn">How are you?</button>
+                <button class="suggestion-btn">Thank you</button>
+                <button class="suggestion-btn">Congratulations</button>
+                <button class="suggestion-btn">Good luck</button>
+            </div>
+        </div>
+
+        <div class="emoji-fact">
+            <div class="fact-text" id="factText">📖 Did you know? The word "emoji" comes from Japanese "e" (picture) + "moji" (character)</div>
+        </div>
+    </div>
+
+    <script>
+        // Emoji dictionary for text to emoji conversion
+        const emojiMap = {
+            // Greetings
+            'good morning': '🌅☀️',
+            'good night': '🌙💤',
+            'hello': '👋',
+            'hi': '👋',
+            'hey': '👋',
+            
+            // Emotions
+            'love': '❤️',
+            'i love you': '❤️😘',
+            'happy': '😊',
+            'sad': '😢',
+            'angry': '😠',
+            'excited': '🤩',
+            'scared': '😨',
+            'surprised': '😲',
+            
+            // Common phrases
+            'thank you': '🙏😊',
+            'thanks': '🙏',
+            'welcome': '👋',
+            'sorry': '😔',
+            'congratulations': '🎉👏',
+            'good luck': '🍀🤞',
+            'great': '👍😃',
+            'awesome': '🤩👍',
+            'cool': '😎',
+            'nice': '👌',
+            'perfect': '✨👌',
+            'yes': '✅',
+            'no': '❌',
+            'ok': '👌',
+            'bye': '👋',
+            'see you': '👋👀',
+            
+            // Actions
+            'eat': '🍽️',
+            'drink': '🥤',
+            'sleep': '😴',
+            'work': '💼',
+            'study': '📚',
+            'play': '🎮',
+            'dance': '💃',
+            'sing': '🎤',
+            'run': '🏃',
+            'swim': '🏊',
+            
+            // Objects
+            'phone': '📱',
+            'computer': '💻',
+            'car': '🚗',
+            'bike': '🏍️',
+            'house': '🏠',
+            'school': '🏫',
+            'book': '📖',
+            'coffee': '☕',
+            'pizza': '🍕',
+            'burger': '🍔',
+            'ice cream': '🍦',
+            
+            // Time
+            'today': '📅',
+            'tomorrow': '⏩📅',
+            'now': '⏰',
+            'later': '⏰',
+            'morning': '🌅',
+            'afternoon': '☀️',
+            'evening': '🌆',
+            'night': '🌙',
+            
+            // Question
+            'what': '❓',
+            'why': '🤔',
+            'how': '🤔',
+            'when': '📅❓',
+            'where': '📍❓',
+            'who': '👤❓',
+            
+            // Random
+            'fire': '🔥',
+            'party': '🎉',
+            'gift': '🎁',
+            'heart': '❤️',
+            'star': '⭐',
+            'moon': '🌙',
+            'sun': '☀️',
+            'rain': '☔',
+            'snow': '❄️',
+            'flower': '🌸',
+            'cat': '🐱',
+            'dog': '🐶',
+            'bird': '🐦',
+            'fish': '🐟'
+        };
+
+        // Reverse emoji map for emoji to text
+        const reverseEmojiMap = {};
+        for(let [text, emoji] of Object.entries(emojiMap)) {
+            reverseEmojiMap[emoji] = text;
+        }
+
+        // Emoji facts
+        const emojiFacts = [
+            "📖 Did you know? The word 'emoji' comes from Japanese 'e' (picture) + 'moji' (character)",
+            "😀 The 'Face with Tears of Joy' emoji was the most used emoji in 2021",
+            "🎄 There's an emoji for almost everything! Over 3,600 emojis exist today",
+            "🇯🇵 Emojis were invented in Japan in 1999 by Shigetaka Kurita",
+            "🍕 July 17 is World Emoji Day! 🎉",
+            "😊 The smiling face with smiling eyes is one of the most popular emojis",
+            "🎬 The movie 'The Emoji Movie' was released in 2017",
+            "📱 There's a 'Person Facepalming' emoji 🤦 for those awkward moments",
+            "❤️ The red heart is the most used heart emoji",
+            "🎉🎂🎈🎁 There are over 50 celebration-themed emojis"
+        ];
+
+        let currentMode = 'textToEmoji';
+        let currentFactIndex = 0;
+
+        // DOM Elements
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const inputLabel = document.getElementById('inputLabel');
+        const translateBtn = document.getElementById('translateBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const modeBtns = document.querySelectorAll('.mode-btn');
+        const suggestionBtns = document.querySelectorAll('.suggestion-btn');
+        const factText = document.getElementById('factText');
+
+        // Text to Emoji conversion
+        function textToEmoji(text) {
+            let result = text.toLowerCase();
+            // Sort by length descending to match longer phrases first
+            const sortedKeys = Object.keys(emojiMap).sort((a, b) => b.length - a.length);
+            
+            for(let word of sortedKeys) {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                result = result.replace(regex, emojiMap[word]);
+            }
+            return result;
+        }
+
+        // Emoji to Text conversion
+        function emojiToText(text) {
+            let result = text;
+            for(let [emoji, word] of Object.entries(reverseEmojiMap)) {
+                result = result.split(emoji).join(word);
+            }
+            return result;
+        }
+
+        // Translate function
+        function translate() {
+            const input = inputText.value.trim();
+            if(!input) {
+                outputText.textContent = currentMode === 'textToEmoji' 
+                    ? 'Please enter some text to translate' 
+                    : 'Please enter some emojis to translate';
+                return;
+            }
+            
+            let translation;
+            if(currentMode === 'textToEmoji') {
+                translation = textToEmoji(input);
+            } else {
+                translation = emojiToText(input);
+            }
+            
+            outputText.textContent = translation || '(no translation available)';
+        }
+
+        // Copy to clipboard
+        async function copyOutput() {
+            const text = outputText.textContent;
+            if(text && text !== 'Your translation will appear here' && !text.includes('Please enter')) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    const original = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '✅ Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = original;
+                    }, 1500);
+                } catch(err) {
+                    alert('Failed to copy');
+                }
+            } else {
+                alert('Nothing to copy');
+            }
+        }
+
+        // Share
+        async function shareOutput() {
+            const text = outputText.textContent;
+            if(text && text !== 'Your translation will appear here' && !text.includes('Please enter')) {
+                try {
+                    await navigator.share({
+                        title: 'Emoji Translation',
+                        text: text
+                    });
+                } catch(err) {
+                    alert('Share not supported or cancelled');
+                }
+            } else {
+                alert('Nothing to share');
+            }
+        }
+
+        // Switch mode
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            modeBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.dataset.mode === mode) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            if(mode === 'textToEmoji') {
+                inputLabel.textContent = 'Enter your text:';
+                inputText.placeholder = 'Type something here... e.g., "Good morning! I love you"';
+            } else {
+                inputLabel.textContent = 'Enter emojis:';
+                inputText.placeholder = 'Type emojis here... e.g., "🌅☀️ ❤️😘"';
+            }
+            
+            // Clear both boxes
+            inputText.value = '';
+            outputText.textContent = 'Your translation will appear here';
+        }
+
+        // Set suggestion
+        function setSuggestion(text) {
+            inputText.value = text;
+            translate();
+        }
+
+        // Random emoji fact
+        function showRandomFact() {
+            const randomIndex = Math.floor(Math.random() * emojiFacts.length);
+            factText.textContent = emojiFacts[randomIndex];
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light');
+            const isLight = document.body.classList.contains('light');
+            themeToggle.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+        }
+
+        // Event listeners
+        translateBtn.addEventListener('click', translate);
+        copyBtn.addEventListener('click', copyOutput);
+        shareBtn.addEventListener('click', shareOutput);
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // Check if share is supported
+        if(!navigator.share) {
+            shareBtn.style.opacity = '0.5';
+            shareBtn.style.cursor = 'not-allowed';
+        }
+        
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchMode(btn.dataset.mode);
+            });
+        });
+        
+        suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setSuggestion(btn.textContent);
+            });
+        });
+        
+        // Enter key shortcut
+        inputText.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                translate();
+            }
+        });
+        
+        // Show random fact on load
+        showRandomFact();
+        setInterval(showRandomFact, 30000); // Change fact every 30 seconds
+    </script>
+</body>
+</html>

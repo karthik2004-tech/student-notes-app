@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IndexedDB Transaction Ledger</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="workspace">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">IndexedDB Ledger Studio</p>
+        <h1>Transactional Academic Finance Ledger</h1>
+        <p>Local-first ledger management with async IndexedDB transactions, schema versioning, and live performance analytics.</p>
+        <div class="hero-pill-grid">
+          <span class="pill">Non-blocking storage</span>
+          <span class="pill">Cursor-driven paging</span>
+          <span class="pill">Atomic rollback safety</span>
+        </div>
+      </div>
+      <div class="status-panel">
+        <p>Database status</p>
+        <strong id="status">Initializing...</strong>
+        <div class="status-actions">
+          <button id="load-demo" class="btn-outline" type="button">Load demo data</button>
+          <button id="clear-ledger" class="btn-outline" type="button">Clear all</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="grid two-col">
+      <article class="card form-card">
+        <div class="card-header">
+          <h2>Post a Transaction</h2>
+          <span class="badge">Atomic write</span>
+        </div>
+        <form id="transaction-form">
+          <div class="field-group">
+            <label for="date">Date</label>
+            <input id="date" name="date" type="datetime-local" required />
+          </div>
+          <div class="field-group">
+            <label for="description">Description</label>
+            <input id="description" name="description" type="text" required maxlength="120" placeholder="Grant payment, tuition fee, etc." />
+          </div>
+          <div class="field-group">
+            <label for="account">Account</label>
+            <input id="account" name="account" list="accounts-list" type="text" required maxlength="60" placeholder="e.g. Tuition Revenue" />
+            <datalist id="accounts-list"></datalist>
+          </div>
+          <div class="field-group split">
+            <div>
+              <label for="category">Category</label>
+              <input id="category" name="category" list="categories-list" type="text" required maxlength="60" placeholder="e.g. Grants, Expense" />
+              <datalist id="categories-list"></datalist>
+            </div>
+            <div>
+              <label for="type">Type</label>
+              <select id="type" name="type" required>
+                <option value="credit">Credit</option>
+                <option value="debit">Debit</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group split">
+            <div>
+              <label for="amount">Amount</label>
+              <input id="amount" name="amount" type="number" required step="0.01" min="0.01" placeholder="0.00" />
+            </div>
+            <div>
+              <label for="reference">Reference</label>
+              <input id="reference" name="reference" type="text" maxlength="60" placeholder="Invoice #1234" />
+            </div>
+          </div>
+          <button class="btn-submit" type="submit">Commit Transaction</button>
+        </form>
+      </article>
+
+      <article class="card summary-card">
+        <div class="card-header">
+          <h2>Ledger Snapshot</h2>
+          <div class="toolbar-row">
+            <button id="export-ledger" class="btn-pill" type="button">Export JSON</button>
+            <button id="import-ledger" class="btn-pill" type="button">Import JSON</button>
+            <input id="import-file" type="file" accept="application/json" hidden />
+          </div>
+        </div>
+        <div class="filter-row">
+          <div>
+            <label for="query-filter">Search</label>
+            <input id="query-filter" type="search" placeholder="Search description" />
+          </div>
+          <div>
+            <label for="account-filter">Account</label>
+            <select id="account-filter"><option value="all">All accounts</option></select>
+          </div>
+          <div>
+            <label for="category-filter">Category</label>
+            <select id="category-filter"><option value="all">All categories</option></select>
+          </div>
+          <div>
+            <label for="type-filter">Type</label>
+            <select id="type-filter">
+              <option value="all">All types</option>
+              <option value="credit">Credit</option>
+              <option value="debit">Debit</option>
+            </select>
+          </div>
+        </div>
+        <div class="summary-grid">
+          <div>
+            <p>Total Credits</p>
+            <strong id="total-credit">0</strong>
+          </div>
+          <div>
+            <p>Total Debits</p>
+            <strong id="total-debit">0</strong>
+          </div>
+          <div>
+            <p>Net Balance</p>
+            <strong id="net-balance">0</strong>
+          </div>
+        </div>
+        <div class="pager-controls">
+          <button id="prev-page" type="button">← Previous</button>
+          <span id="page-label">Page 1</span>
+          <button id="next-page" type="button">Next →</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card chart-card">
+        <div class="card-header">
+          <h2>Ledger Intelligence</h2>
+          <span class="badge highlight">Live analytics</span>
+        </div>
+        <div class="metric-grid">
+          <div class="metric-card">
+            <p>Total records</p>
+            <strong id="record-count">0</strong>
+          </div>
+          <div class="metric-card">
+            <p>Average transaction</p>
+            <strong id="avg-transaction">$0.00</strong>
+          </div>
+          <div class="metric-card">
+            <p>Largest entry</p>
+            <strong id="largest-transaction">$0.00</strong>
+          </div>
+        </div>
+        <div class="chart-panel">
+          <h3>Category spend and revenue</h3>
+          <div id="category-chart" class="category-chart"></div>
+        </div>
+      </article>
+
+      <article class="card table-card">
+        <h2>Transaction Ledger</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Account</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Reference</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ledger-body"></tbody>
+          </table>
+        </div>
+        <p id="empty-state" class="empty-state">No transactions available.</p>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

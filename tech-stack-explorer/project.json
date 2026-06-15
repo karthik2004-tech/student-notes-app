@@ -1,0 +1,17 @@
+{
+  "title": "Tech Stack Explorer with Learning Paths & Technology Comparison Dashboard",
+  "description": "An interactive web dashboard designed to help developers and learners explore popular technology stacks, discover visual learning paths, and compare different technologies side by side.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "tags": [
+    "vanilla-js",
+    "developer-tools",
+    "roadmap",
+    "dashboard",
+    "learning-path"
+  ],
+  "level": 3,
+  "entry": "index.html"
+}

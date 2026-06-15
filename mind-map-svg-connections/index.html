@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MapWeaver | SVG Connected Mind Maps</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Global theme styling sheet -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme-forced">
+  <div class="app-container">
+    <!-- Top Control Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i data-lucide="git-commit"></i>
+          </div>
+          <div class="logo-text">
+            <h2>MapWeaver</h2>
+            <span>Connected Mind Maps</span>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="canvas-controls">
+          <button id="btn-zoom-in" class="btn btn-secondary btn-icon btn-sm" title="Zoom In">
+            <i data-lucide="zoom-in"></i>
+          </button>
+          <button id="btn-zoom-out" class="btn btn-secondary btn-icon btn-sm" title="Zoom Out">
+            <i data-lucide="zoom-out"></i>
+          </button>
+          <button id="btn-zoom-reset" class="btn btn-secondary btn-icon btn-sm" title="Reset View">
+            <i data-lucide="maximize-2"></i>
+          </button>
+          <button id="btn-center-map" class="btn btn-secondary btn-icon-text btn-sm">
+            <i data-lucide="locate"></i>
+            <span>Center Map</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Backup controls -->
+        <button id="import-btn" class="btn btn-secondary btn-icon-text btn-sm" title="Import JSON Backup">
+          <i data-lucide="upload"></i>
+          <span>Import JSON</span>
+        </button>
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+
+        <button id="export-btn" class="btn btn-secondary btn-icon-text btn-sm" title="Export JSON Backup">
+          <i data-lucide="download"></i>
+          <span>Export JSON</span>
+        </button>
+
+        <button id="export-svg-btn" class="btn btn-secondary btn-icon-text btn-sm" title="Export Map as SVG Image">
+          <i data-lucide="file-image"></i>
+          <span>Export SVG</span>
+        </button>
+
+        <button id="btn-clear-canvas" class="btn btn-secondary btn-icon-text btn-sm text-danger" title="Clear Canvas">
+          <i data-lucide="trash-2"></i>
+          <span>Reset Map</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Map Workspace containing panning Canvas -->
+    <div class="canvas-viewport" id="canvas-viewport">
+      <div class="canvas-content" id="canvas-content">
+        <!-- SVG Connections Layer -->
+        <svg class="connections-layer" id="connections-svg">
+          <!-- Cubic Bezier Curve Paths are injected here -->
+        </svg>
+
+        <!-- Dynamic Mind Map Nodes Container -->
+        <div class="nodes-container" id="nodes-container">
+          <!-- Draggable nodes are injected here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Help Panel instructions -->
+    <div class="floating-panel help-panel">
+      <div class="panel-header-row">
+        <h4>Mind Map Controls</h4>
+        <button class="btn-panel-close" id="btn-toggle-help">&times;</button>
+      </div>
+      <ul class="help-list">
+        <li><span class="key">Double-click</span> any node to edit its text inline.</li>
+        <li><span class="key">Drag & Drop</span> any node to rearrange positions.</li>
+        <li>Click the <span class="key text-success">+</span> button on any node to add a connected child.</li>
+        <li>Click the <span class="key text-danger">x</span> button on any node to delete it and its children.</li>
+        <li><span class="key">Right-click / Drag Canvas</span> empty space to pan.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Global theme integration script -->
+  <script src="../global-theme.js"></script>
+  <!-- Local Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>

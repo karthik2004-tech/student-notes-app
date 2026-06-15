@@ -1,0 +1,126 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05060b;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(98vmin,1200px);
+  height:min(98vmin,800px);
+  display:flex;flex-direction:column;
+  gap:clamp(2px,0.2vmin,4px);
+}
+
+/* ─── Top bar ────────────────────────────────── */
+#topBar{
+  display:flex;align-items:center;
+  gap:clamp(6px,0.7vmin,12px);
+  padding:clamp(5px,0.55vmin,8px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  flex-wrap:wrap;
+}
+#uploadBtn{
+  padding:clamp(4px,0.4vmin,6px) clamp(10px,1.2vmin,18px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;text-transform:uppercase;
+  transition:all 0.15s;
+}
+#uploadBtn:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#captionInput{
+  width:clamp(100px,15vmin,200px);
+  padding:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.01);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:3px;
+  color:#94a3b8;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  outline:none;
+}
+#captionInput:focus{border-color:rgba(0,240,255,0.08);color:#cbd5e1}
+#captionInput::placeholder{color:#1e2a3a}
+.pv{
+  font-size:clamp(6px,0.7vmin,9px);
+  color:#334155;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+}
+
+/* ─── Arena ──────────────────────────────────── */
+#arenaWrap{
+  flex:1;position:relative;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#0a0c14;
+  overflow:hidden;min-height:0;
+}
+#arena{width:100%;height:100%;position:relative}
+
+/* ─── Polaroid card ──────────────────────────── */
+.polaroid{
+  position:absolute;
+  width:clamp(120px,18vmin,200px);
+  background:#f0ead6;
+  border-radius:clamp(2px,0.2vmin,4px);
+  padding:clamp(6px,0.7vmin,10px) clamp(6px,0.7vmin,10px) clamp(20px,2.5vmin,34px) clamp(6px,0.7vmin,10px);
+  box-shadow:4px 4px 12px rgba(0,0,0,0.4);
+  cursor:grab;
+  transition:transform 0.3s, opacity 0.3s;
+  will-change:left,top,transform;
+  user-select:none;touch-action:none;
+}
+.polaroid:active{cursor:grabbing}
+.polaroid .photoFrame{
+  width:100%;aspect-ratio:1;
+  overflow:hidden;
+  background:#e0d8c4;
+  border-radius:1px;
+}
+.polaroid .photoFrame img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.polaroid .caption{
+  font-family:'Courier New',monospace;
+  font-size:clamp(7px,0.85vmin,11px);
+  color:#333;
+  text-align:center;
+  margin-top:clamp(4px,0.5vmin,8px);
+  white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;
+  letter-spacing:0.5px;
+}
+.polaroid.purging{
+  opacity:0;
+  transform:scale(0) rotate(90deg) !important;
+  transition:all 0.4s ease-out;
+}
+
+/* ─── Footer ─────────────────────────────────── */
+#footer{
+  display:flex;justify-content:center;
+  gap:clamp(6px,0.8vmin,12px);
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#footer button{
+  padding:clamp(4px,0.4vmin,6px) clamp(10px,1.2vmin,16px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#footer button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}

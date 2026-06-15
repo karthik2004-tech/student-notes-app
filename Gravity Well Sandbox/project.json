@@ -1,0 +1,21 @@
+{
+  "title": "Gravity Well Sandbox",
+  "description": "An interactive 2D Newtonian gravity simulation where users click-and-drag to launch planets into orbit around a central star, with real-time physics, fading orbital trails, impact ring effects, and parameter modulation.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["gravity-simulation", "physics", "newtonian", "orbits", "sandbox", "canvas", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Newtonian inverse-square kinematics: a = G·M/r² per axis, integrated via Euler step v += a, x += v each rAF frame",
+    "Click-and-drag launcher: mousedown anchors spawn point, mousemove draws dashed vector with arrowhead, mouseup instantiates planet with velocity proportional to drag length × 0.04 in opposite direction",
+    "Circular collision absorption: distance < star.r + planet.r check removes planet and spawns expanding ring with alpha fade (life -= 0.025, r += 0.5)",
+    "Out-of-bounds pruning: planets beyond canvas ±200px deleted to prevent memory leak",
+    "Fading orbital trails: per-planet 50-120 position history buffer drawn as progressive-alpha line segments (j/tr.length × 0.6) with emerald glow",
+    "Parameter modulation: G slider (100-3000), Mass slider (500-8000), trail length slider (10-120), checkbox toggle for trails on/off",
+    "Impact ring effect: expanding circle stroke with globalAlpha fade, drawn as expanding ring micro-animation per absorption event",
+    "Telemetry panel: satellite count, peak velocity tracker, relative coordinates from star center",
+    "Resize handler: re-centers star at new midpoint, re-scales star radius proportional to W × 0.025",
+    "Touch support: touchstart/touchmove/touchend with preventDefault for mobile launch interaction"
+  ]
+}

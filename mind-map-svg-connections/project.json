@@ -1,0 +1,18 @@
+{
+  "title": "SVG Connected Mind Maps",
+  "description": "An interactive mind map canvas where users can dynamically drag nodes, edit titles inline, add child nodes hierarchically, and view real-time connecting SVG Bezier curves. Supports canvas panning, zoom controls, JSON import/export, and visual SVG downloads.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "level": 3,
+  "tags": [
+    "mindmap",
+    "svg",
+    "drag-and-drop",
+    "inline-editing",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

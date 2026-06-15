@@ -1,0 +1,149 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05070c;
+  min-height:100vh;
+  display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(90vmin,460px);
+  height:min(98vmin,620px);
+  display:flex;flex-direction:column;
+  gap:clamp(4px,0.45vmin,7px);
+}
+
+/* ─── Telemetry ────────────────────────────────── */
+#telemetry{
+  display:flex;justify-content:center;
+  gap:clamp(10px,2vmin,28px);
+  padding:clamp(5px,0.5vmin,8px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.35vmin,5px);
+}
+.tm{
+  display:flex;align-items:center;
+  gap:clamp(3px,0.35vmin,5px);
+  font-size:clamp(7px,1vmin,12px);letter-spacing:1px;
+}
+.tl{color:#334155;text-transform:uppercase}
+.tv{color:#64748b;font-weight:700;font-variant-numeric:tabular-nums}
+#playerVal{color:#00ff88}
+#cpuVal{color:#ff2a5f}
+#tiesVal{color:#00f0ff}
+#bestVal{color:#ffd700}
+
+/* ─── Arena ────────────────────────────────────── */
+#arena{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(8px,1.2vmin,16px);
+  padding:clamp(12px,1.8vmin,24px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.35vmin,5px);
+  background:#04060c;
+}
+.slot{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;gap:clamp(6px,0.7vmin,10px);
+  padding:clamp(8px,1vmin,14px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(255,255,255,0.02);
+  border-radius:clamp(3px,0.35vmin,5px);
+  transition:all 0.3s;
+}
+.slot.win{border-color:rgba(0,255,136,0.15)}
+.slot.lose{border-color:rgba(255,42,95,0.15)}
+.slot.tie{border-color:rgba(0,240,255,0.12)}
+
+.slot-label{
+  font-size:clamp(7px,0.9vmin,11px);
+  color:#334155;text-transform:uppercase;letter-spacing:2px;
+}
+.slot-icon{
+  font-size:clamp(32px,7vmin,64px);
+  line-height:1;
+  transition:all 0.2s;
+  color:#475569;
+}
+.slot-icon.reveal{color:#00f0ff}
+.slot.win .slot-icon{color:#00ff88}
+.slot.lose .slot-icon{color:#ff2a5f}
+.slot.tie .slot-icon{color:#00f0ff}
+
+.vs{
+  font-size:clamp(10px,1.4vmin,16px);
+  color:#334155;font-weight:700;letter-spacing:2px;
+}
+
+/* ─── Shake ────────────────────────────────────── */
+@keyframes handShake{
+  0%,100%{transform:rotate(0)}
+  20%{transform:rotate(-8deg) translateX(-4px)}
+  40%{transform:rotate(8deg) translateX(4px)}
+  60%{transform:rotate(-6deg) translateX(-2px)}
+  80%{transform:rotate(6deg) translateX(2px)}
+}
+#arena.shake .slot-icon{animation:handShake 0.4s ease 2}
+
+/* ─── Result bar ───────────────────────────────── */
+#resultBar{
+  text-align:center;
+  font-size:clamp(10px,1.3vmin,15px);
+  letter-spacing:2px;
+  padding:clamp(4px,0.5vmin,7px);
+  transition:color 0.2s;
+}
+.result{color:#475569}
+.result.win{color:#00ff88}
+.result.lose{color:#ff2a5f}
+.result.tie{color:#00f0ff}
+
+/* ─── Choices ──────────────────────────────────── */
+#choices{
+  display:flex;justify-content:center;
+  gap:clamp(4px,0.5vmin,8px);
+}
+.choice{
+  flex:1;
+  padding:clamp(8px,1vmin,14px) clamp(4px,0.5vmin,8px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.35vmin,5px);
+  color:#475569;
+  font-family:inherit;
+  font-size:clamp(8px,1vmin,13px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+  white-space:nowrap;
+}
+.choice:hover{
+  border-color:rgba(0,240,255,0.1);
+  color:#94a3b8;background:rgba(255,255,255,0.008);
+}
+.choice:active{transform:scale(0.96)}
+.choice:disabled{opacity:0.3;pointer-events:none}
+
+/* ─── Action row ───────────────────────────────── */
+#actionRow{
+  display:flex;justify-content:center;
+}
+#resetBtn{
+  padding:clamp(5px,0.6vmin,9px) clamp(14px,1.8vmin,24px);
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.03);
+  border-radius:3px;
+  color:#475569;
+  font-family:inherit;
+  font-size:clamp(7px,0.9vmin,11px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#resetBtn:hover{border-color:rgba(255,255,255,0.08);color:#64748b}
+
+@media(max-width:480px){
+  #app{width:100vmin;height:100vmin}
+  #telemetry{gap:6px}
+}

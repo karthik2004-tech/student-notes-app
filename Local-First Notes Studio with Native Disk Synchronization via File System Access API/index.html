@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local-First Notes Studio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <h1>Local-First Notes Studio</h1>
+        <p>Native disk sync using the File System Access API.</p>
+      </div>
+      <button id="openDirectoryBtn" class="primary-btn">Open Folder</button>
+    </header>
+
+    <section class="status-panel">
+      <div>
+        <strong>Directory:</strong>
+        <span id="directoryName">Not selected</span>
+      </div>
+      <div>
+        <strong>Permission:</strong>
+        <span id="permissionStatus">Unknown</span>
+      </div>
+    </section>
+
+    <section class="app-grid">
+      <aside class="note-list-panel">
+        <div class="panel-header">
+          <h2>Notes</h2>
+          <button id="newNoteBtn" class="secondary-btn">New note</button>
+        </div>
+        <ul id="noteList" class="note-list"></ul>
+      </aside>
+
+      <article class="editor-panel">
+        <div class="panel-header">
+          <div>
+            <h2 id="editorTitle">Select a note</h2>
+            <p id="notePath" class="note-path"></p>
+          </div>
+          <div>
+            <button id="saveBtn" class="primary-btn" disabled>Save</button>
+          </div>
+        </div>
+        <textarea id="noteEditor" class="editor" placeholder="Write your notes here..." disabled></textarea>
+      </article>
+    </section>
+
+    <section class="info-card">
+      <h3>How it works</h3>
+      <ul>
+        <li>Open a directory with <code>window.showDirectoryPicker()</code>.</li>
+        <li>List existing <code>.txt</code> and <code>.md</code> notes.</li>
+        <li>Edit in memory and save directly to disk.</li>
+        <li>Permission checks use <code>queryPermission</code> and <code>requestPermission</code>.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

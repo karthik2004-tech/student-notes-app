@@ -1,0 +1,18 @@
+{
+  "title": "Developer Resource Vault",
+  "description": "A centralized knowledge management platform for developers to organize documentation, articles, videos, tutorials, and snippets. Features learning dashboards, topic categorization, progress indicators, search/filters, backups, and orange/purple/green/black light & dark themes.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "level": 3,
+  "tags": [
+    "resources",
+    "dashboard",
+    "learning",
+    "darkmode",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

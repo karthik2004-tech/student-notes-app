@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptFlow | AI Prompt Library Manager & Sandbox</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Global theme integration -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR: PLATFORMS FILTER -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-box">
+          <i data-lucide="message-square-code"></i>
+        </div>
+        <div class="logo-text">
+          <h2>PromptFlow</h2>
+          <span>AI Prompt Library</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>AI Platform Channels</h3>
+        <nav class="platform-nav" id="platform-list">
+          <button class="platform-btn active" data-platform="all">
+            <i data-lucide="layout-grid"></i>
+            <span>All Platforms</span>
+            <span class="count-badge" id="count-all">0</span>
+          </button>
+          <button class="platform-btn" data-platform="chatgpt">
+            <i data-lucide="bot"></i>
+            <span>ChatGPT</span>
+            <span class="count-badge" id="count-chatgpt">0</span>
+          </button>
+          <button class="platform-btn" data-platform="gemini">
+            <i data-lucide="sparkles"></i>
+            <span>Gemini</span>
+            <span class="count-badge" id="count-gemini">0</span>
+          </button>
+          <button class="platform-btn" data-platform="claude">
+            <i data-lucide="brain"></i>
+            <span>Claude</span>
+            <span class="count-badge" id="count-claude">0</span>
+          </button>
+          <button class="platform-btn" data-platform="midjourney">
+            <i data-lucide="palette"></i>
+            <span>Midjourney</span>
+            <span class="count-badge" id="count-midjourney">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Backup console -->
+      <div class="sidebar-section">
+        <h3>Backup Console</h3>
+        <div class="backup-actions">
+          <button class="btn btn-secondary btn-sm w-full mb-2" id="btn-export-backup">
+            <i data-lucide="download"></i>
+            <span>Export JSON</span>
+          </button>
+          <button class="btn btn-secondary btn-sm w-full" id="btn-import-trigger">
+            <i data-lucide="upload"></i>
+            <span>Import JSON</span>
+          </button>
+          <input type="file" id="import-file" accept=".json" style="display:none;">
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <main class="app-main">
+      <!-- TOP ACTION BAR -->
+      <header class="app-header">
+        <div class="header-left">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" id="prompt-search" placeholder="Search title, tags, descriptions, prompt texts...">
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Theme (Light / Dark)">
+            <i data-lucide="sun"></i>
+          </button>
+          <button class="btn btn-primary" id="btn-add-prompt">
+            <i data-lucide="plus"></i>
+            <span>Add Prompt</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ANALYTICS DASHBOARD HERO PANEL -->
+      <section class="prompt-dashboard">
+        <div class="dashboard-header">
+          <div class="title-wrap">
+            <h2>AI Productivity Dashboard</h2>
+            <p>Track prompt templates caches, copy logs count, and usage stats.</p>
+          </div>
+        </div>
+        
+        <div class="metrics-grid">
+          <div class="metric-card card-purple">
+            <div class="card-glow"></div>
+            <div class="metric-icon"><i data-lucide="terminal"></i></div>
+            <div class="metric-info">
+              <h3 id="stat-total">0</h3>
+              <p>Total Prompts</p>
+            </div>
+          </div>
+          <div class="metric-card card-orange">
+            <div class="card-glow"></div>
+            <div class="metric-icon"><i data-lucide="copy"></i></div>
+            <div class="metric-info">
+              <h3 id="stat-copies">0</h3>
+              <p>Times Copied</p>
+            </div>
+          </div>
+          <div class="metric-card card-green">
+            <div class="card-glow"></div>
+            <div class="metric-icon"><i data-lucide="star"></i></div>
+            <div class="metric-info">
+              <h3 id="stat-starred">0</h3>
+              <p>Starred Favorites</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DUAL COLUMN WORKSPACE: CARDS & COMPILE SANDBOX -->
+      <div class="workspace-layout">
+        <!-- Cards list -->
+        <div class="prompt-vault-section">
+          <!-- Filters row -->
+          <div class="vault-filters-row">
+            <div class="filter-tabs" id="category-tabs">
+              <button class="filter-tab active" data-category="all">All Categories</button>
+              <button class="filter-tab" data-category="coding">Coding</button>
+              <button class="filter-tab" data-category="creative">Creative</button>
+              <button class="filter-tab" data-category="writing">Writing</button>
+              <button class="filter-tab" data-category="analysis">Analysis</button>
+            </div>
+            <div class="sort-selector">
+              <label for="prompt-sort"><i data-lucide="sliders-horizontal"></i> Sort:</label>
+              <select id="prompt-sort">
+                <option value="newest">Newest</option>
+                <option value="copies">Most Copied</option>
+                <option value="alphabetical">Title (A-Z)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="prompts-grid" id="prompts-grid">
+            <!-- Cards injected dynamically -->
+          </div>
+
+          <div class="empty-state" id="vault-empty">
+            <div class="empty-icon-circle">
+              <i data-lucide="folder-search"></i>
+            </div>
+            <h3>No Prompt Templates Found</h3>
+            <p>Click "Add Prompt" to start compiling AI configurations templates.</p>
+          </div>
+        </div>
+
+        <!-- Compile Sandbox Sidebar -->
+        <div class="sandbox-sidebar-column">
+          <div class="content-card sandbox-card">
+            <div class="card-header">
+              <div class="header-details">
+                <h3>Prompt Variables Sandbox</h3>
+                <p>Fill in placeholders to compile prompt variables live.</p>
+              </div>
+            </div>
+            <div class="card-body sandbox-body-layout" id="sandbox-body">
+              <!-- Default placeholder display -->
+              <div class="sandbox-empty-state" id="sandbox-empty">
+                <i data-lucide="sliders" class="text-purple"></i>
+                <p>Select any prompt template card from the vault to configure placeholder variables live.</p>
+              </div>
+
+              <!-- Sandbox Active Compiler UI -->
+              <div class="sandbox-compiler-ui" id="sandbox-compiler" style="display:none;">
+                <h4 id="sandbox-prompt-title">React code reviewer</h4>
+                
+                <!-- Dynamic input textboxes injected here -->
+                <div class="sandbox-inputs-grid" id="sandbox-variables-inputs"></div>
+
+                <div class="sandbox-divider"></div>
+
+                <!-- Final compile code block -->
+                <div class="compiled-output-box">
+                  <div class="output-header-row">
+                    <span>Final Compiled Prompt</span>
+                    <button class="btn btn-secondary btn-sm" id="btn-copy-sandbox" title="Copy Compiled Output">
+                      <i data-lucide="copy"></i>
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                  <pre class="compiled-output-text" id="sandbox-compiled-text"></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODAL: ADD/EDIT PROMPT -->
+    <div class="modal-overlay" id="modal-prompt">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 id="modal-title">Add Prompt Template</h3>
+          <button class="btn-modal-close" id="btn-modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="pr-title">Prompt Title</label>
+              <input type="text" id="pr-title" placeholder="e.g. Code Review Assistant">
+            </div>
+            <div class="form-group flex-1">
+              <label for="pr-platform">Target AI Platform</label>
+              <select id="pr-platform">
+                <option value="chatgpt">ChatGPT</option>
+                <option value="gemini">Gemini</option>
+                <option value="claude">Claude</option>
+                <option value="midjourney">Midjourney</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="pr-category">Topic Category</label>
+              <select id="pr-category">
+                <option value="coding">Coding & CS</option>
+                <option value="creative">Creative / Design</option>
+                <option value="writing">Writing / Copy</option>
+                <option value="analysis">Analysis & Stats</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label for="pr-tags">Tags (Comma-separated)</label>
+              <input type="text" id="pr-tags" placeholder="refactor, debugging, js">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pr-desc">Short Description</label>
+            <input type="text" id="pr-desc" placeholder="Review and suggest fixes for code segments.">
+          </div>
+
+          <div class="form-group">
+            <label for="pr-template">Prompt Template (Use [brackets] for dynamic variables)</label>
+            <textarea id="pr-template" rows="6" placeholder="Act as a senior [language] reviewer. Please inspect this segment for memory leaks: [code]"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+          <button class="btn btn-primary" id="btn-modal-save">Add Template</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global scripts theme -->
+  <script src="../global-theme.js"></script>
+  <!-- Local script -->
+  <script src="script.js"></script>
+</body>
+</html>

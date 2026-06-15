@@ -1,0 +1,17 @@
+{
+  "title": "Interactive SVG String Pull",
+  "description": "A neon-acoustic multimedia toy featuring dynamic SVG path deformation, Hooke's law spring physics with damping, and polyphonic Web Audio synthesis. Drag strings to deform them as quadratic bezier curves and release to hear a pentatonic-scale note. Built with HTML5, CSS3, SVG, and JavaScript ES6+.",
+  "author": {
+    "name": "Girish Madarkar",
+    "github": "Girish0902"
+  },
+  "tags": [
+    "svg",
+    "web-audio",
+    "physics",
+    "interactive",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

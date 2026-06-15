@@ -1,0 +1,209 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05070c;
+  min-height:100vh;
+  display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(98vmin,900px);
+  height:min(98vmin,680px);
+  display:flex;flex-direction:column;
+  gap:clamp(3px,0.35vmin,5px);
+}
+
+/* ─── Main row ────────────────────────────────── */
+#mainRow{
+  flex:1;display:flex;
+  gap:clamp(3px,0.35vmin,5px);
+  min-height:0;
+}
+
+/* ─── Shared ──────────────────────────────────── */
+#panel,.vz-label,#logPanel{
+  font-size:clamp(6px,0.75vmin,10px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+
+/* ─── Left panel ──────────────────────────────── */
+#panel{
+  width:28%;display:flex;flex-direction:column;
+  gap:clamp(6px,0.7vmin,10px);
+  padding:clamp(6px,0.7vmin,10px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+.pg{display:flex;flex-direction:column;gap:clamp(2px,0.25vmin,4px)}
+.pl{
+  font-size:clamp(6px,0.7vmin,9px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.tv{color:#64748b;font-size:clamp(7px,0.85vmin,11px);font-weight:700}
+
+#panel select,#panel input[type=number]{
+  padding:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#64748b;
+  font-family:inherit;
+  font-size:clamp(7px,0.85vmin,11px);
+  outline:none;
+}
+#panel select:hover,#panel input:hover{border-color:rgba(0,240,255,0.1)}
+#panel select option{background:#05070c;color:#64748b}
+
+#tolSlider{
+  width:100%;-webkit-appearance:none;appearance:none;
+  height:3px;background:rgba(0,240,255,0.05);border-radius:2px;outline:none;
+}
+#tolSlider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:12px;height:12px;border-radius:50%;
+  background:#00f0ff;cursor:pointer;box-shadow:0 0 8px rgba(0,240,255,0.3);
+}
+
+.warn{
+  padding:clamp(4px,0.5vmin,7px);
+  font-size:clamp(6px,0.7vmin,9px);
+  color:#ff2a5f;background:rgba(255,42,95,0.04);
+  border:1px solid rgba(255,42,95,0.15);border-radius:3px;
+  text-transform:none;letter-spacing:0.5px;line-height:1.4;
+}
+.warn.hidden{display:none}
+
+/* ─── Center viz ──────────────────────────────── */
+#vizArea{
+  flex:1;display:flex;flex-direction:column;
+  gap:clamp(4px,0.5vmin,7px);
+  padding:clamp(8px,0.9vmin,14px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.35vmin,5px);
+  background:#04060c;
+}
+.vz-label{
+  font-size:clamp(7px,0.85vmin,11px);
+  color:#334155;text-align:center;
+}
+
+#vizTrack{
+  flex:1;display:flex;flex-direction:column;
+  justify-content:center;gap:clamp(6px,0.7vmin,10px);
+}
+#vizBar{
+  position:relative;height:clamp(24px,3.5vmin,40px);
+  background:rgba(255,255,255,0.005);
+  border-radius:clamp(2px,0.25vmin,4px);
+  border:1px solid rgba(255,255,255,0.02);
+  overflow:visible;
+}
+.mark{
+  position:absolute;top:-4px;
+  width:clamp(16px,2.2vmin,26px);height:clamp(16px,2.2vmin,26px);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(7px,0.8vmin,11px);font-weight:700;
+  transform:translate(-50%,0);
+  transition:left 0.3s ease;
+  z-index:2;
+}
+.mark-a{background:rgba(0,240,255,0.12);color:#00f0ff;border:1px solid rgba(0,240,255,0.2)}
+.mark-b{background:rgba(255,42,95,0.12);color:#ff2a5f;border:1px solid rgba(255,42,95,0.2)}
+.mark-m{background:rgba(0,255,136,0.12);color:#00ff88;border:1px solid rgba(0,255,136,0.2)}
+.mark.hidden{display:none}
+
+#vizLabels{
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;height:clamp(12px,1.5vmin,18px);
+}
+.vl{
+  font-size:clamp(7px,0.85vmin,11px);
+  color:#475569;font-weight:600;font-variant-numeric:tabular-nums;
+}
+.vl.vm{
+  position:absolute;left:50%;transform:translateX(-50%);
+  color:#00ff88;
+}
+.vl.vm.hidden{display:none}
+
+.root-display{
+  text-align:center;
+  font-size:clamp(10px,1.3vmin,16px);
+  color:#00ff88;letter-spacing:2px;font-weight:700;
+}
+
+/* ─── Right log panel ──────────────────────────── */
+#logPanel{
+  width:32%;display:flex;flex-direction:column;
+  gap:clamp(3px,0.35vmin,5px);
+  padding:clamp(6px,0.7vmin,10px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+#logScroll{
+  flex:1;overflow-y:auto;
+  min-height:0;scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,0.04) transparent;
+}
+#logTable{width:100%;border-collapse:collapse;font-size:clamp(6px,0.7vmin,9px)}
+#logTable th{
+  position:sticky;top:0;
+  padding:clamp(2px,0.25vmin,4px);
+  color:#334155;text-align:center;font-weight:600;
+  background:#05070c;border-bottom:1px solid rgba(255,255,255,0.02);
+}
+#logTable td{
+  padding:clamp(2px,0.25vmin,4px);
+  color:#475569;text-align:center;
+  border-bottom:1px solid rgba(255,255,255,0.008);
+  font-variant-numeric:tabular-nums;
+}
+#logTable tr:hover td{color:#64748b}
+
+/* ─── Footer ──────────────────────────────────── */
+#footer{
+  display:flex;justify-content:center;
+  gap:clamp(6px,0.7vmin,10px);
+  padding:clamp(4px,0.45vmin,7px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.35vmin,5px);
+}
+#footer button{
+  padding:clamp(5px,0.6vmin,9px) clamp(12px,1.6vmin,22px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;
+  font-family:inherit;
+  font-size:clamp(7px,0.85vmin,11px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#footer button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#footer button:disabled{opacity:0.25;pointer-events:none}
+
+/* ─── Shake ────────────────────────────────────── */
+@keyframes ivtShake{
+  0%,100%{transform:translate(0)}
+  10%{transform:translate(-4px,2px)}
+  20%{transform:translate(3px,-3px)}
+  30%{transform:translate(-2px,4px)}
+  40%{transform:translate(5px,-1px)}
+  50%{transform:translate(-3px,3px)}
+  60%{transform:translate(2px,-4px)}
+  70%{transform:translate(-4px,1px)}
+  80%{transform:translate(4px,-2px)}
+  90%{transform:translate(-1px,3px)}
+}
+#panel.shake{animation:ivtShake 0.35s ease}
+
+@media(max-width:600px){
+  #mainRow{flex-direction:column}
+  #panel,#logPanel{width:auto}
+  #vizArea{min-height:160px}
+  #logPanel{max-height:200px}
+}

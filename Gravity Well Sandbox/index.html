@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Gravity Well Sandbox</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <div class="pg">
+        <span class="pl">GRAVITY G</span>
+        <input type="range" id="gSlider" min="100" max="3000" value="800" step="10">
+        <span id="gVal" class="pv">800</span>
+      </div>
+      <div class="pg">
+        <span class="pl">MASS M</span>
+        <input type="range" id="massSlider" min="500" max="8000" value="3000" step="50">
+        <span id="massVal" class="pv">3000</span>
+      </div>
+      <div class="pg">
+        <span class="pl">TRAIL</span>
+        <input type="range" id="trailSlider" min="10" max="120" value="60" step="5">
+        <span id="trailVal" class="pv">60</span>
+      </div>
+      <div class="pg">
+        <label class="chk"><input type="checkbox" id="trailsChk" checked><span class="chk-l">PATHS</span></label>
+      </div>
+    </div>
+
+    <div id="mainRow">
+      <div id="canvasWrap">
+        <canvas id="gameCanvas"></canvas>
+        <div id="hint" class="hint">Click & drag to launch planets</div>
+      </div>
+
+      <div id="telemetry">
+        <div class="tm"><span class="tl">SATELLITES</span><span id="satVal" class="tv">0</span></div>
+        <div class="tm"><span class="tl">PEAK V</span><span id="peakVal" class="tv">0.00</span></div>
+        <div class="tm"><span class="tl">COORDS</span><span id="coordVal" class="tv">0, 0</span></div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <button id="clearBtn">CLEAR SATELLITES</button>
+      <button id="resetBtn">RESET SYSTEM</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

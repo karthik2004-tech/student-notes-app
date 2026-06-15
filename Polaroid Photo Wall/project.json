@@ -1,0 +1,19 @@
+{
+  "title": "Polaroid Photo Wall",
+  "description": "A creative photo collage sandbox with polaroid-style cards, custom native drag-and-drop engine, FileReader-based image ingestion, dynamic z-index layering, random tilt angles, scramble/purge controls, and 2 seeded placeholder cards on boot.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["polaroid", "photo", "collage", "drag-drop", "file-reader", "image", "creative", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "FileReader ingestion: hidden <input type=file accept=image/* multiple> triggered via UPLOAD PHOTO button. For each file, new FileReader() reads as dataURL, onload creates a polaroid card with caption from text input or filename stem",
+    "Polaroid card DOM: .polaroid container with white/cream background (#f0ead6), .photoFrame (aspect-ratio:1, object-fit:cover img or gradient placeholder), .caption strip with monospace text, random rotate(-15 to +15 deg) transform, box-shadow for depth",
+    "Custom drag engine: mousedown/touchstart on card saves {el, offsetX, offsetY} into dragData state. Global mousemove/touchmove computes newLeft/ newTop = clientPos - arenaRect.offset - offsetX/Y, clamped to [0, arenaRect - elSize]. mouseup/touchend nulls dragData. touch-action:none + preventDefault for mobile",
+    "Z-index stacking: maxZIndex counter incremented on every mousedown/touchstart, assigned to el.style.zIndex, guaranteeing grabbed card always renders above all others",
+    "Scramble Angles: iterates all .polaroid cards, sets transform = rotate(random -15..15 deg) live",
+    "Purge Board: adds .purging class (opacity 0, scale 0, rotate 90deg, transition 0.4s ease-out), then after 450ms clears arena innerHTML + resets counters + re-seeds 2 placeholder cards",
+    "Seed placeholders: 2 polaroid cards created on init with null src (gradient background + camera emoji) and positioned at 25%/55% of arena width",
+    "Count label: updates in real-time as 'N card(s)' on card creation/purge"
+  ]
+}

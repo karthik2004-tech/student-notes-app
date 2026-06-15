@@ -1,0 +1,18 @@
+{
+  "title": "Rock Paper Scissors",
+  "description": "A cyberpunk-styled Rock Paper Scissors game with animated hand-shake battle sequence, win/loss/tie visual states, input throttle during animation, and localStorage best-score persistence.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["rock-paper-scissors", "game", "arcade", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "AI randomizer: Math.random() × 3 lookup into ['rock','paper','scissors'] pool for unbiased CPU selection",
+    "Algebraic state matrix: 3-rule judge function — tie (===), win (rock>scissors|paper>rock|scissors>paper), loss (else)",
+    "Animated battle sequence: 600ms handShake (0.4s @keyframes × 2 cycles) with double fist icons before revealing outcome",
+    "Exploit-safe throttle: locked boolean gates all battle() calls, disabled attribute on all choice buttons during animation phase",
+    "Border glow states: win = emerald #00ff88 border, lose = crimson #ff2a5f border, tie = cyan #00f0ff border on arena slots",
+    "Scoreboard telemetry: player/cpu/ties tracked with color-coded values, best stored as max playerScore via localStorage rpsBest key",
+    "Reset utility: zeroes player, cpu, and tie counters, clears arena and result bar without page reload, saves best"
+  ]
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conway's Game of Life</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <button id="playBtn">PLAY</button>
+      <button id="stepBtn">STEP</button>
+      <button id="clearBtn">CLEAR</button>
+      <button id="randBtn">RANDOMIZE</button>
+      <div class="pg"><span class="pl">FPS</span><input type="range" id="fpsSlider" min="1" max="30" value="8" step="1"><span id="fpsVal" class="pv">8</span></div>
+      <div class="pg"><span class="pl">SCALE</span><input type="range" id="scaleSlider" min="3" max="20" value="8" step="1"><span id="scaleVal" class="pv">8</span></div>
+      <select id="presetSel">
+        <option value="">-- Presets --</option>
+        <option value="glider">Glider</option>
+        <option value="pulsar">Pulsar</option>
+        <option value="acorn">Acorn</option>
+        <option value="gosper">Gosper Gun</option>
+      </select>
+      <button id="saveBtn">SAVE</button>
+    </div>
+
+    <div id="mainRow">
+      <div id="canvasWrap">
+        <canvas id="gameCanvas"></canvas>
+      </div>
+
+      <div id="telemetry">
+        <div class="tm"><span class="tl">GENERATION</span><span id="genVal" class="tv">0</span></div>
+        <div class="tm"><span class="tl">LIVE</span><span id="liveVal" class="tv">0</span></div>
+        <div class="tm"><span class="tl">DELTA</span><span id="deltaVal" class="tv">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

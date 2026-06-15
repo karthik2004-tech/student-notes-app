@@ -1,0 +1,20 @@
+{
+  "title": "Perlin Noise Terrain Sandbox",
+  "description": "A procedural terrain generator using native 2D Perlin noise with fBm octave synthesis, radial island masking, real-time parameter modulation (sea level, peak scale, noise scale, octaves, persistence), theme-based color mapping, and PNG export.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["perlin-noise", "terrain-generation", "procedural", "fbm", "canvas", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Native Perlin noise: self-contained implementation with permutation table (seed-shuffled via LCG RNG), 8-direction gradient dot product, quintic fade function 6t⁵-15t⁴+10t³, bilinear interpolation",
+    "fBm octave synthesis: stacked noise layers with frequency doubling per octave, amplitude scaled by persistence, normalized by maxVal for [-1,1] → [0,1] mapping",
+    "Radial island masking: smoothstep (3m²-2m³) distance attenuation from center, generating self-contained coastal landmasses",
+    "Direct pixel buffer rendering: ctx.createImageData → Uint8ClampedArray → ctx.putImageData with color mapped from 6-band cyberpunk spectrum (deep blue → cyan → amber → emerald → gray → white)",
+    "Real-time slider modulation: sea level (0.20-0.60), peak scale (0.5-2.0 power curve), noise scale (1-10 frequency), octaves (1-6), persistence (0.2-0.8) — all trigger regeneration with 50ms debounce",
+    "3 theme presets: Cyberpunk (neon), Mars (rust/terracotta), Alien (purple/cyan) — each defines 6-band color palette with smooth lerp transitions",
+    "Seed management: newSeed() generates random hash via Math.random()×2³¹, shuffles permutation table, regenerates terrain; seed hash displayed in telemetry",
+    "PNG export: canvas.toDataURL('image/png') triggers downloadable terrain_seed_{hash}.png via programmatic <a> click",
+    "Telemetry: land-to-water ratio, highest peak altitude (max height value), active seed hash — updated per generate()"
+  ]
+}

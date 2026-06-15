@@ -1,0 +1,17 @@
+{
+  "title": "The Infinite Desktop Window Illusion",
+  "description": "A recursive desktop simulation where double-clicking any folder icon spawns a floating window containing a fully functional replica of the entire desktop — icons, taskbar, clock, and recursive folder-launching behaviour included. Built with HTML5, CSS3, and JavaScript ES6+.",
+  "author": {
+    "name": "Girish Madarkar",
+    "github": "Girish0902"
+  },
+  "tags": [
+    "recursive",
+    "desktop",
+    "illusion",
+    "cyberpunk",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

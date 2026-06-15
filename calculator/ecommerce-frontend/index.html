@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina | Modern E-Commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" id="logo-btn">
+                <i class="ph-fill ph-storefront"></i>
+                <span>Lumina</span>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for products...">
+                <button><i class="ph ph-magnifying-glass"></i></button>
+            </div>
+
+            <div class="nav-icons">
+                <div class="nav-icon" id="cart-btn">
+                    <i class="ph ph-shopping-cart"></i>
+                    <span class="badge" id="cart-badge">0</span>
+                </div>
+                <div class="nav-icon">
+                    <i class="ph ph-user"></i>
+                </div>
+                <div class="nav-icon mobile-menu">
+                    <i class="ph ph-list"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+        <!-- View 1: Homepage -->
+        <div id="home-view" class="view active">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Elevate Your Everyday</h1>
+                    <p>Discover our curated collection of premium lifestyle products designed for modern living.</p>
+                    <button class="btn btn-primary" id="shop-now-btn">Shop Collection</button>
+                </div>
+            </section>
+
+            <!-- Filters & Categories -->
+            <section class="store-controls">
+                <div class="categories" id="category-filters">
+                    <button class="filter-btn active" data-filter="all">All Products</button>
+                    <button class="filter-btn" data-filter="electronics">Electronics</button>
+                    <button class="filter-btn" data-filter="fashion">Fashion</button>
+                    <button class="filter-btn" data-filter="home">Home & Living</button>
+                </div>
+                <div class="sort-control">
+                    <select id="sort-select">
+                        <option value="default">Sort by: Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Products Grid -->
+            <section class="products-section">
+                <div class="products-grid" id="products-grid">
+                    <!-- Product cards injected by JS -->
+                </div>
+                <div id="no-results" class="hidden no-results">
+                    <i class="ph ph-smiley-sad"></i>
+                    <p>No products found matching your search.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- View 2: Product Details -->
+        <div id="details-view" class="view hidden">
+            <div class="container details-container">
+                <button class="back-btn" id="back-to-shop"><i class="ph ph-arrow-left"></i> Back to Shop</button>
+                
+                <div class="product-details" id="product-details-content">
+                    <!-- Details injected by JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="close-cart-btn"><i class="ph ph-x"></i></button>
+        </div>
+        
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items injected by JS -->
+            <div class="empty-cart" id="empty-cart">
+                <i class="ph ph-shopping-bag"></i>
+                <p>Your cart is currently empty.</p>
+                <button class="btn btn-outline" id="start-shopping-btn">Start Shopping</button>
+            </div>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <p class="shipping-note">Taxes and shipping calculated at checkout.</p>
+            <button class="btn btn-primary checkout-btn" id="checkout-btn" disabled>Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo"><i class="ph-fill ph-storefront"></i> Lumina</div>
+                <p>Curated quality products for your lifestyle.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Shop</h4>
+                    <a href="#">New Arrivals</a>
+                    <a href="#">Best Sellers</a>
+                    <a href="#">Sale</a>
+                </div>
+                <div class="link-group">
+                    <h4>Support</h4>
+                    <a href="#">FAQ</a>
+                    <a href="#">Shipping</a>
+                    <a href="#">Returns</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Lumina E-Commerce. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Product added to cart!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

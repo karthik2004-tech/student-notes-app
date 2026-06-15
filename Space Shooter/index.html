@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Space Shooter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="telemetry">
+      <div class="tm"><span class="tl">SCORE</span><span id="scoreVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">HULL</span><span id="hullVal" class="tv">&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;</span></div>
+      <div class="tm"><span class="tl">WAVE</span><span id="waveVal" class="tv">1</span></div>
+      <div class="tm"><span class="tl">BEST</span><span id="bestVal" class="tv">0</span></div>
+    </div>
+
+    <div id="canvasWrap">
+      <canvas id="gameCanvas"></canvas>
+
+      <div id="overlay" class="overlay">
+        <div class="ol-title">SPACE SHOOTER</div>
+        <div class="ol-sub">Move: Mouse / Touch / Arrow Keys + WASD<br>Shoot: Click / Space</div>
+        <button id="startBtn">LAUNCH</button>
+      </div>
+
+      <div id="gameover" class="overlay hidden">
+        <div class="ol-title go">DESTROYED</div>
+        <div id="goStats" class="ol-sub"></div>
+        <button id="restartBtn">RETRY</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

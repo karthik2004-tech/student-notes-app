@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="16" fill="#05060b"/>
+  <!-- Outer window (depth 1) -->
+  <rect x="18" y="18" width="92" height="76" rx="6" fill="rgba(10,13,26,0.96)" stroke="rgba(0,240,255,0.15)" stroke-width="0.8"/>
+  <!-- Title bar -->
+  <rect x="18" y="18" width="92" height="14" rx="6" fill="rgba(5,6,11,0.5)"/>
+  <rect x="18" y="26" width="92" height="6" fill="rgba(5,6,11,0.5)"/>
+  <!-- Dots -->
+  <circle cx="24" cy="25" r="2.5" fill="#ef4444"/>
+  <circle cx="30" cy="25" r="2.5" fill="#eab308"/>
+  <circle cx="36" cy="25" r="2.5" fill="#22c55e"/>
+  <text x="42" y="28" font-size="3.5" fill="#64748b" font-family="monospace">System Drive - Depth 1</text>
+  <!-- Inner icons -->
+  <!-- Drive -->
+  <rect x="24" y="36" width="8" height="8" rx="1" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.7"/>
+  <text x="28" y="51" font-size="2.5" fill="#94a3b8" text-anchor="middle" font-family="monospace">Drive</text>
+  <!-- Network -->
+  <rect x="38" y="37" width="7" height="7" rx="0.5" fill="none" stroke="#00d4ff" stroke-width="0.8" transform="rotate(45 41 40)" opacity="0.7"/>
+  <text x="42" y="51" font-size="2.5" fill="#94a3b8" text-anchor="middle" font-family="monospace">Network</text>
+  <!-- Trash -->
+  <rect x="54" y="37" width="6" height="8" rx="0.5" fill="none" stroke="#ef4444" stroke-width="0.8" opacity="0.7"/>
+  <text x="57" y="51" font-size="2.5" fill="#94a3b8" text-anchor="middle" font-family="monospace">Trash</text>
+  <!-- Inner window (depth 2) -->
+  <rect x="36" y="52" width="58" height="38" rx="4" fill="rgba(10,13,26,0.96)" stroke="rgba(0,240,255,0.12)" stroke-width="0.6"/>
+  <rect x="36" y="52" width="58" height="10" rx="4" fill="rgba(5,6,11,0.4)"/>
+  <rect x="36" y="56" width="58" height="6" fill="rgba(5,6,11,0.4)"/>
+  <circle cx="41" cy="57" r="1.8" fill="#ef4444"/>
+  <circle cx="45" cy="57" r="1.8" fill="#eab308"/>
+  <circle cx="49" cy="57" r="1.8" fill="#22c55e"/>
+  <text x="54" y="59" font-size="2.5" fill="#64748b" font-family="monospace">Trunk - Depth 2</text>
+  <!-- Deepest icon -->
+  <rect x="44" y="66" width="6" height="6" rx="0.5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.5"/>
+  <text x="47" y="77" font-size="2" fill="#94a3b8" text-anchor="middle" font-family="monospace">Drive</text>
+  <!-- Taskbar at bottom of outer -->
+  <rect x="18" y="86" width="92" height="8" fill="rgba(5,6,11,0.4)"/>
+  <text x="22" y="92" font-size="2.5" fill="#475569" font-family="monospace">DEPTH 1</text>
+  <text x="102" y="92" font-size="2.5" fill="#475569" text-anchor="end" font-family="monospace">12:34:56</text>
+  <!-- Root taskbar -->
+  <rect x="0" y="118" width="128" height="10" fill="rgba(5,6,11,0.3)"/>
+  <text x="4" y="125" font-size="2.5" fill="#475569" font-family="monospace">ROOT</text>
+  <text x="124" y="125" font-size="2.5" fill="#475569" text-anchor="end" font-family="monospace">12:34:56</text>
+  <!-- Telemetry overlay -->
+  <rect x="4" y="4" width="54" height="10" rx="4" fill="rgba(5,6,11,0.85)" stroke="rgba(0,240,255,0.06)" stroke-width="0.4"/>
+  <text x="7" y="9" font-size="2.2" fill="#475569" font-family="monospace">NESTING</text>
+  <text x="6" y="13" font-size="3.5" fill="#00f0ff" font-family="monospace" font-weight="700">Layer 2</text>
+  <text x="28" y="9" font-size="2.2" fill="#475569" font-family="monospace">WIN</text>
+  <text x="28" y="13" font-size="3.5" fill="#00f0ff" font-family="monospace" font-weight="700">2</text>
+  <!-- Root icons -->
+  <rect x="6" y="18" width="10" height="10" rx="1.5" fill="none" stroke="#fbbf24" stroke-width="0.8"/>
+  <text x="11" y="33" font-size="2.5" fill="#94a3b8" text-anchor="middle" font-family="monospace">Drive</text>
+  <rect x="6" y="36" width="10" height="10" rx="1.5" fill="none" stroke="#00d4ff" stroke-width="0.8"/>
+  <text x="11" y="51" font-size="2.5" fill="#94a3b8" text-anchor="middle" font-family="monospace">Network</text>
+  <rect x="6" y="54" width="10" height="10" rx="1.5" fill="none" stroke="#ef4444" stroke-width="0.8"/>
+  <text x="11" y="69" font-size="2.5" fill="#94a3b8" text-anchor="middle" font-family="monospace">Trash</text>
+</svg>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Study Ecosystem — Student Productivity Hub</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Global Theme CSS -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark">
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <i class="fa-solid fa-graduation-cap logo-icon"></i>
+        <span class="logo-text">Aura Study</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="dashboard">
+          <i class="fa-solid fa-house"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="scheduler">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span>Planner</span>
+        </button>
+        <button class="nav-item" data-tab="goals">
+          <i class="fa-solid fa-bullseye"></i>
+          <span>Goals</span>
+        </button>
+        <button class="nav-item" data-tab="kanban">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Assignments</span>
+        </button>
+        <button class="nav-item" data-tab="wellbeing">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <span>Wellbeing</span>
+        </button>
+        <button class="nav-item" data-tab="lms-ai">
+          <i class="fa-solid fa-robot"></i>
+          <span>LMS & AI Buddy</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn" onclick="window.toggleGlobalTheme()">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          <span>Toggle Theme</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top header bar -->
+      <header class="top-header">
+        <div class="header-welcome">
+          <h1 id="welcome-message">Welcome back, Student!</h1>
+          <p class="current-date" id="date-string">Tuesday, June 9, 2026</p>
+        </div>
+        <!-- Level & XP Indicator -->
+        <div class="user-level-badge">
+          <div class="level-circle">
+            <span class="level-label">LVL</span>
+            <span class="level-num" id="level-display">1</span>
+          </div>
+          <div class="xp-bar-container">
+            <div class="xp-progress-bar" id="xp-bar" style="width: 20%;"></div>
+            <div class="xp-tooltip" id="xp-text">20 / 100 XP</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD -->
+      <section class="tab-panel active" id="tab-dashboard">
+        <div class="dashboard-grid">
+          
+          <!-- Gamified Profile summary -->
+          <div class="glass-card profile-card glow-purple">
+            <div class="card-header">
+              <h2>Productivity Aura</h2>
+              <i class="fa-solid fa-bolt status-spark"></i>
+            </div>
+            <div class="aura-display">
+              <div class="aura-pulse" id="aura-pulse-circle"></div>
+              <div class="streak-badge">
+                <i class="fa-solid fa-fire text-orange"></i>
+                <span id="streak-num">3</span> Days Streak
+              </div>
+            </div>
+            <div class="level-stats">
+              <p>Keep studying to upgrade your study rank!</p>
+              <h4 id="rank-name" class="text-purple">Initiate Scholar</h4>
+            </div>
+          </div>
+
+          <!-- Weekly Stats Chart Card -->
+          <div class="glass-card chart-card glow-orange">
+            <div class="card-header">
+              <h2>Weekly Study Hours</h2>
+              <span class="chart-sub" id="total-focus-hours">Total: 4.5 hrs</span>
+            </div>
+            <div class="chart-container">
+              <!-- SVG Custom dynamic bar charts -->
+              <svg class="study-chart" viewBox="0 0 350 150">
+                <!-- Grid Lines -->
+                <line x1="30" y1="20" x2="330" y2="20" class="chart-grid-line" />
+                <line x1="30" y1="60" x2="330" y2="60" class="chart-grid-line" />
+                <line x1="30" y1="100" x2="330" y2="100" class="chart-grid-line" />
+                <line x1="30" y1="130" x2="330" y2="130" class="chart-axis-line" />
+
+                <!-- SVG Bars (heights managed by script.js) -->
+                <!-- Mon -->
+                <rect x="50" y="130" width="20" height="0" rx="3" class="chart-bar bar-mon" />
+                <!-- Tue -->
+                <rect x="90" y="130" width="20" height="0" rx="3" class="chart-bar bar-tue" />
+                <!-- Wed -->
+                <rect x="130" y="130" width="20" height="0" rx="3" class="chart-bar bar-wed" />
+                <!-- Thu -->
+                <rect x="170" y="130" width="20" height="0" rx="3" class="chart-bar bar-thu" />
+                <!-- Fri -->
+                <rect x="210" y="130" width="20" height="0" rx="3" class="chart-bar bar-fri" />
+                <!-- Sat -->
+                <rect x="250" y="130" width="20" height="0" rx="3" class="chart-bar bar-sat" />
+                <!-- Sun -->
+                <rect x="290" y="130" width="20" height="0" rx="3" class="chart-bar bar-sun" />
+
+                <!-- Text Labels -->
+                <text x="60" y="145" class="chart-label">M</text>
+                <text x="100" y="145" class="chart-label">T</text>
+                <text x="140" y="145" class="chart-label">W</text>
+                <text x="180" y="145" class="chart-label">T</text>
+                <text x="220" y="145" class="chart-label">F</text>
+                <text x="260" y="145" class="chart-label">S</text>
+                <text x="300" y="145" class="chart-label">S</text>
+              </svg>
+            </div>
+            <!-- Focus Session simulator -->
+            <div class="quick-timer">
+              <button class="btn btn-primary btn-glow-purple" id="quick-study-btn">
+                <i class="fa-solid fa-play"></i> Log 30 Min Study (+15 XP)
+              </button>
+            </div>
+          </div>
+
+          <!-- Goals overview card -->
+          <div class="glass-card preview-card glow-green">
+            <div class="card-header">
+              <h2>Top Study Goal</h2>
+              <i class="fa-solid fa-circle-check text-green"></i>
+            </div>
+            <div class="preview-content" id="top-goal-preview">
+              <p>No active goals. Create one in the Goals tab!</p>
+            </div>
+          </div>
+
+          <!-- Next Assignment Card -->
+          <div class="glass-card preview-card glow-blue">
+            <div class="card-header">
+              <h2>Next Assignment</h2>
+              <i class="fa-solid fa-hourglass-half text-blue"></i>
+            </div>
+            <div class="preview-content" id="next-assignment-preview">
+              <p>All clean! No upcoming deadlines.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SCHEDULER -->
+      <section class="tab-panel" id="tab-scheduler">
+        <div class="glass-card">
+          <div class="card-header-flex">
+            <h2>Weekly Study Planner</h2>
+            <button class="btn btn-primary" id="open-scheduler-modal">
+              <i class="fa-solid fa-plus"></i> Add Event
+            </button>
+          </div>
+          
+          <div class="schedule-grid">
+            <!-- Columns for days of the week -->
+            <div class="day-column" data-day="Monday">
+              <div class="day-header">Monday</div>
+              <div class="day-events-list"></div>
+            </div>
+            <div class="day-column" data-day="Tuesday">
+              <div class="day-header">Tuesday</div>
+              <div class="day-events-list"></div>
+            </div>
+            <div class="day-column" data-day="Wednesday">
+              <div class="day-header">Wednesday</div>
+              <div class="day-events-list"></div>
+            </div>
+            <div class="day-column" data-day="Thursday">
+              <div class="day-header">Thursday</div>
+              <div class="day-events-list"></div>
+            </div>
+            <div class="day-column" data-day="Friday">
+              <div class="day-header">Friday</div>
+              <div class="day-events-list"></div>
+            </div>
+            <div class="day-column" data-day="Saturday">
+              <div class="day-header">Saturday</div>
+              <div class="day-events-list"></div>
+            </div>
+            <div class="day-column" data-day="Sunday">
+              <div class="day-header">Sunday</div>
+              <div class="day-events-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: GOALS -->
+      <section class="tab-panel" id="tab-goals">
+        <div class="goals-layout">
+          <!-- Create goal card -->
+          <div class="glass-card goal-creator-card glow-green">
+            <h2>Create Study Goal</h2>
+            <form id="goal-form">
+              <div class="form-group">
+                <label for="goal-title">Goal Name</label>
+                <input type="text" id="goal-title" required placeholder="e.g. Master ReactJS Hooks">
+              </div>
+              <div class="form-group">
+                <label for="goal-category">Subject / Tag</label>
+                <input type="text" id="goal-category" required placeholder="e.g. Computer Science">
+              </div>
+              <div class="form-group">
+                <label>Milestones / Sub-tasks</label>
+                <div class="milestone-builder" id="milestone-builder-container">
+                  <div class="milestone-input-row">
+                    <input type="text" placeholder="Milestone 1" class="milestone-input-field" required>
+                  </div>
+                  <div class="milestone-input-row">
+                    <input type="text" placeholder="Milestone 2" class="milestone-input-field">
+                  </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-small" id="add-milestone-field-btn">
+                  <i class="fa-solid fa-plus"></i> Add Milestone
+                </button>
+              </div>
+              <button type="submit" class="btn btn-primary w-full">Create Goal</button>
+            </form>
+          </div>
+
+          <!-- Active Goals list -->
+          <div class="goals-list-section">
+            <h2 class="section-title">Active Goals</h2>
+            <div class="goals-container" id="active-goals-list">
+              <!-- Dynamically populated goals cards with donut charts -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: KANBAN -->
+      <section class="tab-panel" id="tab-kanban">
+        <div class="kanban-action-header">
+          <h2>Assignments Kanban Board</h2>
+          <button class="btn btn-primary" id="open-kanban-modal">
+            <i class="fa-solid fa-plus"></i> Add Assignment
+          </button>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Column 1 -->
+          <div class="kanban-column" id="col-todo" data-status="todo">
+            <div class="column-header todo-bar">To Do <span class="card-count" id="count-todo">0</span></div>
+            <div class="kanban-cards-wrapper" id="todo-cards"></div>
+          </div>
+          <!-- Column 2 -->
+          <div class="kanban-column" id="col-progress" data-status="progress">
+            <div class="column-header progress-bar">In Progress <span class="card-count" id="count-progress">0</span></div>
+            <div class="kanban-cards-wrapper" id="progress-cards"></div>
+          </div>
+          <!-- Column 3 -->
+          <div class="kanban-column" id="col-review" data-status="review">
+            <div class="column-header review-bar">Under Review <span class="card-count" id="count-review">0</span></div>
+            <div class="kanban-cards-wrapper" id="review-cards"></div>
+          </div>
+          <!-- Column 4 -->
+          <div class="kanban-column" id="col-completed" data-status="completed">
+            <div class="column-header completed-bar">Completed <span class="card-count" id="count-completed">0</span></div>
+            <div class="kanban-cards-wrapper" id="completed-cards"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: WELLBEING -->
+      <section class="tab-panel" id="tab-wellbeing">
+        <div class="wellbeing-layout">
+          <!-- Stress Breather -->
+          <div class="glass-card wellbeing-card glow-purple align-center">
+            <h2>Guided Stress Breather</h2>
+            <p>Sync your breath to calm your mind. Perfect for pre-exam anxiety.</p>
+            <div class="breath-bubble-container">
+              <div class="breath-bubble" id="breathing-circle"></div>
+              <div class="breath-text" id="breathing-instruction">Press Start</div>
+            </div>
+            <button class="btn btn-primary btn-glow-purple" id="breathing-toggle-btn">Start Breathing Routine</button>
+          </div>
+
+          <!-- Ambient Mixer -->
+          <div class="glass-card wellbeing-card glow-orange">
+            <h2>Ambient Focus Sounds</h2>
+            <p>Generate clean, low-frequency soundscapes to mask distractions (built with Web Audio API).</p>
+            
+            <div class="ambient-controls">
+              <!-- Sound 1 -->
+              <div class="ambient-sound-row">
+                <div class="sound-info">
+                  <i class="fa-solid fa-wind"></i>
+                  <span>Binaural Focus Beat</span>
+                </div>
+                <input type="range" class="sound-slider" id="vol-binaural" min="0" max="100" value="0">
+                <button class="btn-play-sound" id="play-binaural"><i class="fa-solid fa-play"></i></button>
+              </div>
+
+              <!-- Sound 2 -->
+              <div class="ambient-sound-row">
+                <div class="sound-info">
+                  <i class="fa-solid fa-shower"></i>
+                  <span>Ocean White Noise</span>
+                </div>
+                <input type="range" class="sound-slider" id="vol-ocean" min="0" max="100" value="0">
+                <button class="btn-play-sound" id="play-ocean"><i class="fa-solid fa-play"></i></button>
+              </div>
+
+              <!-- Sound 3 -->
+              <div class="ambient-sound-row">
+                <div class="sound-info">
+                  <i class="fa-solid fa-mug-hot"></i>
+                  <span>Study Room Hum</span>
+                </div>
+                <input type="range" class="sound-slider" id="vol-hum" min="0" max="100" value="0">
+                <button class="btn-play-sound" id="play-hum"><i class="fa-solid fa-play"></i></button>
+              </div>
+            </div>
+            
+            <div class="wellbeing-alert-info">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>Note: Wear headphones to experience optimal binaural beat focus frequency.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: LMS & AI HELPER -->
+      <section class="tab-panel" id="tab-lms-ai">
+        <div class="lms-ai-layout">
+          <!-- LMS Sync Simulator -->
+          <div class="glass-card glow-blue">
+            <div class="card-header-flex">
+              <h2>LMS Sync Portal</h2>
+              <button class="btn btn-secondary btn-glow-blue" id="sync-lms-btn">
+                <i class="fa-solid fa-rotate"></i> Sync Portal Data
+              </button>
+            </div>
+            <div class="lms-dashboard-content">
+              <div class="lms-metrics-row">
+                <div class="lms-stat">
+                  <span class="lms-label">Projected GPA</span>
+                  <span class="lms-value" id="lms-gpa">3.82</span>
+                </div>
+                <div class="lms-stat">
+                  <span class="lms-label">Syllabus Complete</span>
+                  <span class="lms-value" id="lms-syllabus">74%</span>
+                </div>
+                <div class="lms-stat">
+                  <span class="lms-label">Overall Rank</span>
+                  <span class="lms-value" id="lms-rank">Top 10%</span>
+                </div>
+              </div>
+
+              <div class="lms-classes-list">
+                <h3>Course Grades</h3>
+                <div class="class-grade-row">
+                  <span>Advanced Algorithms (CS301)</span>
+                  <strong class="text-green">A (94%)</strong>
+                </div>
+                <div class="class-grade-row">
+                  <span>Interactive UI Design (DES202)</span>
+                  <strong class="text-green">A+ (98%)</strong>
+                </div>
+                <div class="class-grade-row">
+                  <span>Operating Systems (CS304)</span>
+                  <strong class="text-orange">B+ (87%)</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI assistant chatbot -->
+          <div class="glass-card glow-purple ai-chat-card">
+            <h2>AI Study Assistant</h2>
+            <div class="chat-window" id="chat-messages-container">
+              <div class="message system-msg">
+                <strong>Aura Study Buddy:</strong> Hello! How can I help you master your classes today? Ask me: "Explain Recursion", "Pomodoro Help", or "Procrastination".
+              </div>
+            </div>
+            <form class="chat-input-bar" id="chat-form">
+              <input type="text" id="chat-input" placeholder="Type a message..." required>
+              <button type="submit" class="btn btn-primary btn-glow-purple">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- SCHEDULER MODAL -->
+  <div class="modal-overlay" id="scheduler-modal">
+    <div class="glass-card modal-content glow-purple">
+      <h3>Add Event to Planner</h3>
+      <form id="scheduler-form">
+        <div class="form-group">
+          <label for="sched-title">Event Name</label>
+          <input type="text" id="sched-title" required placeholder="e.g. CS301 Lecture">
+        </div>
+        <div class="form-group">
+          <label for="sched-day">Day of Week</label>
+          <select id="sched-day">
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+            <option>Sunday</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sched-time">Time</label>
+          <input type="time" id="sched-time" required>
+        </div>
+        <div class="form-group">
+          <label for="sched-type">Type</label>
+          <select id="sched-type">
+            <option value="class">Class / Lecture</option>
+            <option value="study">Study Session</option>
+            <option value="exam">Exam Prep</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="close-scheduler-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- KANBAN MODAL -->
+  <div class="modal-overlay" id="kanban-modal">
+    <div class="glass-card modal-content glow-blue">
+      <h3>Add Assignment Card</h3>
+      <form id="kanban-form">
+        <div class="form-group">
+          <label for="kb-title">Assignment Name</label>
+          <input type="text" id="kb-title" required placeholder="e.g. Lab Report 3">
+        </div>
+        <div class="form-group">
+          <label for="kb-subject">Subject</label>
+          <input type="text" id="kb-subject" required placeholder="e.g. Operating Systems">
+        </div>
+        <div class="form-group">
+          <label for="kb-due">Due Date</label>
+          <input type="date" id="kb-due" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="close-kanban-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Theme Script -->
+  <script src="../global-theme.js"></script>
+  <!-- Local Application script -->
+  <script src="script.js"></script>
+</body>
+</html>

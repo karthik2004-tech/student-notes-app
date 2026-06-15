@@ -1,0 +1,20 @@
+{
+  "title": "Bisection Root Visualizer",
+  "description": "An interactive numerical analysis sandbox demonstrating the Bisection Method for root finding, featuring IVT boundary validation, step-by-step interval reduction, real-time convergence telemetry, and a shrinking bracket visualizer.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["bisection-method", "root-finding", "numerical-analysis", "mathematics", "visualizer", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Sandboxed expression evaluator: new Function('x', 'return ' + expr) with NaN/Infinity guard, supports x²-4, x³-x-2, cos(x)-x presets",
+    "IVT boundary validation: instantaneous f(a)·f(b) product check on every bound change, locks controls and triggers CSS shake animation on violation",
+    "Single-step computation: midpoint c = (a+b)/2, f(c) evaluated, interval narrowed by sign product f(a)·f(c) vs f(b)·f(c), displayed in real time",
+    "Run to convergence: requestAnimationFrame-driven asynchronous loop iterating until |b-a| < tolerance, button disable while running",
+    "Shrinking bracket visualizer: three color-coded draggable markers (cyan a, emerald c, magenta b) on a horizontal bar with percentage-based positioning that narrows with each step",
+    "Historical log table: iteration count, current a/b/c, f(c), interval width logged as table rows with sticky header and auto-scroll",
+    "Convergence detection: when |b-a| drops below tolerance slider value (0.0001-0.1), locks step buttons and displays ROOT ≈ c to 6 decimals",
+    "Equation preset defaults: each preset loads recommended [a,b] bounds (x²-4: [0,4], x³-x-2: [1,2], cos(x)-x: [0,1.5])",
+    "Clear pipeline: resets iteration counter, flushes log table, hides midpoint marker/root display, reverts bounds to preset defaults without page reload"
+  ]
+}

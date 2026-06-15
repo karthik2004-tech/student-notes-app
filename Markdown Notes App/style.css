@@ -1,0 +1,89 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.editor-preview {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 300px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #667eea;
+  color: #fff;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+#note-preview {
+  min-height: 200px;
+  border: 2px dashed #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.saved-notes ul {
+  list-style: none;
+  padding: 0;
+}
+
+.saved-notes li {
+  background: #fff;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}

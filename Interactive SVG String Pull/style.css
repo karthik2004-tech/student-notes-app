@@ -1,0 +1,188 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #05060b;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+  overflow: hidden;
+}
+
+#app {
+  width: min(98vmin, 960px);
+  height: min(90vmin, 700px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.8vmin, 10px);
+  position: relative;
+}
+
+#telemetry {
+  display: flex;
+  justify-content: space-around;
+  padding: clamp(6px, 1vmin, 14px);
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(0, 240, 255, 0.06);
+  border-radius: clamp(6px, 0.8vmin, 10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.lbl {
+  font-size: clamp(6px, 0.9vmin, 10px);
+  color: #475569;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.val {
+  font-size: clamp(12px, 2vmin, 20px);
+  font-weight: 700;
+  color: #e2e8f0;
+  font-variant-numeric: tabular-nums;
+}
+
+#tNote { color: #00f0ff; text-shadow: 0 0 8px rgba(0,240,255,0.3); }
+
+#viewport {
+  flex: 1;
+  position: relative;
+  border: 1px solid rgba(0, 240, 255, 0.06);
+  border-radius: clamp(6px, 0.8vmin, 10px);
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, #080b18 0%, #05060b 70%);
+  cursor: grab;
+}
+
+#viewport:active { cursor: grabbing; }
+
+#stringSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.string-path {
+  fill: none;
+  stroke: #00f0ff;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  filter: url(#glowSoft);
+  cursor: pointer;
+  transition: stroke-width 0.05s;
+}
+
+#noteLabels {
+  position: absolute;
+  bottom: clamp(6px, 1vmin, 14px);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+
+.note-label {
+  font-size: clamp(10px, 1.6vmin, 16px);
+  font-weight: 700;
+  color: rgba(0, 240, 255, 0.12);
+  letter-spacing: 1px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.note-label.active {
+  color: rgba(0, 240, 255, 0.6);
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+/* ─── Splash ──────────────────────────────────────────── */
+.splash {
+  position: fixed; inset: 0;
+  background: rgba(5, 6, 11, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  transition: opacity 0.6s ease;
+}
+
+.splash.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-box {
+  text-align: center;
+  padding: clamp(30px, 5vmin, 60px);
+  background: rgba(10, 12, 24, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.08);
+  border-radius: clamp(10px, 1.6vmin, 18px);
+  max-width: min(88vw, 400px);
+  width: 100%;
+  box-shadow: 0 0 60px rgba(0, 240, 255, 0.03);
+}
+
+.splash-icon {
+  font-size: clamp(40px, 7vmin, 64px);
+  color: #00f0ff;
+  text-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+  margin-bottom: clamp(8px, 1.2vmin, 14px);
+}
+
+.splash-box h1 {
+  font-size: clamp(22px, 3.6vmin, 36px);
+  font-weight: 200;
+  color: #e2e8f0;
+  letter-spacing: 6px;
+  margin-bottom: clamp(6px, 1vmin, 10px);
+}
+
+.splash-box p {
+  font-size: clamp(10px, 1.4vmin, 14px);
+  color: #475569;
+  letter-spacing: 2px;
+  margin-bottom: clamp(20px, 3.2vmin, 36px);
+}
+
+#splashBtn {
+  padding: clamp(10px, 1.6vmin, 18px) clamp(30px, 5vmin, 56px);
+  font-size: clamp(12px, 1.8vmin, 17px);
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #05060b;
+  background: #00f0ff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 24px rgba(0, 240, 255, 0.15);
+}
+
+#splashBtn:hover {
+  background: #33f3ff;
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+#splashBtn:active { transform: translateY(0); }
+
+@media (max-width: 480px) {
+  #app { width: 100vmin; height: 100vmin; }
+  #telemetry { padding: 4px 6px; }
+  .lbl { font-size: 6px; }
+  .val { font-size: 10px; }
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Time Analytics Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Study Time Analytics Dashboard</h1>
+
+    <div class="card">
+      <h2>Weekly Study Hours</h2>
+      <canvas id="weeklyChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Subject Breakdown</h2>
+      <canvas id="subjectChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Consistency Streak</h2>
+      <p id="streak">🔥 Current Streak: 0 days</p>
+    </div>
+
+    <div class="card">
+      <h2>Daily Study Heatmap</h2>
+      <div id="heatmap"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

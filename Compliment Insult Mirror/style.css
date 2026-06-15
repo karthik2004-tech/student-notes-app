@@ -1,0 +1,253 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #04050a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+  overflow: hidden;
+  color: #475569;
+}
+
+/* ─── Splash Overlay ───────────────────────────── */
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #04050a;
+}
+
+.s-card {
+  width: min(68vmin, 520px);
+  padding: clamp(18px, 3vmin, 36px);
+  border: 1px solid rgba(0,240,255,0.08);
+  border-radius: clamp(6px,0.8vmin,12px);
+  background: rgba(255,255,255,0.005);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px,1.5vmin,20px);
+}
+
+.s-ascii {
+  font-size: clamp(7px,0.9vmin,12px);
+  line-height: 1.5;
+  letter-spacing: 1px;
+  white-space: pre;
+  text-align: center;
+}
+.s-c1 { color: #00f0ff; }
+.s-c2 { color: rgba(0,240,255,0.2); }
+
+.s-title {
+  font-size: clamp(13px,1.8vmin,22px);
+  color: #e2e8f0;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-shadow: 0 0 12px rgba(0,240,255,0.08);
+}
+
+.s-sub {
+  font-size: clamp(8px,1.1vmin,13px);
+  color: #475569;
+  line-height: 1.6;
+  max-width: 80%;
+}
+
+#authBtn {
+  padding: clamp(8px,1.2vmin,16px) clamp(16px,2.5vmin,36px);
+  background: transparent;
+  border: 1px solid rgba(0,240,255,0.15);
+  border-radius: 3px;
+  color: #00f0ff;
+  font-family: inherit;
+  font-size: clamp(9px,1.2vmin,14px);
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-transform: uppercase;
+}
+#authBtn:hover {
+  background: rgba(0,240,255,0.04);
+  border-color: rgba(0,240,255,0.35);
+  box-shadow: 0 0 16px rgba(0,240,255,0.06);
+}
+#authBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.s-status {
+  font-size: clamp(7px,0.9vmin,11px);
+  color: #475569;
+  letter-spacing: 1px;
+  animation: pulseText 2s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+  0%,100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+/* ─── Main App ─────────────────────────────────── */
+#app {
+  width: min(96vmin, 960px);
+  height: min(94vmin, 760px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px,0.3vmin,6px);
+}
+.hidden { display: none !important; }
+
+/* ─── Top Bar ───────────────────────────────────── */
+#topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(4px,0.5vmin,8px) clamp(8px,1vmin,14px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,240,255,0.04);
+  border-radius: clamp(4px,0.5vmin,8px);
+}
+
+.t-label {
+  font-size: clamp(7px,0.85vmin,11px);
+  color: #475569;
+  letter-spacing: 2px;
+}
+
+.t-controls { display: flex; gap: clamp(4px,0.5vmin,10px); }
+
+.cbtn {
+  padding: clamp(3px,0.4vmin,6px) clamp(8px,1vmin,14px);
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 3px;
+  color: #475569;
+  font-family: inherit;
+  font-size: clamp(7px,0.8vmin,10px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.cbtn:hover {
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(255,255,255,0.08);
+  color: #94a3b8;
+}
+.cbtn[data-mode="kind"] { border-color: rgba(0,240,255,0.1); color: #00f0ff; }
+.cbtn[data-mode="sarcastic"] { border-color: rgba(255,42,95,0.1); color: #ff2a5f; }
+
+/* ─── Telemetry ────────────────────────────────── */
+#telemetry {
+  display: flex;
+  gap: clamp(6px,0.8vmin,14px);
+  padding: clamp(3px,0.4vmin,6px) clamp(8px,1vmin,14px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,240,255,0.04);
+  border-radius: clamp(4px,0.5vmin,8px);
+  flex-wrap: wrap;
+}
+
+.tm {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px,0.4vmin,6px);
+  font-size: clamp(7px,0.8vmin,10px);
+  letter-spacing: 1px;
+}
+.tm-l { color: #334155; text-transform: uppercase; }
+.tm-v { color: #64748b; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tm-off { color: #ef4444; }
+.tm-on  { color: #00ff88; }
+
+/* ─── Viewport ─────────────────────────────────── */
+#viewport {
+  flex: 1;
+  position: relative;
+  border: 1px solid rgba(0,240,255,0.03);
+  border-radius: clamp(4px,0.5vmin,8px);
+  overflow: hidden;
+  background: #030508;
+}
+
+#mainCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Mirror Line ──────────────────────────────── */
+#mirrorLine {
+  padding: clamp(4px,0.6vmin,10px) clamp(10px,1.4vmin,20px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,240,255,0.04);
+  border-radius: clamp(4px,0.5vmin,8px);
+  text-align: center;
+  min-height: clamp(24px,3vmin,40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mirrorText {
+  font-size: clamp(9px,1.2vmin,16px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+/* ─── Diagnostics ──────────────────────────────── */
+#diag {
+  height: clamp(36px,5vmin,56px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,240,255,0.04);
+  border-radius: clamp(4px,0.5vmin,8px);
+  overflow: hidden;
+  padding: clamp(2px,0.3vmin,5px) clamp(6px,0.8vmin,12px);
+}
+
+#diagLog {
+  height: 100%;
+  overflow-y: auto;
+  font-size: clamp(6px,0.75vmin,10px);
+  color: #334155;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+#diagLog::-webkit-scrollbar { width: 2px; }
+#diagLog::-webkit-scrollbar-track { background: transparent; }
+#diagLog::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.1); }
+
+.diag-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Video (hidden capture) ───────────────────── */
+#videoSrc {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* ─── Responsive ───────────────────────────────── */
+@media (max-width: 480px) {
+  #app { width: 100vmin; height: 100vmin; }
+  #telemetry { gap: 3px; }
+  .tm { font-size: 5px; }
+  #mirrorText { font-size: 8px; }
+}

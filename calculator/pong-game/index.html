@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PONG — Clone #1061</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <div id="scoreboard">
+      <div class="score-cell">
+        <span class="score-label">Player</span>
+        <span id="playerScore" class="score-val">0</span>
+      </div>
+      <div class="score-divider">⚡</div>
+      <div class="score-cell">
+        <span class="score-label">AI</span>
+        <span id="aiScore" class="score-val">0</span>
+      </div>
+    </div>
+
+    <div id="canvasWrapper">
+      <canvas id="gameCanvas" width="800" height="500"></canvas>
+
+      <div id="startOverlay" class="overlay">
+        <div class="overlay-box">
+          <h1>PONG</h1>
+          <p class="sub">Move your paddle with <kbd>↑</kbd><kbd>↓</kbd>, <kbd>W</kbd><kbd>S</kbd>, or your <kbd>Mouse</kbd></p>
+          <p class="sub-sm">First to <span class="hl">7</span> wins</p>
+          <p class="sub-sm">Press <kbd>P</kbd> to pause during play</p>
+          <button id="startBtn" class="btn">SERVE</button>
+        </div>
+      </div>
+
+      <div id="pauseOverlay" class="overlay hidden">
+        <div class="overlay-box">
+          <h2>PAUSED</h2>
+          <p class="sub">Press <kbd>P</kbd> to resume</p>
+        </div>
+      </div>
+
+      <div id="gameOverOverlay" class="overlay hidden">
+        <div class="overlay-box">
+          <h2 id="resultTitle">YOU WIN!</h2>
+          <div class="report">
+            <div class="r-row"><span>Final Score</span><span id="finalScore">0 - 0</span></div>
+          </div>
+          <button id="rematchBtn" class="btn">REMATCH</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

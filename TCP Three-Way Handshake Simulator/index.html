@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>TCP Three-Way Handshake Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="topRow">
+    <div class="tm"><span class="tl">CLIENT STATE</span><span id="clientState" class="tv">CLOSED</span></div>
+    <div class="tm"><span class="tl">SERVER STATE</span><span id="serverState" class="tv">LISTEN</span></div>
+    <div class="tm"><span class="tl">SEQ MAP</span><span id="seqMap" class="tv">x=— y=—</span></div>
+    <div class="tm"><span class="tl">LAST SEGMENT</span><span id="lastSeg" class="tv">—</span></div>
+  </div>
+
+  <!-- Canvas -->
+  <div id="canvasWrap"><canvas id="tcpCanvas"></canvas></div>
+
+  <!-- Ledger -->
+  <div id="ledgerWrap">
+    <div id="ledgerHead">
+      <span>SRC</span><span>DST</span><span>FLAGS</span><span>SEQ</span><span>ACK</span><span>WIN</span>
+    </div>
+    <div id="ledgerBody"></div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <button id="connectBtn">INITIATE HANDSHAKE</button>
+    <button id="dropBtn">INJECT DROP FAULT</button>
+    <button id="retransBtn">RETRANSMIT</button>
+    <button id="resetBtn">FLUSH & RESET</button>
+  </div>
+
+  <!-- Timeout overlay -->
+  <div id="timeoutOverlay" class="hidden">
+    <div id="timeoutBox">
+      <div id="timeoutMsg">CONNECTION TIMEOUT: PACKET DROPPED</div>
+      <div id="timeoutHint">Click RETRANSMIT to resend SYN segment</div>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

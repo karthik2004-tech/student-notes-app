@@ -199,3 +199,10 @@ canvas {
   .sb-value { font-size: 0.8rem; }
   .modal-card { padding: 24px 18px; }
 }
+
+/* UI/UX: Brick Breaker layout and pause overlay updates */
+.pause-overlay {
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: #fff !important;
+    font-family: inherit !important;
+}

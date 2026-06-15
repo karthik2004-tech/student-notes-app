@@ -1,0 +1,19 @@
+{
+  "title": "Harmonic Pendulum Wave",
+  "description": "A physics simulation of N coupled pendulums with monotonically increasing frequencies creating a synchronized wave pattern, featuring real-time parameter modulation (count, speed, amplitude, damping), rAF-driven trigonometric rendering, and cohesion telemetry.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["pendulum-wave", "physics", "simulation", "trigonometric", "wave", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Procedural frequency distribution: ω_i = 2π × baseFreq × (1 + i/N × 1.15) creating monotonically increasing angular velocities with periodic realignment",
+    "Hardware-accelerated rendering: translate3d(Xpx, 0, 0) applied to bob divs each frame via rAF loop, avoiding layout repaints",
+    "Real-time slider modulation: count slider rebuilds DOM + recalculates ω array, speed scales dt multiplier, amplitude scales A, damping applies exponential decay e^(-damping × t)",
+    "Cohesion telemetry: average pairwise sine difference tracked as 0-1 coefficient, displayed as gold value",
+    "Pause/Resume state machine: toggle between INITIATE MOTION and PAUSE with state indicator (RUNNING=green, PAUSED=yellow, IDLE=gray)",
+    "Reset pipeline: zeroes t, clears transforms, removes active glow classes, updates telemetry without page reload",
+    "Progressive glow effect: bob and string elements gain active class (brighter border + larger box-shadow bloom) when |x| > 2px",
+    "Frame delta clamping: dt capped at 0.05s to prevent spiral-of-death after tab-away"
+  ]
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Rating Stars</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-btn" aria-label="Toggle dark mode">
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Component Name</h1>
+            <h2 class="subtitle">Rating Stars</h2>
+        </header>
+
+        <div class="info-section">
+            <div class="column">
+                <h3>Features</h3>
+                <ul class="feature-list">
+                    <li>Interactive star selection</li>
+                    <li>Hover effects</li>
+                    <li>Half-star support</li>
+                    <li>Read-only mode</li>
+                    <li>Responsive design</li>
+                    <li>Light and dark mode support</li>
+                </ul>
+            </div>
+            
+            <div class="column">
+                <h3>Use Cases</h3>
+                <ul class="feature-list">
+                    <li>Product reviews</li>
+                    <li>Service ratings</li>
+                    <li>Feedback systems</li>
+                    <li>Review platforms</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Interactive Demo</h3>
+            
+            <div class="ratings-showcase">
+                <div class="rating-row">
+                    <h4>Interactive Rating (Half-Star Precision)</h4>
+                    <div class="rating-widget" id="interactive-rating" data-max="5" data-rating="0" data-interactive="true"></div>
+                    <p class="rating-value">Selected Rating: <span id="rating-output" class="highlight-val">0.0</span> / 5</p>
+                </div>
+
+                <div class="rating-row">
+                    <h4>Read-Only Rating (Whole Star)</h4>
+                    <div class="rating-widget" data-max="5" data-rating="4" data-interactive="false"></div>
+                </div>
+
+                <div class="rating-row">
+                    <h4>Read-Only Rating (Half Star)</h4>
+                    <div class="rating-widget" data-max="5" data-rating="3.5" data-interactive="false"></div>
+                </div>
+                
+                <div class="rating-row">
+                    <h4>Read-Only Rating (Precise Decimal)</h4>
+                    <div class="rating-widget" data-max="5" data-rating="4.8" data-interactive="false"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

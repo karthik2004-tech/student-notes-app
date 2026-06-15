@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flashcard Quiz App</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Flashcard Quiz App</h1>
+
+    <form id="deck-form">
+      <input type="text" id="front-input" placeholder="Front (Question)" required>
+      <input type="text" id="back-input" placeholder="Back (Answer)" required>
+      <button type="submit">➕ Add Flashcard</button>
+    </form>
+
+    <div class="controls">
+      <button id="shuffle-btn">🔀 Shuffle</button>
+      <button id="export-btn">📤 Export</button>
+      <button id="import-btn">📥 Import</button>
+    </div>
+
+    <div id="flashcards"></div>
+
+    <div id="score">Score: 0</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

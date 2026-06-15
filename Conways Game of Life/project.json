@@ -1,0 +1,20 @@
+{
+  "title": "Conway's Game of Life",
+  "description": "A cellular automata simulation implementing Conway's Game of Life with double-buffered 2D arrays, toroidal wrapping, click-drag cell editing, preset blueprints (Glider, Pulsar, Acorn, Gosper Gun), FPS/scale controls, and localStorage custom preset persistence.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["conway", "game-of-life", "cellular-automata", "simulation", "canvas", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Double-buffered 2D arrays: current/next grids hold boolean cell states; step() computes next from current via 8-neighbor toroidal convolution, then atomic swap",
+    "Toroidal neighbor counting: (x % n + n) % n wrapping ensures seamless edge traversal for all cells",
+    "Canvas pixel rendering: alive cells drawn as filled squares (cellSize-2 padding), newborn (#00f0ff with cyan glow) vs survivor (#6a5acd with violet glow) color differentiation using stale nextGrid state",
+    "Click-drag editing: mousedown captures paintValue (inverse of clicked cell), mousemove paints same value, mouseup ends; touch toggle on tap",
+    "FPS-throttled loop: requestAnimationFrame with manual interval gating (1000/fps), step+draw only when elapsed >= interval",
+    "Preset blueprints: Glider (5 cells), Pulsar (48-cell period-3 oscillator), Acorn (7-cell R-pentomino), Gosper Gun (36-cell glider factory) — centered via offset calculation",
+    "localStorage custom presets: saveBtn serializes alive cells as compact JSON [c,r] array, stored under cgol_custom_timestamp key, loaded into dropdown on init",
+    "Telemetry: generation counter, live cell tally, population delta (liveCount - prevLive) updated each step",
+    "Scale/FPS sliders: scale (3-20px) triggers recalcGrid() preserving alive cells, FPS (1-30) controls simulation speed"
+  ]
+}

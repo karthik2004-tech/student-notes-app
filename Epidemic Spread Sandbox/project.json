@@ -1,0 +1,18 @@
+{
+  "title": "Epidemic Spread Sandbox",
+  "description": "A 2D particle-based SIR epidemic simulation featuring autonomous agent collision mechanics, probabilistic proximity transmission, social distancing velocity damping, real-time stacked line graph rendering, and interactive parameter tuning — all in native JavaScript with Canvas API.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["epidemiology", "sir-model", "simulation", "particles", "canvas", "graph", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Autonomous particle system: N agents each with (x,y,vx,vy,state,timer,frozen), bounced off bounding rect with edge reflection, elastic circle-circle collision with velocity swap and overlap separation",
+    "SIR state machine: Susceptible (#00ff66) → Infected (#ff2a5f) → Recovered (#8a2be2). Single infected seed at init, timer-based recovery transition when timer ≥ recovery slider threshold",
+    "Probabilistic transmission: on S+I overlap, Math.random() < transPct/100 gates infection toggle, configurable 5–100% transmission rate via slider",
+    "Social distancing damping: quarSlider freezes quarPct × N randomly selected particles (vx=vy=0, alpha=0.4). Frozen particles reflect colliders. Live flattening feedback through graph curves",
+    "Real-time stacked area graph: every 8th frame records S/I/R counts, rendered on secondary canvas as filled+stroked curves with color-matched neon layers (green/red/purple), scrolling 300-sample window",
+    "60fps rAF loop: updateParticles() drives physics tick, drawParticles() renders with infected glow (shadowBlur=8 #ff2a5f), telemetry updates at snapshot interval",
+    "Two-button control: 'Initialize Simulation' seeds population with parameters; 'Clear Field' empties particle array and resets graph history without page refresh"
+  ]
+}

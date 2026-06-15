@@ -1,0 +1,6 @@
+{
+  "title": "Collaborative Coding Room Simulator",
+  "description": "A mock interview and programming sandbox. Students can select programming prompts, start timers, write code, and receive feedback from a simulated artificial interviewer.",
+  "technologies": ["HTML", "CSS", "JavaScript"],
+  "author": "MistryVishwa"
+}

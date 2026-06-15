@@ -1,0 +1,202 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05060b;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(96vmin,1000px);
+  height:min(96vmin,760px);
+  display:flex;flex-direction:column;
+  gap:clamp(2px,0.2vmin,4px);
+}
+
+/* ─── Config ──────────────────────────────────── */
+#configBar{
+  display:flex;align-items:center;
+  gap:clamp(6px,0.7vmin,12px);
+  padding:clamp(4px,0.4vmin,6px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  flex-wrap:wrap;
+}
+#configBar select{
+  padding:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#64748b;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  outline:none;cursor:pointer;text-transform:uppercase;
+}
+#configBar select option{background:#05060b;color:#64748b}
+.pg{display:flex;align-items:center;gap:clamp(2px,0.2vmin,4px)}
+.pl{
+  font-size:clamp(5px,0.5vmin,7px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.pv{
+  font-size:clamp(6px,0.7vmin,9px);
+  color:#00f0ff;font-weight:700;
+  min-width:clamp(14px,1.8vmin,22px);text-align:center;
+}
+#configBar input[type=range]{
+  width:clamp(30px,4vmin,55px);
+  -webkit-appearance:none;appearance:none;
+  height:3px;background:rgba(0,240,255,0.05);border-radius:2px;outline:none;
+}
+#configBar input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:10px;height:10px;border-radius:50%;
+  background:#00f0ff;cursor:pointer;box-shadow:0 0 5px rgba(0,240,255,0.3);
+}
+
+/* ─── Mid row ────────────────────────────────── */
+#midRow{
+  display:flex;
+  gap:clamp(2px,0.2vmin,4px);
+  height:clamp(90px,14vmin,160px);
+}
+/* Address column */
+#addrCol{
+  width:clamp(100px,15vmin,160px);
+  display:flex;flex-direction:column;gap:clamp(3px,0.3vmin,5px);
+  padding:clamp(4px,0.4vmin,6px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#addrInput{
+  width:100%;
+  padding:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.01);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#94a3b8;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  outline:none;
+}
+#addrInput:focus{border-color:rgba(0,240,255,0.1);color:#cbd5e1}
+#stepBtn{
+  padding:clamp(3px,0.35vmin,5px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  cursor:pointer;text-transform:uppercase;letter-spacing:1px;
+}
+#stepBtn:hover{border-color:rgba(0,240,255,0.1);color:#00f0ff}
+#stepBtn:disabled{opacity:0.3;pointer-events:none}
+
+/* Cache grid */
+#cacheCol{
+  flex:1;overflow:hidden;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#04050a;
+}
+#cacheGrid{
+  display:flex;flex-wrap:wrap;gap:clamp(2px,0.2vmin,4px);
+  padding:clamp(4px,0.4vmin,6px);
+  align-content:flex-start;
+  height:100%;
+}
+.cacheSlot{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:clamp(36px,5vmin,56px);
+  height:clamp(36px,5vmin,56px);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:4px;
+  background:rgba(255,255,255,0.005);
+  transition:all 0.15s;
+}
+.cacheSlot .csAddr{
+  font-size:clamp(10px,1.2vmin,16px);
+  font-weight:700;
+}
+.cacheSlot .csMeta{
+  font-size:clamp(4px,0.45vmin,6px);
+  color:#334155;
+}
+.cacheSlot.hit{
+  border-color:#00ff66;box-shadow:0 0 10px rgba(0,255,102,0.2);
+  animation:flashHit 0.25s;
+}
+@keyframes flashHit{0%{transform:scale(1.1)}100%{transform:scale(1)}}
+.cacheSlot.miss{
+  border-color:#ff2a5f;
+  animation:flashMiss 0.25s;
+}
+@keyframes flashMiss{0%{background:rgba(255,42,95,0.1)}100%{background:transparent}}
+.cacheSlot.evict{
+  border-color:#ff2a5f;box-shadow:0 0 10px rgba(255,42,95,0.3);
+}
+.cacheSlot.occupied .csAddr{color:#00f0ff}
+.cacheSlot.empty .csAddr{color:#1a2a3a}
+
+/* Telemetry */
+#telemetry{
+  width:clamp(70px,10vmin,100px);
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(4px,0.45vmin,7px);
+  padding:clamp(4px,0.4vmin,6px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+.tm{display:flex;flex-direction:column;align-items:center;gap:1px}
+.tm .tl{
+  font-size:clamp(4px,0.4vmin,6px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.tm .tv{
+  font-size:clamp(7px,0.8vmin,12px);
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+#lookVal{color:#00f0ff}
+#hitVal{color:#00ff66}
+#missVal{color:#ff2a5f}
+#ratioVal{color:#ffd700}
+#evictVal{color:#ff2a5f}
+
+/* ─── Graph ──────────────────────────────────── */
+#graphWrap{
+  flex:1;min-height:0;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#04050a;overflow:hidden;
+}
+#graphCanvas{display:block;width:100%;height:100%}
+
+/* ─── Footer ─────────────────────────────────── */
+#footer{
+  display:flex;justify-content:center;
+  gap:clamp(6px,0.8vmin,12px);
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#footer button{
+  padding:clamp(4px,0.4vmin,6px) clamp(10px,1.2vmin,16px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;
+  text-transform:uppercase;
+}
+#footer button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#footer button:disabled{opacity:0.3;pointer-events:none}
+
+@media(max-width:600px){
+  #midRow{flex-wrap:wrap;height:auto}
+  #addrCol{width:100%;flex-direction:row}
+  #telemetry{width:100%;flex-direction:row;gap:3px}
+}

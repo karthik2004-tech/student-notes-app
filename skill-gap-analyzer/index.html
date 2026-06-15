@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSync | Developer Skill Gap Analyzer</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Global theme integration -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR: PROFILE & SKILLS BUILDER -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-box">
+          <i data-lucide="compass"></i>
+        </div>
+        <div class="logo-text">
+          <h2>SkillSync</h2>
+          <span>Career Gap Analyzer</span>
+        </div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Skills Profiler -->
+      <div class="sidebar-section flex-1-scroll">
+        <div class="section-header-inline">
+          <h3>Your Skills Profile</h3>
+          <button class="btn-icon-link" id="btn-add-skill-modal" title="Add New Skill">
+            <i data-lucide="plus-circle"></i>
+          </button>
+        </div>
+        
+        <div class="user-skills-list" id="user-skills-list">
+          <!-- User skills injected dynamically -->
+        </div>
+
+        <div class="empty-state-sidebar" id="sidebar-skills-empty">
+          <p>No skills added yet. Click the <strong class="text-purple">+</strong> to build your profile.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Backup console -->
+      <div class="sidebar-section">
+        <h3>Backup Console</h3>
+        <div class="backup-actions">
+          <button class="btn btn-secondary btn-sm w-full mb-2" id="btn-export-profile">
+            <i data-lucide="download"></i>
+            <span>Export Profile</span>
+          </button>
+          <button class="btn btn-secondary btn-sm w-full" id="btn-import-trigger">
+            <i data-lucide="upload"></i>
+            <span>Import Profile</span>
+          </button>
+          <input type="file" id="import-file" accept=".json" style="display:none;">
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <main class="app-main">
+      <!-- TOP ACTION BAR -->
+      <header class="app-header">
+        <div class="header-left">
+          <div class="target-role-selector">
+            <label for="target-role-dropdown"><i data-lucide="briefcase"></i> Target Career Goal:</label>
+            <select id="target-role-dropdown">
+              <!-- Career roles options injected dynamically -->
+            </select>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Theme (Light / Dark)">
+            <i data-lucide="sun"></i>
+          </button>
+          <button class="btn btn-primary" id="btn-reset-profile">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset Profile</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ANALYTICS PANEL: CAREER MATCH & RADAR CHART -->
+      <section class="analytics-dashboard">
+        <div class="dashboard-header">
+          <div class="title-wrap">
+            <h2 id="target-role-title">Full Stack Engineer Suitability</h2>
+            <p id="target-role-desc">Analyses how your skills measure against standard benchmark expectations.</p>
+          </div>
+          
+          <div class="match-score-card">
+            <div class="score-circle">
+              <span id="match-score-value">0%</span>
+              <label>Match Score</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Career Suitability Metrics Grid -->
+        <div class="suitability-metrics">
+          <div class="metric-card card-purple">
+            <div class="card-glow"></div>
+            <div class="metric-icon"><i data-lucide="award"></i></div>
+            <div class="metric-info">
+              <h4 id="count-matched-skills">0 / 0</h4>
+              <p>Matched Skills</p>
+            </div>
+          </div>
+          <div class="metric-card card-orange">
+            <div class="card-glow"></div>
+            <div class="metric-icon"><i data-lucide="trending-up"></i></div>
+            <div class="metric-info">
+              <h4 id="count-gap-skills">0</h4>
+              <p>Skills to Improve</p>
+            </div>
+          </div>
+          <div class="metric-card card-green">
+            <div class="card-glow"></div>
+            <div class="metric-icon"><i data-lucide="book-open"></i></div>
+            <div class="metric-info">
+              <h4 id="count-learning-skills">0</h4>
+              <p>Active Learning Plans</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPARISONS BARS AND LEARNING RECOMMENDATIONS GRID -->
+      <div class="analysis-layout">
+        <!-- Visual Skills Comparisons Column -->
+        <div class="content-card">
+          <div class="card-header">
+            <h3>Skills Comparison Grid</h3>
+            <p>Your Level (<span class="marker-user">■</span>) vs Required Benchmark Target (<span class="marker-target">■</span>)</p>
+          </div>
+          <div class="card-body">
+            <div class="comparison-bars-container" id="comparison-bars-grid">
+              <!-- Comparison bar rows injected dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Learning Recommendations Column -->
+        <div class="content-card recommendations-card">
+          <div class="card-header">
+            <h3>Bridging the Gap</h3>
+            <p>Personalized recommended pathways, documentations, and study tools to master missing skills.</p>
+          </div>
+          <div class="card-body scroll-vertical" id="recommendations-container">
+            <!-- Learning cards injected dynamically -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODAL: ADD CUSTOM SKILL -->
+    <div class="modal-overlay" id="modal-skill">
+      <div class="modal-container max-w-sm">
+        <div class="modal-header">
+          <h3>Add Skill to Profile</h3>
+          <button class="btn-modal-close" id="btn-modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="skill-name-input">Skill Name</label>
+            <input type="text" id="skill-name-input" placeholder="e.g. Docker, TypeScript, Jest">
+          </div>
+          <div class="form-group mb-3">
+            <label for="skill-domain-input">Category Domain</label>
+            <select id="skill-domain-input">
+              <option value="frontend">Frontend</option>
+              <option value="backend">Backend</option>
+              <option value="database">Database</option>
+              <option value="devops">Cloud & DevOps</option>
+              <option value="tools">Utilities & Tools</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="skill-level-input">Current Proficiency (1 - 10)</label>
+            <div class="slider-group">
+              <input type="range" id="skill-level-input" min="1" max="10" value="5">
+              <strong id="slider-level-display">5</strong>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+          <button class="btn btn-primary" id="btn-modal-save">Add Skill</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global scripts theme -->
+  <script src="../global-theme.js"></script>
+  <!-- Local script -->
+  <script src="script.js"></script>
+</body>
+</html>

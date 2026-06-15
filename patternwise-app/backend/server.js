@@ -22,11 +22,15 @@ app.use(securityHeadersMiddleware(config));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// API Routes
-app.use('/api', apiRoutes);
+try {
+  // Log configuration on startup (development only)
+  if (config.NODE_ENV === 'development') {
+    logConfiguration(config);
+  }
 
-// Serve Frontend (if needed in production)
-app.use(express.static(path.join(__dirname, '../frontend')));
+  // Apply CORS with validated configuration
+  const corsOptions = getCorsConfig(config);
+  app.use(cors(corsOptions));
 
 app.listen(config.PORT, config.HOST, () => {
   console.log(
@@ -40,3 +44,26 @@ app.listen(config.PORT, config.HOST, () => {
     console.log('[SECURITY] Running in production mode - strict security policies applied');
   }
 });
+  // Response validation middleware (development only)
+  if (config.ENABLE_RESPONSE_VALIDATION && config.NODE_ENV === 'development') {
+    app.use(responseValidationMiddleware);
+  }
+
+  // API Routes
+  app.use('/api', apiRoutes);
+
+  // Serve Frontend (if needed in production)
+  app.use(express.static(path.join(__dirname, '../frontend')));
+
+  // Start server
+  app.listen(config.PORT, config.HOST, () => {
+    console.log(
+      `[SERVER] PatternWise server running on http://${config.HOST}:${config.PORT}`
+    );
+    console.log(`[SERVER] Environment: ${config.NODE_ENV}`);
+  });
+} catch (err) {
+  console.error('[STARTUP ERROR] Failed to start server:');
+  console.error(err.message);
+  process.exit(1);
+}

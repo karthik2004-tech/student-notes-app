@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>True or False Quiz Game</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>🧠 True or False Quiz</h1>
+    <div id="quiz-screen">
+      <div id="question-container">
+        <h2 id="question">Loading...</h2>
+        <div class="options">
+          <button class="btn" id="true-btn">✔️ True</button>
+          <button class="btn" id="false-btn">❌ False</button>
+        </div>
+      </div>
+      <div id="timer">⏳ 10s</div>
+      <div id="score">Score: 0</div>
+    </div>
+    <div id="result-screen" class="hidden">
+      <h2>🎉 Quiz Finished!</h2>
+      <p id="final-score"></p>
+      <button id="restart-btn">🔄 Restart</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

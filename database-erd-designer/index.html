@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database ERD Designer & SQL Generator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local project styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- App Header -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon"><i class="fas fa-project-diagram"></i></span>
+            <div>
+                <h1 class="brand-title">SchemaForge ERD</h1>
+                <p class="brand-subtitle">Visual Database ERD Designer & SQL compiler</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Toolbar controls -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <button class="btn btn-primary" onclick="openNewTableModal()">
+                <i class="fas fa-plus"></i> Add Table
+            </button>
+            <button class="btn btn-secondary" onclick="clearCanvas()">
+                <i class="fas fa-trash-alt"></i> Clear Canvas
+            </button>
+            <button class="btn btn-secondary" onclick="loadDemoSchema()">
+                <i class="fas fa-magic"></i> Load Demo
+            </button>
+        </div>
+        
+        <div class="toolbar-right">
+            <div class="dialect-selector">
+                <label for="sqlDialect"><i class="fas fa-database"></i> Dialect:</label>
+                <select id="sqlDialect" onchange="generateSQL()">
+                    <option value="postgresql">PostgreSQL</option>
+                    <option value="mysql">MySQL / MariaDB</option>
+                    <option value="sqlite">SQLite</option>
+                </select>
+            </div>
+            <button class="btn btn-success" onclick="exportSQLFile()">
+                <i class="fas fa-download"></i> Export .SQL
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="app-container">
+        <!-- Visual Canvas workspace -->
+        <div class="canvas-viewport" id="canvasViewport">
+            <!-- SVG connector layer -->
+            <svg class="canvas-connections" id="connectionsSvg"></svg>
+            
+            <!-- Draggable elements container -->
+            <div class="canvas-nodes" id="canvasNodes"></div>
+        </div>
+
+        <!-- Right Side Panel: SQL Code preview -->
+        <aside class="sql-preview-panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-code"></i> Generated SQL Script</h3>
+                <button class="btn btn-icon" onclick="copyToClipboard()" title="Copy to clipboard">
+                    <i class="fas fa-copy" id="copyIcon"></i>
+                </button>
+            </div>
+            <div class="code-container">
+                <pre><code class="language-sql" id="sqlOutput">-- Create tables and visually connect foreign keys
+-- SQL will update here dynamically...</code></pre>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Modals Layer -->
+    <!-- Table Definition / Column Editor Modal -->
+    <div class="modal-backdrop" id="tableModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Create New Table</h3>
+                <button class="btn-close" onclick="closeTableModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="tableName">Table Name</label>
+                    <input type="text" id="tableName" placeholder="users, orders, profiles..." class="form-input">
+                </div>
+                
+                <div class="columns-editor-section">
+                    <div class="columns-header">
+                        <h4>Columns</h4>
+                        <button class="btn btn-sm btn-primary" onclick="addColumnRow()">
+                            <i class="fas fa-plus"></i> Add Column
+                        </button>
+                    </div>
+                    
+                    <div class="columns-list" id="columnsList">
+                        <!-- Dynamic rows injected here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeTableModal()">Cancel</button>
+                <button class="btn btn-success" id="btnSaveTable" onclick="saveTable()">Save Table</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global theme script -->
+    <script src="../global-theme.js"></script>
+    <!-- Core logic script -->
+    <script src="script.js"></script>
+</body>
+</html>

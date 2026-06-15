@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electric Circuit Simulator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <aside class="panel inventory">
+    <div class="panel-header">
+      <div class="brand">CIRCUIT LAB</div>
+      <div class="brand-sub">// Direct Current Engine</div>
+    </div>
+    <div class="toolbox">
+      <button class="comp-btn" data-type="battery">
+        <span class="comp-icon">
+          <svg width="22" height="14" viewBox="0 0 22 14"><line x1="0" y1="7" x2="5" y2="7" stroke="#f8fafc" stroke-width="1.5"/><line x1="5" y1="3" x2="5" y2="11" stroke="#f8fafc" stroke-width="2"/><line x1="5" y1="3" x2="9" y2="3" stroke="#f8fafc" stroke-width="1.5"/><line x1="5" y1="11" x2="9" y2="11" stroke="#f8fafc" stroke-width="3"/><line x1="9" y1="7" x2="14" y2="7" stroke="#f8fafc" stroke-width="1.5"/><circle cx="14" cy="7" r="1.2" fill="#f8fafc"/><text x="18" y="11" fill="#94a3b8" font-size="7" font-family="monospace">+</text><text x="18" y="5" fill="#94a3b8" font-size="7" font-family="monospace">-</text></svg>
+        </span>
+        <span class="comp-label">DC Voltage Source</span>
+      </button>
+      <button class="comp-btn" data-type="resistor">
+        <span class="comp-icon">
+          <svg width="22" height="14" viewBox="0 0 22 14"><line x1="0" y1="7" x2="3" y2="7" stroke="#f8fafc" stroke-width="1.5"/><polyline points="3,7 4,2 5,12 6,2 7,12 8,2 9,12 10,7" fill="none" stroke="#f8fafc" stroke-width="1.3"/><line x1="10" y1="7" x2="14" y2="7" stroke="#f8fafc" stroke-width="1.5"/><circle cx="14" cy="7" r="1.2" fill="#f8fafc"/></svg>
+        </span>
+        <span class="comp-label">Linear Resistor</span>
+      </button>
+      <button class="comp-btn" data-type="switch">
+        <span class="comp-icon">
+          <svg width="22" height="14" viewBox="0 0 22 14"><line x1="0" y1="7" x2="5" y2="7" stroke="#f8fafc" stroke-width="1.5"/><circle cx="5" cy="7" r="1.5" fill="none" stroke="#f8fafc" stroke-width="1"/><line x1="6.5" y1="7" x2="12" y2="3" stroke="#f8fafc" stroke-width="1.5"/><circle cx="14" cy="7" r="1.5" fill="none" stroke="#f8fafc" stroke-width="1"/><line x1="15.5" y1="7" x2="20" y2="7" stroke="#f8fafc" stroke-width="1.5"/></svg>
+        </span>
+        <span class="comp-label">SPST Toggle Switch</span>
+      </button>
+      <button class="comp-btn" data-type="ground">
+        <span class="comp-icon">
+          <svg width="22" height="14" viewBox="0 0 22 14"><line x1="4" y1="3" x2="4" y2="7" stroke="#f8fafc" stroke-width="1.5"/><line x1="0" y1="7" x2="8" y2="7" stroke="#f8fafc" stroke-width="1.5"/><line x1="1" y1="10" x2="7" y2="10" stroke="#f8fafc" stroke-width="1.5"/><line x1="2" y1="13" x2="6" y2="13" stroke="#f8fafc" stroke-width="1.5"/></svg>
+        </span>
+        <span class="comp-label">Ground Node</span>
+      </button>
+    </div>
+    <div class="action-buttons">
+      <button id="btn-clear" class="action-btn danger">CLEAR WORKSPACE</button>
+      <button id="btn-simulate" class="action-btn primary">SIMULATE NETWORK ANALYSIS</button>
+    </div>
+    <div class="hint-box">
+      <div class="hint-title">HOW TO USE</div>
+      <ul>
+        <li>Click a component to add mode</li>
+        <li>Click canvas grid to place</li>
+        <li>Click placed component to select</li>
+        <li>Adjust values in right panel</li>
+        <li>Press <kbd>Delete</kbd> to remove</li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="canvas-stage">
+    <header class="canvas-header">
+      <span id="sim-status" class="status-steady">SIMULATION STATUS: STEADY STATE</span>
+      <span id="node-count" class="status-meta">NODES: 0 | BRANCHES: 0</span>
+    </header>
+    <div class="canvas-wrapper">
+      <canvas id="simulation-canvas"></canvas>
+      <div id="placement-hint" class="placement-hint hidden">
+        <span id="hint-text">Click grid to place component</span>
+      </div>
+    </div>
+  </main>
+
+  <aside class="panel inspector" id="inspector-panel">
+    <div class="panel-header">
+      <div class="inspector-title">LIVE PARAMETER INSPECTOR</div>
+    </div>
+    <div id="inspector-empty" class="inspector-empty">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" stroke="#1f2937" stroke-width="2"/><line x1="24" y1="14" x2="24" y2="28" stroke="#1f2937" stroke-width="2"/><line x1="18" y1="22" x2="30" y2="22" stroke="#1f2937" stroke-width="2"/></svg>
+      <span>Select a component to inspect</span>
+    </div>
+    <div id="inspector-content" class="inspector-content hidden">
+      <div class="prop-group">
+        <div class="prop-label">Component Type</div>
+        <div id="prop-type" class="prop-value">—</div>
+      </div>
+      <div class="prop-group">
+        <div class="prop-label">Component ID</div>
+        <div id="prop-id" class="prop-value mono">—</div>
+      </div>
+      <div id="param-controls" class="param-controls"></div>
+      <div class="telemetry-section">
+        <div class="telemetry-title">LIVE TELEMETRY</div>
+        <div class="telemetry-grid">
+          <div class="tele-item">
+            <span class="tele-label">Node Voltage (V)</span>
+            <span id="tele-voltage" class="tele-value">0.000 V</span>
+          </div>
+          <div class="tele-item">
+            <span class="tele-label">Branch Current (I)</span>
+            <span id="tele-current" class="tele-value">0.000 A</span>
+          </div>
+          <div class="tele-item">
+            <span class="tele-label">Power Dissipation (P)</span>
+            <span id="tele-power" class="tele-value">0.000 W</span>
+          </div>
+          <div class="tele-item">
+            <span class="tele-label">Resistance (R)</span>
+            <span id="tele-resistance" class="tele-value">—</span>
+          </div>
+        </div>
+      </div>
+      <button id="btn-remove-comp" class="action-btn danger small">REMOVE COMPONENT</button>
+    </div>
+  </aside>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

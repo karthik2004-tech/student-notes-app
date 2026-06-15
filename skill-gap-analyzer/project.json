@@ -1,0 +1,19 @@
+{
+  "title": "Skill Gap Analyzer with Career Matching & Learning Recommendations",
+  "description": "An interactive careers planning tool comparing user skill levels against industry standard benchmarks. Features live match calculators, comparison bar chart displays, custom learning recommended paths checklist trackers, and purple/orange/green/black light & dark themes.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "level": 3,
+  "tags": [
+    "career",
+    "skills",
+    "gap-analysis",
+    "learning",
+    "darkmode",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

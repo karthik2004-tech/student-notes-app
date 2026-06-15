@@ -1,0 +1,17 @@
+{
+  "title": "Kinetic Typography Canvas",
+  "description": "An interactive kinetic typography engine that fractures text into individual character nodes, repelling them from the cursor via 2D Euclidean proximity mapping with spring-back relaxation dynamics.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["kinetic-typography", "canvas", "mousemove", "interactive", "vanilla-js", "proximity-mapping"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Granular character-span tokenization preserving whitespace via &nbsp;",
+    "High-frequency 2D Euclidean distance scanning on every mousemove frame",
+    "Radial proximity force vector with rotational tilt and scale amplification",
+    "Exponential spring-back relaxation smoothing via lerp interpolation",
+    "Live input console with custom text injection and preset streaming",
+    "Real-time diagnostics overlay showing active character counts"
+  ]
+}

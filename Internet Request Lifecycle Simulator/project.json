@@ -1,0 +1,18 @@
+{
+  "title": "Internet Request Lifecycle Simulator",
+  "description": "A network request lifecycle simulator with a 5-stage async/await pipeline, rAF-animated packet routing across DNS/Server/Database nodes, HTTP status code injection (200/404/500/504), stochastic timing telemetry, waterfall chart, and localStorage-persistent history log.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["networking", "http", "dns", "request-lifecycle", "async", "canvas", "animation", "waterfall", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "5-stage async pipeline: Client Init → DNS Lookup → Server Ingestion → Database Fetch → Response Delivery, coordinated via structured async/await with Promise-based delay and packet-arrival waiting via waitForPacket() polling rAF",
+    "Canvas-baked network map: 4 nodes (Browser/DNS/Server/Database) with connection lines, rAF-animated packet dots lerping along paths (ax→bx, ay→by) with glow trails and per-node expansion ripple on arrival via triggerNodeGlow()",
+    "HTTP status injection: 200 OK (normal full flow), 404 Not Found (short-circuit from server, crimson packet), 500 Server Error (abort after server, crimson), 504 Gateway Timeout (packet freezes at 50% on DB link, turns crimson after 800ms, then returns timeout)",
+    "Stochastic timing: randDelay(base) applies ±40ms jitter to each hop stage, mimicking organic queuing noise; timing tracked per-stage for waterfall visualization",
+    "Waterfall chart: DNS/Server/DB horizontal stacked progress bars with CSS transition animation (width: 0%→100%), relative scaling per stage",
+    "History log: per-request entries serialized to localStorage (irls_history), rendered as horizontally scrollable badge row with status-colored spans (green for 2xx, crimson for 4xx/5xx)",
+    "Telemetry panel: DNS resolved IP (random fake-IP:443), server status text, DB query indicator, total RTT in ms with color-coded values"
+  ]
+}

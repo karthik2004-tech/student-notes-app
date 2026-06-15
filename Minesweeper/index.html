@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minesweeper</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <div class="tm"><span class="tl">MINES</span><span id="minesVal" class="tv">10</span></div>
+      <div id="faceBtn" class="face">&#x1F642;</div>
+      <div class="tm"><span class="tl">TIME</span><span id="timeVal" class="tv">000</span></div>
+      <select id="diffSel">
+        <option value="0">Beginner</option>
+        <option value="1">Intermediate</option>
+        <option value="2">Expert</option>
+      </select>
+    </div>
+
+    <div id="boardWrap">
+      <div id="gridContainer"></div>
+    </div>
+
+    <div id="bestBar"><span class="tl">BEST</span><span id="bestVal" class="tv">--</span></div>
+  </div>
+
+  <div id="modal" class="hidden">
+    <div class="mb">
+      <div class="mb-title" id="modalTitle">&#x1F389;</div>
+      <div class="mb-st" id="modalStats"></div>
+      <button id="playAgainBtn">PLAY AGAIN</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

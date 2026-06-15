@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevVault | Smart Developer Knowledge Base</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Global theme integration -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR: TOPICS & NAVIGATION -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-box">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <div class="logo-text">
+          <h2>DevVault</h2>
+          <span>Knowledge Organizer</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Primary Topics</h3>
+        <nav class="topic-nav" id="topic-list">
+          <button class="topic-btn active" data-topic="all">
+            <i data-lucide="folder"></i>
+            <span>All Resources</span>
+            <span class="count-badge" id="count-all">0</span>
+          </button>
+          <button class="topic-btn" data-topic="frontend">
+            <i data-lucide="layout-template"></i>
+            <span>Front-end</span>
+            <span class="count-badge" id="count-frontend">0</span>
+          </button>
+          <button class="topic-btn" data-topic="backend">
+            <i data-lucide="cpu"></i>
+            <span>Back-end</span>
+            <span class="count-badge" id="count-backend">0</span>
+          </button>
+          <button class="topic-btn" data-topic="devops">
+            <i data-lucide="server-cog"></i>
+            <span>DevOps & Cloud</span>
+            <span class="count-badge" id="count-devops">0</span>
+          </button>
+          <button class="topic-btn" data-topic="database">
+            <i data-lucide="database"></i>
+            <span>Database</span>
+            <span class="count-badge" id="count-database">0</span>
+          </button>
+          <button class="topic-btn" data-topic="aiml">
+            <i data-lucide="brain-circuit"></i>
+            <span>AI & Machine Learning</span>
+            <span class="count-badge" id="count-aiml">0</span>
+          </button>
+          <button class="topic-btn" data-topic="utilities">
+            <i data-lucide="wrench"></i>
+            <span>Utilities & Tools</span>
+            <span class="count-badge" id="count-utilities">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Import/Export Quick Actions -->
+      <div class="sidebar-section">
+        <h3>Backup Console</h3>
+        <div class="backup-actions">
+          <button class="btn btn-secondary btn-sm w-full mb-2" id="btn-export-backup">
+            <i data-lucide="download"></i>
+            <span>Export JSON</span>
+          </button>
+          <button class="btn btn-secondary btn-sm w-full" id="btn-import-trigger">
+            <i data-lucide="upload"></i>
+            <span>Import JSON</span>
+          </button>
+          <input type="file" id="import-file" accept=".json" style="display:none;">
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <main class="app-main">
+      <!-- TOP UTILITY ACTION BAR -->
+      <header class="app-header">
+        <div class="header-left">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" id="vault-search" placeholder="Search title, description, tags, URLs...">
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Theme (Light / Dark)">
+            <i data-lucide="sun"></i>
+          </button>
+          <button class="btn btn-primary" id="btn-add-resource">
+            <i data-lucide="plus"></i>
+            <span>Add Resource</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ANALYTICS LEARNING DASHBOARD PANEL -->
+      <section class="learning-dashboard">
+        <div class="dashboard-header">
+          <div class="title-wrap">
+            <h2>Learning Progress Dashboard</h2>
+            <p>Track your technical learning coverage and complete statuses.</p>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-text">
+              <span>Overall Completion</span>
+              <strong id="completion-percentage">0%</strong>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="completion-progress-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="metrics-grid">
+          <div class="metric-card card-purple">
+            <div class="card-glow"></div>
+            <div class="metric-icon">
+              <i data-lucide="library"></i>
+            </div>
+            <div class="metric-data">
+              <h3 id="stat-total">0</h3>
+              <p>Total Assets</p>
+            </div>
+          </div>
+          <div class="metric-card card-orange">
+            <div class="card-glow"></div>
+            <div class="metric-icon">
+              <i data-lucide="bookmark-plus"></i>
+            </div>
+            <div class="metric-data">
+              <h3 id="stat-toread">0</h3>
+              <p>To Read / Watch</p>
+            </div>
+          </div>
+          <div class="metric-card card-green">
+            <div class="card-glow"></div>
+            <div class="metric-icon">
+              <i data-lucide="play-circle"></i>
+            </div>
+            <div class="metric-data">
+              <h3 id="stat-progress">0</h3>
+              <p>In Progress</p>
+            </div>
+          </div>
+          <div class="metric-card card-black">
+            <div class="card-glow"></div>
+            <div class="metric-icon">
+              <i data-lucide="check-circle-2"></i>
+            </div>
+            <div class="metric-data">
+              <h3 id="stat-completed">0</h3>
+              <p>Completed Tasks</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VAULT ITEMS LIST FILTERS & GRID -->
+      <section class="vault-container">
+        <div class="vault-filters-row">
+          <div class="filter-tabs" id="type-tabs">
+            <button class="filter-tab active" data-type="all">All Types</button>
+            <button class="filter-tab" data-type="docs"><i data-lucide="file-text"></i> Docs</button>
+            <button class="filter-tab" data-type="tutorial"><i data-lucide="book-open"></i> Tutorials</button>
+            <button class="filter-tab" data-type="video"><i data-lucide="video"></i> Videos</button>
+            <button class="filter-tab" data-type="snippet"><i data-lucide="code-2"></i> Snippets</button>
+          </div>
+          <div class="sort-selector">
+            <label for="vault-sort"><i data-lucide="sliders-horizontal"></i> Sort By:</label>
+            <select id="vault-sort">
+              <option value="newest">Newest Added</option>
+              <option value="priority">High Priority</option>
+              <option value="alphabetical">Title (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="vault-grid" id="vault-grid">
+          <!-- Dynamic resource cards injected here -->
+        </div>
+
+        <div class="empty-state" id="vault-empty">
+          <div class="empty-icon-circle">
+            <i data-lucide="folder-search"></i>
+          </div>
+          <h3>No Developer Resources Found</h3>
+          <p>Click "Add Resource" to start compiling documents, links, and tutorials.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- MODAL: ADD/EDIT RESOURCE -->
+    <div class="modal-overlay" id="modal-resource">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 id="modal-title">Add Learning Resource</h3>
+          <button class="btn-modal-close" id="btn-modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="res-title">Resource Title</label>
+              <input type="text" id="res-title" placeholder="e.g. React Hooks Deep Dive">
+            </div>
+            <div class="form-group flex-1">
+              <label for="res-type">Resource Type</label>
+              <select id="res-type">
+                <option value="docs">Documentation</option>
+                <option value="tutorial">Tutorial / Course</option>
+                <option value="video">Video Lecture</option>
+                <option value="article">Article / Blog</option>
+                <option value="snippet">Code Snippet</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="res-url">Resource Link URL</label>
+            <input type="url" id="res-url" placeholder="https://example.com/learn">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="res-topic">Vault Topic</label>
+              <select id="res-topic">
+                <option value="frontend">Front-end</option>
+                <option value="backend">Back-end</option>
+                <option value="devops">DevOps & Cloud</option>
+                <option value="database">Database</option>
+                <option value="aiml">AI & ML</option>
+                <option value="utilities">Utilities</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label for="res-priority">Priority Level</label>
+              <select id="res-priority">
+                <option value="high">🔥 High</option>
+                <option value="medium" selected>⚡ Medium</option>
+                <option value="low">💤 Low</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label for="res-status">Learning Status</label>
+              <select id="res-status">
+                <option value="toread">To Read / Watch</option>
+                <option value="progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="res-desc">Description / Takeaways</label>
+            <textarea id="res-desc" rows="3" placeholder="Brief outline or key learning summary..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="res-tags">Tags (Comma-separated)</label>
+            <input type="text" id="res-tags" placeholder="react, hooks, state-management">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+          <button class="btn btn-primary" id="btn-modal-save">Add Resource</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global script theme integrations -->
+  <script src="../global-theme.js"></script>
+  <!-- Local logic script -->
+  <script src="script.js"></script>
+</body>
+</html>

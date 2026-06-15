@@ -209,6 +209,7 @@
 </div>
 
 <script>
+    const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
     let subjects = JSON.parse(localStorage.getItem('attendanceData')) || [];
     const listEl = document.getElementById('subjectList');
     const targetInput = document.getElementById('targetPercent');
@@ -277,7 +278,7 @@
             
             card.innerHTML = `
                 <div class="subject-header">
-                    <span class="subject-name">${sanitizeHTML(sub.name)}</span>
+                    <span class="subject-name">${escapeHTML(sub.name)}</span>
                     <button class="btn-danger" style="padding: 4px 8px; font-size: 12px;" onclick="updateSubject(${sub.id}, 'del')">Remove</button>
                 </div>
                 <div class="stats">

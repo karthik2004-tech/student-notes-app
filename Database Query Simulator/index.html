@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Database Query Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+  <div id="mainRow">
+
+    <!-- Schema -->
+    <div id="schemaPanel">
+      <div class="schemaTable">
+        <div class="stHead">users</div>
+        <div class="stRow"><span class="stCol">id</span><span class="stType">INT PK</span></div>
+        <div class="stRow"><span class="stCol">name</span><span class="stType">TEXT</span></div>
+        <div class="stRow"><span class="stCol">email</span><span class="stType">TEXT</span></div>
+        <div class="stRow"><span class="stCol">role</span><span class="stType">TEXT</span></div>
+        <div class="stRow"><span class="stCol">country</span><span class="stType">TEXT</span></div>
+      </div>
+      <div class="schemaTable">
+        <div class="stHead">orders</div>
+        <div class="stRow"><span class="stCol">id</span><span class="stType">INT PK</span></div>
+        <div class="stRow"><span class="stCol">user_id</span><span class="stType">INT FK→users</span></div>
+        <div class="stRow"><span class="stCol">product</span><span class="stType">TEXT</span></div>
+        <div class="stRow"><span class="stCol">amount</span><span class="stType">REAL</span></div>
+        <div class="stRow"><span class="stCol">status</span><span class="stType">TEXT</span></div>
+      </div>
+      <div class="keyHint">PK <span style="color:#00ff66;">users.id</span> ← FK <span style="color:#00f0ff;">orders.user_id</span></div>
+    </div>
+
+    <!-- Editor -->
+    <div id="editorPanel">
+      <div id="presetRow">
+        <select id="presetSel">
+          <option value="">— Load Preset —</option>
+          <option value="SELECT * FROM users">Select All Users</option>
+          <option value="SELECT * FROM orders WHERE amount > 100">Filter Orders by Value</option>
+          <option value="SELECT users.name, orders.product, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id">Join Users + Orders</option>
+          <option value="SELECT * FROM users WHERE country = 'USA'">Users from USA</option>
+          <option value="SELECT * FROM orders WHERE status = 'shipped'">Shipped Orders</option>
+          <option value="SELECT name, email FROM users WHERE role LIKE 'admin%'">Admin Emails</option>
+        </select>
+      </div>
+      <textarea id="sqlEditor" spellcheck="false" placeholder="SELECT * FROM users WHERE country = 'USA'">SELECT * FROM users</textarea>
+    </div>
+
+    <!-- Telemetry -->
+    <div id="telemetry">
+      <div class="tm"><span class="tl">LATENCY</span><span id="latVal" class="tv">—</span></div>
+      <div class="tm"><span class="tl">RECORDS</span><span id="recVal" class="tv">—</span></div>
+      <div class="tm"><span class="tl">PHASE</span><span id="phaseVal" class="tv">idle</span></div>
+      <div class="tm"><span class="tl">STATUS</span><span id="statusVal" class="tv">ready</span></div>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div id="outputWrap">
+    <div id="outputTable"></div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <button id="execBtn">EXECUTE</button>
+    <button id="presetBtn">LOAD PRESET</button>
+    <button id="flushBtn">FLUSH</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

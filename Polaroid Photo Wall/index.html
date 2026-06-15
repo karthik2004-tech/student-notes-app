@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Polaroid Photo Wall</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="topBar">
+    <input type="file" id="photoLoader" accept="image/*" multiple hidden>
+    <button id="uploadBtn">UPLOAD PHOTO</button>
+    <input type="text" id="captionInput" placeholder="Caption..." spellcheck="false">
+    <span id="countLabel" class="pv">0 cards</span>
+  </div>
+
+  <div id="arenaWrap">
+    <div id="arena"></div>
+  </div>
+
+  <div id="footer">
+    <button id="scrambleBtn">SCRAMBLE ANGLES</button>
+    <button id="purgeBtn">PURGE BOARD</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

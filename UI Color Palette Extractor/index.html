@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI Color Palette Extractor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <aside class="panel left-panel">
+    <div class="panel-header">
+      <div class="brand">CHROMATIC ENG</div>
+      <div class="brand-sub">// Palette Extractor</div>
+    </div>
+
+    <div class="upload-zone" id="upload-zone">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <rect x="4" y="6" width="28" height="24" rx="3" stroke="#94a3b8" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="16" r="3" stroke="#94a3b8" stroke-width="1.5"/>
+        <polyline points="4,25 13,18 20,23 26,16 32,22" stroke="#94a3b8" stroke-width="1.5" fill="none"/>
+      </svg>
+      <span class="upload-text">Drop image here to extract palette</span>
+      <span class="upload-hint">or click to browse files</span>
+      <input type="file" id="file-input" accept="image/*" hidden>
+    </div>
+
+    <div class="manual-inputs">
+      <div class="input-group">
+        <label class="input-label">Hex / RGB Color</label>
+        <div class="input-row">
+          <input type="text" id="hex-input" class="mono-input" value="#3B82F6" placeholder="#HEX or rgb(r,g,b)" spellcheck="false">
+          <input type="color" id="color-picker" value="#3b82f6">
+        </div>
+      </div>
+    </div>
+
+    <div class="diagnostic-panel" id="diagnostic-panel">
+      <div class="diagnostic-title">DIAGNOSTIC TELEMETRY</div>
+      <div class="diag-grid">
+        <div class="diag-item">
+          <span class="diag-label">Relative Luminance</span>
+          <span id="diag-luminance" class="diag-value">0.098</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">Contrast vs White</span>
+          <span id="diag-contrast-white" class="diag-value">4.21:1</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">Contrast vs Dark</span>
+          <span id="diag-contrast-dark" class="diag-value">4.99:1</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">WCAG Compliance</span>
+          <span id="diag-compliance" class="diag-value diag-pass">PASS AA</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">Active Color</span>
+          <span id="diag-hex" class="diag-value mono-sm">#3B82F6</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">RGB Channels</span>
+          <span id="diag-rgb" class="diag-value mono-sm">59, 130, 246</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button id="btn-lock" class="action-btn secondary">LOCK PALETTE SEED</button>
+      <button id="btn-export" class="action-btn primary">EXPORT CSS DESIGN TOKENS</button>
+    </div>
+  </aside>
+
+  <main class="viewport">
+    <div class="preview-hero-card" id="preview-card">
+      <div class="preview-content">
+        <h1 class="preview-heading" id="preview-heading">Sample Typography</h1>
+        <p class="preview-body" id="preview-body">The quick brown fox jumps over the lazy dog. Chromatic contrast computed in real time using relative luminance.</p>
+        <div class="preview-actions">
+          <span class="preview-badge" id="preview-badge-1">Button Label</span>
+          <span class="preview-badge" id="preview-badge-2">Link Text</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="swatch-section">
+      <div class="swatch-header">
+        <span class="swatch-title">EXTRACTED PALETTE</span>
+        <span class="swatch-count" id="swatch-source">source: none</span>
+      </div>
+      <div class="swatch-strip" id="swatch-strip">
+        <div class="swatch-tile" data-hex="#1e293b" style="--swatch:#1e293b">
+          <span class="swatch-hex">#1e293b</span>
+          <span class="swatch-copy-hint">click to copy</span>
+        </div>
+        <div class="swatch-tile" data-hex="#334155" style="--swatch:#334155">
+          <span class="swatch-hex">#334155</span>
+          <span class="swatch-copy-hint">click to copy</span>
+        </div>
+        <div class="swatch-tile" data-hex="#475569" style="--swatch:#475569">
+          <span class="swatch-hex">#475569</span>
+          <span class="swatch-copy-hint">click to copy</span>
+        </div>
+        <div class="swatch-tile" data-hex="#64748b" style="--swatch:#64748b">
+          <span class="swatch-hex">#64748b</span>
+          <span class="swatch-copy-hint">click to copy</span>
+        </div>
+        <div class="swatch-tile" data-hex="#94a3b8" style="--swatch:#94a3b8">
+          <span class="swatch-hex">#94a3b8</span>
+          <span class="swatch-copy-hint">click to copy</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

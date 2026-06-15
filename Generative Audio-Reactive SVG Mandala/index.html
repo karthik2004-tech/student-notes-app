@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generative Audio-Reactive SVG Mandala</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="splash">
+    <div class="sc">
+      <div class="sc-title">AUDIO MANDALA STUDIO</div>
+      <div class="sc-sub">Grant mic access to enable audio-reactive drawing,<br>or draw silently with fallback animation.</div>
+      <button id="micBtn">[ ENABLE MICROPHONE ]</button>
+      <button id="skipBtn" class="sc-skip">[ SKIP — FALLBACK MODE ]</button>
+      <div id="micStatus" class="sc-st">AWAITING INPUT</div>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <div id="console">
+      <div class="cg">
+        <label class="cl">SYMMETRY</label>
+        <input type="range" id="symSlider" min="2" max="24" value="8" step="1">
+        <span id="symVal" class="cv">8</span>
+      </div>
+      <div class="cg">
+        <label class="cl">STROKE</label>
+        <input type="range" id="strokeSlider" min="0.5" max="6" value="1.5" step="0.1">
+        <span id="strokeVal" class="cv">1.5</span>
+      </div>
+      <div class="cg">
+        <label class="cl">THEME</label>
+        <select id="themeSelect">
+          <option value="0">Cyan → Magenta</option>
+          <option value="1">Green → Gold</option>
+          <option value="2">Purple → Pink</option>
+          <option value="3">Monochrome</option>
+        </select>
+      </div>
+      <div class="cg">
+        <label class="cl">MIRROR</label>
+        <input type="checkbox" id="mirrorToggle">
+      </div>
+      <div class="cg">
+        <button id="clearBtn">CLEAR</button>
+        <button id="exportBtn">EXPORT SVG</button>
+      </div>
+    </div>
+
+    <div id="viewport">
+      <svg id="mandalaSVG" xmlns="http://www.w3.org/2000/svg">
+        <g id="drawLayer"></g>
+      </svg>
+      <div id="crosshair"></div>
+    </div>
+
+    <div id="status">
+      <span class="stm"><span class="stl">FREQ</span><span id="stFreq" class="stv">0 Hz</span></span>
+      <span class="stm"><span class="stl">DRIVE</span><span id="stDrive" class="stv">0%</span></span>
+      <span class="stm"><span class="stl">PATHS</span><span id="stPaths" class="stv">0</span></span>
+      <span class="stm"><span class="stl">MODE</span><span id="stMode" class="stv">SILENT</span></span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acoustics Wave Interference</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <div class="pg">
+        <span class="pl">FREQ &#x3C9;</span>
+        <input type="range" id="freqSlider" min="1" max="20" value="6" step="0.5">
+        <span id="freqVal" class="pv">6.0</span>
+      </div>
+      <div class="pg">
+        <span class="pl">WAVE K</span>
+        <input type="range" id="kSlider" min="0.02" max="0.2" value="0.06" step="0.002">
+        <span id="kVal" class="pv">0.060</span>
+      </div>
+      <div class="pg">
+        <span class="pl">SEPARATION</span>
+        <input type="range" id="sepSlider" min="20" max="300" value="120" step="5">
+        <span id="sepVal" class="pv">120</span>
+      </div>
+      <div class="pg">
+        <span class="pl">RESOLUTION</span>
+        <input type="range" id="resSlider" min="1" max="6" value="3" step="1">
+        <span id="resVal" class="pv">3</span>
+      </div>
+    </div>
+
+    <div id="mainRow">
+      <div id="canvasWrap">
+        <canvas id="waveCanvas"></canvas>
+        <div id="hint" class="hint">Click to reposition a source</div>
+      </div>
+
+      <div id="telemetry">
+        <div id="tm-amp" class="tm"><span class="tl">PEAK AMP</span><span id="ampVal" class="tv">0.00</span></div>
+        <div id="tm-con" class="tm"><span class="tl">CONSTRUCTIVE</span><span id="conVal" class="tv">0.00</span></div>
+        <div id="tm-phase" class="tm"><span class="tl">PHASE</span><span id="phaseVal" class="tv">0.00</span></div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <button id="pauseBtn">FREEZE</button>
+      <button id="resetBtn">RESET VECTORS</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

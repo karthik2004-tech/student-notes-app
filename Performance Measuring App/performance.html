@@ -264,6 +264,8 @@
     </div>
 
     <script>
+        const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+
         // Load saved subjects or populate a default row
         function loadSavedSubjects() {
             const savedPerf = localStorage.getItem('quests_performance');
@@ -284,7 +286,7 @@
                     const div = document.createElement('div');
                     div.className = 'subject-row';
                     div.innerHTML = `
-                        <input type="text" class="sub-name" placeholder="Subject Name" value="${sub.name || ''}">
+                        <input type="text" class="sub-name" placeholder="Subject Name" value="${escapeHTML(sub.name || '')}">
                         <input type="number" class="sub-marks" placeholder="Obtained" value="${sub.obtained !== undefined ? sub.obtained : ''}">
                         <input type="number" class="sub-total" placeholder="Total Marks" value="${sub.total !== undefined ? sub.total : ''}">
                         <button class="btn btn-remove" onclick="this.parentElement.remove()"><i class="ri-delete-bin-line"></i></button>
@@ -353,15 +355,15 @@
                 <div class="result-box strong">
                     <i class="ri-medal-fill"></i>
                     <div class="result-text">
-                        <h3>Peak Performance: ${strong.name}</h3>
-                        <p><strong>${user}</strong> Your Strong Subject is <strong>${strong.name}</strong>, Keep going champ!</p>
+                        <h3>Peak Performance: ${escapeHTML(strong.name)}</h3>
+                        <p><strong>${escapeHTML(user)}</strong> Your Strong Subject is <strong>${escapeHTML(strong.name)}</strong>, Keep going champ!</p>
                     </div>
                 </div>
                 <div class="result-box weak">
                     <i class="ri-error-warning-fill"></i>
                     <div class="result-text">
-                        <h3>Focus Required: ${weak.name}</h3>
-                        <p><strong>${user}</strong> Your Weak subject is <strong>${weak.name}</strong>, Study hard dude!</p>
+                        <h3>Focus Required: ${escapeHTML(weak.name)}</h3>
+                        <p><strong>${escapeHTML(user)}</strong> Your Weak subject is <strong>${escapeHTML(weak.name)}</strong>, Study hard dude!</p>
                     </div>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">

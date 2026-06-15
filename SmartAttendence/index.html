@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>📚 Smart Attendance Tracker</h1>
+
+    <div class="add-student">
+        <input type="text" id="studentName" placeholder="Enter Student Name">
+        <button onclick="addStudent()">Add Student</button>
+    </div>
+
+    <div class="stats">
+        <div class="card">
+            <h3>Total Students</h3>
+            <p id="totalStudents">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Present</h3>
+            <p id="presentCount">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Absent</h3>
+            <p id="absentCount">0</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Student Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentList"></tbody>
+    </table>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

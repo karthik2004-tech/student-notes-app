@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitner Cards | Spaced-Repetition Flashcards Mode</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Centralized theme variables -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar profile and deck manager -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i data-lucide="layers"></i>
+          </div>
+          <div class="logo-text">
+            <h2>LeitnerCards</h2>
+            <span>Spaced Repetition</span>
+          </div>
+        </div>
+        <button class="btn-sidebar-close" id="sidebar-toggle-close">&times;</button>
+      </div>
+
+      <!-- Contributor Profile -->
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <img id="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=leitner" alt="User Avatar">
+          <button id="edit-profile-btn" class="btn-edit-avatar" title="Edit Profile">
+            <i data-lucide="edit-3"></i>
+          </button>
+        </div>
+        <h3 id="profile-name">Vishwa Mistry</h3>
+        <p id="profile-bio">Active Learner & Student</p>
+      </div>
+
+      <!-- Deck Listings -->
+      <div class="decks-section">
+        <div class="section-title-row">
+          <h3>Study Decks</h3>
+          <button id="add-deck-btn" class="btn btn-secondary btn-icon btn-sm" title="Create Deck">
+            <i data-lucide="plus"></i>
+          </button>
+        </div>
+        <div class="deck-add-box" id="deck-add-box" style="display: none;">
+          <input type="text" id="new-deck-name" placeholder="Deck Name...">
+          <button class="btn btn-primary btn-sm" id="save-deck-btn">Save</button>
+        </div>
+        <ul class="deck-list" id="deck-list-container">
+          <!-- Injected via JavaScript -->
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <div class="workspace-wrapper">
+      <!-- Top header bar -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="btn btn-icon btn-secondary" id="sidebar-toggle-open">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="header-title-wrapper">
+            <h1 id="workspace-title">Decks Dashboard</h1>
+            <p>Master concepts using the Leitner Study System with visual cards retention tracking</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <!-- Backup file controls -->
+          <button id="import-btn" class="btn btn-secondary btn-icon" title="Import JSON Backup">
+            <i data-lucide="upload"></i>
+          </button>
+          <input type="file" id="import-file" accept=".json" style="display: none;">
+
+          <button id="export-btn" class="btn btn-secondary btn-icon" title="Export JSON Backup">
+            <i data-lucide="download"></i>
+          </button>
+
+          <button id="reset-btn" class="btn btn-secondary btn-icon" title="Reset Database">
+            <i data-lucide="refresh-cw"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable workspace viewports -->
+      <main class="app-workspace">
+        
+        <!-- Top Summary Cards row -->
+        <section class="stats-row">
+          <div class="stat-card">
+            <span class="label">Total Flashcards</span>
+            <span class="value" id="stat-total">0</span>
+            <span class="sub" id="stat-sub-due">0 due for review</span>
+          </div>
+
+          <div class="stat-card score-card">
+            <span class="label">Mastery Rate</span>
+            <span class="value" id="stat-mastery">0%</span>
+            <span class="sub" id="stat-sub-mastery">Percentage in Box 4 & 5</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="label">Studied Today</span>
+            <span class="value" id="stat-studied">0</span>
+            <span class="sub" id="stat-sub-streak">Streak active</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="label">Total Decks</span>
+            <span class="value" id="stat-decks">0</span>
+            <span class="sub" id="stat-sub-avg">0.0 cards average</span>
+          </div>
+        </section>
+
+        <!-- Leitner Box Visualizer -->
+        <section class="panel-card box-visualizer-panel">
+          <div class="panel-header">
+            <h3>Leitner Boxes Progress</h3>
+          </div>
+          <div class="leitner-boxes-grid" id="leitner-boxes-container">
+            <!-- Box 1 to 5 stacks injected dynamically -->
+          </div>
+        </section>
+
+        <!-- Dynamic Study Mode Module / Cards view -->
+        <section class="dashboard-grid">
+          <!-- Study Interactive Area -->
+          <div class="panel-card col-span-2 study-area-panel" id="study-area-container" style="display: none;">
+            <div class="panel-header">
+              <h3 id="study-deck-title">Studying: Deck Name</h3>
+              <button class="btn btn-secondary btn-sm" id="btn-close-study">Exit Study</button>
+            </div>
+            
+            <div class="study-progress-row">
+              <span id="study-card-indicator">Card 1 of 5</span>
+              <div class="bar-progress-container">
+                <div class="bar-progress" id="study-progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Flashcard Visual Component -->
+            <div class="flashcard-scene" id="flashcard-scene">
+              <div class="flashcard-card" id="flashcard-card-element">
+                <div class="flashcard-face flashcard-front">
+                  <div class="card-face-content">
+                    <p class="card-text" id="study-front-text">Front Question</p>
+                    <span class="hint-text"><i data-lucide="help-circle"></i> Click Card to Flip</span>
+                  </div>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                  <div class="card-face-content">
+                    <p class="card-text" id="study-back-text">Back Answer</p>
+                    <span class="hint-text"><i data-lucide="help-circle"></i> Answer Side</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Study controls -->
+            <div class="study-controls-row" id="study-controls-actions" style="display: none;">
+              <button class="btn btn-secondary btn-icon-text incorrect-btn" id="study-incorrect-btn">
+                <i data-lucide="x-circle"></i>
+                <span>Review Again</span>
+              </button>
+              <button class="btn btn-primary btn-icon-text correct-btn" id="study-correct-btn">
+                <i data-lucide="check-circle"></i>
+                <span>Know It!</span>
+              </button>
+            </div>
+
+            <!-- Completed Recap panel -->
+            <div class="study-recap-panel" id="study-recap-container" style="display: none;">
+              <i data-lucide="party-popper" class="recap-icon"></i>
+              <h3>Deck Study Session Completed!</h3>
+              <p>Excellent progress. Keep reviewing at spaced intervals.</p>
+              <div class="recap-stats-row">
+                <div class="recap-stat">
+                  <span class="val" id="recap-val-correct">0</span>
+                  <span class="lbl">Passed / Moved Up</span>
+                </div>
+                <div class="recap-stat">
+                  <span class="val text-danger" id="recap-val-incorrect">0</span>
+                  <span class="lbl">Failed / Box 1 Reset</span>
+                </div>
+              </div>
+              <button class="btn btn-primary" id="btn-recap-finish">Finish Session</button>
+            </div>
+          </div>
+
+          <!-- Charts Graphics -->
+          <div class="panel-card col-span-2 chart-area-panel" id="chart-area-container">
+            <div class="panel-header">
+              <h3>Learning Curve & Progress</h3>
+              <div class="chart-toggles">
+                <button class="btn btn-sm btn-secondary active" id="btn-chart-boxes">Boxes Share</button>
+                <button class="btn btn-sm btn-secondary" id="btn-chart-decks">Decks Mastery</button>
+              </div>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="leitnerChart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cards Listings and Logs Grid -->
+        <section class="panel-card" id="cards-manager-panel" style="display: none;">
+          <div class="panel-header flex-column">
+            <div class="filters-row-top">
+              <h3>Cards Database (<span id="cards-manager-deck-name">Deck Name</span>)</h3>
+              <div class="manager-actions">
+                <button class="btn btn-secondary btn-icon-text" id="btn-start-study-mode">
+                  <i data-lucide="play-circle"></i>
+                  <span>Study Due Cards</span>
+                </button>
+                <button class="btn btn-primary btn-icon-text" id="add-card-btn">
+                  <i data-lucide="plus"></i>
+                  <span>Add Flashcard</span>
+                </button>
+              </div>
+            </div>
+            <div class="filters-grid">
+              <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="log-search" placeholder="Search cards by question, answer, tags...">
+              </div>
+              <div class="select-filters">
+                <select id="filter-box">
+                  <option value="all">All Leitner Boxes</option>
+                  <option value="1">Box 1 (Daily)</option>
+                  <option value="2">Box 2 (2 Days)</option>
+                  <option value="3">Box 3 (5 Days)</option>
+                  <option value="4">Box 4 (9 Days)</option>
+                  <option value="5">Box 5 (14 Days)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="logs-container" id="cards-list-container">
+            <!-- Dynamically injected -->
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: ADD / EDIT CARD -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="card-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="card-modal-title">Create Flashcard</h2>
+        <button class="btn-close" id="card-modal-close-btn">&times;</button>
+      </div>
+      <form id="card-form" class="modal-form">
+        <input type="hidden" id="edit-card-id">
+
+        <div class="form-grid">
+          <div class="form-group col-full">
+            <label for="form-front">Front Content (Question / Term) *</label>
+            <textarea id="form-front" rows="3" required placeholder="e.g. What is the time complexity of QuickSort average case?"></textarea>
+          </div>
+
+          <div class="form-group col-full">
+            <label for="form-back">Back Content (Answer / Definition) *</label>
+            <textarea id="form-back" rows="3" required placeholder="e.g. O(N log N)"></textarea>
+          </div>
+
+          <div class="form-group col-full">
+            <label for="form-tags">Topic Tags (comma separated)</label>
+            <input type="text" id="form-tags" placeholder="e.g. Algorithms, Sorting, Big-O">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="card-modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: EDIT PROFILE -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="profile-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Update Profile Info</h2>
+        <button class="btn-close" id="profile-modal-close">&times;</button>
+      </div>
+      <form id="profile-form" class="modal-form">
+        <div class="form-group">
+          <label for="form-profile-name">Username / Nickname *</label>
+          <input type="text" id="form-profile-name" required placeholder="e.g. Vishwa Mistry">
+        </div>
+
+        <div class="form-group">
+          <label for="form-profile-bio">Bio Tagline</label>
+          <input type="text" id="form-profile-bio" placeholder="e.g. Active Learner & Student">
+        </div>
+
+        <div class="form-group">
+          <label for="form-profile-avatar">Avatar URL</label>
+          <input type="url" id="form-profile-avatar" placeholder="https://api.dicebear.com/...">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="profile-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global theme integration script -->
+  <script src="../global-theme.js"></script>
+  <!-- Local application logic script -->
+  <script src="script.js"></script>
+</body>
+</html>

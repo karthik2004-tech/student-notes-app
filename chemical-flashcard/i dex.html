@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemical Formula Flashcard Library | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Stats Bar */
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 12px 25px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b4db, #00ffcc);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Search & Filter */
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            outline: none;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Flashcard Grid */
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* Flashcard 3D */
+        .flashcard {
+            background: transparent;
+            height: 260px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 20px;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, rgba(0,180,219,0.2), rgba(0,131,176,0.2));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,255,255,0.3);
+        }
+
+        .flashcard-back {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            transform: rotateY(180deg);
+        }
+
+        .formula-name {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ffcc;
+            margin-bottom: 15px;
+        }
+
+        .formula-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .category-acid { background: #ff6b6b; }
+        .category-base { background: #4d96ff; }
+        .category-salt { background: #20c997; }
+        .category-organic { background: #ffd200; color: #333; }
+        .category-other { background: #6c757d; }
+
+        .learned-badge {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: #28a745;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            color: white;
+        }
+
+        .not-learned-badge {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .learn-btn {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .learn-btn:hover {
+            background: #28a745;
+        }
+
+        .card-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 10px;
+        }
+
+        .flip-hint {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Quiz Mode Section */
+        .quiz-section {
+            background: rgba(255,255,255,0.08);
+            border-radius: 25px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-title {
+            color: #ffd200;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ffd200, #ff9800);
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quiz-question {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+        }
+
+        .quiz-question-text {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .quiz-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .quiz-option {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #00b4db;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            color: #00ffcc;
+        }
+
+        .quiz-score {
+            margin-top: 15px;
+            color: #ffd200;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            color: rgba(255,255,255,0.5);
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 600px) {
+            .flashcard-grid {
+                grid-template-columns: 1fr;
+            }
+            .formula-name {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Chemical Formula Flashcard Library</h1>
+            <div class="subtitle">50+ Chemical Formulas | Flip to Learn | Master Chemistry!</div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCards">0</div>
+                <div class="stat-label">Total Formulas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="learnedCount">0</div>
+                <div class="stat-label">Learned ✅</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="masteryPercent">0%</div>
+                <div class="stat-label">Mastery</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>📚 Learning Progress</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="search-filter">
+            <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search formula (e.g., Water, Salt, Acid)...">
+            <select class="filter-select" id="filterSelect">
+                <option value="all">📋 All Categories</option>
+                <option value="acid">🧪 Acids</option>
+                <option value="base">⚗️ Bases</option>
+                <option value="salt">🧂 Salts</option>
+                <option value="organic">🌿 Organic</option>
+                <option value="other">📦 Other</option>
+            </select>
+        </div>
+
+        <div class="flashcard-grid" id="flashcardGrid">
+            <!-- Dynamic flashcards -->
+        </div>
+
+        <!-- Quiz Mode -->
+        <div class="quiz-section" id="quizSection">
+            <div class="quiz-header">
+                <div class="quiz-title">
+                    <span>🎯</span> Random Quiz Mode
+                </div>
+                <button class="quiz-btn" id="startQuizBtn">Start Random Quiz</button>
+            </div>
+            <div id="quizContainer" style="display: none;">
+                <div class="quiz-question">
+                    <div class="quiz-question-text" id="quizQuestion"></div>
+                    <div class="quiz-options" id="quizOptions"></div>
+                    <div class="quiz-feedback" id="quizFeedback"></div>
+                    <div class="quiz-score" id="quizScore"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chemical Formulas Database
+        let flashcards = [
+            // Acids
+            { id: 1, name: "Hydrochloric Acid", formula: "HCl", category: "acid", learned: false },
+            { id: 2, name: "Sulfuric Acid", formula: "H₂SO₄", category: "acid", learned: false },
+            { id: 3, name: "Nitric Acid", formula: "HNO₃", category: "acid", learned: false },
+            { id: 4, name: "Acetic Acid", formula: "CH₃COOH", category: "acid", learned: false },
+            { id: 5, name: "Carbonic Acid", formula: "H₂CO₃", category: "acid", learned: false },
+            { id: 6, name: "Phosphoric Acid", formula: "H₃PO₄", category: "acid", learned: false },
+            
+            // Bases
+            { id: 7, name: "Sodium Hydroxide", formula: "NaOH", category: "base", learned: false },
+            { id: 8, name: "Potassium Hydroxide", formula: "KOH", category: "base", learned: false },
+            { id: 9, name: "Calcium Hydroxide", formula: "Ca(OH)₂", category: "base", learned: false },
+            { id: 10, name: "Ammonium Hydroxide", formula: "NH₄OH", category: "base", learned: false },
+            { id: 11, name: "Magnesium Hydroxide", formula: "Mg(OH)₂", category: "base", learned: false },
+            
+            // Salts
+            { id: 12, name: "Sodium Chloride", formula: "NaCl", category: "salt", learned: false },
+            { id: 13, name: "Potassium Chloride", formula: "KCl", category: "salt", learned: false },
+            { id: 14, name: "Calcium Carbonate", formula: "CaCO₃", category: "salt", learned: false },
+            { id: 15, name: "Sodium Bicarbonate", formula: "NaHCO₃", category: "salt", learned: false },
+            { id: 16, name: "Copper Sulfate", formula: "CuSO₄", category: "salt", learned: false },
+            { id: 17, name: "Silver Nitrate", formula: "AgNO₃", category: "salt", learned: false },
+            { id: 18, name: "Potassium Permanganate", formula: "KMnO₄", category: "salt", learned: false },
+            
+            // Organic
+            { id: 19, name: "Methane", formula: "CH₄", category: "organic", learned: false },
+            { id: 20, name: "Ethane", formula: "C₂H₆", category: "organic", learned: false },
+            { id: 21, name: "Propane", formula: "C₃H₈", category: "organic", learned: false },
+            { id: 22, name: "Ethanol", formula: "C₂H₅OH", category: "organic", learned: false },
+            { id: 23, name: "Methanol", formula: "CH₃OH", category: "organic", learned: false },
+            { id: 24, name: "Glucose", formula: "C₆H₁₂O₆", category: "organic", learned: false },
+            { id: 25, name: "Sucrose", formula: "C₁₂H₂₂O₁₁", category: "organic", learned: false },
+            
+            // Other common compounds
+            { id: 26, name: "Water", formula: "H₂O", category: "other", learned: false },
+            { id: 27, name: "Ammonia", formula: "NH₃", category: "other", learned: false },
+            { id: 28, name: "Carbon Dioxide", formula: "CO₂", category: "other", learned: false },
+            { id: 29, name: "Carbon Monoxide", formula: "CO", category: "other", learned: false },
+            { id: 30, name: "Ozone", formula: "O₃", category: "other", learned: false },
+            { id: 31, name: "Hydrogen Peroxide", formula: "H₂O₂", category: "other", learned: false },
+            { id: 32, name: "Methane", formula: "CH₄", category: "organic", learned: false }
+        ];
+
+        // Remove duplicate and keep unique
+        flashcards = flashcards.filter((card, index, self) => 
+            index === self.findIndex(c => c.name === card.name)
+        );
+
+        let currentFilter = 'all';
+        let searchTerm = '';
+        let quizActive = false;
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // Load from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('chemicalFlashcards');
+            if(saved) {
+                const savedCards = JSON.parse(saved);
+                // Merge saved learned status
+                flashcards.forEach(card => {
+                    const savedCard = savedCards.find(c => c.id === card.id);
+                    if(savedCard) card.learned = savedCard.learned;
+                });
+            }
+            renderFlashcards();
+            updateStats();
+        }
+
+        // Save to localStorage
+        function saveData() {
+            localStorage.setItem('chemicalFlashcards', JSON.stringify(flashcards));
+        }
+
+        // Toggle learned
+        function toggleLearned(id) {
+            const card = flashcards.find(c => c.id === id);
+            if(card) {
+                card.learned = !card.learned;
+                saveData();
+                renderFlashcards();
+                updateStats();
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            const total = flashcards.length;
+            const learned = flashcards.filter(c => c.learned).length;
+            const percent = total === 0 ? 0 : (learned / total) * 100;
+            
+            document.getElementById('totalCards').textContent = total;
+            document.getElementById('learnedCount').textContent = learned;
+            document.getElementById('masteryPercent').textContent = `${Math.round(percent)}%`;
+            document.getElementById('progressPercent').textContent = `${Math.round(percent)}%`;
+            document.getElementById('progressFill').style.width = `${percent}%`;
+        }
+
+        // Get category class
+        function getCategoryClass(category) {
+            const classes = {
+                acid: 'category-acid',
+                base: 'category-base',
+                salt: 'category-salt',
+                organic: 'category-organic',
+                other: 'category-other'
+            };
+            return classes[category] || 'category-other';
+        }
+
+        // Get category name
+        function getCategoryName(category) {
+            const names = {
+                acid: 'Acid',
+                base: 'Base',
+                salt: 'Salt',
+                organic: 'Organic',
+                other: 'Other'
+            };
+            return names[category] || 'Other';
+        }
+
+        // Render flashcards
+        function renderFlashcards() {
+            let filtered = flashcards;
+            
+            if(currentFilter !== 'all') {
+                filtered = filtered.filter(c => c.category === currentFilter);
+            }
+            
+            if(searchTerm) {
+                filtered = filtered.filter(c => 
+                    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    c.formula.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+            
+            const grid = document.getElementById('flashcardGrid');
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state">📭 No formulas found!<br>Try a different search or category.</div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(card => `
+                <div class="flashcard" data-id="${card.id}">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="formula-category ${getCategoryClass(card.category)}">${getCategoryName(card.category)}</div>
+                            <div class="formula-name">${escapeHtml(card.formula)}</div>
+                            <div class="flip-hint">🔄 Click to flip</div>
+                            ${card.learned ? '<div class="learned-badge">✅ Learned</div>' : '<div class="not-learned-badge">📖 Not learned</div>'}
+                            <button class="learn-btn" onclick="event.stopPropagation(); toggleLearned(${card.id})">${card.learned ? '↺ Mark Unlearned' : '✓ Mark Learned'}</button>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-name">${escapeHtml(card.name)}</div>
+                            <div class="card-desc">Formula: ${escapeHtml(card.formula)}</div>
+                            <div class="flip-hint">🔄 Click to flip back</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add flip event listeners
+            document.querySelectorAll('.flashcard').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if(e.target.classList.contains('learn-btn')) return;
+                    card.classList.toggle('flipped');
+                });
+            });
+        }
+
+        // Start Quiz
+        function startQuiz() {
+            // Get unlearned cards for quiz
+            const unlearned = flashcards.filter(c => !c.learned);
+            if(unlearned.length === 0) {
+                alert('🎉 Amazing! You\'ve learned all formulas! Great job!');
+                return;
+            }
+            
+            // Shuffle and take 10 questions
+            quizQuestions = [...unlearned];
+            for(let i = quizQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [quizQuestions[i], quizQuestions[j]] = [quizQuestions[j], quizQuestions[i]];
+            }
+            quizQuestions = quizQuestions.slice(0, 10);
+            
+            currentQuizIndex = 0;
+            quizScore = 0;
+            quizActive = true;
+            
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('startQuizBtn').textContent = 'Quiz in Progress...';
+            document.getElementById('startQuizBtn').disabled = true;
+            
+            showQuizQuestion();
+        }
+        
+        // Show quiz question
+        function showQuizQuestion() {
+            if(currentQuizIndex >= quizQuestions.length) {
+                endQuiz();
+                return;
+            }
+            
+            const current = quizQuestions[currentQuizIndex];
+            
+            // Generate wrong options
+            const otherFormulas = flashcards.filter(c => c.id !== current.id).map(c => c.formula);
+            const shuffled = [...otherFormulas];
+            for(let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            const options = [current.formula, ...shuffled.slice(0, 3)];
+            for(let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            
+            document.getElementById('quizQuestion').innerHTML = `What is the chemical formula for <strong>${escapeHtml(current.name)}</strong>?`;
+            document.getElementById('quizOptions').innerHTML = options.map(opt => `
+                <button class="quiz-option" onclick="checkAnswer('${escapeHtml(opt)}')">${escapeHtml(opt)}</button>
+            `).join('');
+            document.getElementById('quizFeedback').innerHTML = '';
+            document.getElementById('quizScore').innerHTML = `Question ${currentQuizIndex + 1} of ${quizQuestions.length} | Score: ${quizScore}`;
+        }
+        
+        // Check answer
+        function checkAnswer(selected) {
+            const current = quizQuestions[currentQuizIndex];
+            
+            if(selected === current.formula) {
+                quizScore++;
+                document.getElementById('quizFeedback').innerHTML = '✅ Correct! Great job!';
+                document.getElementById('quizFeedback').style.color = '#28a745';
+                
+                // Mark as learned
+                const originalCard = flashcards.find(c => c.id === current.id);
+                if(originalCard) {
+                    originalCard.learned = true;
+                    saveData();
+                    updateStats();
+                }
+            } else {
+                document.getElementById('quizFeedback').innerHTML = `❌ Wrong! The correct answer is ${current.formula}. Keep practicing!`;
+                document.getElementById('quizFeedback').style.color = '#ff6b6b';
+            }
+            
+            currentQuizIndex++;
+            setTimeout(() => {
+                if(currentQuizIndex < quizQuestions.length) {
+                    showQuizQuestion();
+                } else {
+                    endQuiz();
+                }
+            }, 1500);
+            
+            // Disable options temporarily
+            document.querySelectorAll('.quiz-option').forEach(btn => {
+                btn.disabled = true;
+            });
+            setTimeout(() => {
+                if(currentQuizIndex < quizQuestions.length) {
+                    document.querySelectorAll('.quiz-option').forEach(btn => {
+                        btn.disabled = false;
+                    });
+                }
+            }, 1500);
+        }
+        
+        // End quiz
+        function endQuiz() {
+            const total = quizQuestions.length;
+            const percent = (quizScore / total) * 100;
+            
+            let message = '';
+            if(percent >= 80) message = '🎉 Excellent! You\'re a chemistry master!';
+            else if(percent >= 60) message = '👍 Good job! Keep practicing!';
+            else message = '📚 Keep studying! Try the flashcards again!';
+            
+            document.getElementById('quizFeedback').innerHTML = `${message}<br>Your score: ${quizScore}/${total} (${Math.round(percent)}%)`;
+            document.getElementById('quizScore').innerHTML = 'Quiz Complete! 🎯';
+            
+            document.getElementById('startQuizBtn').textContent = 'Start New Quiz';
+            document.getElementById('startQuizBtn').disabled = false;
+            renderFlashcards();
+            updateStats();
+            quizActive = false;
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderFlashcards();
+        });
+        
+        document.getElementById('filterSelect').addEventListener('change', (e) => {
+            currentFilter = e.target.value;
+            renderFlashcards();
+        });
+        
+        document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+
+        // Make functions global
+        window.toggleLearned = toggleLearned;
+        window.checkAnswer = checkAnswer;
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>

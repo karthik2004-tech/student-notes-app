@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Weaver — The Enigma's Choice</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg: #0a0a0a;
+            --primary: #00f2fe; /* Cyan */
+            --secondary: #8b5cf6; /* Purple */
+            --accent: #ccff00; /* Lime Green */
+            --text: #e0e0e0;
+            --surface: #1a1a1a;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow-glow: rgba(0, 242, 254, 0.3);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            background-image: radial-gradient(circle at center, #1e1b4b 0%, #0a0a0a 100%);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .game-container {
+            width: 95%;
+            max-width: 700px;
+            background: var(--surface);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 50px var(--shadow-glow), inset 0 0 20px var(--shadow-glow);
+            position: relative;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin: 0;
+            letter-spacing: 3px;
+            color: var(--primary);
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .story-text {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            padding: 20px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: left;
+            border-radius: 4px;
+        }
+
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .choice-btn {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 15px 20px;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .choice-btn:hover {
+            background: var(--secondary);
+            color: var(--bg);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .consequences-tracker {
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-align: left;
+            min-height: 20px;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 40px;
+        }
+
+        .btn-start {
+            background: var(--primary);
+            color: var(--bg);
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .btn-start:hover {
+            background: var(--accent);
+            box-shadow: 0 0 30px rgba(204, 255, 0, 0.5);
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div id="start-screen" class="overlay">
+            <h1>PATH WEAVER</h1>
+            <p style="color: var(--text); opacity: 0.8; margin-bottom: 30px;">
+                A fractured reality awaits your decisions. Every choice echoes.
+            </p>
+            <button class="btn-start" onclick="startGame()">Begin Journey</button>
+        </div>
+
+        <div id="ending-screen" class="overlay hidden">
+            <h1 id="ending-title" style="font-size: 2.5rem;">JOURNEY ENDED</h1>
+            <p id="ending-text" style="margin-bottom: 30px;"></p>
+            <p id="consequences-summary" style="font-size: 0.9rem; color: var(--accent);"></p>
+            <button class="btn-start" onclick="startGame()">Restart Protocol</button>
+        </div>
+
+        <h1>THE ENIGMA'S CHOICE</h1>
+        
+        <div id="story-display" class="story-text">
+            Initializing narrative...
+        </div>
+
+        <div id="choices-area" class="choices-container">
+            <!-- Choices will be injected here -->
+        </div>
+
+        <div id="consequences-display" class="consequences-tracker">
+            // LOG: No consequences tracked yet.
+        </div>
+    </div>
+
+    <script>
+        const NARRATIVE = {
+            "start": {
+                text: "You awaken in a dimly lit chamber, a faint hum resonating from the walls. A single, ancient console flickers before you. Its screen displays a cryptic message: 'Choose your path, Weaver.'",
+                choices: [
+                    { text: "Approach the console.", nextId: "console_approach", consequence: "Curiosity awakened." },
+                    { text: "Search the chamber.", nextId: "chamber_search", consequence: "Cautious exploration." }
+                ]
+            },
+            "console_approach": {
+                text: "The console's interface is complex, a labyrinth of symbols. Two main options glow faintly: 'ACTIVATE PROTOCOL' or 'ANALYZE DATA'.",
+                choices: [
+                    { text: "ACTIVATE PROTOCOL.", nextId: "activate_protocol", consequence: "Initiating unknown sequence." },
+                    { text: "ANALYZE DATA.", nextId: "analyze_data", consequence: "Seeking understanding." }
+                ]
+            },
+            "chamber_search": {
+                text: "The chamber is bare, save for a small, metallic orb tucked into a hidden recess. As you touch it, a voice whispers in your mind: 'The path is not always clear. Seek knowledge, or forge ahead.'",
+                choices: [
+                    { text: "Follow the voice's advice: Seek knowledge (Analyze Data).", nextId: "analyze_data", consequence: "Guided by intuition." },
+                    { text: "Forge ahead (Activate Protocol).", nextId: "activate_protocol", consequence: "Impulsive decision." }
+                ]
+            },
+            "activate_protocol": {
+                text: "A jolt of energy courses through the chamber. The walls shimmer, revealing a hidden doorway. Beyond it, a swirling vortex of light beckons. Do you step through?",
+                choices: [
+                    { text: "Step into the vortex.", nextId: "vortex_enter", consequence: "Embracing the unknown." },
+                    { text: "Hesitate and look for another way.", nextId: "vortex_hesitate", consequence: "Prudence over impulse." }
+                ]
+            },
+            "analyze_data": {
+                text: "The console whirs, displaying fragments of ancient texts and schematics. You learn of a 'Temporal Anchor' and a 'Reality Fabric'. The data suggests a critical choice: 'STABILIZE' or 'RECALIBRATE'.",
+                choices: [
+                    { text: "STABILIZE the Temporal Anchor.", nextId: "stabilize_anchor", consequence: "Prioritizing stability." },
+                    { text: "RECALIBRATE the Reality Fabric.", nextId: "recalibrate_fabric", consequence: "Seeking a new reality." }
+                ]
+            },
+            "vortex_enter": {
+                text: "You step into the vortex, and reality dissolves around you. You emerge in a vibrant, alien landscape, but the chamber is gone. You are truly lost, but free.",
+                choices: [], // Ending
+                ending: { title: "THE UNBOUND EXPLORER", text: "Your adventurous spirit led you to an unknown frontier, forever detached from your origin. A new beginning, or an eternal wandering?" }
+            },
+            "vortex_hesitate": {
+                text: "As you hesitate, the vortex destabilizes, collapsing inward. The chamber begins to crumble, trapping you within its ancient confines.",
+                choices: [], // Ending
+                ending: { title: "THE TRAPPED SOUL", text: "Your caution led to inaction, and the opportunity vanished. The walls close in, and your journey ends in silent despair." }
+            },
+            "stabilize_anchor": {
+                text: "The console emits a soothing hum. The chamber's vibrations cease, and a sense of calm settles. You feel a faint pull, a connection to a familiar place. Do you follow it?",
+                choices: [
+                    { text: "Follow the pull back to familiarity.", nextId: "return_home", consequence: "Longing for home." },
+                    { text: "Resist the pull and explore further.", nextId: "explore_stable", consequence: "Newfound confidence." }
+                ]
+            },
+            "recalibrate_fabric": {
+                text: "The console glows intensely, and the chamber's structure distorts. You feel a profound shift in reality, a sense of infinite possibilities. What do you do with this newfound power?",
+                choices: [
+                    { text: "Shape reality to your will.", nextId: "shape_reality", consequence: "Embracing godhood." },
+                    { text: "Observe the changes, seeking understanding.", nextId: "observe_changes", consequence: "Philosophical contemplation." }
+                ]
+            },
+            "return_home": {
+                text: "The pull intensifies, and you find yourself back in your own bed, the chamber a distant, hazy dream. Was it real? You'll never know for sure.",
+                choices: [], // Ending
+                ending: { title: "THE DREAMER'S RETURN", text: "You chose comfort over discovery, returning to the mundane. The enigma remains unsolved, a whisper in your memory." }
+            },
+            "explore_stable": {
+                text: "Ignoring the pull, you discover a hidden panel on the console. It reveals coordinates to other stable temporal anchors. Your journey has just begun.",
+                choices: [], // Ending
+                ending: { title: "THE CHRONONAUT", text: "Your wisdom and courage unlocked the secrets of time and space. The universe is your playground, and countless adventures await." }
+            },
+            "shape_reality": {
+                text: "With a thought, you reshape the chamber, then the world, then the very fabric of existence. You are a god, but alone in your infinite creation.",
+                choices: [], // Ending
+                ending: { title: "THE SOLITARY CREATOR", text: "You wielded ultimate power, but at what cost? The universe bends to your will, yet true connection is forever lost." }
+            },
+            "observe_changes": {
+                text: "You spend eons observing the shifting realities, understanding the delicate balance. You become a guardian, a silent observer of the multiverse.",
+                choices: [], // Ending
+                ending: { title: "THE COSMIC GUARDIAN", text: "You chose wisdom over power, becoming a silent protector of countless realities. Your influence is subtle, yet profound." }
+            }
+        };
+
+        let gameState = {
+            currentSceneId: "start",
+            consequences: [],
+            pathHistory: []
+        };
+
+        const storyDisplay = document.getElementById('story-display');
+        const choicesArea = document.getElementById('choices-area');
+        const consequencesDisplay = document.getElementById('consequences-display');
+        const startScreen = document.getElementById('start-screen');
+        const endingScreen = document.getElementById('ending-screen');
+        const endingTitle = document.getElementById('ending-title');
+        const endingText = document.getElementById('ending-text');
+        const consequencesSummary = document.getElementById('consequences-summary');
+
+        function startGame() {
+            gameState = {
+                currentSceneId: "start",
+                consequences: [],
+                pathHistory: []
+            };
+            startScreen.classList.add('hidden');
+            endingScreen.classList.add('hidden');
+            loadScene(gameState.currentSceneId);
+        }
+
+        function loadScene(sceneId) {
+            const scene = NARRATIVE[sceneId];
+            if (!scene) {
+                console.error("Scene not found:", sceneId);
+                return;
+            }
+
+            gameState.currentSceneId = sceneId;
+            gameState.pathHistory.push(sceneId);
+
+            storyDisplay.innerText = scene.text;
+            choicesArea.innerHTML = '';
+            
+            if (scene.ending) {
+                endGame(scene.ending);
+                return;
+            }
+
+            scene.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                button.innerText = choice.text;
+                button.onclick = () => makeChoice(choice);
+                choicesArea.appendChild(button);
+            });
+
+            updateConsequencesDisplay();
+        }
+
+        function makeChoice(choice) {
+            if (choice.consequence) {
+                gameState.consequences.push(choice.consequence);
+            }
+            loadScene(choice.nextId);
+        }
+
+        function updateConsequencesDisplay() {
+            if (gameState.consequences.length > 0) {
+                consequencesDisplay.innerHTML = "// LOG: " + gameState.consequences.join(' | ');
+            } else {
+                consequencesDisplay.innerHTML = "// LOG: No consequences tracked yet.";
+            }
+        }
+
+        function endGame(ending) {
+            endingScreen.classList.remove('hidden');
+            endingTitle.innerText = ending.title;
+            endingText.innerText = ending.text;
+            consequencesSummary.innerText = "Your journey was shaped by: " + (gameState.consequences.length > 0 ? gameState.consequences.join(', ') : "no specific actions.");
+        }
+    </script>
+</body>
+</html>

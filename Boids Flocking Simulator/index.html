@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boids Flocking Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <div class="pg"><span class="pl">SEPARATION</span><input type="range" id="sepW" min="0" max="3" value="1.5" step="0.05"><span id="sepVal" class="pv">1.50</span></div>
+      <div class="pg"><span class="pl">ALIGNMENT</span><input type="range" id="aliW" min="0" max="3" value="1.0" step="0.05"><span id="aliVal" class="pv">1.00</span></div>
+      <div class="pg"><span class="pl">COHESION</span><input type="range" id="cohW" min="0" max="3" value="1.0" step="0.05"><span id="cohVal" class="pv">1.00</span></div>
+      <div class="pg"><span class="pl">RADIUS</span><input type="range" id="radSlider" min="30" max="150" value="70" step="5"><span id="radVal" class="pv">70</span></div>
+      <div class="pg"><span class="pl">MAX SPEED</span><input type="range" id="spdSlider" min="1" max="6" value="3" step="0.2"><span id="spdVal" class="pv">3.0</span></div>
+    </div>
+
+    <div id="mainRow">
+      <div id="canvasWrap">
+        <canvas id="gameCanvas"></canvas>
+        <div id="hint" class="hint">Click to spawn boids</div>
+      </div>
+
+      <div id="telemetry">
+        <div class="tm"><span class="tl">AGENTS</span><span id="agtVal" class="tv">0</span></div>
+        <div class="tm"><span class="tl">MEAN V</span><span id="velVal" class="tv">0.00</span></div>
+        <div class="tm"><span class="tl">CLUSTERS</span><span id="clsVal" class="tv">0</span></div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <button id="addBtn">+50 AGENTS</button>
+      <button id="clearBtn">CLEAR SWARM</button>
+      <button id="predBtn">INJECT PREDATOR</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

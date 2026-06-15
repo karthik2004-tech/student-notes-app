@@ -9,5 +9,10 @@
   { "name": "Brick Breaker", "path": "Brick Breaker/index.html", "icon": "fas fa-cube", "tag": "Game" },
   { "name": "Decision Wheel", "path": "Decision Wheel/index.html", "icon": "fas fa-sync", "tag": "Utility" },
   { "name": "Digital Diary", "path": "Digital Diary/diary.html", "icon": "fas fa-book", "tag": "Utility" },
-  { "name": "Dual N-Back Lite App", "path": "Dual N-Back Lite App/index.html", "icon": "fas fa-brain", "tag": "Utility" }
+  { "name": "Dual N-Back Lite App", "path": "Dual N-Back Lite App/index.html", "icon": "fas fa-brain", "tag": "Utility" },
+  { "name": "Spaced-Repetition Flashcards", "path": "spaced-repetition-flashcards/index.html", "icon": "fas fa-clone", "tag": "Utility" },
+  { "name": "OS Contribution Journey", "path": "open-source-contribution-journey/index.html", "icon": "fas fa-route", "tag": "Utility" },
+  { "name": "Startup Resource Hub", "path": "startup-resource-hub/index.html", "icon": "fas fa-lightbulb", "tag": "Utility" },
+  { "name": "System Design Sandbox", "path": "interactive-system-design-sandbox/index.html", "icon": "fas fa-server", "tag": "Architecture" },
+  { "name": "Interactive Logic Gate Circuit Simulator", "path": "logic-gate-simulator/index.html", "icon": "fas fa-microchip", "tag": "Academic" }
 ]

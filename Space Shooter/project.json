@@ -1,0 +1,21 @@
+{
+  "title": "Space Shooter",
+  "description": "A 2D top-down space shooter arcade game with multi-input player control, laser projectile pooling, AABB collision detection, wave-based difficulty scaling, particle explosion FX, and localStorage high-score persistence.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["space-shooter", "arcade", "2d", "canvas", "shooter", "particles", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Multi-input starship control: mousemove/touchmove with coordinate remap for absolute positioning, arrow/WASD key-state map for incremental steering, all clamped to [0, W-w] × [0, H-h]",
+    "Laser projectile pool: shootLaser() creates 4×14 rects at player nose with speed=7, cooldown=8 frames, culled at y+h < 0 via splice",
+    "Enemy spawn queue: diamond-shaped enemies with randomized size (22-34×20-30), speed = 0.8 + wave×0.15, spawn rate = max(18, 50 - wave×2), culled at y > H+20",
+    "Dual AABB collision passes: laser-vs-enemy (destroy both + particle burst + score), enemy-vs-player (decrement hull + screen shake + explosion)",
+    "Wave system: wave = floor(score/200) + 1, drives enemy speed and spawn rate, displayed in telemetry",
+    "Particle engine: spawnExplosion() creates 10-14 particles with random angular velocity, gravity vy+=0.04, alpha decay life-=decay per frame",
+    "Hull integrity: MAX_HULL=5, unicode block character display \u2588 per point, shake animation on hit, <=0 triggers gameOver()",
+    "Scrolling starfield: 80 stars with randomized size/speed/alpha, y+=speed per frame, recycled to top when exceeding H",
+    "localStorage ssBest key: written on destruction if score exceeds stored record, displayed on boot",
+    "Canvas resize handler: re-maps buffer to CSS bounding rect dimensions for collision accuracy across viewports"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "The Compliment/Insult Mirror (Camera Mesh)",
+  "description": "A real-time ASCII camera mirror that transforms webcam video into a luminosity-mapped character grid with a tessellated mesh overlay, generating AI-style compliments or sarcastic remarks based on live mood heuristics.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["camera", "webcam", "getUserMedia", "ascii-art", "mesh", "canvas", "vanilla-js", "interactive"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Asynchronous getUserMedia webcam capture with guarded privacy and fallback synthetic oscillator when no camera is available",
+    "Real-time luminosity grayscale density sampling via offscreen canvas at 80x60 grid resolution",
+    "Character-ramp ASCII rendering (10-level ramp) with per-cell luminance-to-character mapping",
+    "Tessellated mesh wireframe overlay with brightness-modulated opacity at coarser grid step",
+    "Mood analysis engine: average luminance, contrast variance, center-weighted face bias, and frame-delta motion detection",
+    "Bidirectional statement pool with 16 kind compliments and 16 sarcastic insults, selected by composite energy heuristic",
+    "Mode toggle (Kind/Sarcastic) with distinct cyan-teal vs hot-pink color palettes",
+    "Freeze analysis lock, scrolling diagnostics terminal, and live FPS telemetry"
+  ]
+}

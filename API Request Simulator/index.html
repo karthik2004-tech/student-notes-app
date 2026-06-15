@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>API Request Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="topBar">
+    <select id="methodSel">
+      <option value="GET">GET</option>
+      <option value="POST">POST</option>
+      <option value="PUT">PUT</option>
+      <option value="DELETE">DELETE</option>
+    </select>
+    <input type="text" id="endpointInput" value="/api/v1/products" spellcheck="false">
+    <button id="sendBtn">SEND</button>
+  </div>
+
+  <div id="midRow">
+    <!-- Left: Headers + Body -->
+    <div id="requestCol">
+      <div class="sectionLabel">HEADERS</div>
+      <div id="headersGrid">
+        <div class="hdrRow">
+          <input class="hdrKey" placeholder="Key" value="Content-Type">
+          <input class="hdrVal" placeholder="Value" value="application/json">
+        </div>
+      </div>
+      <button id="addHdrBtn">+ HEADER</button>
+      <div class="sectionLabel" style="margin-top:4px;">BODY</div>
+      <textarea id="bodyArea" spellcheck="false" placeholder='{"title":"New Product","price":29.99,"stock":100}'></textarea>
+    </div>
+
+    <!-- Center: Response -->
+    <div id="responseCol">
+      <div id="respMeta">
+        <div class="rm"><span class="rmLbl">STATUS</span><span id="statusVal" class="rmVal">—</span></div>
+        <div class="rm"><span class="rmLbl">LATENCY</span><span id="latVal" class="rmVal">—</span></div>
+        <div class="rm"><span class="rmLbl">SIZE</span><span id="sizeVal" class="rmVal">—</span></div>
+      </div>
+      <div id="respBody"></div>
+    </div>
+
+    <!-- Right: History -->
+    <div id="historyCol">
+      <div class="sectionLabel">HISTORY</div>
+      <div id="historyLog"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <button id="resetBtn">RESET SERVER STATE</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

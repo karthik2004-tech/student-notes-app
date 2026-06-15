@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coin Flip & Dice Roller</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🎲 Coin Flip & Dice Roller</h1>
+
+    <div class="coin-section">
+      <h2>🪙 Coin Flip</h2>
+      <div id="coin" class="coin">?</div>
+      <button onclick="flipCoin()">Flip Coin</button>
+      <p id="coinResult"></p>
+      <canvas id="coinChart"></canvas>
+    </div>
+
+    <div class="dice-section">
+      <h2>🎲 Dice Roller</h2>
+      <label for="diceCount">Number of Dice:</label>
+      <select id="diceCount">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+      <button onclick="rollDice()">Roll Dice</button>
+      <div id="diceResults"></div>
+    </div>
+
+    <div class="history-section">
+      <h2>📜 Result History</h2>
+      <ul id="historyLog"></ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "title": "Git Workflow Simulator",
+  "description": "An interactive Git workflow simulation with a directed commit graph rendered on Canvas, support for commit/branch/checkout/merge (with conflict resolution overlay) and rebase operations via text commands or quick-action buttons, LCA branch-divergence detection, and real-time telemetry.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["git", "version-control", "workflow", "merge", "rebase", "conflict", "graph", "canvas", "educational", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Commit graph engine: commits stored as {sha, parents[], message, branch, x, y, lane} objects. Branches map name→sha. SHA counter auto-increments and formats as 7-char hex. Initial root commit seeded on startup.",
+    "Canvas renderer: edges drawn as quadratic bezier curves per parent connection with 0.2 alpha branch-colored strokes. Nodes rendered as filled circles (HEAD gets +1px radius + 12px shadowBlur glow). SHA and message labels above/below each node. Branch name labels with (HEAD) suffix for active branch.",
+    "5 git commands via text parser: commit -m (creates node + advances branch), branch <name> (forks at HEAD), checkout <name> (switches HEAD with error for nonexistent branches — CSS shake animation + message), merge <branch> (fast-forward check via ancestor BFS, then LCA divergence detection → conflict overlay), rebase <onto> (collects commits from HEAD→LCA, reapplies with new SHAs onto target tip)",
+    "LCA algorithm: BFS from source branch collecting all ancestors into visited set, then BFS from target branch returning first sha found in ancestor set — used by both merge and rebase for divergence detection",
+    "Merge conflict simulation: when both branches have advanced since LCA, show modal overlay with 'ACCEPT CURRENT' and 'ACCEPT INCOMING' buttons. Creates merge commit with 2 parents (curSha, srcSha) with 'Merge branch' message. Returns Promise from showConflict() for async resolution flow",
+    "Rebase transformation: collects commits from HEAD tip back to LCA (excluding LCA), then for each commit creates a fresh node with new sha on onto's lane, sets onto branch color, updates HEAD pointer to last reapplied commit",
+    "Telemetry panel: current HEAD branch, branch count, total commits, staging status (temporarily set to 'staged' amber during commit, then back to 'clean')",
+    "Quick-action buttons: COMMIT, BRANCH, CHECKOUT (toggles between branches), MERGE (merges first non-HEAD branch), REBASE, HARD RESET"
+  ]
+}

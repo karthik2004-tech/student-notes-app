@@ -1,0 +1,19 @@
+{
+  "title": "Hackathon Project Planner with Team Management & Submission Tracker",
+  "description": "A comprehensive hackathon team planning workspace containing real-time countdown widgets, interactive brainstorming canvas grids, task Kanban boards, simulated video conference conference launchers, live chat auto-reply templates, requirements submit tracker checklists, and orange/purple/green/black light & dark themes.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "level": 3,
+  "tags": [
+    "hackathon",
+    "planner",
+    "kanban",
+    "chat-simulator",
+    "darkmode",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

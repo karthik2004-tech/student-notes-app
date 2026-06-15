@@ -1,0 +1,19 @@
+{
+  "title": "Sandpile Cellular Automata (The Avalanche Simulator)",
+  "description": "An Abelian sandpile model simulation with queue-based avalanche toppling engine, direct pixel-buffer rendering via putImageData, interactive click injection, and real-time criticality telemetry.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["cellular-automata", "sandpile", "abelian-sandpile", "avalanche", "canvas", "putImageData", "vanilla-js", "mathematical"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Flat Uint16Array 2D grid with queue-based breadth-first topple engine processing up to 80,000 topples per frame",
+    "Direct Canvas Pixel Buffer manipulation via ctx.createImageData and Uint8ClampedArray injection — no per-cell fillRect calls",
+    "Abelian cascade physics: cells topple at threshold ≥4, distributing 4 grains to cardinal neighbors with exhaustive queue convergence",
+    "Interactive canvas click injection: 3000-grain cluster planted at cursor coordinates with instant avalanche resolution",
+    "Four preset seeding patterns: Central Peak Tower (10,000 grains), Cross-Grid Matrix, Random Cosmic Dusting, Corner Cascade",
+    "Neon cyberpunk color palette: 0=#05060b, 1=#00bfff, 2=#6a5acd, 3=#ffd700, 4+=#ff007f",
+    "Live telemetry panel tracking total grains, per-frame topple count, generations elapsed, and criticality status (STABLE → SUPER-CRITICAL)",
+    "Adjustable grid resolution (50–250) and sand drop rate (0–100 grains/frame) with start/pause/step controls"
+  ]
+}

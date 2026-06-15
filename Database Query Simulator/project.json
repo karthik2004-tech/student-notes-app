@@ -1,0 +1,19 @@
+{
+  "title": "Database Query Simulator",
+  "description": "An interactive SQL query sandbox with a custom regex-based lexical tokenizer, relational join evaluator (Cartesian product + ON equality), WHERE filter supporting =/></like operators, and live tabular output rendering — all in native JavaScript with zero dependencies.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["sql", "database", "rdbms", "query-simulator", "parser", "lexer", "join", "educational", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Custom SQL lexer: tokenize() splits user input into typed tokens (keyword, ident, string, number, op, comma, star, dot, parens) using character-level scanning with quote-aware string capture",
+    "Recursive descent parser: parse() builds AST with SELECT columns (star or list with optional table.column notation), FROM source table, INNER JOIN … ON left.col = right.col, and WHERE clauses with AND chaining",
+    "Relational join executor: Cartesian product of source × joined table rows, filtered by ON equality comparison (String(leftVal) === String(rightVal)) for matching foreign keys",
+    "WHERE filter: row-level evaluation supporting = (string equality), > and < (numeric comparison), and LIKE (regex-converted from % wildcards) with AND compounding",
+    "Error handling: unknown table detection, missing keyword guidance, undefined column resolution via resolveCol() with table hint disambiguation — all displayed as crimson overlay messages",
+    "Tabular output: DOM-generated table with .otHead header row and .otRow data rows, column keys extracted from Object.keys() of first result row, alternating row shading",
+    "Preset templates: 6 macro queries via dropdown (Select All Users, Filter Orders by Value, Join Users+Orders, Users from USA, Shipped Orders, Admin Emails) loadable with one click",
+    "Telemetry panel: execution latency (performance.now), record count, query phase state machine (idle → parsing → executing → complete/error), and status indicator with color-coded CSS classes"
+  ]
+}

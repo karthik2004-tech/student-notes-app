@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JourneyBoard | Open Source Contribution Journey Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Global theme styling sheet -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar profile and active programs -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i data-lucide="git-pull-request"></i>
+          </div>
+          <div class="logo-text">
+            <h2>JourneyBoard</h2>
+            <span>Open Source Hub</span>
+          </div>
+        </div>
+        <button class="btn-sidebar-close" id="sidebar-toggle-close">&times;</button>
+      </div>
+
+      <!-- Contributor Profile -->
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <img id="profile-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=journey" alt="Contributor Avatar">
+          <button id="edit-profile-btn" class="btn-edit-avatar" title="Edit Profile">
+            <i data-lucide="edit-3"></i>
+          </button>
+        </div>
+        <h3 id="profile-name">Vishwa Mistry</h3>
+        <p id="profile-bio">Open Source Explorer</p>
+        <div class="profile-links">
+          <a id="profile-github" href="https://github.com" target="_blank" class="github-link-badge">
+            <i data-lucide="github"></i>
+            <span>GitHub Profile</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Programs Checklist -->
+      <div class="programs-section">
+        <div class="section-title-row">
+          <h3>Target Programs</h3>
+        </div>
+        <div class="programs-grid" id="programs-container">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <div class="workspace-wrapper">
+      <!-- Top header bar -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="btn btn-icon btn-secondary" id="sidebar-toggle-open">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="header-title-wrapper">
+            <h1>Contribution Journey</h1>
+            <p>Log pull requests, track open-source milestones, and analyze contribution growth</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <!-- Backup file controls -->
+          <button id="import-btn" class="btn btn-secondary btn-icon" title="Import JSON Backup">
+            <i data-lucide="upload"></i>
+          </button>
+          <input type="file" id="import-file" accept=".json" style="display: none;">
+
+          <button id="export-btn" class="btn btn-secondary btn-icon" title="Export JSON Backup">
+            <i data-lucide="download"></i>
+          </button>
+
+          <button id="reset-btn" class="btn btn-secondary btn-icon" title="Reset Database">
+            <i data-lucide="refresh-cw"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable workspace viewports -->
+      <main class="app-workspace">
+        
+        <!-- Top Metrics row -->
+        <section class="stats-row">
+          <div class="stat-card">
+            <span class="label">Total Contributions</span>
+            <span class="value" id="stat-total">0</span>
+            <span class="sub" id="stat-sub-pr">0 Pull Requests Merged</span>
+          </div>
+
+          <div class="stat-card score-card">
+            <span class="label">Journey Points</span>
+            <span class="value" id="stat-points">0</span>
+            <span class="sub" id="stat-sub-level">Level 1: Novice Contributor</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="label">Active Streak</span>
+            <span class="value" id="stat-streak">0 Days</span>
+            <span class="sub" id="stat-sub-last">Last active: Never</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="label">Projects Joined</span>
+            <span class="value" id="stat-projects">0</span>
+            <span class="sub" id="stat-sub-avg">0.0 contributions avg</span>
+          </div>
+        </section>
+
+        <!-- Charts and Milestones Section -->
+        <section class="dashboard-grid">
+          <!-- Journey Charts Visual Canvas -->
+          <div class="panel-card col-span-2">
+            <div class="panel-header">
+              <h3>Contribution Analytics</h3>
+              <div class="chart-toggles">
+                <button class="btn btn-sm btn-secondary active" id="btn-chart-types">Type Distribution</button>
+                <button class="btn btn-sm btn-secondary" id="btn-chart-repos">Repository Share</button>
+                <button class="btn btn-sm btn-secondary" id="btn-chart-timeline">Points growth</button>
+              </div>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="journeyChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Trophy Milestones Grid -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <h3>Unlocked Milestones</h3>
+            </div>
+            <div class="badges-grid" id="badges-grid-container">
+              <!-- Dynamically injected -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Contribution Logs and Filtering -->
+        <section class="panel-card">
+          <div class="panel-header flex-column">
+            <div class="filters-row-top">
+              <h3>Journey Logs Registry</h3>
+              <button class="btn btn-primary btn-icon-text" id="add-contribution-btn">
+                <i data-lucide="plus"></i>
+                <span>Log Contribution</span>
+              </button>
+            </div>
+            <div class="filters-grid">
+              <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="log-search" placeholder="Search by PR title, repository, program...">
+              </div>
+              
+              <div class="select-filters">
+                <select id="filter-type">
+                  <option value="all">All Types</option>
+                  <option value="PR Merged">PR Merged</option>
+                  <option value="PR Submitted">PR Submitted</option>
+                  <option value="Issue Created">Issue Created</option>
+                  <option value="Review Given">Review Given</option>
+                </select>
+
+                <select id="filter-program">
+                  <option value="all">All Programs</option>
+                  <!-- Dynamically populated -->
+                </select>
+
+                <select id="filter-sorting">
+                  <option value="newest">Newest First</option>
+                  <option value="points">Highest Points</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="logs-container" id="logs-list-container">
+            <!-- Dynamically injected -->
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: LOG CONTRIBUTION -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="contribution-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modal-title">Log Open Source Contribution</h2>
+        <button class="btn-close" id="modal-close-btn">&times;</button>
+      </div>
+      <form id="contribution-form" class="modal-form">
+        <input type="hidden" id="edit-contribution-id">
+
+        <div class="form-grid">
+          <div class="form-group col-full">
+            <label for="form-title">Contribution / PR Title *</label>
+            <input type="text" id="form-title" required placeholder="e.g. Implement drag and drop board layouts">
+          </div>
+
+          <div class="form-group col-half">
+            <label for="form-repo">Repository Name *</label>
+            <input type="text" id="form-repo" required placeholder="e.g. facebook/react">
+          </div>
+
+          <div class="form-group col-half">
+            <label for="form-type">Contribution Type *</label>
+            <select id="form-type" required>
+              <option value="PR Merged">PR Merged</option>
+              <option value="PR Submitted">PR Submitted</option>
+              <option value="Issue Created">Issue Created</option>
+              <option value="Review Given">Review Given</option>
+            </select>
+          </div>
+
+          <div class="form-group col-half">
+            <label for="form-program">OS Program Associated *</label>
+            <select id="form-program" required>
+              <option value="NSOC">NSOC</option>
+              <option value="GSSoC">GSSoC</option>
+              <option value="Hacktoberfest">Hacktoberfest</option>
+              <option value="LFX Mentorship">LFX Mentorship</option>
+              <option value="Outreachy">Outreachy</option>
+              <option value="Other">Other / Independent</option>
+            </select>
+          </div>
+
+          <div class="form-group col-half">
+            <label for="form-date">Date Contributed *</label>
+            <input type="date" id="form-date" required>
+          </div>
+
+          <div class="form-group col-full">
+            <label for="form-link">Contribution / Link URL *</label>
+            <input type="url" id="form-link" required placeholder="e.g. https://github.com/facebook/react/pull/123">
+          </div>
+
+          <div class="form-group col-full">
+            <label for="form-notes">Analysis & Review Notes</label>
+            <textarea id="form-notes" rows="4" placeholder="Briefly describe what you implemented, challenges faced, or key lessons learned..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Contribution</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: EDIT PROFILE -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="profile-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Update Contributor Profile</h2>
+        <button class="btn-close" id="profile-modal-close">&times;</button>
+      </div>
+      <form id="profile-form" class="modal-form">
+        <div class="form-group">
+          <label for="form-profile-name">Username / Nickname *</label>
+          <input type="text" id="form-profile-name" required placeholder="e.g. Vishwa Mistry">
+        </div>
+
+        <div class="form-group">
+          <label for="form-profile-bio">Bio Tagline</label>
+          <input type="text" id="form-profile-bio" placeholder="e.g. Open Source Explorer">
+        </div>
+
+        <div class="form-group">
+          <label for="form-profile-github">GitHub Profile URL</label>
+          <input type="url" id="form-profile-github" placeholder="https://github.com/YOUR_USERNAME">
+        </div>
+
+        <div class="form-group">
+          <label for="form-profile-avatar">Avatar URL</label>
+          <input type="url" id="form-profile-avatar" placeholder="https://api.dicebear.com/7.x/adventurer/svg?seed=...">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="profile-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global theme integration script -->
+  <script src="../global-theme.js"></script>
+  <!-- Local Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>

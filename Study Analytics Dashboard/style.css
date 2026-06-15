@@ -1,0 +1,52 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card {
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+#heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.day.active {
+  background: #4caf50;
+  color: #fff;
+}

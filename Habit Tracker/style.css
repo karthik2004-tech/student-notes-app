@@ -1,0 +1,103 @@
+/* Global Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.container {
+  width: 90%;
+  max-width: 800px;
+  margin-top: 40px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Heading */
+h1 {
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.habit-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.habit-form input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #74ebd5;
+  border-radius: 8px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.habit-form button {
+  background: #74ebd5;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.habit-form button:hover {
+  background: #4caf50;
+  color: #fff;
+}
+
+/* Habit Cards */
+.habit {
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.habit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Weekly Grid */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  width: 40px;
+  height: 40px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.day:hover {
+  transform: scale(1.1);
+}
+
+.day.completed {
+  background: #4caf50;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
