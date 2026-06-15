@@ -3,22 +3,6 @@ const cors = require('cors');
 const path = require('path');
 const apiRoutes = require('./routes/api');
 const corsValidator = require('./middleware/corsValidator');
-const { config, getCorsConfig } = require('./config');
-
-const app = express();
-const PORT = config.PORT || 5000;
-const HOST = config.HOST || 'localhost';
-
-// Initialize CORS with whitelist
-const corsConfig = getCorsConfig(config);
-app.use(cors(corsConfig));
-
-// CORS validation middleware (development only)
-if (process.env.NODE_ENV === 'development') {
-  app.use(corsValidator);
-}
-
-app.use(express.json());
 const { responseValidationMiddleware } = require('./middleware/responseValidator');
 const { config, getCorsConfig, logConfiguration } = require('./config');
 
@@ -30,20 +14,22 @@ try {
     logConfiguration(config);
   }
 
+  // Security: Limit query string parsing depth and parameters (Issue #1592 & #1593)
+  app.set('query parser', str => require('qs').parse(str, { depth: 5, parameterLimit: 1000 }));
+
   // Apply CORS with validated configuration
   const corsOptions = getCorsConfig(config);
   app.use(cors(corsOptions));
 
-  app.use(express.json());
+  // Body parsing middleware with security limits
+  app.use(express.json({ limit: '1mb' }));
+  app.use(express.urlencoded({ extended: true, parameterLimit: 1000, limit: '1mb' }));
 
-app.listen(PORT, HOST, () => {
-  console.debug(
-    `PatternWise server running on http://${HOST}:${PORT}`
-  );
-  if (process.env.NODE_ENV === 'development') {
-    console.debug(`CORS Allowed Origins: ${config.ALLOWED_ORIGINS}`);
+  // CORS validation middleware (development only)
+  if (config.NODE_ENV === 'development') {
+    app.use(corsValidator);
   }
-});
+
   // Response validation middleware (development only)
   if (config.ENABLE_RESPONSE_VALIDATION && config.NODE_ENV === 'development') {
     app.use(responseValidationMiddleware);
