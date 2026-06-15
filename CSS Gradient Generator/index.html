@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Gradient Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🎨 CSS Gradient Generator</h1>
+
+    <div class="controls">
+      <label>Color 1: <input type="color" id="color1" value="#667eea"></label>
+      <label>Color 2: <input type="color" id="color2" value="#764ba2"></label>
+      <label>Color 3: <input type="color" id="color3" value="#ffffff"></label>
+      
+      <div class="toggle">
+        <label><input type="radio" name="type" value="linear" checked> Linear</label>
+        <label><input type="radio" name="type" value="radial"> Radial</label>
+      </div>
+
+      <label>Angle: <input type="range" id="angle" min="0" max="360" value="90"></label>
+    </div>
+
+    <div id="preview" class="preview"></div>
+
+    <button onclick="copyCSS()">Copy CSS Code 📋</button>
+    <pre id="cssCode"></pre>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
