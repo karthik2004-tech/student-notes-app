@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flashcard Study Set Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>📚 Flashcard Study Set Builder</h1>
+
+    <div class="controls">
+      <input type="text" id="deckName" placeholder="Deck name">
+      <input type="text" id="question" placeholder="Question">
+      <input type="text" id="answer" placeholder="Answer">
+      <button onclick="addCard()">Add Card</button>
+      <button onclick="saveDeck()">Save Deck</button>
+      <button onclick="loadDeck()">Load Deck</button>
+      <button onclick="shuffleDeck()">Shuffle</button>
+    </div>
+
+    <div id="flashcard" class="flashcard" onclick="flipCard()">
+      <div class="front" id="cardFront">Question</div>
+      <div class="back" id="cardBack">Answer</div>
+    </div>
+
+    <div class="navigation">
+      <button onclick="prevCard()">Previous</button>
+      <button onclick="nextCard()">Next</button>
+      <button onclick="markRight()">Right</button>
+      <button onclick="markWrong()">Wrong</button>
+    </div>
+
+    <div id="score" class="score">Score: 0 right / 0 wrong</div>
+    <div id="deckList" class="deck-list"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
