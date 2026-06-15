@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Snippet Saver</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Highlight.js CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>💻 Code Snippet Saver</h1>
+
+    <!-- Add Snippet Form -->
+    <div class="form">
+      <input id="titleInput" type="text" placeholder="Snippet Title">
+      <select id="languageInput">
+        <option value="javascript">JavaScript</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+      </select>
+      <textarea id="codeInput" placeholder="Paste your code here..."></textarea>
+      <button onclick="addSnippet()">Add Snippet</button>
+    </div>
+
+    <!-- Snippets List -->
+    <h2>📂 Saved Snippets</h2>
+    <div id="snippetsList"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
