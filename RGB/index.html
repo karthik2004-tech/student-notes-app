@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RGB Color Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>RGB Color Studio</h1>
+  <p class="sub">Design colors in real time</p>
+
+  <div class="preview" id="preview">
+    <span id="rgbText">rgb(0, 0, 0)</span>
+  </div>
+
+  <div class="controls">
+
+    <div class="slider">
+      <label>R <span id="rVal">0</span></label>
+      <input type="range" id="red" min="0" max="255" value="0">
+    </div>
+
+    <div class="slider">
+      <label>G <span id="gVal">0</span></label>
+      <input type="range" id="green" min="0" max="255" value="0">
+    </div>
+
+    <div class="slider">
+      <label>B <span id="bVal">0</span></label>
+      <input type="range" id="blue" min="0" max="255" value="0">
+    </div>
+
+  </div>
+
+  <button id="copyBtn">Copy RGB</button>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
