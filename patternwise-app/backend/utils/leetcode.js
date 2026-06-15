@@ -32,30 +32,35 @@ async function fetchLeetCodeProblem(titleSlug) {
 
   // API call wrapped for execution
   const apiCall = async () => {
-    const response = await axios.post(
-      config.LEETCODE_API_URL || 'https://leetcode.com/graphql',
-      { query, variables: { titleSlug } },
-      {
-        timeout: config.LEETCODE_TIMEOUT_MS || 5000,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    // Validate response structure
-    if (!response.data || !response.data.data) {
-      throw new Error('Invalid response format: missing data field');
-    }
-
-    // Handle GraphQL errors
-    if (response.data.errors) {
-      throw new Error(
-        `GraphQL error: ${response.data.errors.map(e => e.message).join(', ')}`
+    try {
+      const response = await axios.post(
+        config.LEETCODE_API_URL || 'https://leetcode.com/graphql',
+        { query, variables: { titleSlug } },
+        {
+          timeout: config.LEETCODE_TIMEOUT_MS || 5000,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
-    }
 
-    return response.data.data.question;
+      // Validate response structure
+      if (!response.data || !response.data.data) {
+        throw new Error('Invalid response format: missing data field');
+      }
+
+      // Handle GraphQL errors
+      if (response.data.errors) {
+        throw new Error(
+          `GraphQL error: ${response.data.errors.map(e => e.message).join(', ')}`
+        );
+      }
+
+      return response.data.data.question;
+    } catch (error) {
+      console.error('API Error:', error.message);
+      throw error; // Rethrow to let circuit breaker handle it
+    }
   };
 
   // Execute with circuit breaker and retry logic

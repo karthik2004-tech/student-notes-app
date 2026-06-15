@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Periodic Table Quiz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>⚛️ Periodic Table Quiz</h1>
+    <div id="quiz">
+      <p id="question">Click Start to begin!</p>
+      <div id="options"></div>
+      <div class="controls">
+        <button id="startBtn">Start Quiz</button>
+      </div>
+      <p id="feedback"></p>
+      <p id="scoreBoard">Score: 0 | Streak: 0</p>
+    </div>
+    <div id="endScreen" class="hidden">
+      <h2>Quiz Finished!</h2>
+      <p id="finalScore"></p>
+      <button onclick="restartQuiz()">Restart</button>
+    </div>
+    <div class="difficulty">
+      <label for="difficultySelect">Difficulty:</label>
+      <select id="difficultySelect">
+        <option value="easy">Easy (First 20 elements)</option>
+        <option value="hard">Hard (All 118 elements)</option>
+      </select>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

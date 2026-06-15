@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matrix Worker Benchmark</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <h1>Matrix Worker Benchmark</h1>
+        <p>Benchmark heavy matrix transformations in a dedicated Web Worker while the viewport thread stays fluid.</p>
+      </div>
+      <div class="badges">
+        <span class="badge success">Web Worker</span>
+        <span class="badge info">Typed Array Transfer</span>
+        <span class="badge warning">Safe 500×500 Cap</span>
+      </div>
+    </header>
+
+    <section class="panel grid-two">
+      <article class="panel-block">
+        <h2>Matrix A</h2>
+        <textarea id="matrixA" placeholder="Enter rows as comma-separated values.\nExample:\n1,2,3\n4,5,6"></textarea>
+      </article>
+
+      <article class="panel-block">
+        <h2>Matrix B</h2>
+        <textarea id="matrixB" placeholder="Enter rows as comma-separated values.\nExample:\n7,8\n9,10\n11,12"></textarea>
+      </article>
+    </section>
+
+    <section class="controls">
+      <button id="multiplyButton" class="primary">Multiply Matrices</button>
+      <button id="benchmarkButton" class="secondary">Run 200×200 Benchmark</button>
+      <button id="randomButton">Generate Sample 100×100</button>
+      <button id="clearButton">Clear Inputs</button>
+      <button id="terminateButton" class="danger">Terminate Worker</button>
+      <div id="status" class="status">Ready for matrix input.</div>
+    </section>
+
+    <section class="panel panel-summary">
+      <div class="summary-grid">
+        <div class="stat-card">
+          <span>Worker State</span>
+          <strong id="workerState">Idle</strong>
+        </div>
+        <div class="stat-card">
+          <span>Estimated Ops</span>
+          <strong id="opCountLabel">--</strong>
+        </div>
+        <div class="stat-card">
+          <span>Throughput</span>
+          <strong id="throughputLabel">--</strong>
+        </div>
+        <div class="stat-card">
+          <span>UI Heartbeat</span>
+          <strong id="heartbeatLabel">--</strong>
+        </div>
+      </div>
+
+      <div class="progress-wrapper">
+        <label for="progressBar">Worker progress</label>
+        <progress id="progressBar" value="0" max="100"></progress>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Result Matrix</h2>
+      <textarea id="resultMatrix" readonly placeholder="Result appears here after worker computation."></textarea>
+      <div class="metrics">
+        <span id="durationLabel">Worker time: --</span>
+        <span id="sizeLabel">Result size: --</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

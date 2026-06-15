@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anagram Checker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🔄 Anagram Checker</h1>
+
+    <div class="input-section">
+      <input type="text" id="word1" placeholder="Enter first word">
+      <input type="text" id="word2" placeholder="Enter second word">
+    </div>
+
+    <div id="result" class="result">Start typing to check...</div>
+
+    <div class="breakdown">
+      <h2>Character Frequency</h2>
+      <div class="freq-container">
+        <div>
+          <h3>Word 1</h3>
+          <ul id="freq1"></ul>
+        </div>
+        <div>
+          <h3>Word 2</h3>
+          <ul id="freq2"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

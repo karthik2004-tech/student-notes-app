@@ -1,0 +1,493 @@
+/* Stylesheet for LogicGate Studio Circuit Simulator */
+
+:root {
+    --accent-color: var(--primary-color, #2563eb);
+    --border-color: #cbd5e1;
+    --bg-canvas: #f8fafc;
+    --panel-bg: #ffffff;
+    --transition-speed: 0.2s;
+    
+    /* Current signals */
+    --signal-high: #f59e0b; /* Yellow high state */
+    --signal-low: #94a3b8;  /* Grey low state */
+}
+
+[data-theme="dark"] {
+    --border-color: #1e293b;
+    --bg-canvas: #090d16;
+    --panel-bg: #0b111e;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-canvas);
+    color: var(--text-color, #1e293b);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Navbar */
+.app-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 10;
+}
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-icon {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.brand-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent-color), #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-subtitle {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: -2px;
+}
+
+.navbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.back-link {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all var(--transition-speed);
+}
+
+.back-link:hover {
+    background: var(--border-color);
+}
+
+.btn-theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed);
+}
+
+.btn-theme-toggle:hover {
+    background: var(--border-color);
+}
+
+/* Workspace Split Layout */
+.app-container {
+    display: grid;
+    grid-template-columns: 240px 1fr 300px;
+    flex: 1;
+    overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+    .app-container {
+        grid-template-columns: 200px 1fr;
+        grid-template-rows: 1fr 200px;
+    }
+    .truth-table-panel {
+        grid-column: span 2;
+    }
+}
+
+/* Sidebar Panels */
+.toolbox-sidebar, .truth-table-panel {
+    background: var(--panel-bg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.toolbox-sidebar {
+    border-right: 1px solid var(--border-color);
+}
+
+.truth-table-panel {
+    border-left: 1px solid var(--border-color);
+}
+
+.sidebar-header, .panel-header {
+    padding: 0.8rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-header h3, .panel-header h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.toolbox-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.toolbox-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: 0.5rem;
+}
+
+.btn-toolbox {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.btn-toolbox:hover {
+    background: rgba(0,0,0,0.02);
+    border-color: var(--accent-color);
+}
+
+.gate-icon {
+    font-size: 0.65rem;
+    font-weight: 800;
+    background: var(--accent-color);
+    color: #ffffff;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.toolbox-actions {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Canvas Viewport Layout */
+.canvas-viewport {
+    position: relative;
+    overflow: auto;
+    background: var(--bg-canvas);
+    background-size: 20px 20px;
+    background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+    cursor: grab;
+    user-select: none;
+}
+
+.canvas-viewport:active {
+    cursor: grabbing;
+}
+
+.canvas-connections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2500px;
+    height: 2500px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.canvas-nodes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2500px;
+    height: 2500px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Logic Node Cards */
+.gate-card {
+    position: absolute;
+    width: 150px;
+    background: var(--panel-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    pointer-events: auto;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.gate-card-header {
+    background: rgba(0, 0, 0, 0.02);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.4rem 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+.btn-delete-node {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: 0.75rem;
+}
+.btn-delete-node:hover {
+    opacity: 1;
+    color: var(--error-color);
+}
+
+.gate-card-body {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+}
+
+/* Ports inputs and outputs circular handles */
+.port-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background: var(--panel-bg);
+    position: absolute;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.port-dot:hover, .port-dot.selected {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    transform: scale(1.3);
+}
+
+.port-input-a {
+    left: -6px;
+    top: 30%;
+}
+
+.port-input-b {
+    left: -6px;
+    top: 70%;
+}
+
+.port-input-single {
+    left: -6px;
+    top: 50%;
+}
+
+.port-output {
+    right: -6px;
+    top: 50%;
+}
+
+/* Node element details */
+.switch-state-box {
+    font-family: monospace;
+    font-weight: 800;
+    font-size: 1.15rem;
+    cursor: pointer;
+    background: var(--bg-canvas);
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed);
+}
+
+.switch-state-box.high {
+    border-color: var(--signal-high);
+    color: var(--signal-high);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+}
+
+.bulb-icon {
+    font-size: 2.2rem;
+    color: var(--border-color);
+    transition: all var(--transition-speed);
+}
+
+.bulb-icon.active {
+    color: var(--signal-high);
+    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
+}
+
+.gate-title {
+    font-family: 'Fira Code', monospace;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+/* Visual Connection Wire Pathways */
+.wire-path {
+    fill: none;
+    stroke: var(--signal-low);
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: all var(--transition-speed);
+}
+
+.wire-path.high {
+    stroke: var(--signal-high);
+    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.4));
+}
+
+.wire-path.selected {
+    stroke-width: 5;
+    stroke: var(--accent-color);
+}
+
+/* Truth Table Panels */
+.table-container {
+    flex: 1;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.table-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #64748b;
+    margin-top: 4rem;
+}
+
+.placeholder-icon {
+    font-size: 2.2rem;
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+}
+
+.table-placeholder p {
+    font-size: 0.8rem;
+    max-width: 200px;
+    line-height: 1.4;
+}
+
+/* Layout table grid */
+.truth-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.truth-table th, .truth-table td {
+    border: 1px solid var(--border-color);
+    padding: 0.45rem 0.6rem;
+    text-align: center;
+    font-family: monospace;
+}
+
+.truth-table th {
+    background: rgba(0,0,0,0.02);
+    font-weight: bold;
+}
+
+.truth-table tr:hover {
+    background: rgba(0,0,0,0.01);
+}
+
+.truth-table td.val-high {
+    color: var(--signal-high);
+    font-weight: bold;
+}
+
+.truth-table td.val-low {
+    opacity: 0.6;
+}
+
+/* Utility buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all var(--transition-speed);
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: #ffffff;
+}
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.btn-secondary {
+    background: transparent;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+.btn-secondary:hover {
+    background: var(--border-color);
+}

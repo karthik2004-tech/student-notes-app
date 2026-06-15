@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipe Book</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>🍴 Recipe Book</h1>
+
+    <div class="controls">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search recipes..."
+        >
+
+        <select id="categoryFilter">
+            <option value="All">All Categories</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+        </select>
+    </div>
+</header>
+
+<section class="recipe-container" id="recipeContainer"></section>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span id="closeBtn">&times;</span>
+
+        <h2 id="recipeTitle"></h2>
+
+        <h3>Ingredients</h3>
+        <ul id="ingredients"></ul>
+
+        <h3>Instructions</h3>
+        <p id="instructions"></p>
+    </div>
+</div>
+
+<script src="index.js"></script>
+
+</body>
+</html>

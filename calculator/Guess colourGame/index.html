@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess colourGame</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="dash">
+      <div class="dg">
+        <span class="tl">FORMAT</span>
+        <button class="fmtBtn active" data-fmt="rgb">RGB</button>
+        <button class="fmtBtn" data-fmt="hex">HEX</button>
+      </div>
+      <div class="dg">
+        <span class="tl">MODE</span>
+        <button class="diffBtn active" data-diff="easy">Easy</button>
+        <button class="diffBtn" data-diff="hard">Hard</button>
+      </div>
+    </div>
+
+    <div id="telemetry">
+      <div class="tm"><span class="tl">STREAK</span><span id="streakVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">BEST</span><span id="bestVal" class="tv">0</span></div>
+      <div id="statusHint" class="hint">Pick a colour</div>
+    </div>
+
+    <div id="targetPanel">
+      <span id="targetCode">rgb(0, 0, 0)</span>
+    </div>
+
+    <div id="swatchGrid"></div>
+
+    <div id="actionRow">
+      <button id="resetBtn">RESET BOARD</button>
+      <button id="nextBtn" class="hidden">NEXT ROUND &rarr;</button>
+    </div>
+  </div>
+
+  <div id="modal" class="hidden">
+    <div class="mb">
+      <div id="modalEmoji" class="mb-title">&#x1F389;</div>
+      <div class="mb-st" id="modalMsg"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

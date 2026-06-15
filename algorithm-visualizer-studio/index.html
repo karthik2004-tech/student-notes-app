@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Sorting & Pathfinding Visualizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code&display=swap" rel="stylesheet">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local project styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon">⚡</span>
+            <div>
+                <h1 class="brand-title">AlgoCraft Studio</h1>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-top: -2px;">Algorithm Sorting & Pathfinding Sandbox</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <span>←</span> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                🌓
+            </button>
+        </div>
+    </header>
+
+    <!-- Studio Tab Navigation -->
+    <nav class="tab-navbar">
+        <button class="tab-btn active" onclick="switchTab('sorting')">Sorting Studio</button>
+        <button class="tab-btn" onclick="switchTab('pathfinding')">Pathfinding Grid</button>
+    </nav>
+
+    <main class="container">
+        
+        <!-- SECTION 1: SORTING VISUALIZER -->
+        <section id="sorting-section" class="visualizer-section active">
+            <!-- Control bar -->
+            <div class="control-panel">
+                <div class="control-group">
+                    <button class="btn btn-secondary" onclick="generateSortingArray()">Generate New Array</button>
+                </div>
+                <div class="control-group">
+                    <label for="arraySizeSlider">Array Size</label>
+                    <input type="range" id="arraySizeSlider" class="control-input-range" min="10" max="150" value="60" oninput="generateSortingArray()">
+                </div>
+                <div class="control-group">
+                    <label for="sortingSpeedSlider">Animation Delay (ms)</label>
+                    <input type="range" id="sortingSpeedSlider" class="control-input-range" min="1" max="200" value="20">
+                </div>
+                <div class="control-group">
+                    <label for="sortingAlgoSelect">Algorithm</label>
+                    <select id="sortingAlgoSelect" class="control-select" onchange="updateSortingComplexityInfo()">
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                        <option value="quick">Quick Sort</option>
+                        <option value="merge">Merge Sort</option>
+                    </select>
+                </div>
+                <div class="control-group" style="flex-direction: row; gap: 0.5rem; margin-top: 1.25rem;">
+                    <button class="btn btn-primary" id="startSortingBtn" onclick="startSorting()">Run Algorithm</button>
+                    <button class="btn btn-secondary" id="stopSortingBtn" onclick="stopSorting()" disabled>Stop</button>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div id="sortComparisons" class="stat-value">0</div>
+                    <div class="stat-label">Comparisons</div>
+                </div>
+                <div class="stat-card">
+                    <div id="sortWrites" class="stat-value">0</div>
+                    <div class="stat-label">Swaps / Writes</div>
+                </div>
+                <div class="stat-card">
+                    <div id="sortTime" class="stat-value">0.0s</div>
+                    <div class="stat-label">Time Elapsed</div>
+                </div>
+            </div>
+
+            <!-- Visualizer Grid Layout -->
+            <div class="visualizer-grid">
+                <div class="canvas-card" style="align-items: flex-end;">
+                    <div id="sortingContainer" class="sorting-bars-container">
+                        <!-- Dynamic Array Bars Injected Here -->
+                    </div>
+                </div>
+                
+                <!-- Complexity Side panel -->
+                <div class="complexity-card">
+                    <h3 class="complexity-header" id="sortComplexityTitle">Bubble Sort</h3>
+                    <div class="complexity-detail-row">
+                        <span>Best Case:</span>
+                        <span id="sortBestCase">O(n)</span>
+                    </div>
+                    <div class="complexity-detail-row">
+                        <span>Average Case:</span>
+                        <span id="sortAvgCase">O(n²)</span>
+                    </div>
+                    <div class="complexity-detail-row">
+                        <span>Worst Case:</span>
+                        <span id="sortWorstCase">O(n²)</span>
+                    </div>
+                    <div class="complexity-detail-row" style="border-top: 1px dashed var(--border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
+                        <span>Space Complexity:</span>
+                        <span id="sortSpaceCase">O(1)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PATHFINDING VISUALIZER -->
+        <section id="pathfinding-section" class="visualizer-section">
+            <!-- Control bar -->
+            <div class="control-panel">
+                <div class="control-group">
+                    <label for="pathfindingAlgoSelect">Algorithm</label>
+                    <select id="pathfindingAlgoSelect" class="control-select" onchange="updatePathfindingComplexityInfo()">
+                        <option value="dijkstra">Dijkstra's Algorithm</option>
+                        <option value="astar">A* Search (Manhattan)</option>
+                        <option value="bfs">Breadth-First Search (BFS)</option>
+                        <option value="dfs">Depth-First Search (DFS)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="pathfindingSpeedSlider">Step Delay (ms)</label>
+                    <input type="range" id="pathfindingSpeedSlider" class="control-input-range" min="1" max="100" value="10">
+                </div>
+                <div class="control-group" style="flex-direction: row; gap: 0.5rem; margin-top: 1.25rem;">
+                    <button class="btn btn-primary" id="startPathfindingBtn" onclick="startPathfinding()">Run Pathfinder</button>
+                    <button class="btn btn-secondary" id="clearGridBtn" onclick="clearPathfindingGrid()">Clear Grid</button>
+                    <button class="btn btn-secondary" id="clearWallsBtn" onclick="clearPathfindingWalls()">Clear Walls</button>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div id="pathVisited" class="stat-value">0</div>
+                    <div class="stat-label">Visited Nodes</div>
+                </div>
+                <div class="stat-card">
+                    <div id="pathLength" class="stat-value">0</div>
+                    <div class="stat-label">Path Length</div>
+                </div>
+                <div class="stat-card">
+                    <div id="pathTime" class="stat-value">0.0s</div>
+                    <div class="stat-label">Search Time</div>
+                </div>
+            </div>
+
+            <!-- Visualizer Grid Layout -->
+            <div class="visualizer-grid">
+                <div class="canvas-card" style="padding: 0; min-height: 400px; display: block;">
+                    <div id="pathfindingGrid" class="pathfinding-grid-container" onmousedown="handleGridMouseDown(event)" onmouseover="handleGridMouseOver(event)" onmouseup="handleGridMouseUp(event)">
+                        <!-- Dynamic Node Tiles Injected Here -->
+                    </div>
+                </div>
+                
+                <!-- Complexity Side panel -->
+                <div class="complexity-card">
+                    <h3 class="complexity-header" id="pathComplexityTitle">Dijkstra's Algorithm</h3>
+                    <div class="complexity-detail-row">
+                        <span>Time Complexity:</span>
+                        <span id="pathTimeCase">O((V + E) log V)</span>
+                    </div>
+                    <div class="complexity-detail-row">
+                        <span>Space Complexity:</span>
+                        <span id="pathSpaceCase">O(V)</span>
+                    </div>
+                    <div style="font-size: 0.8rem; margin-top: 1rem; padding: 0.75rem; background: rgba(59, 130, 246, 0.08); border-radius: 6px; border-left: 3px solid var(--accent-color);">
+                        💡 <strong>Hint:</strong> Drag the blue node to change the **Start** position, and the green node to change the **End** position. Click and drag on empty cells to draw **Walls**.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global synchronizer scripts -->
+    <script src="../global-theme.js"></script>
+    <!-- Local app scripting logic -->
+    <script src="script.js"></script>
+</body>
+</html>

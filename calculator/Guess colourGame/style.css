@@ -1,0 +1,180 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05070c;
+  min-height:100vh;
+  display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(90vmin,500px);
+  height:min(98vmin,680px);
+  display:flex;flex-direction:column;
+  gap:clamp(3px,0.35vmin,5px);
+}
+
+/* ─── Dashboard ───────────────────────────────── */
+#dash{
+  display:flex;justify-content:center;align-items:center;
+  gap:clamp(12px,2vmin,28px);
+  padding:clamp(5px,0.5vmin,8px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.35vmin,5px);
+}
+.dg{
+  display:flex;align-items:center;
+  gap:clamp(3px,0.4vmin,6px);
+}
+.dg .tl{
+  font-size:clamp(6px,0.8vmin,10px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.fmtBtn,.diffBtn{
+  padding:clamp(2px,0.3vmin,5px) clamp(6px,0.7vmin,10px);
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.03);
+  border-radius:3px;
+  color:#475569;
+  font-family:inherit;
+  font-size:clamp(6px,0.8vmin,10px);
+  font-weight:600;cursor:pointer;transition:all 0.12s;
+  letter-spacing:0.5px;
+}
+.fmtBtn:hover,.diffBtn:hover{border-color:rgba(255,255,255,0.06);color:#64748b}
+.fmtBtn.active,.diffBtn.active{color:#00f0ff;border-color:rgba(0,240,255,0.12);background:rgba(0,240,255,0.02)}
+
+/* ─── Telemetry ────────────────────────────────── */
+#telemetry{
+  display:flex;justify-content:center;align-items:center;
+  gap:clamp(12px,2vmin,28px);
+  padding:clamp(4px,0.4vmin,6px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.35vmin,5px);
+}
+.tm{
+  display:flex;align-items:center;
+  gap:clamp(3px,0.35vmin,5px);
+  font-size:clamp(7px,0.9vmin,12px);letter-spacing:1px;
+}
+.tl{color:#334155;text-transform:uppercase}
+.tv{color:#64748b;font-weight:700;font-variant-numeric:tabular-nums}
+#streakVal{color:#00f0ff;min-width:2ch;text-align:center}
+#bestVal{color:#ffd700;min-width:2ch;text-align:center}
+
+.hint{
+  font-size:clamp(7px,0.9vmin,11px);
+  color:#475569;letter-spacing:1px;
+  transition:color 0.2s;
+}
+.hint.correct{color:#00ff88}
+.hint.wrong{color:#ff2a5f}
+
+/* ─── Target panel ────────────────────────────── */
+#targetPanel{
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(10px,1.6vmin,22px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.35vmin,5px);
+}
+#targetCode{
+  font-size:clamp(14px,2.4vmin,30px);
+  font-weight:700;letter-spacing:2px;
+  color:#64748b;font-variant-numeric:tabular-nums;
+  transition:color 0.3s;
+}
+#targetCode.reveal{color:#00f0ff}
+
+/* ─── Swatch grid ──────────────────────────────── */
+#swatchGrid{
+  flex:1;
+  display:grid;
+  gap:clamp(6px,0.7vmin,10px);
+  padding:clamp(6px,0.7vmin,10px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.35vmin,5px);
+  background:#04060c;
+  align-content:center;
+}
+#swatchGrid.easy{grid-template-columns:repeat(3,1fr)}
+#swatchGrid.hard{grid-template-columns:repeat(3,1fr)}
+
+.swatch{
+  aspect-ratio:1;border-radius:50%;
+  cursor:pointer;transition:all 0.15s ease;
+  border:2px solid rgba(255,255,255,0.02);
+  position:relative;
+  box-shadow:0 0 0 0 rgba(255,255,255,0);
+}
+.swatch:hover{
+  transform:scale(1.04);
+  border-color:rgba(255,255,255,0.08);
+}
+.swatch:active{transform:scale(0.96)}
+.swatch.fade{
+  opacity:0;pointer-events:none;
+  transform:scale(0.8);
+}
+.swatch.locked{
+  cursor:default;pointer-events:none;
+}
+.swatch.revealAll{
+  transition:all 0.4s ease;
+}
+
+/* ─── Action row ───────────────────────────────── */
+#actionRow{
+  display:flex;justify-content:center;align-items:center;
+  gap:clamp(8px,1vmin,14px);
+  padding:clamp(4px,0.4vmin,6px);
+}
+#actionRow button{
+  padding:clamp(5px,0.6vmin,9px) clamp(14px,1.8vmin,24px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.05);
+  border-radius:3px;
+  color:#475569;
+  font-family:inherit;
+  font-size:clamp(7px,0.9vmin,11px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#actionRow button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#actionRow button.hidden{display:none}
+#nextBtn{color:#00ff88}
+#nextBtn:hover{border-color:rgba(0,255,136,0.2)}
+
+/* ─── Pulse animation ──────────────────────────── */
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,0)}
+  50%{box-shadow:0 0 40px 10px rgba(0,255,136,0.15)}
+}
+#targetPanel.pulse{animation:pulseGlow 0.6s ease 2}
+
+/* ─── Modal ────────────────────────────────────── */
+#modal{
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(5,7,12,0.85);backdrop-filter:blur(4px);
+}
+#modal.hidden{display:none}
+.mb{
+  width:min(50vmin,320px);
+  padding:clamp(20px,3vmin,36px);
+  border:1px solid rgba(0,240,255,0.06);
+  border-radius:clamp(6px,0.8vmin,12px);
+  background:rgba(255,255,255,0.008);
+  text-align:center;display:flex;flex-direction:column;
+  align-items:center;gap:clamp(12px,1.5vmin,22px);
+}
+.mb-title{font-size:clamp(26px,4vmin,48px);line-height:1}
+.mb-st{font-size:clamp(9px,1.2vmin,15px);color:#64748b;line-height:1.8}
+
+@media(max-width:480px){
+  #app{width:100vmin;height:100vmin}
+  #dash{gap:6px}
+}

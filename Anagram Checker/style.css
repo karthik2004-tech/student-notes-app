@@ -1,0 +1,79 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.app-container {
+  background: #fff;
+  margin: 40px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 600px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.input-section {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 200px;
+}
+
+.result {
+  font-size: 22px;
+  margin: 20px 0;
+  font-weight: bold;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.result.yes {
+  color: #6bcB77;
+  transform: scale(1.2);
+}
+
+.result.no {
+  color: #ff6b6b;
+  transform: scale(1.2);
+}
+
+.breakdown {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.freq-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.freq-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.freq-container li {
+  margin: 5px 0;
+  padding: 6px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  font-size: 16px;
+}
