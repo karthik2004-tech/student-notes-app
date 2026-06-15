@@ -1,0 +1,6 @@
+{
+  "title": "Interactive Mock REST API Playground",
+  "description": "A serverless sandbox where developers can configure, test, and run client-side REST API calls. Explore HTTP verbs, status codes, request headers, and JSON body schemas.",
+  "technologies": ["HTML", "CSS", "JavaScript"],
+  "author": "MistryVishwa"
+}

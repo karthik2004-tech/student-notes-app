@@ -1,0 +1,535 @@
+/* Custom Stylesheet for Markdown Documentation Hub & Presentation Slide Compiler */
+
+:root {
+    --accent-color: #3b82f6;       /* Blue */
+    --secondary-color: #8b5cf6;    /* Purple */
+    --text-primary: #0f172a;       /* Black/Slate */
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+    --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    --card-border-radius: 12px;
+    --transition-speed: 0.3s;
+    
+    /* Presentation default theme colors */
+    --slide-bg: #ffffff;
+    --slide-text: #0f172a;
+    --slide-accent: #8b5cf6;
+    --slide-secondary: #3b82f6;
+
+    /* Scrollbars */
+    --scrollbar-bg: #f1f5f9;
+    --scrollbar-thumb: #cbd5e1;
+}
+
+[data-theme="dark"] {
+    --bg-light: #0f172a;
+    --text-primary: #f8fafc;
+    --border-color: #334155;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --scrollbar-bg: #1e293b;
+    --scrollbar-thumb: #475569;
+}
+
+/* Slide Deck Specific Theme Presets */
+.theme-preview-light {
+    --slide-bg: #ffffff;
+    --slide-text: #0f172a;
+    --slide-accent: #8b5cf6;
+    --slide-secondary: #3b82f6;
+}
+.theme-preview-dark {
+    --slide-bg: #1e293b;
+    --slide-text: #f8fafc;
+    --slide-accent: #38bdf8;
+    --slide-secondary: #c084fc;
+}
+.theme-preview-cyberpunk {
+    --slide-bg: #0d0211;
+    --slide-text: #00ff66;
+    --slide-accent: #ff007f;
+    --slide-secondary: #00ffff;
+}
+.theme-preview-academic {
+    --slide-bg: #fdfaf2;
+    --slide-text: #111111;
+    --slide-accent: #8b2500;
+    --slide-secondary: #2f4f4f;
+    font-family: Georgia, serif !important;
+}
+.theme-preview-glass {
+    --slide-bg: rgba(255, 255, 255, 0.2);
+    --slide-text: #0f172a;
+    --slide-accent: #7c3aed;
+    --slide-secondary: #2563eb;
+    backdrop-filter: blur(15px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-bg);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* Navbar */
+.app-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-icon {
+    font-size: 1.75rem;
+}
+
+.brand-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed);
+}
+
+.btn-theme-toggle:hover {
+    background: var(--border-color);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed);
+}
+
+.back-link:hover {
+    background: var(--border-color);
+}
+
+/* Toolbar Control Panel */
+.toolbar-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--card-bg);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.theme-selector-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.theme-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    background: var(--editor-bg);
+    color: var(--text-primary);
+    transition: all var(--transition-speed);
+}
+
+.theme-btn.active {
+    background: var(--text-primary);
+    color: var(--bg-light);
+    border-color: var(--text-primary);
+}
+
+.action-btn-group {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition-speed);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background: #7c3aed;
+    transform: translateY(-1px);
+}
+
+/* Main Split Screen Area */
+.split-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: calc(100vh - 145px);
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .split-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        height: auto;
+    }
+}
+
+.pane {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-right: 1px solid var(--border-color);
+}
+
+.pane:last-child {
+    border-right: none;
+}
+
+.pane-header {
+    background: var(--card-bg);
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slide-count-badge {
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--secondary-color);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.markdown-textarea {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+    border: none;
+    resize: none;
+    outline: none;
+    font-family: "Fira Code", Consolas, Monaco, monospace;
+    font-size: 0.95rem;
+    background: var(--editor-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.preview-rendered-pane {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background: var(--bg-light);
+    color: var(--text-primary);
+}
+
+/* Rendered Markdown Element Styles */
+.preview-rendered-pane h1, 
+.preview-rendered-pane h2, 
+.preview-rendered-pane h3 {
+    color: var(--secondary-color);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 800;
+}
+
+.preview-rendered-pane h1 {
+    font-size: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.4rem;
+}
+
+.preview-rendered-pane p {
+    margin-bottom: 1rem;
+}
+
+.preview-rendered-pane ul, 
+.preview-rendered-pane ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.preview-rendered-pane code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.preview-rendered-pane pre {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.preview-rendered-pane blockquote {
+    border-left: 4px solid var(--accent-color);
+    padding-left: 1rem;
+    font-style: italic;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+}
+
+.preview-rendered-pane hr {
+    border: none;
+    border-top: 2px dashed var(--border-color);
+    margin: 2rem 0;
+    position: relative;
+}
+
+.preview-rendered-pane hr::after {
+    content: "Slide Split";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    padding: 0 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent-color);
+}
+
+/* Presentation Overlay / Fullscreen Viewer */
+.presentation-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    z-index: 1000;
+    flex-direction: column;
+}
+
+.slides-viewport {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.slide-frame {
+    width: 100%;
+    max-width: 960px;
+    height: 100%;
+    max-height: 600px;
+    background: var(--slide-bg);
+    color: var(--slide-text);
+    border-radius: 16px;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateX(100px);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    position: absolute;
+    pointer-events: none;
+}
+
+.slide-frame.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    position: relative;
+}
+
+.slide-frame.prev {
+    transform: translateX(-100px);
+}
+
+.slide-frame h1, 
+.slide-frame h2, 
+.slide-frame h3 {
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.slide-frame h1 {
+    font-size: 3rem;
+    color: var(--slide-accent);
+}
+
+.slide-frame h2 {
+    font-size: 2.25rem;
+    color: var(--slide-accent);
+}
+
+.slide-frame p, 
+.slide-frame li {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.slide-frame ul, 
+.slide-frame ol {
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Presenter Status Metrics HUD */
+.presenter-hud-bar {
+    background: rgba(15, 23, 42, 0.95);
+    color: #f8fafc;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #334155;
+    z-index: 1001;
+}
+
+.hud-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.hud-timer {
+    font-family: monospace;
+    font-size: 1.2rem;
+    background: #1e293b;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #475569;
+}
+
+.hud-btn {
+    background: transparent;
+    border: 1px solid #475569;
+    color: #f8fafc;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed);
+}
+
+.hud-btn:hover {
+    background: #334155;
+}
+
+/* Slide Progress indicator bar */
+.hud-progress-container {
+    flex: 1;
+    max-width: 400px;
+    height: 8px;
+    background: #334155;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 2rem;
+}
+
+.hud-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
