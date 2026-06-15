@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors Lizard Spock</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🖖 Rock Paper Scissors Lizard Spock</h1>
+
+    <div class="choices">
+      <button onclick="play('rock')" class="choice">🪨 Rock</button>
+      <button onclick="play('paper')" class="choice">📄 Paper</button>
+      <button onclick="play('scissors')" class="choice">✂️ Scissors</button>
+      <button onclick="play('lizard')" class="choice">🦎 Lizard</button>
+      <button onclick="play('spock')" class="choice">🖖 Spock</button>
+    </div>
+
+    <div id="result" class="result">Choose your move!</div>
+    <div id="score" class="score">Wins: 0 | Losses: 0 | Draws: 0</div>
+
+    <div class="rules">
+      <h2>Rules</h2>
+      <p>Hover to see:</p>
+      <div class="rules-card">
+        Rock crushes Scissors & Lizard<br>
+        Paper covers Rock & disproves Spock<br>
+        Scissors cut Paper & decapitate Lizard<br>
+        Lizard eats Paper & poisons Spock<br>
+        Spock smashes Scissors & vaporizes Rock
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
