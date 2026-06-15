@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Assembly Language & CPU Visualizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon"><i class="fas fa-microchip"></i></span>
+            <div>
+                <h1 class="brand-title">Core8 Emulator</h1>
+                <p class="brand-subtitle">8-Bit CPU Architecture & Assembly Visualizer</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Visualizer Dashboard container -->
+    <main class="dashboard-container">
+        
+        <!-- Left Panel: Assembly Editor, Console logs & Instruction Reference -->
+        <section class="editor-section">
+            <div class="card editor-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-edit"></i> Assembly Editor</h3>
+                    <div class="demo-select">
+                        <label for="demoSelect">Program:</label>
+                        <select id="demoSelect" onchange="loadDemoProgram()">
+                            <option value="fibonacci">Fibonacci Numbers</option>
+                            <option value="multiplier">Multiplication Loop</option>
+                            <option value="counter">Simple RAM Counter</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Code Area with dynamic line highlights -->
+                <div class="editor-viewport">
+                    <div class="line-numbers" id="lineNumbers">
+                        <div>1</div>
+                    </div>
+                    <textarea id="assemblyCode" spellcheck="false" onscroll="syncEditorScroll()" oninput="updateLineNumbers()"></textarea>
+                </div>
+                
+                <!-- Compiling & Execution Controls -->
+                <div class="control-toolbar">
+                    <button class="btn btn-primary" onclick="assembleCode()">
+                        <i class="fas fa-hammer"></i> Compile
+                    </button>
+                    <div class="divider"></div>
+                    <button class="btn btn-secondary" id="btnStepBack" onclick="stepBackward()" disabled>
+                        <i class="fas fa-step-backward"></i> Step Back
+                    </button>
+                    <button class="btn btn-success" id="btnStep" onclick="stepForward()" disabled>
+                        <i class="fas fa-step-forward"></i> Step
+                    </button>
+                    <button class="btn btn-success" id="btnRun" onclick="toggleRun()" disabled>
+                        <i class="fas fa-play" id="runIcon"></i> <span id="runText">Run</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetVisualizer()">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Terminal Output console logs -->
+            <div class="card console-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-terminal"></i> Terminal Logs</h3>
+                    <button class="btn btn-sm btn-secondary" onclick="clearConsole()">Clear</button>
+                </div>
+                <div class="console-output" id="consoleLogs">
+                    <div class="log-info">Load a program and click Compile to get started.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Registers HUD, Memory Address grid -->
+        <section class="cpu-section">
+            
+            <!-- CPU HUD (AX, BX, CX, DX, PC, Flags) -->
+            <div class="card registers-card">
+                <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Registers & Flags</h3>
+                
+                <div class="registers-grid">
+                    <div class="reg-box" id="regAX">
+                        <div class="reg-label">AX</div>
+                        <div class="reg-val" id="valAX">0000</div>
+                        <div class="reg-binary" id="binAX">0000000000000000</div>
+                    </div>
+                    <div class="reg-box" id="regBX">
+                        <div class="reg-label">BX</div>
+                        <div class="reg-val" id="valBX">0000</div>
+                        <div class="reg-binary" id="binBX">0000000000000000</div>
+                    </div>
+                    <div class="reg-box" id="regCX">
+                        <div class="reg-label">CX</div>
+                        <div class="reg-val" id="valCX">0000</div>
+                        <div class="reg-binary" id="binCX">0000000000000000</div>
+                    </div>
+                    <div class="reg-box" id="regDX">
+                        <div class="reg-label">DX</div>
+                        <div class="reg-val" id="valDX">0000</div>
+                        <div class="reg-binary" id="binDX">0000000000000000</div>
+                    </div>
+                </div>
+
+                <div class="flags-section">
+                    <div class="flag-item">
+                        <div class="flag-name">PC (Program Counter)</div>
+                        <div class="flag-val text-mono" id="valPC">0</div>
+                    </div>
+                    <div class="flag-item" id="flagZF">
+                        <div class="flag-name">ZF (Zero Flag)</div>
+                        <div class="flag-val text-mono">0</div>
+                    </div>
+                    <div class="flag-item" id="flagSF">
+                        <div class="flag-name">SF (Sign Flag)</div>
+                        <div class="flag-val text-mono">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulated RAM Addresses Grid -->
+            <div class="card ram-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-memory"></i> Random Access Memory (RAM)</h3>
+                    <div class="ram-view-toggle">
+                        <label><input type="radio" name="ramFormat" value="hex" checked onchange="updateRamDisplay()"> Hex</label>
+                        <label><input type="radio" name="ramFormat" value="dec" onchange="updateRamDisplay()"> Dec</label>
+                    </div>
+                </div>
+                <div class="ram-container" id="ramGrid">
+                    <!-- Dynamic RAM elements mapped here -->
+                </div>
+            </div>
+            
+            <!-- Quick Reference Card -->
+            <div class="card reference-card">
+                <h3 class="card-title"><i class="fas fa-book-open"></i> Quick Assembly Reference</h3>
+                <div class="reference-grid">
+                    <div class="ref-row"><code>MOV dest, src</code> <span>Copy source to destination (reg/value/address)</span></div>
+                    <div class="ref-row"><code>ADD dest, src</code> <span>Add source value to destination register</span></div>
+                    <div class="ref-row"><code>SUB dest, src</code> <span>Subtract source value from destination register</span></div>
+                    <div class="ref-row"><code>CMP op1, op2</code> <span>Compare operands to set ZF and SF flags</span></div>
+                    <div class="ref-row"><code>JMP label</code> <span>Unconditionally branch to line label</span></div>
+                    <div class="ref-row"><code>JE label</code> <span>Jump to label if comparison was equal (ZF=1)</span></div>
+                    <div class="ref-row"><code>JNE label</code> <span>Jump to label if comparison was not equal (ZF=0)</span></div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Global theme script -->
+    <script src="../global-theme.js"></script>
+    <!-- Core Visualizer script -->
+    <script src="script.js"></script>
+</body>
+</html>
