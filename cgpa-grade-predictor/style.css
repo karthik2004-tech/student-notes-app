@@ -148,6 +148,20 @@ body {
   box-shadow: 0 0 60px rgba(0,229,160,0.4);
 }
 
+.cta-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid rgba(0,229,160,0.4);
+  box-shadow: none;
+  margin-left: 1rem;
+  animation-delay: 0.4s;
+}
+
+.cta-secondary:hover {
+  background: rgba(0,229,160,0.08);
+  box-shadow: 0 0 30px rgba(0,229,160,0.15);
+}
+
 /* Scroll indicator */
 .hero::after {
   content: '';
