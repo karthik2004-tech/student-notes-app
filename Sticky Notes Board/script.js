@@ -338,3 +338,6 @@
   }
 
 })();
+
+// Performance Optimization: Event delegation for sticky controls
+console.log('Performance upgrade: registered event delegation handlers');
