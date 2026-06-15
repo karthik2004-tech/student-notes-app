@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music Tempo BPM Tapper</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🎵 Music Tempo BPM Tapper</h1>
+
+    <div class="tap-section">
+      <button id="tapButton">Tap 🎶</button>
+      <p>(Or press SPACEBAR)</p>
+    </div>
+
+    <div class="output">
+      <p id="bpm">BPM: —</p>
+      <p id="tempoLabel">Tempo: —</p>
+    </div>
+
+    <button onclick="resetTapper()" class="reset">Reset 🔄</button>
+
+    <div id="pulse" class="pulse"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
