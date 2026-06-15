@@ -4,6 +4,7 @@ const path = require('path');
 const apiRoutes = require('./routes/api');
 
 const app = express();
+app.set('query parser', function (str) { return require('qs').parse(str, { allowPrototypes: false }); });
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
