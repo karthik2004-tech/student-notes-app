@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Matrix Operations Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🧮 Matrix Operations Calculator</h1>
+
+    <div class="controls">
+      <label>Matrix Size:
+        <select id="sizeSelect">
+          <option value="2">2x2</option>
+          <option value="3">3x3</option>
+        </select>
+      </label>
+      <button onclick="generateInputs()">Generate Matrices</button>
+    </div>
+
+    <div id="matrices" class="matrices"></div>
+
+    <div class="operations">
+      <button onclick="performOperation('add')">Addition</button>
+      <button onclick="performOperation('subtract')">Subtraction</button>
+      <button onclick="performOperation('multiply')">Multiplication</button>
+      <button onclick="performOperation('transposeA')">Transpose A</button>
+      <button onclick="performOperation('transposeB')">Transpose B</button>
+      <button onclick="performOperation('detA')">Determinant A</button>
+      <button onclick="performOperation('detB')">Determinant B</button>
+    </div>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
