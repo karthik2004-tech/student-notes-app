@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Scholarship & Internship Matcher</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>Career & Scholarship Matcher</h1>
+        </div>
+        <div class="topbar-actions">
+            <!-- Tabs to switch between Finder and Kanban -->
+            <button class="nav-tab active" data-tab="finder"><i class="fas fa-search"></i> Opportunities Finder</button>
+            <button class="nav-tab" data-tab="kanban"><i class="fas fa-tasks"></i> My Kanban Tracker</button>
+            <button class="theme-toggle" onclick="window.toggleGlobalTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <!-- View 1: Opportunities Finder -->
+        <div id="view-finder" class="view-section active">
+            
+            <!-- Left Panel: Academic Filters -->
+            <aside class="filter-sidebar panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-filter"></i> Academic Profile</h2>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Minimum GPA (0.0 - 4.0)</label>
+                    <input type="number" id="filter-gpa" min="0" max="4.0" step="0.1" value="3.0" placeholder="e.g. 3.5">
+                </div>
+
+                <div class="filter-group">
+                    <label>Field of Study</label>
+                    <select id="filter-field">
+                        <option value="All">All Fields</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Arts">Arts & Humanities</option>
+                        <option value="Science">Science & Math</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Type</label>
+                    <select id="filter-type">
+                        <option value="All">Both</option>
+                        <option value="Scholarship">Scholarships</option>
+                        <option value="Internship">Internships</option>
+                    </select>
+                </div>
+                
+                <button id="btn-apply-filters" class="btn-primary w-100"><i class="fas fa-search"></i> Find Matches</button>
+            </aside>
+
+            <!-- Right Panel: Results Grid -->
+            <section class="results-area">
+                <div class="results-header">
+                    <h2>Available Opportunities <span class="badge" id="results-count">0</span></h2>
+                </div>
+                
+                <div id="opportunities-grid" class="opportunities-grid">
+                    <!-- Cards will be injected here via JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- View 2: Kanban Tracker -->
+        <div id="view-kanban" class="view-section" style="display: none;">
+            <div class="kanban-header">
+                <h2><i class="fas fa-map-signs"></i> Application Pipeline</h2>
+                <p>Drag and drop your saved opportunities to track your application progress.</p>
+                <button id="btn-clear-data" class="btn-danger"><i class="fas fa-trash"></i> Reset All Data</button>
+            </div>
+
+            <div class="kanban-board">
+                <!-- Saved Lane -->
+                <div class="kanban-lane" data-status="Saved">
+                    <div class="lane-header">
+                        <h3><i class="fas fa-bookmark text-primary"></i> Saved</h3>
+                    </div>
+                    <div class="lane-body" id="lane-saved"></div>
+                </div>
+
+                <!-- Applied Lane -->
+                <div class="kanban-lane" data-status="Applied">
+                    <div class="lane-header">
+                        <h3><i class="fas fa-paper-plane text-warning"></i> Applied</h3>
+                    </div>
+                    <div class="lane-body" id="lane-applied"></div>
+                </div>
+
+                <!-- Interviewing Lane -->
+                <div class="kanban-lane" data-status="Interviewing">
+                    <div class="lane-header">
+                        <h3><i class="fas fa-comments text-info"></i> Interviewing</h3>
+                    </div>
+                    <div class="lane-body" id="lane-interviewing"></div>
+                </div>
+
+                <!-- Accepted Lane -->
+                <div class="kanban-lane" data-status="Accepted">
+                    <div class="lane-header">
+                        <h3><i class="fas fa-trophy text-success"></i> Accepted</h3>
+                    </div>
+                    <div class="lane-body" id="lane-accepted"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Global Theme JS -->
+    <script src="../global-theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

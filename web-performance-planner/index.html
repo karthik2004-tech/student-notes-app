@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Performance Budget & Optimization Planner</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="logo">
+            <i class="fas fa-tachometer-alt"></i>
+            <h1>Web Performance Planner</h1>
+        </div>
+        <div class="topbar-actions">
+            <label class="btn-upload">
+                <i class="fas fa-file-upload"></i> Import Audit JSON
+                <input type="file" id="audit-upload" accept=".json" hidden>
+            </label>
+            <button class="theme-toggle" onclick="window.toggleGlobalTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Left Panel: Budget Sliders -->
+        <section class="panel budget-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-sliders-h"></i> Payload Budget Settings</h2>
+                <p>Adjust your target asset sizes to see the impact on load speeds.</p>
+            </div>
+
+            <div class="total-payload">
+                <h3>Total Budget</h3>
+                <div class="total-value"><span id="total-kb">0</span> KB</div>
+                <div class="progress-bar-container">
+                    <div id="total-progress" class="progress-bar" style="width: 0%;"></div>
+                </div>
+                <p class="budget-status" id="budget-status">Recommended threshold: under 1500 KB</p>
+            </div>
+
+            <div class="sliders-container">
+                <!-- JS Slider -->
+                <div class="slider-group js-group">
+                    <div class="slider-labels">
+                        <span><i class="fab fa-js-square"></i> JavaScript</span>
+                        <span class="value-display"><span id="val-js">150</span> KB</span>
+                    </div>
+                    <input type="range" id="slider-js" min="0" max="2000" step="10" value="150" class="custom-slider">
+                </div>
+
+                <!-- CSS Slider -->
+                <div class="slider-group css-group">
+                    <div class="slider-labels">
+                        <span><i class="fab fa-css3-alt"></i> CSS</span>
+                        <span class="value-display"><span id="val-css">50</span> KB</span>
+                    </div>
+                    <input type="range" id="slider-css" min="0" max="1000" step="5" value="50" class="custom-slider">
+                </div>
+
+                <!-- Images Slider -->
+                <div class="slider-group img-group">
+                    <div class="slider-labels">
+                        <span><i class="fas fa-image"></i> Images</span>
+                        <span class="value-display"><span id="val-img">800</span> KB</span>
+                    </div>
+                    <input type="range" id="slider-img" min="0" max="5000" step="50" value="800" class="custom-slider">
+                </div>
+
+                <!-- Fonts Slider -->
+                <div class="slider-group font-group">
+                    <div class="slider-labels">
+                        <span><i class="fas fa-font"></i> Fonts</span>
+                        <span class="value-display"><span id="val-font">100</span> KB</span>
+                    </div>
+                    <input type="range" id="slider-font" min="0" max="1000" step="10" value="100" class="custom-slider">
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Speed Predictor & Checklist -->
+        <section class="right-column">
+            
+            <!-- Speed Predictor -->
+            <div class="panel speed-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-stopwatch"></i> Speed Predictor</h2>
+                    <p>Estimated download durations based on total payload.</p>
+                </div>
+
+                <div class="network-grid">
+                    <!-- Broadband -->
+                    <div class="network-card broadband">
+                        <div class="icon"><i class="fas fa-wifi"></i></div>
+                        <div class="details">
+                            <h4>Broadband</h4>
+                            <span class="subtext">20 Mbps</span>
+                        </div>
+                        <div class="time" id="time-broadband">0.0s</div>
+                    </div>
+
+                    <!-- 4G -->
+                    <div class="network-card 4g">
+                        <div class="icon"><i class="fas fa-signal"></i></div>
+                        <div class="details">
+                            <h4>4G Mobile</h4>
+                            <span class="subtext">12 Mbps</span>
+                        </div>
+                        <div class="time" id="time-4g">0.0s</div>
+                    </div>
+
+                    <!-- Fast 3G -->
+                    <div class="network-card fast3g">
+                        <div class="icon"><i class="fas fa-tachometer-alt" style="opacity: 0.7;"></i></div>
+                        <div class="details">
+                            <h4>Fast 3G</h4>
+                            <span class="subtext">1.5 Mbps</span>
+                        </div>
+                        <div class="time" id="time-fast3g">0.0s</div>
+                    </div>
+
+                    <!-- Slow 3G -->
+                    <div class="network-card slow3g">
+                        <div class="icon"><i class="fas fa-turtle"></i></div>
+                        <div class="details">
+                            <h4>Slow 3G</h4>
+                            <span class="subtext">400 Kbps</span>
+                        </div>
+                        <div class="time" id="time-slow3g">0.0s</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lighthouse Checklist -->
+            <div class="panel checklist-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-tasks"></i> Optimization Checklist</h2>
+                    <p>Lighthouse recommended best practices.</p>
+                </div>
+
+                <div class="checklist">
+                    <label class="check-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <div class="check-content">
+                            <h4>Enable Text Compression</h4>
+                            <p>Serve text-based resources with compression (Gzip, Brotli).</p>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <div class="check-content">
+                            <h4>Properly Size Images</h4>
+                            <p>Serve images that are appropriately-sized to save cellular data.</p>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <div class="check-content">
+                            <h4>Defer Offscreen Images</h4>
+                            <p>Use lazy-loading for hidden or offscreen images.</p>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <div class="check-content">
+                            <h4>Minify CSS & JS</h4>
+                            <p>Remove unused code and minify scripts to reduce payload.</p>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        <div class="check-content">
+                            <h4>Use a CDN</h4>
+                            <p>Serve static assets from a Content Delivery Network.</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Global Theme JS -->
+    <script src="../global-theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
