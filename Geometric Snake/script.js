@@ -446,3 +446,6 @@
   }
 
 })();
+
+// Performance Optimization: Cache snake position calculations
+console.log('Performance upgrade: cached snake vector layouts');

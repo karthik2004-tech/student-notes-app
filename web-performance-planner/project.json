@@ -1,0 +1,6 @@
+{
+  "title": "Web Performance Budget & Optimization Planner",
+  "description": "A web audit and budgeting planner for performance optimization. Set target payload budgets, estimate speeds on mobile networks, and generate custom performance checklists.",
+  "technologies": ["HTML", "CSS", "JavaScript"],
+  "author": "MistryVishwa"
+}
