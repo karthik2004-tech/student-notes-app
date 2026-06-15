@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Markdown Resume Generator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="app-navbar no-print">
+        <div class="brand-section">
+            <span class="brand-icon"><i class="fas fa-file-invoice"></i></span>
+            <div>
+                <h1 class="brand-title">ResuMarkdown</h1>
+                <p class="brand-subtitle">Markdown-to-PDF ATS Resume Generator</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Toolbar no-print controls -->
+    <div class="toolbar no-print">
+        <div class="toolbar-left">
+            <div class="template-selector">
+                <label for="templateSelect"><i class="fas fa-palette"></i> Style Template:</label>
+                <select id="templateSelect" onchange="changeTemplateStyle()">
+                    <option value="classic">Classic Professional (Serif)</option>
+                    <option value="modern">Modern Tech (Sans-Serif)</option>
+                    <option value="minimalist">Elegant Minimalist</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary" onclick="loadDemoResume()">
+                <i class="fas fa-undo"></i> Reset to Preset
+            </button>
+        </div>
+        
+        <div class="toolbar-right">
+            <button class="btn btn-success" onclick="exportResumePDF()">
+                <i class="fas fa-print"></i> Export to PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Workspace Split-Pane -->
+    <main class="app-container">
+        <!-- Left Pane: Editor -->
+        <section class="editor-pane no-print">
+            <div class="editor-header">
+                <span><i class="fab fa-markdown"></i> Markdown Input</span>
+            </div>
+            <textarea id="markdownEditor" placeholder="Write your resume details in plain markdown... Use standard markdown elements like headers, lists, bold text, etc." oninput="compileMarkdown()"></textarea>
+        </section>
+
+        <!-- Right Pane: Live HTML Preview sheet -->
+        <section class="preview-pane">
+            <div class="preview-header no-print">
+                <span><i class="fas fa-eye"></i> ATS HTML Preview Sheet</span>
+            </div>
+            <div class="preview-viewport">
+                <!-- Page container wrapping paper layout -->
+                <div class="resume-paper template-classic" id="resumePaper">
+                    <!-- Parsed HTML Markdown injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Marked.js Markdown Parsing library from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Global theme script -->
+    <script src="../global-theme.js"></script>
+    <!-- Core editor script -->
+    <script src="script.js"></script>
+</body>
+</html>
