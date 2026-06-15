@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevFolio | Software Engineer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">&lt;DevFolio/&gt;</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="ph ph-list"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <p class="greeting">Hi, my name is</p>
+                <h1 class="name">Sarah Jenkins.</h1>
+                <h2 class="title">I build <span class="typing-text"></span><span class="cursor">|</span></h2>
+                <p class="description">
+                    I'm a software engineer specializing in building (and occasionally designing) exceptional digital experiences. Currently, I'm focused on building accessible, human-centered products.
+                </p>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600" alt="Sarah Jenkins - Software Engineer">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hello! My name is Sarah and I enjoy creating things that live on the internet. My interest in web development started back in 2018 when I decided to try editing custom Tumblr themes — turns out hacking together HTML & CSS taught me a lot about HTML & CSS!</p>
+                    <p>Fast-forward to today, and I've had the privilege of working at an advertising agency, a start-up, and a huge corporation. My main focus these days is building accessible, inclusive products and digital experiences.</p>
+                    <p>Here are a few technologies I've been working with recently:</p>
+                    <ul class="skills-list">
+                        <li><i class="ph-fill ph-caret-right"></i> JavaScript (ES6+)</li>
+                        <li><i class="ph-fill ph-caret-right"></i> TypeScript</li>
+                        <li><i class="ph-fill ph-caret-right"></i> React.js</li>
+                        <li><i class="ph-fill ph-caret-right"></i> Node.js</li>
+                        <li><i class="ph-fill ph-caret-right"></i> Tailwind CSS</li>
+                        <li><i class="ph-fill ph-caret-right"></i> PostgreSQL</li>
+                    </ul>
+                </div>
+                <div class="experience-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3>Senior Frontend Engineer</h3>
+                        <h4>TechCorp Inc. <span>| 2022 - Present</span></h4>
+                        <p>Leading the frontend team in building a scalable e-commerce platform.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3>Web Developer</h3>
+                        <h4>Creative Agency <span>| 2020 - 2022</span></h4>
+                        <p>Developed responsive websites for various high-profile clients.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" alt="Project 1">
+                        <div class="project-links">
+                            <a href="#" class="icon-link"><i class="ph ph-github-logo"></i></a>
+                            <a href="#" class="icon-link"><i class="ph ph-arrow-square-out"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>FinTech Analytics Dashboard</h3>
+                        <p>A comprehensive dashboard for visualizing financial data, tracking expenses, and generating detailed reports in real-time.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Chart.js</span>
+                            <span>Node.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&q=80&w=800" alt="Project 2">
+                        <div class="project-links">
+                            <a href="#" class="icon-link"><i class="ph ph-github-logo"></i></a>
+                            <a href="#" class="icon-link"><i class="ph ph-arrow-square-out"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>E-Commerce Platform</h3>
+                        <p>A fully responsive online store featuring user authentication, payment processing, and an intuitive admin panel.</p>
+                        <div class="project-tags">
+                            <span>Next.js</span>
+                            <span>Stripe</span>
+                            <span>MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=800" alt="Project 3">
+                        <div class="project-links">
+                            <a href="#" class="icon-link"><i class="ph ph-github-logo"></i></a>
+                            <a href="#" class="icon-link"><i class="ph ph-arrow-square-out"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Task Management Tool</h3>
+                        <p>A collaborative project management application allowing teams to organize tasks, set deadlines, and track progress.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>Firebase</span>
+                            <span>Tailwind</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="contact-subtitle">Although I'm not currently looking for any new opportunities, my inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="ph ph-envelope-simple"></i>
+                        <span>hello@sarahjenkins.dev</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="ph ph-map-pin"></i>
+                        <span>San Francisco, CA</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="ph ph-github-logo"></i></a>
+                        <a href="#"><i class="ph ph-linkedin-logo"></i></a>
+                        <a href="#"><i class="ph ph-twitter-logo"></i></a>
+                        <a href="#"><i class="ph ph-dribbble-logo"></i></a>
+                    </div>
+                </div>
+
+                <form class="contact-form">
+                    <div class="input-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="input-group">
+                        <textarea rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Say Hello</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Designed & Built by Sarah Jenkins</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
