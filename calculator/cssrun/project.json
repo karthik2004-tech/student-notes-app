@@ -1,0 +1,17 @@
+{
+  "title": "CSS Marble Run / Pachinko Machine",
+  "description": "A 2D physics sandbox pachinko machine with custom circle-circle and circle-OBB collision detection, interactive obstacle placement, gravity-driven marble simulation, and multi-tier scoring pockets.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["pachinko", "marble-run", "physics", "collision-detection", "canvas", "vanilla-js", "interactive"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Interactive obstacle editor supporting circle pegs and ±35° angled ramps",
+    "Custom 2D bounding-box collision engine (circle-circle, circle-OBB) with elastic bounce coefficients",
+    "Continuous gravity vector integration via requestAnimationFrame pipeline",
+    "Six-tier scoring pocket array (10x–100x multipliers) with capture detection",
+    "Visual feedback system: impact ring particles and score burst animations",
+    "Runtime diagnostics showing active marble count and cumulative score"
+  ]
+}
