@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Budget Planner for Students</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>💰 Budget Planner for Students</h1>
+
+    <div class="controls">
+      <label>Monthly Budget: 
+        <input type="number" id="monthlyBudget" placeholder="Enter amount">
+      </label>
+      <button onclick="setBudget()">Set Budget</button>
+    </div>
+
+    <div class="entry-form">
+      <input type="text" id="entryName" placeholder="Entry name">
+      <input type="number" id="entryAmount" placeholder="Amount">
+      <select id="entryType">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+      <select id="entryCategory">
+        <option value="food">Food</option>
+        <option value="travel">Travel</option>
+        <option value="books">Books</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="other">Other</option>
+      </select>
+      <button onclick="addEntry()">Add Entry</button>
+    </div>
+
+    <div id="balance" class="balance">Remaining Balance: --</div>
+
+    <div id="entries" class="entries"></div>
+
+    <canvas id="chart" width="400" height="200"></canvas>
+
+    <div class="actions">
+      <button onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
