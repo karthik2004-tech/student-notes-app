@@ -14,5 +14,5 @@
   { "name": "OS Contribution Journey", "path": "open-source-contribution-journey/index.html", "icon": "fas fa-route", "tag": "Utility" },
   { "name": "Startup Resource Hub", "path": "startup-resource-hub/index.html", "icon": "fas fa-lightbulb", "tag": "Utility" },
   { "name": "Git Command Visualizer", "path": "interactive-git-visualizer/index.html", "icon": "fas fa-code-branch", "tag": "Utility" },
-  { "name": "Markdown Documentation Hub & Slides Compiler", "path": "markdown-docs-and-slides/index.html", "icon": "fas fa-file-invoice", "tag": "Utility" }
+  { "name": "Web Performance Planner", "path": "web-performance-planner/index.html", "icon": "fas fa-tachometer-alt", "tag": "Utility" }
 ]
