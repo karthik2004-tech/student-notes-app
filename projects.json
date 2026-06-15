@@ -14,5 +14,5 @@
   { "name": "OS Contribution Journey", "path": "open-source-contribution-journey/index.html", "icon": "fas fa-route", "tag": "Utility" },
   { "name": "Startup Resource Hub", "path": "startup-resource-hub/index.html", "icon": "fas fa-lightbulb", "tag": "Utility" },
   { "name": "Git Command Visualizer", "path": "interactive-git-visualizer/index.html", "icon": "fas fa-code-branch", "tag": "Utility" },
-  { "name": "Cryptography Playground", "path": "crypto-hashing-playground/index.html", "icon": "fas fa-lock", "tag": "Utility" }
+  { "name": "CSS Layout Builder", "path": "css-layout-builder/index.html", "icon": "fas fa-border-all", "tag": "Utility" }
 ]
