@@ -1,0 +1,212 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#060813;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;
+  color:#475569;
+}
+
+#app{
+  width:min(96vmin,900px);
+  height:min(94vmin,740px);
+  display:flex;
+  flex-direction:column;
+  gap:clamp(3px,0.4vmin,7px);
+}
+
+/* ─── Telemetry ────────────────────────────────── */
+#telemetry{
+  display:flex;
+  justify-content:center;
+  gap:clamp(10px,2vmin,32px);
+  padding:clamp(5px,0.6vmin,9px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(4px,0.5vmin,8px);
+}
+.tm{display:flex;align-items:center;gap:clamp(4px,0.5vmin,8px);font-size:clamp(8px,1vmin,13px);letter-spacing:1px}
+.tl{color:#334155;text-transform:uppercase}
+.tv{color:#64748b;font-weight:700;font-variant-numeric:tabular-nums;transition:color 0.2s}
+#scoreVal{color:#00f0ff}
+#multiVal{color:#a855f7}
+#timeVal{color:#ffd700}
+#bestVal{color:#00ff88}
+
+/* ─── Sky ───────────────────────────────────────── */
+#sky{
+  flex:1;
+  position:relative;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(4px,0.5vmin,8px);
+  overflow:hidden;
+  background:#060813;
+  background-image:
+    radial-gradient(ellipse at 20% 80%,rgba(0,240,255,0.01) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 30%,rgba(255,42,95,0.01) 0%,transparent 50%);
+  cursor:crosshair;
+}
+
+/* ─── Start overlay ────────────────────────────── */
+#startOverlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  gap:clamp(10px,1.5vmin,22px);
+  z-index:20;
+  background:rgba(6,8,19,0.6);
+  backdrop-filter:blur(2px);
+}
+.so-title{
+  font-size:clamp(20px,3.2vmin,40px);
+  font-weight:700;letter-spacing:6px;
+  color:#ff2a5f;
+  text-shadow:0 0 clamp(8px,1.2vmin,20px) rgba(255,42,95,0.2);
+}
+.so-sub{
+  font-size:clamp(8px,1.1vmin,14px);
+  color:#475569;text-align:center;line-height:1.6;
+}
+#startBtn{
+  padding:clamp(8px,1.2vmin,16px) clamp(20px,3vmin,40px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.1);
+  border-radius:4px;
+  color:#00f0ff;
+  font-family:inherit;
+  font-size:clamp(9px,1.2vmin,14px);
+  font-weight:600;letter-spacing:2px;
+  cursor:pointer;transition:all 0.2s;text-transform:uppercase;
+}
+#startBtn:hover{
+  background:rgba(0,240,255,0.03);
+  border-color:rgba(0,240,255,0.25);
+  box-shadow:0 0 16px rgba(0,240,255,0.04);
+}
+
+/* ─── Balloon ───────────────────────────────────── */
+.balloon{
+  position:absolute;
+  border-radius:50%;
+  cursor:pointer;
+  z-index:5;
+  pointer-events:auto;
+  will-change:transform;
+  transition:transform 0.15s;
+}
+.balloon:hover{transform:scale(1.12);}
+
+.balloon-body{
+  width:100%;height:100%;
+  border-radius:50%;
+  position:relative;
+}
+.balloon-string{
+  position:absolute;
+  bottom:calc(-1 * clamp(20px,3vmin,36px));
+  left:50%;
+  width:1px;
+  height:clamp(20px,3vmin,36px);
+  opacity:0.15;
+}
+
+/* ─── Pop animation ────────────────────────────── */
+.balloon.pop{
+  animation:popBurst 0.3s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes popBurst{
+  0%{transform:scale(1);opacity:1}
+  40%{transform:scale(1.6);opacity:0.8}
+  100%{transform:scale(0);opacity:0}
+}
+
+/* ─── Particle ──────────────────────────────────── */
+.particle{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:10;
+  animation:particleFly 0.6s ease-out forwards;
+}
+@keyframes particleFly{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--px),var(--py)) scale(0);opacity:0}
+}
+
+/* ─── Score popup ──────────────────────────────── */
+.score-pop{
+  position:absolute;
+  font-size:clamp(10px,1.4vmin,18px);
+  font-weight:700;
+  pointer-events:none;
+  z-index:15;
+  animation:scoreFloat 0.7s ease-out forwards;
+}
+@keyframes scoreFloat{
+  0%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(clamp(-20px,-3vmin,-36px));opacity:0}
+}
+
+/* ─── Sky shake ────────────────────────────────── */
+#sky.shake{animation:skyShake 0.2s ease-out}
+@keyframes skyShake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-3px)}
+  50%{transform:translateX(3px)}
+  75%{transform:translateX(-2px)}
+}
+
+/* ─── Modal ─────────────────────────────────────── */
+#modal{
+  position:fixed;inset:0;z-index:100;
+  display:flex;justify-content:center;align-items:center;
+  background:rgba(6,8,19,0.85);
+  backdrop-filter:blur(4px);
+}
+#modal.hidden{display:none}
+.mb{
+  width:min(50vmin,360px);
+  padding:clamp(20px,3vmin,36px);
+  border:1px solid rgba(0,240,255,0.06);
+  border-radius:clamp(6px,0.8vmin,12px);
+  background:rgba(255,255,255,0.008);
+  text-align:center;
+  display:flex;flex-direction:column;
+  align-items:center;gap:clamp(12px,1.5vmin,22px);
+}
+.mb-title{
+  font-size:clamp(20px,2.8vmin,34px);
+  font-weight:700;letter-spacing:4px;
+  color:#ff2a5f;
+}
+.mb-stats{
+  font-size:clamp(9px,1.2vmin,15px);
+  color:#64748b;line-height:1.8;
+}
+#restartBtn{
+  padding:clamp(8px,1.2vmin,16px) clamp(20px,3vmin,40px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.1);
+  border-radius:4px;
+  color:#00f0ff;
+  font-family:inherit;
+  font-size:clamp(9px,1.2vmin,14px);
+  font-weight:600;letter-spacing:2px;
+  cursor:pointer;transition:all 0.2s;text-transform:uppercase;
+}
+#restartBtn:hover{
+  background:rgba(0,240,255,0.03);
+  border-color:rgba(0,240,255,0.25);
+}
+
+/* ─── Responsive ───────────────────────────────── */
+@media(max-width:480px){
+  #app{width:100vmin;height:100vmin}
+  #telemetry{gap:4px;padding:3px}
+  .tm{font-size:6px;gap:2px}
+}
