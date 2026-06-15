@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healthcare Appointment & Patient Management Platform</title>
+  <meta name="description" content="A comprehensive healthcare appointment booking, medical records, and doctor scheduling dashboard platform.">
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../global-theme.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo">
+        <i class="fa-solid fa-heartbeat pulse-icon"></i>
+        <span>CarePulse</span>
+      </div>
+      <div class="header-actions">
+        <!-- Notification Hub -->
+        <div class="notification-dropdown">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="badge" id="notifBadge" style="display: none;">0</span>
+          </button>
+          <div class="dropdown-content" id="notifDropdown">
+            <div class="dropdown-header">
+              <span>Notifications</span>
+              <button class="clear-all-btn" id="clearNotifs">Clear All</button>
+            </div>
+            <div class="dropdown-body" id="notifList">
+              <p class="empty-state">No new notifications</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Current User Info & Log Out -->
+        <div class="user-profile-menu" id="profileMenu" style="display: none;">
+          <span class="user-role-badge" id="headerRoleBadge">Patient</span>
+          <span class="user-name-display" id="headerUserName">John Doe</span>
+          <button class="btn btn-secondary btn-sm" id="logoutBtn">
+            <i class="fa-solid fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    
+    <!-- Auth Portal (Login/Registration) -->
+    <section class="auth-section" id="authSection">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabLoginBtn">Login</button>
+          <button class="auth-tab" id="tabRegisterBtn">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+          <h2 class="form-title">Welcome Back</h2>
+          <p class="form-subtitle">Access your healthcare portal dashboard</p>
+          <div class="form-group">
+            <label for="loginEmail">Email Address</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="loginEmail" placeholder="doctor@carepulse.com or patient@gmail.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="loginPassword" placeholder="••••••••" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          
+          <div class="demo-logins-box">
+            <h4>Demo Accounts (Quick Pass)</h4>
+            <div class="demo-buttons">
+              <button type="button" class="demo-pill" onclick="quickLogin('patient@gmail.com', 'password123')">Patient Account</button>
+              <button type="button" class="demo-pill" onclick="quickLogin('doctor@carepulse.com', 'password123')">Doctor Account</button>
+              <button type="button" class="demo-pill" onclick="quickLogin('admin@carepulse.com', 'password123')">Admin Account</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="auth-form hidden">
+          <h2 class="form-title">Create Account</h2>
+          <p class="form-subtitle">Register to manage appointments and records</p>
+          <div class="form-group">
+            <label for="regName">Full Name</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="regName" placeholder="John Doe" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Email Address</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="regEmail" placeholder="yourname@gmail.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="regPassword" placeholder="••••••••" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regRole">Account Role</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-users"></i>
+              <select id="regRole" required>
+                <option value="patient">Patient</option>
+                <option value="doctor">Medical Doctor</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Patient Dashboard -->
+    <section class="dashboard-section hidden" id="patientDashboard">
+      <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+          <nav class="sidebar-nav">
+            <button class="nav-link active" data-tab="p-overview">
+              <i class="fa-solid fa-chart-line"></i> Overview
+            </button>
+            <button class="nav-link" data-tab="p-book">
+              <i class="fa-solid fa-calendar-plus"></i> Book Appointment
+            </button>
+            <button class="nav-link" data-tab="p-records">
+              <i class="fa-solid fa-file-medical"></i> Medical Records
+            </button>
+            <button class="nav-link" data-tab="p-profile">
+              <i class="fa-solid fa-user-gear"></i> Settings
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+          <!-- Overview Tab -->
+          <div class="tab-pane active" id="p-overview">
+            <h1 class="page-title">Patient Portal Overview</h1>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <i class="fa-solid fa-calendar-check text-teal"></i>
+                <div class="stat-info">
+                  <h3>Total Appointments</h3>
+                  <p class="stat-value" id="p-stat-total-appts">0</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fa-solid fa-clock text-amber"></i>
+                <div class="stat-info">
+                  <h3>Pending Review</h3>
+                  <p class="stat-value" id="p-stat-pending-appts">0</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fa-solid fa-prescription text-emerald"></i>
+                <div class="stat-info">
+                  <h3>Active Prescriptions</h3>
+                  <p class="stat-value" id="p-stat-prescriptions">0</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-2col">
+              <!-- Upcoming Appointments -->
+              <div class="card">
+                <h2 class="card-title">Upcoming Appointments</h2>
+                <div class="card-body" id="p-upcoming-list">
+                  <p class="empty-state">No scheduled appointments</p>
+                </div>
+              </div>
+              <!-- Quick Health Profile -->
+              <div class="card">
+                <h2 class="card-title">Personal Health Card</h2>
+                <div class="card-body">
+                  <div class="health-card-details">
+                    <div class="health-item"><strong>Blood Group:</strong> <span id="p-card-blood">O+</span></div>
+                    <div class="health-item"><strong>Allergies:</strong> <span id="p-card-allergies">Penicillin</span></div>
+                    <div class="health-item"><strong>Emergency Contact:</strong> <span id="p-card-emergency">9876543210</span></div>
+                    <div class="health-item"><strong>Chronic Illnesses:</strong> <span id="p-card-chronic">None</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detailed History -->
+            <div class="card margin-top">
+              <h2 class="card-title">Recent Actions & History</h2>
+              <div class="card-body table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Doctor</th>
+                      <th>Specialty</th>
+                      <th>Date</th>
+                      <th>Time Slot</th>
+                      <th>Status</th>
+                      <th>Prescription</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="p-history-table-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Book Appointment Tab -->
+          <div class="tab-pane" id="p-book">
+            <h1 class="page-title">Schedule Healthcare Visit</h1>
+            <div class="card max-width-md">
+              <div class="card-body">
+                <form id="apptBookingForm">
+                  <div class="form-group">
+                    <label for="bookDoctor">Select Specialist</label>
+                    <select id="bookDoctor" required>
+                      <!-- Options dynamic -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookDate">Select Date</label>
+                    <input type="date" id="bookDate" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookTime">Select Time Slot</label>
+                    <select id="bookTime" required>
+                      <option value="09:00 AM">09:00 AM - 09:30 AM</option>
+                      <option value="10:00 AM">10:00 AM - 10:30 AM</option>
+                      <option value="11:00 AM">11:00 AM - 11:30 AM</option>
+                      <option value="02:00 PM">02:00 PM - 02:30 PM</option>
+                      <option value="03:00 PM">03:00 PM - 03:30 PM</option>
+                      <option value="04:00 PM">04:00 PM - 04:30 PM</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookReason">Reason for Appointment</label>
+                    <textarea id="bookReason" placeholder="Describe symptoms or request purpose..." rows="4" required></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Book Now</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medical Records Tab -->
+          <div class="tab-pane" id="p-records">
+            <h1 class="page-title">Personal Medical & Prescription Records</h1>
+            <div class="records-container" id="p-records-list">
+              <!-- Dynamic -->
+            </div>
+          </div>
+
+          <!-- Profile / Settings Tab -->
+          <div class="tab-pane" id="p-profile">
+            <h1 class="page-title">Patient Profile Settings</h1>
+            <div class="card max-width-md">
+              <div class="card-body">
+                <form id="p-profileForm">
+                  <div class="form-group">
+                    <label for="p-set-name">Full Name</label>
+                    <input type="text" id="p-set-name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="p-set-blood">Blood Group</label>
+                    <input type="text" id="p-set-blood" placeholder="O+ / AB- / etc.">
+                  </div>
+                  <div class="form-group">
+                    <label for="p-set-allergies">Allergies</label>
+                    <input type="text" id="p-set-allergies" placeholder="e.g. Penicillin, Pollen">
+                  </div>
+                  <div class="form-group">
+                    <label for="p-set-emergency">Emergency Contact Number</label>
+                    <input type="tel" id="p-set-emergency" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="p-set-chronic">Chronic Conditions</label>
+                    <input type="text" id="p-set-chronic" placeholder="e.g. Asthma, Hypertension">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update Profile Settings</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Doctor Dashboard -->
+    <section class="dashboard-section hidden" id="doctorDashboard">
+      <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+          <nav class="sidebar-nav">
+            <button class="nav-link active" data-tab="d-overview">
+              <i class="fa-solid fa-notes-medical"></i> Appointments
+            </button>
+            <button class="nav-link" data-tab="d-patients">
+              <i class="fa-solid fa-hospital-user"></i> Patient Records
+            </button>
+            <button class="nav-link" data-tab="d-availability">
+              <i class="fa-solid fa-clock"></i> Availability Setup
+            </button>
+            <button class="nav-link" data-tab="d-analytics">
+              <i class="fa-solid fa-chart-pie"></i> Analytics & Performance
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+          <!-- Overview Tab -->
+          <div class="tab-pane active" id="d-overview">
+            <h1 class="page-title">Doctor Consultation Hub</h1>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <i class="fa-solid fa-user-doctor text-teal"></i>
+                <div class="stat-info">
+                  <h3>Active Consultations</h3>
+                  <p class="stat-value" id="d-stat-active">0</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fa-solid fa-check-double text-emerald"></i>
+                <div class="stat-info">
+                  <h3>Completed Today</h3>
+                  <p class="stat-value" id="d-stat-completed">0</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fa-solid fa-calendar-times text-danger"></i>
+                <div class="stat-info">
+                  <h3>Canceled Requests</h3>
+                  <p class="stat-value" id="d-stat-canceled">0</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card margin-top">
+              <h2 class="card-title">Pending Appointment Schedules</h2>
+              <div class="card-body table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Patient Name</th>
+                      <th>Date</th>
+                      <th>Time Slot</th>
+                      <th>Reason</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="d-pending-table-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card margin-top">
+              <h2 class="card-title">Today's Accepted Appointments</h2>
+              <div class="card-body table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Patient Name</th>
+                      <th>Time Slot</th>
+                      <th>Status</th>
+                      <th>Action Needed</th>
+                    </tr>
+                  </thead>
+                  <tbody id="d-today-table-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Patient Records Tab -->
+          <div class="tab-pane" id="d-patients">
+            <h1 class="page-title">Patient Medical Archives</h1>
+            <div class="search-wrapper margin-bottom">
+              <i class="fa-solid fa-search"></i>
+              <input type="text" id="d-patient-search" placeholder="Search patient history by name...">
+            </div>
+            <div class="records-grid" id="d-patient-records-list">
+              <!-- Dynamic -->
+            </div>
+          </div>
+
+          <!-- Availability Setup Tab -->
+          <div class="tab-pane" id="d-availability">
+            <h1 class="page-title">Schedule Availability</h1>
+            <div class="card max-width-md">
+              <div class="card-body">
+                <form id="d-availForm">
+                  <div class="form-group">
+                    <label>Active Days Available</label>
+                    <div class="checkbox-group">
+                      <label><input type="checkbox" name="availDays" value="Mon" checked> Mon</label>
+                      <label><input type="checkbox" name="availDays" value="Tue" checked> Tue</label>
+                      <label><input type="checkbox" name="availDays" value="Wed" checked> Wed</label>
+                      <label><input type="checkbox" name="availDays" value="Thu" checked> Thu</label>
+                      <label><input type="checkbox" name="availDays" value="Fri" checked> Fri</label>
+                      <label><input type="checkbox" name="availDays" value="Sat"> Sat</label>
+                      <label><input type="checkbox" name="availDays" value="Sun"> Sun</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="d-availSpecialty">Practice Specialty</label>
+                    <select id="d-availSpecialty">
+                      <option value="General Physician">General Physician</option>
+                      <option value="Cardiologist">Cardiologist</option>
+                      <option value="Pediatrician">Pediatrician</option>
+                      <option value="Neurologist">Neurologist</option>
+                      <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Save Practice Details</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analytics Tab -->
+          <div class="tab-pane" id="d-analytics">
+            <h1 class="page-title">Performance Analytics</h1>
+            <div class="grid-2col">
+              <div class="card">
+                <h2 class="card-title">Monthly Consultations Trend</h2>
+                <div class="card-body centered-content" id="d-chart-trend">
+                  <!-- Custom SVG Chart dynamic -->
+                </div>
+              </div>
+              <div class="card">
+                <h2 class="card-title">Patient Ratings & Reviews</h2>
+                <div class="card-body centered-content" id="d-chart-rating">
+                  <!-- Dynamic ratings -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin Dashboard -->
+    <section class="dashboard-section hidden" id="adminDashboard">
+      <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+          <nav class="sidebar-nav">
+            <button class="nav-link active" data-tab="a-overview">
+              <i class="fa-solid fa-folder-tree"></i> System Control
+            </button>
+            <button class="nav-link" data-tab="a-users">
+              <i class="fa-solid fa-users-cog"></i> User Management
+            </button>
+            <button class="nav-link" data-tab="a-reports">
+              <i class="fa-solid fa-file-invoice-dollar"></i> Global Reports
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+          <!-- System Control / Overview -->
+          <div class="tab-pane active" id="a-overview">
+            <h1 class="page-title">Admin Operations Console</h1>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <i class="fa-solid fa-users text-primary"></i>
+                <div class="stat-info">
+                  <h3>Total Patients</h3>
+                  <p class="stat-value" id="a-stat-patients">0</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fa-solid fa-user-md text-teal"></i>
+                <div class="stat-info">
+                  <h3>Practicing Doctors</h3>
+                  <p class="stat-value" id="a-stat-doctors">0</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="fa-solid fa-heart-circle-check text-emerald"></i>
+                <div class="stat-info">
+                  <h3>Overall Bookings</h3>
+                  <p class="stat-value" id="a-stat-bookings">0</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card margin-top">
+              <h2 class="card-title">Recent System Activity Log</h2>
+              <div class="card-body table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Actor</th>
+                      <th>Event Action</th>
+                      <th>Severity</th>
+                    </tr>
+                  </thead>
+                  <tbody id="a-activity-log-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Management -->
+          <div class="tab-pane" id="a-users">
+            <h1 class="page-title">Global User Roster</h1>
+            <div class="card">
+              <div class="card-body table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Assigned Role</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="a-users-table-body">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reports Tab -->
+          <div class="tab-pane" id="a-reports">
+            <h1 class="page-title">Healthcare Reports Dashboard</h1>
+            <div class="grid-2col">
+              <div class="card">
+                <h2 class="card-title">Clinic Booking Distribution</h2>
+                <div class="card-body centered-content" id="a-report-pie">
+                  <!-- Custom SVG Pie chart -->
+                </div>
+              </div>
+              <div class="card">
+                <h2 class="card-title">Monthly Registration Trajectory</h2>
+                <div class="card-body centered-content" id="a-report-line">
+                  <!-- Custom SVG line chart -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Prescription Modal (Printable/Signature Support) -->
+  <div class="modal-backdrop hidden" id="prescriptionModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Generate Medical Prescription</h2>
+        <button class="close-btn" onclick="closePrescriptionModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="prescriptionForm">
+          <div class="form-group">
+            <label for="rxDiagnosis">Diagnosis / Finding</label>
+            <input type="text" id="rxDiagnosis" placeholder="Influenza / Muscle strain" required>
+          </div>
+          <div class="form-group">
+            <label for="rxMeds">Medications (One per line with dosage instructions)</label>
+            <textarea id="rxMeds" placeholder="Paracetamol 500mg - 3 times a day&#10;Amoxicillin 250mg - Every 8 hours" rows="5" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="rxNotes">Doctor's Advice & Additional Guidelines</label>
+            <textarea id="rxNotes" placeholder="Rest for 3 days. Drink plenty of warm fluids." rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="rxSign">Doctor's Digital Signature Lock</label>
+            <input type="text" id="rxSign" placeholder="Type name to sign, e.g. Dr. Adams" required>
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Authorize & Complete Consultation</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prescription Print View Frame (Non-visual template for PDF extraction / print generation) -->
+  <div class="prescription-print-container" id="prescriptionPrintSection" style="display:none;">
+    <div class="rx-print-header">
+      <div class="rx-clinic-logo">
+        <i class="fa-solid fa-heartbeat"></i> CarePulse Clinic
+      </div>
+      <div class="rx-meta">
+        <p><strong>Date:</strong> <span id="rxPrintDate">--/--/----</span></p>
+        <p><strong>Prescription ID:</strong> <span id="rxPrintId">RX-00000</span></p>
+      </div>
+    </div>
+    <hr>
+    <div class="rx-doctor-patient">
+      <p><strong>Doctor:</strong> <span id="rxPrintDoc">Dr. Clinic Host</span></p>
+      <p><strong>Patient Name:</strong> <span id="rxPrintPatient">Patient Guest</span></p>
+    </div>
+    <div class="rx-body">
+      <h3>Rx Diagnosis:</h3>
+      <p id="rxPrintDiagnosis">Diagnosis details...</p>
+      <h3>Prescribed Medications:</h3>
+      <div id="rxPrintMedList"></div>
+      <h3>Advisory Notes:</h3>
+      <p id="rxPrintNotes">Notes detail...</p>
+    </div>
+    <div class="rx-signature-block">
+      <p>Signed electronically by:</p>
+      <div class="rx-signature-signed" id="rxPrintSignature">Dr. Signed</div>
+    </div>
+    <div class="rx-footer">
+      <p>CarePulse clinic network. This is a secure digital prescription records form.</p>
+    </div>
+  </div>
+
+  <!-- Global Toast Alerts container -->
+  <div class="toast-stack" id="toastStack"></div>
+
+  <!-- Core Javascript Controller -->
+  <script src="../global-theme.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

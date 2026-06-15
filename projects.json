@@ -12,7 +12,7 @@
   { "name": "Dual N-Back Lite App", "path": "Dual N-Back Lite App/index.html", "icon": "fas fa-brain", "tag": "Utility" },
   { "name": "Spaced-Repetition Flashcards", "path": "spaced-repetition-flashcards/index.html", "icon": "fas fa-clone", "tag": "Utility" },
   { "name": "OS Contribution Journey", "path": "open-source-contribution-journey/index.html", "icon": "fas fa-route", "tag": "Utility" },
-  { "name": "Startup Resource Hub", "path": "startup-resource-hub/index.html", "icon": "fas fa-lightbulb", "tag": "Utility" },
   { "name": "System Design Sandbox", "path": "interactive-system-design-sandbox/index.html", "icon": "fas fa-server", "tag": "Architecture" },
-  { "name": "Interactive Logic Gate Circuit Simulator", "path": "logic-gate-simulator/index.html", "icon": "fas fa-microchip", "tag": "Academic" }
+  { "name": "Interactive Logic Gate Circuit Simulator", "path": "logic-gate-simulator/index.html", "icon": "fas fa-microchip", "tag": "Academic" },
+  { "name": "Healthcare & Patient Platform", "path": "healthcare-platform/index.html", "icon": "fas fa-heartbeat", "tag": "Utility" }
 ]
