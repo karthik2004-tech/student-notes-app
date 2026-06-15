@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Query Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- AlaSQL for in-memory SQL execution -->
+    <script src="https://cdn.jsdelivr.net/npm/alasql@4"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar: Database Schema -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="ph-fill ph-database"></i>
+                <h2>Schema Explorer</h2>
+            </div>
+            
+            <div class="schema-list" id="schema-list">
+                <!-- Tables will be injected here via JS -->
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Editor Section -->
+            <section class="editor-section">
+                <div class="editor-header">
+                    <h3><i class="ph ph-terminal-window"></i> Query Editor</h3>
+                    <div class="header-actions">
+                        <button class="btn btn-outline" id="clear-btn">
+                            <i class="ph ph-trash"></i> Clear
+                        </button>
+                        <button class="btn btn-primary" id="run-btn">
+                            <i class="ph-fill ph-play"></i> Run Query
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="editor-container">
+                    <!-- Textarea for simplicity, but styled like a code editor -->
+                    <textarea id="sql-editor" spellcheck="false" placeholder="Type your SQL query here... e.g. SELECT * FROM users LIMIT 5;"></textarea>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="results-header">
+                    <h3><i class="ph ph-table"></i> Results</h3>
+                    <span class="status-badge" id="status-badge">Ready</span>
+                </div>
+                
+                <div class="results-container">
+                    <div id="error-message" class="error-message hidden"></div>
+                    
+                    <div class="table-responsive">
+                        <table id="results-table" class="hidden">
+                            <thead id="results-thead"></thead>
+                            <tbody id="results-tbody"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="empty-state" class="empty-state">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <p>Run a query to see results here.</p>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
