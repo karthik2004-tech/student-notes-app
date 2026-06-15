@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Documentation & Slide Deck Compiler</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local project styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon">📝</span>
+            <div>
+                <h1 class="brand-title">SlideCraft</h1>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-top: -2px;">Markdown Documentation Hub & Slides Compiler</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <span>←</span> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                🌓
+            </button>
+        </div>
+    </header>
+
+    <!-- Toolbar Action Panel -->
+    <section class="toolbar-panel">
+        <!-- Slide Themes Builder -->
+        <div class="theme-selector-group">
+            <span style="font-size: 0.85rem; font-weight: 700; opacity: 0.8;">Slide Deck Theme:</span>
+            <button class="theme-btn active" onclick="setSlideTheme('light', this)">Blue Purple Light</button>
+            <button class="theme-btn" onclick="setSlideTheme('dark', this)">Dark Nebula</button>
+            <button class="theme-btn" onclick="setSlideTheme('cyberpunk', this)">Cyberpunk Neon</button>
+            <button class="theme-btn" onclick="setSlideTheme('academic', this)">Classic Academic</button>
+            <button class="theme-btn" onclick="setSlideTheme('glass', this)">Frosted Glass</button>
+        </div>
+
+        <!-- Presentation Launch Actions -->
+        <div class="action-btn-group">
+            <button class="btn btn-secondary" onclick="loadDemoTemplate()">
+                <span>💡</span> Load Demo Template
+            </button>
+            <button class="btn btn-primary" onclick="launchPresentation()">
+                <span>🖥️</span> Launch Presentation Mode
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Editor Split Screen Viewport -->
+    <main class="split-workspace">
+        
+        <!-- Left Column: Code Editor Pane -->
+        <section class="pane">
+            <div class="pane-header">
+                <span>Markdown Syntax Editor</span>
+                <span class="slide-count-badge" id="slideCountBadge">1 Slide</span>
+            </div>
+            <textarea 
+                id="markdownInput" 
+                class="markdown-textarea" 
+                placeholder="Write standard markdown or import templates here..."
+                oninput="onMarkdownChange()"
+            ></textarea>
+        </section>
+
+        <!-- Right Column: HTML Render Preview Pane -->
+        <section class="pane">
+            <div class="pane-header">
+                <span>Live rendered Preview</span>
+            </div>
+            <div id="previewPane" class="preview-rendered-pane"></div>
+        </section>
+
+    </main>
+
+    <!-- Presentation Mode Fullscreen Overlay -->
+    <div id="presentationOverlay" class="presentation-overlay">
+        
+        <!-- Slides Viewport Frame -->
+        <div class="slides-viewport" id="slidesViewport" onclick="handleViewportClick(event)">
+            <!-- Slides frames will be dynamically injected here -->
+        </div>
+
+        <!-- Bottom Presenter HUD & Stat Metrics -->
+        <div class="presenter-hud-bar">
+            <!-- Left: Navigation controls and timer -->
+            <div class="hud-left">
+                <button class="hud-btn" onclick="exitPresentation()" title="Exit Presentation (Esc)">
+                    ✕ Exit
+                </button>
+                <div class="hud-timer" id="presentationTimer" title="Elapsed Presentation Timer">00:00</div>
+                <button class="hud-btn" id="timerPlayPauseBtn" onclick="toggleTimer()" title="Pause/Play Timer">
+                    ⏸
+                </button>
+            </div>
+
+            <!-- Middle: Slide progress visual fill -->
+            <div style="display: flex; align-items: center; flex: 1; justify-content: center;">
+                <span style="font-size: 0.85rem; opacity: 0.8;" id="slideIndicatorNum">Slide 1 of 1</span>
+                <div class="hud-progress-container">
+                    <div id="hudProgressFill" class="hud-progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Right: Next / Prev actions buttons -->
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="hud-btn" onclick="navigateSlide(-1)" title="Previous Slide (Left Arrow)">
+                    ◀ Prev
+                </button>
+                <button class="hud-btn" onclick="navigateSlide(1)" title="Next Slide (Right Arrow/Space)">
+                    Next ▶
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global synchronizer scripts -->
+    <script src="../global-theme.js"></script>
+    <!-- Local app logic -->
+    <script src="script.js"></script>
+</body>
+</html>
