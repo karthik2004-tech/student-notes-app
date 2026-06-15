@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Timetable Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>📅 Exam Timetable Generator</h1>
+
+    <div class="controls">
+      <input type="text" id="subject" placeholder="Subject name">
+      <input type="date" id="date">
+      <input type="time" id="time">
+      <input type="text" id="venue" placeholder="Venue">
+      <button onclick="addExam()">Add Exam</button>
+    </div>
+
+    <div id="countdown" class="countdown">Next Exam Countdown: --</div>
+
+    <div id="timetable" class="timetable"></div>
+
+    <div class="actions">
+      <button onclick="clearAll()">Clear All</button>
+      <button onclick="printTimetable()">Print/Export</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
