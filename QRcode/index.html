@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced QR Code Generator</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>QR Code Generator</h1>
+
+    <div class="card">
+
+      <input type="text" id="text" placeholder="Enter text or URL">
+
+      <div class="row">
+        <label>Size:</label>
+        <input type="range" id="size" min="100" max="300" value="180">
+      </div>
+
+      <div class="row">
+        <label>Dark Color:</label>
+        <input type="color" id="dark" value="#000000">
+      </div>
+
+      <div class="row">
+        <label>Light Color:</label>
+        <input type="color" id="light" value="#ffffff">
+      </div>
+
+      <button onclick="generateQR()">Generate QR</button>
+      <button onclick="downloadQR()">Download</button>
+
+      <div id="qrcode"></div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

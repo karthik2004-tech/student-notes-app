@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Experiment Logbook | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 12px 25px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+        }
+
+        /* Two Column Layout */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Card Common */
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #ffd200;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Emoji Picker */
+        .emoji-picker {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .emoji-option {
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .emoji-option:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .emoji-option.selected {
+            background: rgba(0,180,219,0.5);
+            border: 1px solid #00b4db;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Search & Filter */
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            outline: none;
+        }
+
+        .date-filter {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+        }
+
+        .export-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ffd200, #ff9800);
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Experiments Grid */
+        .experiments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Experiment Card */
+        .experiment-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 18px;
+            transition: 0.3s;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .experiment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .experiment-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            flex: 1;
+        }
+
+        .experiment-emoji {
+            font-size: 32px;
+            margin-left: 10px;
+        }
+
+        .experiment-date {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            margin-bottom: 12px;
+        }
+
+        .experiment-section {
+            margin: 12px 0;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+
+        .section-label {
+            color: #ffd200;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .section-content {
+            color: white;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .experiment-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .edit-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 12px;
+            background: #ffc107;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 12px;
+            background: #dc3545;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            color: rgba(255,255,255,0.5);
+            grid-column: 1 / -1;
+        }
+
+        /* Scrollbar */
+        .experiments-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .experiments-grid::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .experiments-grid::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📓 Lab Experiment Logbook</h1>
+            <div class="subtitle">Record Experiments | Observations | Results | Digital Lab Notebook</div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalExperiments">0</div>
+                <div class="stat-label">Total Experiments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="thisMonthCount">0</div>
+                <div class="stat-label">This Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="lastWeekCount">0</div>
+                <div class="stat-label">Last 7 Days</div>
+            </div>
+        </div>
+
+        <div class="two-columns">
+            <!-- Left: Add/Edit Experiment Form -->
+            <div class="card">
+                <div class="card-title" id="formTitle">
+                    <span>🧪</span> Add New Experiment
+                </div>
+                
+                <div class="form-group">
+                    <label>🔬 Experiment Title</label>
+                    <input type="text" id="expTitle" placeholder="e.g., Titration of HCl with NaOH">
+                </div>
+                
+                <div class="form-group">
+                    <label>📅 Date</label>
+                    <input type="date" id="expDate">
+                </div>
+                
+                <div class="form-group">
+                    <label>😊 Experiment Emoji (Optional)</label>
+                    <div class="emoji-picker" id="emojiPicker">
+                        <span class="emoji-option" data-emoji="🧪">🧪</span>
+                        <span class="emoji-option" data-emoji="🔬">🔬</span>
+                        <span class="emoji-option" data-emoji="⚗️">⚗️</span>
+                        <span class="emoji-option" data-emoji="🧫">🧫</span>
+                        <span class="emoji-option" data-emoji="🧴">🧴</span>
+                        <span class="emoji-option" data-emoji="🌡️">🌡️</span>
+                        <span class="emoji-option" data-emoji="🔥">🔥</span>
+                        <span class="emoji-option" data-emoji="💧">💧</span>
+                        <span class="emoji-option" data-emoji="🧪">🧪</span>
+                    </div>
+                    <input type="hidden" id="selectedEmoji" value="🧪">
+                </div>
+                
+                <div class="form-group">
+                    <label>📝 Procedure / Method</label>
+                    <textarea id="expProcedure" placeholder="Step-by-step procedure of the experiment..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>👀 Observations</label>
+                    <textarea id="expObservation" placeholder="What did you observe? Color change, bubbles, temperature change..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>📊 Results / Conclusion</label>
+                    <textarea id="expResult" placeholder="Final results, calculations, conclusion..."></textarea>
+                </div>
+                
+                <button class="add-btn" id="saveBtn">💾 Save Experiment</button>
+                <button class="add-btn" id="cancelEditBtn" style="background: #6c757d; margin-top: 10px; display: none;">❌ Cancel Edit</button>
+            </div>
+
+            <!-- Right: Experiments List -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📋</span> Experiment Logbook
+                </div>
+                
+                <div class="search-filter">
+                    <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search experiments...">
+                    <input type="month" class="date-filter" id="monthFilter">
+                    <button class="export-btn" id="exportBtn">📄 Export as Text</button>
+                </div>
+                
+                <div class="experiments-grid" id="experimentsGrid">
+                    <!-- Dynamic experiments -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let experiments = [];
+        let nextId = 1;
+        let isEditing = false;
+        let editId = null;
+        let selectedEmoji = "🧪";
+
+        // Set today's date as default
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('expDate').value = today;
+        }
+
+        // Load from localStorage
+        function loadExperiments() {
+            const saved = localStorage.getItem('labExperiments');
+            if(saved) {
+                experiments = JSON.parse(saved);
+                if(experiments.length > 0) {
+                    nextId = Math.max(...experiments.map(e => e.id)) + 1;
+                }
+            } else {
+                // Default experiments
+                const today = new Date().toISOString().split('T')[0];
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
+                
+                experiments = [
+                    { id: nextId++, title: "Acid-Base Titration", date: yesterdayStr, emoji: "🧪", procedure: "1. Fill burette with NaOH\n2. Add phenolphthalein to HCl\n3. Titrate until pink color appears", observation: "Solution turned pink at equivalence point", result: "Concentration of HCl = 0.1M" },
+                    { id: nextId++, title: "Microscope Observation", date: today, emoji: "🔬", procedure: "1. Prepare onion cell slide\n2. Stain with iodine\n3. Observe under microscope", observation: "Cell wall, nucleus, cytoplasm visible", result: "Plant cell structure clearly observed" }
+                ];
+            }
+            renderExperiments();
+            updateStats();
+        }
+
+        // Save to localStorage
+        function saveExperiments() {
+            localStorage.setItem('labExperiments', JSON.stringify(experiments));
+        }
+
+        // Add experiment
+        function addExperiment() {
+            const title = document.getElementById('expTitle').value.trim();
+            const date = document.getElementById('expDate').value;
+            const procedure = document.getElementById('expProcedure').value.trim();
+            const observation = document.getElementById('expObservation').value.trim();
+            const result = document.getElementById('expResult').value.trim();
+
+            if(!title || !procedure || !observation || !result) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            const newExperiment = {
+                id: nextId++,
+                title: title,
+                date: date,
+                emoji: selectedEmoji,
+                procedure: procedure,
+                observation: observation,
+                result: result
+            };
+
+            experiments.unshift(newExperiment);
+            saveExperiments();
+            clearForm();
+            renderExperiments();
+            updateStats();
+        }
+
+        // Update experiment
+        function updateExperiment() {
+            const title = document.getElementById('expTitle').value.trim();
+            const date = document.getElementById('expDate').value;
+            const procedure = document.getElementById('expProcedure').value.trim();
+            const observation = document.getElementById('expObservation').value.trim();
+            const result = document.getElementById('expResult').value.trim();
+
+            if(!title || !procedure || !observation || !result) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            const index = experiments.findIndex(e => e.id === editId);
+            if(index !== -1) {
+                experiments[index] = {
+                    ...experiments[index],
+                    title: title,
+                    date: date,
+                    emoji: selectedEmoji,
+                    procedure: procedure,
+                    observation: observation,
+                    result: result
+                };
+                saveExperiments();
+                clearForm();
+                renderExperiments();
+                updateStats();
+            }
+        }
+
+        // Edit experiment
+        function editExperiment(id) {
+            const experiment = experiments.find(e => e.id === id);
+            if(experiment) {
+                isEditing = true;
+                editId = id;
+                
+                document.getElementById('expTitle').value = experiment.title;
+                document.getElementById('expDate').value = experiment.date;
+                document.getElementById('expProcedure').value = experiment.procedure;
+                document.getElementById('expObservation').value = experiment.observation;
+                document.getElementById('expResult').value = experiment.result;
+                
+                selectedEmoji = experiment.emoji || "🧪";
+                document.getElementById('selectedEmoji').value = selectedEmoji;
+                
+                // Highlight selected emoji
+                document.querySelectorAll('.emoji-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                    if(opt.dataset.emoji === selectedEmoji) {
+                        opt.classList.add('selected');
+                    }
+                });
+                
+                document.getElementById('formTitle').innerHTML = '<span>✏️</span> Edit Experiment';
+                document.getElementById('saveBtn').textContent = '✏️ Update Experiment';
+                document.getElementById('cancelEditBtn').style.display = 'block';
+            }
+        }
+
+        // Delete experiment
+        function deleteExperiment(id) {
+            if(confirm('Delete this experiment from your logbook?')) {
+                experiments = experiments.filter(e => e.id !== id);
+                saveExperiments();
+                renderExperiments();
+                updateStats();
+            }
+        }
+
+        // Clear form
+        function clearForm() {
+            document.getElementById('expTitle').value = '';
+            setDefaultDate();
+            document.getElementById('expProcedure').value = '';
+            document.getElementById('expObservation').value = '';
+            document.getElementById('expResult').value = '';
+            
+            selectedEmoji = "🧪";
+            document.getElementById('selectedEmoji').value = "🧪";
+            document.querySelectorAll('.emoji-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if(opt.dataset.emoji === "🧪") {
+                    opt.classList.add('selected');
+                }
+            });
+            
+            isEditing = false;
+            editId = null;
+            document.getElementById('formTitle').innerHTML = '<span>🧪</span> Add New Experiment';
+            document.getElementById('saveBtn').textContent = '💾 Save Experiment';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            clearForm();
+        }
+
+        // Update stats
+        function updateStats() {
+            const total = experiments.length;
+            const now = new Date();
+            const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            const lastWeek = new Date();
+            lastWeek.setDate(lastWeek.getDate() - 7);
+            
+            const thisMonth = experiments.filter(e => e.date.startsWith(currentMonth)).length;
+            const last7Days = experiments.filter(e => new Date(e.date) >= lastWeek).length;
+            
+            document.getElementById('totalExperiments').textContent = total;
+            document.getElementById('thisMonthCount').textContent = thisMonth;
+            document.getElementById('lastWeekCount').textContent = last7Days;
+        }
+
+        // Render experiments
+        function renderExperiments() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const monthFilter = document.getElementById('monthFilter').value;
+            
+            let filtered = [...experiments];
+            
+            if(searchTerm) {
+                filtered = filtered.filter(e => 
+                    e.title.toLowerCase().includes(searchTerm) ||
+                    e.procedure.toLowerCase().includes(searchTerm) ||
+                    e.observation.toLowerCase().includes(searchTerm) ||
+                    e.result.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if(monthFilter) {
+                filtered = filtered.filter(e => e.date.startsWith(monthFilter));
+            }
+            
+            // Sort by date (newest first)
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const grid = document.getElementById('experimentsGrid');
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state">📭 No experiments found!<br>Start recording your lab experiments.</div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(exp => `
+                <div class="experiment-card">
+                    <div class="experiment-header">
+                        <div class="experiment-title">${escapeHtml(exp.title)}</div>
+                        <div class="experiment-emoji">${exp.emoji || '🧪'}</div>
+                    </div>
+                    <div class="experiment-date">📅 ${exp.date}</div>
+                    
+                    <div class="experiment-section">
+                        <div class="section-label">📝 Procedure:</div>
+                        <div class="section-content">${escapeHtml(exp.procedure.substring(0, 100))}${exp.procedure.length > 100 ? '...' : ''}</div>
+                    </div>
+                    
+                    <div class="experiment-section">
+                        <div class="section-label">👀 Observations:</div>
+                        <div class="section-content">${escapeHtml(exp.observation.substring(0, 80))}${exp.observation.length > 80 ? '...' : ''}</div>
+                    </div>
+                    
+                    <div class="experiment-section">
+                        <div class="section-label">📊 Results:</div>
+                        <div class="section-content">${escapeHtml(exp.result.substring(0, 80))}${exp.result.length > 80 ? '...' : ''}</div>
+                    </div>
+                    
+                    <div class="experiment-actions">
+                        <button class="edit-btn" onclick="editExperiment(${exp.id})">✏️ Edit</button>
+                        <button class="delete-btn" onclick="deleteExperiment(${exp.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Export as text
+        function exportAsText() {
+            if(experiments.length === 0) {
+                alert('No experiments to export!');
+                return;
+            }
+            
+            let content = "=== LAB EXPERIMENT LOGBOOK ===\n";
+            content += `Exported on: ${new Date().toLocaleString()}\n`;
+            content += `Total Experiments: ${experiments.length}\n`;
+            content += "=".repeat(50) + "\n\n";
+            
+            experiments.forEach((exp, idx) => {
+                content += `[${idx + 1}] ${exp.title}\n`;
+                content += `Date: ${exp.date}\n`;
+                content += `Emoji: ${exp.emoji || '🧪'}\n`;
+                content += `Procedure:\n${exp.procedure}\n\n`;
+                content += `Observations:\n${exp.observation}\n\n`;
+                content += `Results:\n${exp.result}\n`;
+                content += "-".repeat(40) + "\n\n";
+            });
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `lab_logbook_${new Date().toISOString().split('T')[0]}.txt`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Emoji selection
+        function setupEmojiPicker() {
+            document.querySelectorAll('.emoji-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    selectedEmoji = opt.dataset.emoji;
+                    document.getElementById('selectedEmoji').value = selectedEmoji;
+                });
+            });
+        }
+
+        // Event listeners
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            if(isEditing) {
+                updateExperiment();
+            } else {
+                addExperiment();
+            }
+        });
+        document.getElementById('cancelEditBtn').addEventListener('click', cancelEdit);
+        document.getElementById('searchInput').addEventListener('input', renderExperiments);
+        document.getElementById('monthFilter').addEventListener('change', renderExperiments);
+        document.getElementById('exportBtn').addEventListener('click', exportAsText);
+
+        // Make functions global
+        window.editExperiment = editExperiment;
+        window.deleteExperiment = deleteExperiment;
+
+        // Initialize
+        setDefaultDate();
+        setupEmojiPicker();
+        loadExperiments();
+    </script>
+</body>
+</html>

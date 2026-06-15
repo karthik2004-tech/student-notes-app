@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table Explorer | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Search */
+        .search-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 300px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+        }
+
+        .legend-color.nonmetal { background: #4d96ff; }
+        .legend-color.noble-gas { background: #20c997; }
+        .legend-color.alkali-metal { background: #ff6b6b; }
+        .legend-color.alkaline-earth { background: #ffd200; }
+        .legend-color.transition { background: #fd7e14; }
+        .legend-color.lanthanide { background: #e83e8c; }
+        .legend-color.actinide { background: #6f42c1; }
+        .legend-color.metalloid { background: #20c997; }
+        .legend-color.halogen { background: #28a745; }
+
+        /* Periodic Table Grid */
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        /* Element Card */
+        .element {
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 8px 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .element:hover {
+            transform: scale(1.05);
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(0,255,255,0.3);
+        }
+
+        .element.highlight {
+            background: rgba(0,255,255,0.3);
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .element-symbol {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .element-number {
+            font-size: 9px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Empty cell */
+        .empty-cell {
+            background: transparent;
+        }
+
+        /* Category Colors */
+        .element.nonmetal { background: #4d96ff; }
+        .element.noble-gas { background: #20c997; }
+        .element.alkali-metal { background: #ff6b6b; }
+        .element.alkaline-earth { background: #ffd200; color: #333; }
+        .element.transition { background: #fd7e14; }
+        .element.lanthanide { background: #e83e8c; }
+        .element.actinide { background: #6f42c1; }
+        .element.metalloid { background: #20c997; }
+        .element.halogen { background: #28a745; }
+
+        .element.alkaline-earth .element-symbol,
+        .element.alkali-metal .element-symbol,
+        .element.transition .element-symbol,
+        .element.lanthanide .element-symbol,
+        .element.actinide .element-symbol,
+        .element.halogen .element-symbol,
+        .element.metalloid .element-symbol {
+            color: white;
+        }
+
+        /* Element Detail Panel */
+        .detail-panel {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+            display: none;
+        }
+
+        .detail-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .detail-symbol {
+            font-size: 48px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        .detail-name {
+            font-size: 28px;
+            color: white;
+        }
+
+        .detail-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 12px;
+        }
+
+        .info-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 11px;
+        }
+
+        .info-value {
+            color: #ffd200;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .fun-fact {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #00ffcc;
+        }
+
+        .fun-fact-label {
+            color: #00ffcc;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .fun-fact-text {
+            color: white;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .close-detail {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1000px) {
+            .periodic-table {
+                gap: 4px;
+            }
+            .element-symbol {
+                font-size: 12px;
+            }
+            .element-number {
+                font-size: 7px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚛️ Periodic Table Explorer</h1>
+            <div class="subtitle">Interactive Periodic Table | Click any element to learn more</div>
+        </div>
+
+        <div class="search-section">
+            <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search element (e.g., Hydrogen, Gold, Oxygen)...">
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="legend-color nonmetal"></div><span>Non-metal</span></div>
+            <div class="legend-item"><div class="legend-color noble-gas"></div><span>Noble Gas</span></div>
+            <div class="legend-item"><div class="legend-color alkali-metal"></div><span>Alkali Metal</span></div>
+            <div class="legend-item"><div class="legend-color alkaline-earth"></div><span>Alkaline Earth</span></div>
+            <div class="legend-item"><div class="legend-color transition"></div><span>Transition Metal</span></div>
+            <div class="legend-item"><div class="legend-color halogen"></div><span>Halogen</span></div>
+            <div class="legend-item"><div class="legend-color metalloid"></div><span>Metalloid</span></div>
+        </div>
+
+        <div class="periodic-table" id="periodicTable">
+            <!-- Dynamic periodic table -->
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+            <div class="detail-header">
+                <div>
+                    <span class="detail-symbol" id="detailSymbol">H</span>
+                    <span class="detail-name" id="detailName">Hydrogen</span>
+                </div>
+                <button class="close-detail" id="closeDetail">✖ Close</button>
+            </div>
+            <div class="detail-info-grid">
+                <div class="info-card"><div class="info-label">Atomic Number</div><div class="info-value" id="detailNumber">1</div></div>
+                <div class="info-card"><div class="info-label">Atomic Mass</div><div class="info-value" id="detailMass">1.008</div></div>
+                <div class="info-card"><div class="info-label">Category</div><div class="info-value" id="detailCategory">Non-metal</div></div>
+                <div class="info-card"><div class="info-label">Electron Config</div><div class="info-value" id="detailConfig">1s¹</div></div>
+            </div>
+            <div class="fun-fact">
+                <div class="fun-fact-label">💡 Fun Fact</div>
+                <div class="fun-fact-text" id="detailFact">Hydrogen is the most abundant element in the universe, making up about 75% of all matter!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Element Data (First 20 + some important ones)
+        const elements = [
+            { number: 1, symbol: "H", name: "Hydrogen", category: "nonmetal", mass: "1.008", config: "1s¹", fact: "Hydrogen is the lightest and most abundant element in the universe, making up about 75% of all matter!" },
+            { number: 2, symbol: "He", name: "Helium", category: "noble-gas", mass: "4.0026", config: "1s²", fact: "Helium is the second most abundant element in the universe and was first discovered in the Sun!" },
+            { number: 3, symbol: "Li", name: "Lithium", category: "alkali-metal", mass: "6.94", config: "1s² 2s¹", fact: "Lithium is used in rechargeable batteries for phones and laptops." },
+            { number: 4, symbol: "Be", name: "Beryllium", category: "alkaline-earth", mass: "9.012", config: "1s² 2s²", fact: "Beryllium is used as a lightweight component in aerospace and defense industries." },
+            { number: 5, symbol: "B", name: "Boron", category: "metalloid", mass: "10.81", config: "1s² 2s² 2p¹", fact: "Boron is used in fiberglass and as a semiconductor dopant." },
+            { number: 6, symbol: "C", name: "Carbon", category: "nonmetal", mass: "12.011", config: "1s² 2s² 2p²", fact: "Carbon is the basis of all known life on Earth and can form more compounds than any other element." },
+            { number: 7, symbol: "N", name: "Nitrogen", category: "nonmetal", mass: "14.007", config: "1s² 2s² 2p³", fact: "Nitrogen makes up about 78% of Earth's atmosphere." },
+            { number: 8, symbol: "O", name: "Oxygen", category: "nonmetal", mass: "15.999", config: "1s² 2s² 2p⁴", fact: "Oxygen is the third most abundant element in the universe and essential for respiration." },
+            { number: 9, symbol: "F", name: "Fluorine", category: "halogen", mass: "18.998", config: "1s² 2s² 2p⁵", fact: "Fluorine is the most reactive and electronegative of all elements." },
+            { number: 10, symbol: "Ne", name: "Neon", category: "noble-gas", mass: "20.180", config: "1s² 2s² 2p⁶", fact: "Neon is used in advertising signs, producing a distinctive reddish-orange glow." },
+            { number: 11, symbol: "Na", name: "Sodium", category: "alkali-metal", mass: "22.990", config: "1s² 2s² 2p⁶ 3s¹", fact: "Sodium is highly reactive with water and is essential for nerve function." },
+            { number: 12, symbol: "Mg", name: "Magnesium", category: "alkaline-earth", mass: "24.305", config: "1s² 2s² 2p⁶ 3s²", fact: "Magnesium is the central ion in chlorophyll, making it essential for photosynthesis." },
+            { number: 13, symbol: "Al", name: "Aluminum", category: "transition", mass: "26.982", config: "1s² 2s² 2p⁶ 3s² 3p¹", fact: "Aluminum is the most abundant metal in Earth's crust." },
+            { number: 14, symbol: "Si", name: "Silicon", category: "metalloid", mass: "28.086", config: "1s² 2s² 2p⁶ 3s² 3p²", fact: "Silicon is the second most abundant element in Earth's crust and the basis of modern electronics." },
+            { number: 15, symbol: "P", name: "Phosphorus", category: "nonmetal", mass: "30.974", config: "1s² 2s² 2p⁶ 3s² 3p³", fact: "Phosphorus is essential for life and is a key component of DNA and ATP." },
+            { number: 16, symbol: "S", name: "Sulfur", category: "nonmetal", mass: "32.06", config: "1s² 2s² 2p⁶ 3s² 3p⁴", fact: "Sulfur has a distinct smell of rotten eggs and is used in matches and gunpowder." },
+            { number: 17, symbol: "Cl", name: "Chlorine", category: "halogen", mass: "35.45", config: "1s² 2s² 2p⁶ 3s² 3p⁵", fact: "Chlorine is used to disinfect drinking water and swimming pools." },
+            { number: 18, symbol: "Ar", name: "Argon", category: "noble-gas", mass: "39.95", config: "1s² 2s² 2p⁶ 3s² 3p⁶", fact: "Argon is the third most abundant gas in Earth's atmosphere, after nitrogen and oxygen." },
+            { number: 19, symbol: "K", name: "Potassium", category: "alkali-metal", mass: "39.098", config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", fact: "Potassium is essential for plant growth and is a key electrolyte in the human body." },
+            { number: 20, symbol: "Ca", name: "Calcium", category: "alkaline-earth", mass: "40.078", config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", fact: "Calcium is the most abundant metal in the human body, essential for bones and teeth." },
+            { number: 26, symbol: "Fe", name: "Iron", category: "transition", mass: "55.845", config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶", fact: "Iron is the most common element on Earth by mass, making up much of Earth's core." },
+            { number: 29, symbol: "Cu", name: "Copper", category: "transition", mass: "63.546", config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d¹⁰", fact: "Copper is an excellent conductor of electricity and is used in electrical wiring." },
+            { number: 47, symbol: "Ag", name: "Silver", category: "transition", mass: "107.87", config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s¹ 4d¹⁰", fact: "Silver has the highest electrical conductivity of any metal." },
+            { number: 79, symbol: "Au", name: "Gold", category: "transition", mass: "196.97", config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s¹ 4f¹⁴ 5d¹⁰", fact: "Gold is the most malleable and ductile metal, and it doesn't tarnish or corrode." }
+        ];
+
+        let currentSelectedElement = null;
+        let searchTerm = '';
+
+        // Position mapping for periodic table layout (rows 1-7, columns 1-18)
+        const positions = {
+            1: { row: 1, col: 1 }, 2: { row: 1, col: 18 },
+            3: { row: 2, col: 1 }, 4: { row: 2, col: 2 }, 5: { row: 2, col: 13 }, 6: { row: 2, col: 14 }, 7: { row: 2, col: 15 }, 8: { row: 2, col: 16 }, 9: { row: 2, col: 17 }, 10: { row: 2, col: 18 },
+            11: { row: 3, col: 1 }, 12: { row: 3, col: 2 }, 13: { row: 3, col: 13 }, 14: { row: 3, col: 14 }, 15: { row: 3, col: 15 }, 16: { row: 3, col: 16 }, 17: { row: 3, col: 17 }, 18: { row: 3, col: 18 },
+            19: { row: 4, col: 1 }, 20: { row: 4, col: 2 }, 21: { row: 4, col: 3 }, 22: { row: 4, col: 4 }, 23: { row: 4, col: 5 }, 24: { row: 4, col: 6 }, 25: { row: 4, col: 7 }, 26: { row: 4, col: 8 }, 27: { row: 4, col: 9 }, 28: { row: 4, col: 10 }, 29: { row: 4, col: 11 }, 30: { row: 4, col: 12 }, 31: { row: 4, col: 13 }, 32: { row: 4, col: 14 }, 33: { row: 4, col: 15 }, 34: { row: 4, col: 16 }, 35: { row: 4, col: 17 }, 36: { row: 4, col: 18 }
+        };
+
+        // Manual position for extra elements
+        positions[47] = { row: 5, col: 11 };
+        positions[79] = { row: 6, col: 11 };
+
+        function getElementClass(category) {
+            const classes = {
+                'nonmetal': 'nonmetal',
+                'noble-gas': 'noble-gas',
+                'alkali-metal': 'alkali-metal',
+                'alkaline-earth': 'alkaline-earth',
+                'transition': 'transition',
+                'halogen': 'halogen',
+                'metalloid': 'metalloid'
+            };
+            return classes[category] || 'transition';
+        }
+
+        function renderPeriodicTable() {
+            const container = document.getElementById('periodicTable');
+            let html = '';
+
+            for(let row = 1; row <= 7; row++) {
+                for(let col = 1; col <= 18; col++) {
+                    const element = elements.find(e => positions[e.number]?.row === row && positions[e.number]?.col === col);
+                    
+                    if(element) {
+                        const shouldHighlight = searchTerm && 
+                            (element.name.toLowerCase().includes(searchTerm) || 
+                             element.symbol.toLowerCase().includes(searchTerm));
+                        const highlightClass = shouldHighlight ? 'highlight' : '';
+                        
+                        html += `
+                            <div class="element ${getElementClass(element.category)} ${highlightClass}" onclick="showElementDetail(${element.number})">
+                                <div class="element-symbol">${element.symbol}</div>
+                                <div class="element-number">${element.number}</div>
+                            </div>
+                        `;
+                    } else {
+                        html += `<div class="empty-cell"></div>`;
+                    }
+                }
+            }
+            container.innerHTML = html;
+        }
+
+        function showElementDetail(number) {
+            const element = elements.find(e => e.number === number);
+            if(!element) return;
+
+            currentSelectedElement = element;
+            
+            document.getElementById('detailSymbol').textContent = element.symbol;
+            document.getElementById('detailName').textContent = element.name;
+            document.getElementById('detailNumber').textContent = element.number;
+            document.getElementById('detailMass').textContent = element.mass;
+            document.getElementById('detailCategory').textContent = element.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            document.getElementById('detailConfig').textContent = element.config;
+            document.getElementById('detailFact').textContent = element.fact;
+            
+            document.getElementById('detailPanel').classList.add('active');
+            window.scrollTo({ top: document.getElementById('detailPanel').offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function closeDetail() {
+            document.getElementById('detailPanel').classList.remove('active');
+        }
+
+        function handleSearch() {
+            searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            renderPeriodicTable();
+            
+            if(searchTerm) {
+                const found = elements.find(e => 
+                    e.name.toLowerCase().includes(searchTerm) || 
+                    e.symbol.toLowerCase().includes(searchTerm)
+                );
+                if(found) {
+                    showElementDetail(found.number);
+                }
+            }
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', handleSearch);
+        document.getElementById('closeDetail').addEventListener('click', closeDetail);
+
+        // Make function global
+        window.showElementDetail = showElementDetail;
+
+        // Initialize
+        renderPeriodicTable();
+    </script>
+</body>
+</html>

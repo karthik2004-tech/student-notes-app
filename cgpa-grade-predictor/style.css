@@ -76,6 +76,22 @@ body {
   border-radius: 999px;
   margin-bottom: 2rem;
   animation: fadeDown 0.7s ease both;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,229,160,0.25), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { left: -100%; }
+  60%, 100% { left: 150%; }
 }
 
 .hero h1 {
@@ -90,6 +106,15 @@ body {
   -webkit-text-stroke: 3px var(--accent);
   color: transparent;
   display: block;
+  animation: fadeDown 0.7s 0.1s ease both, flicker 6s 1.5s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 90%, 100% { opacity: 1; }
+  92%  { opacity: 0.6; }
+  94%  { opacity: 1; }
+  96%  { opacity: 0.7; }
+  98%  { opacity: 1; }
 }
 
 .tagline {
@@ -139,12 +164,24 @@ body {
   50% { opacity: 1; }
 }
 
-/* ── SECTIONS ── */
+/* ── SCROLL REVEAL ── */
 .section {
   position: relative; z-index: 1;
   max-width: 1000px;
   margin: 0 auto;
   padding: 5rem 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: revealSection 0.7s ease forwards;
+}
+
+.section:nth-child(2) { animation-delay: 0.1s; }
+.section:nth-child(3) { animation-delay: 0.2s; }
+.section:nth-child(4) { animation-delay: 0.3s; }
+.section:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes revealSection {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .section-label {
@@ -177,7 +214,7 @@ body {
   padding: 2rem 1.5rem;
   position: relative;
   overflow: hidden;
-  transition: transform 0.25s, border-color 0.25s;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s, box-shadow 0.3s;
 }
 
 .step-card::before {
@@ -188,8 +225,22 @@ body {
   transition: opacity 0.3s;
 }
 
-.step-card:hover { transform: translateY(-6px); border-color: rgba(0,229,160,0.3); }
+.step-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(0,229,160,0.35);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(0,229,160,0.08);
+}
 .step-card:hover::before { opacity: 1; }
+
+.step-card:hover .step-icon {
+  animation: iconBounce 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes iconBounce {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
 
 .step-num {
   font-family: var(--mono);
@@ -237,6 +288,12 @@ body {
 .accent-card {
   border-color: rgba(0,229,160,0.25);
   background: linear-gradient(135deg, rgba(0,229,160,0.06), var(--surface));
+  animation: glowBorder 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowBorder {
+  from { box-shadow: 0 0 10px rgba(0,229,160,0.05); }
+  to   { box-shadow: 0 0 25px rgba(0,229,160,0.15); }
 }
 
 .formula-title {
@@ -405,12 +462,17 @@ tr:hover td { background: rgba(255,255,255,0.015); }
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  transition: border-color 0.25s, transform 0.25s;
+  transition: border-color 0.3s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
 }
 
 .tip-card:hover {
-  border-color: rgba(77,159,255,0.3);
-  transform: translateY(-3px);
+  border-color: rgba(77,159,255,0.35);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.25), 0 0 20px rgba(77,159,255,0.08);
+}
+
+.tip-card:hover .tip-icon {
+  animation: iconBounce 0.5s cubic-bezier(0.34,1.56,0.64,1);
 }
 
 .tip-icon { font-size: 1.5rem; }
