@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" role="main" aria-label="Excuse Generator Panel">
     <h1>🤖 AI Excuse Generator</h1>
 
     <input type="text" id="name" placeholder="Your Name">
@@ -36,6 +36,9 @@
         <button onclick="copyText()">Copy</button>
         <button onclick="downloadText()">Download</button>
     </div>
+
+    <div class="history-container" id="history-list"></div>
+    <button id="clear-history-btn">Clear History</button>
 
     <button id="themeBtn">🌙 Toggle Theme</button>
 </div>

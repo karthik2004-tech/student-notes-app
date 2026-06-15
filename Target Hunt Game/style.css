@@ -342,3 +342,8 @@ body {
   .m-value { font-size: 0.7rem; }
   .metric { min-width: 30px; }
 }
+
+/* UI/UX: Custom gaming crosshair target cursors */
+.game-board {
+    cursor: crosshair !important;
+}

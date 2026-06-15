@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Keyboard Shortcut Cheatsheet</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>⌨️ Keyboard Shortcut Cheatsheet</h1>
+
+    <!-- Tool Selector -->
+    <div class="controls">
+      <label for="toolSelect">Select Tool:</label>
+      <select id="toolSelect">
+        <option value="vscode">VS Code</option>
+        <option value="linux">Linux</option>
+        <option value="chrome">Chrome</option>
+        <option value="windows">Windows</option>
+      </select>
+
+      <input type="text" id="searchInput" placeholder="Search shortcuts...">
+    </div>
+
+    <!-- Shortcuts Grid -->
+    <div id="shortcutsGrid" class="grid"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

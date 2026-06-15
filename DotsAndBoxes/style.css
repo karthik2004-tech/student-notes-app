@@ -293,3 +293,8 @@ button:hover{
   0 0 20px #ef4444,
   0 0 40px rgba(239,68,68,0.4);
 }
+/* UI/UX: Dynamic scoreboard player active turn indicator styling */
+.active-player {
+    border-bottom: 2px solid #3b82f6 !important;
+    font-weight: 700 !important;
+}
