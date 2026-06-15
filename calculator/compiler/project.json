@@ -1,0 +1,20 @@
+{
+  "title": "Compiler Working Simulator",
+  "description": "A multi-stage compiler pipeline simulator with a custom regex lexer, recursive-descent parser for arithmetic expressions, abstract syntax tree visualization, and pseudo-assembly code generation — all in native JavaScript with zero dependencies.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["compiler", "lexer", "parser", "ast", "code-generation", "recursive-descent", "assembly", "educational", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Lexical analyzer: regex-based tokenizer matching NUMBER, IDENTIFIER, OPERATOR (+-*/), ASSIGNMENT (=), LPAREN/RPAREN, SEMICOLON tokens — with whitespace and comment skipping via skip:true flag",
+    "Recursive-descent parser: Expression → Term → Factor → Primary hierarchy with Multiplication/Division left-associative via while-loop in parseFactor(), Addition/Subtraction in parseTerm(), and parenthesized grouping in parsePrimary()",
+    "Operator precedence: parseTerm handles +- at top level, parseFactor handles */ at inner level (multiplication binds tighter than addition) — correct for inputs like 5 + 3 * 2 → 5 + (3*2)",
+    "Error handling: try/catch around parse() catches SyntaxError with specific messages ('Missing closing parenthesis', 'Unexpected token'), triggers CSS shake animation on editorWrap, displays crimson overlay with parse error detail",
+    "AST tree renderer: recursive renderASTNode() builds nested <div> structure with indented node blocks and border-left connecting lines — Program→Assignment→BinaryOp→(Number|Identifier) hierarchy clearly visible",
+    "Pseudo-assembly code generator: genCode() walks AST and emits MOV, ADD, SUB, MUL, DIV, LDR, STR instructions with virtual register allocation (R1, R2, …). Assignment maps to STR <var>, <reg>. Expressions compute into fresh registers",
+    "Pipeline chevron indicator: 4-stage visual progress (LEX ▶ PARSE ▶ AST ▶ CODEGEN) with state classes .act (cyan), .done (green), .err (crimson) — updates sequentially during compile() with error halting",
+    "Three-tab output: TOKEN STREAM (colored badges per type), AST TREE (nested indented node view), ASSEMBLY (address + mnemonic + args columns) — switchable via click without re-compilation",
+    "Preset cycling: 6 source strings including balanced/multi-line expressions and deliberately malformed input (unbalanced paren) to demonstrate error handling"
+  ]
+}

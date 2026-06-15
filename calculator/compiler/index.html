@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Compiler Working Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="topRow">
+    <!-- Editor -->
+    <div id="editorWrap">
+      <textarea id="srcEditor" spellcheck="false">x = 5 + 3 * 2</textarea>
+    </div>
+
+    <!-- Pipeline indicator -->
+    <div id="pipeline">
+      <div class="pp" id="ppLex">LEX</div><div class="ppArr">&#9654;</div>
+      <div class="pp" id="ppParse">PARSE</div><div class="ppArr">&#9654;</div>
+      <div class="pp" id="ppAst">AST</div><div class="ppArr">&#9654;</div>
+      <div class="pp" id="ppCode">CODEGEN</div>
+    </div>
+
+    <!-- Telemetry -->
+    <div id="telemetry">
+      <div class="tm"><span class="tl">TOKENS</span><span id="tokVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">AST DEPTH</span><span id="depthVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">CYCLES</span><span id="cycleVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">STATUS</span><span id="statusVal" class="tv">ready</span></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div id="tabs">
+    <span class="tab active" data-mode="tokens">TOKEN STREAM</span>
+    <span class="tab" data-mode="ast">AST TREE</span>
+    <span class="tab" data-mode="code">ASSEMBLY</span>
+  </div>
+
+  <!-- Output arena -->
+  <div id="outputWrap">
+    <div id="outputView"></div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <button id="compileBtn">COMPILE</button>
+    <button id="presetBtn">LOAD PRESET</button>
+    <button id="flushBtn">FLUSH</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
