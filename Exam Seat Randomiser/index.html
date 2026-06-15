@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Seat Randomiser</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🪑 Exam Seat Randomiser</h1>
+
+    <div class="controls">
+      <label>Rows: <input type="number" id="rows" min="1" value="5"></label>
+      <label>Columns: <input type="number" id="cols" min="1" value="5"></label>
+      <textarea id="students" placeholder="Paste or type student names, one per line"></textarea>
+      <button onclick="randomiseSeats()">Randomise</button>
+      <button onclick="exportPlan()">Export Plan</button>
+      <button onclick="printPlan()">Print View</button>
+    </div>
+
+    <div id="seatGrid" class="seat-grid"></div>
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
