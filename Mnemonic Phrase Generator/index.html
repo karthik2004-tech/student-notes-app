@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mnemonic Phrase Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🧠 Mnemonic Phrase Generator</h1>
+
+    <div class="controls">
+      <textarea id="words" placeholder="Enter words (e.g. OSI layers, planets), one per line"></textarea>
+      <button onclick="generateMnemonics()">Generate Mnemonics</button>
+    </div>
+
+    <div id="output" class="output"></div>
+
+    <h2>⭐ Saved Mnemonics</h2>
+    <div id="saved" class="saved"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
