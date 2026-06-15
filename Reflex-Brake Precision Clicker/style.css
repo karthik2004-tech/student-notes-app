@@ -287,3 +287,11 @@ body {
 @media (min-width: 800px) {
   :root { --cell-size: 150px; }
 }
+
+/* UI/UX: Reflex tester brake lamp visualization style */
+.brake-lamp {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    background-color: #ef4444 !important;
+}

@@ -1250,3 +1250,10 @@ ul {
         flex-direction: column;
     }
 }
+
+/* UI/UX: Weekly streak card layout and colors */
+.streak-badge {
+    background-color: #fef3c7 !important;
+    color: #d97706 !important;
+    padding: 4px 12px !important;
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Student Scholarship & Internship Matcher Dashboard",
+  "description": "A student career planner dashboard that filters scholarship lists and internship opportunities based on academic scores, majors, and interests, and tracks applications using Kanban swimlanes.",
+  "technologies": ["HTML", "CSS", "JavaScript"],
+  "author": "MistryVishwa"
+}
