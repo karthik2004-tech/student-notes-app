@@ -1,0 +1,19 @@
+{
+  "title": "Catch MY Fruits",
+  "description": "A 2D arcade catching game where players collect falling fruits for points while avoiding toxic hazards, featuring procedural item spawning, AABB collision, particle burst FX, screen shake on damage, and localStorage high scores.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["catch-game", "arcade", "2d", "canvas", "fruits", "particles", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Triple-input basket controller: mousemove canvas tracking, touchmove with coordinate remap, and keyboard arrow/WASD via key-state map",
+    "Procedural falling matrix: items spawned at randomized ceiling positions with 65/35 fruit-to-hazard ratio, velocity scaled by multiplier",
+    "AABB collision pipeline: per-frame overlap test between basket rect and item circle, dispatching score gain or life loss + particle burst",
+    "Particle emitter: on-catch burst of 12-16 particles with random angles, gravity decay (vy += 0.05), alpha fade via life-decay system",
+    "Difficulty ramp: multiplier = 1 + floor(score/150) × 0.25, spawn interval drops from 30 to 8 frames as multiplier climbs",
+    "Screen shake: CSS @keyframes shake injected on canvasWrap via class toggle + reflow hack, 0.3s duration on each life loss",
+    "localStorage cmfBest key: written on game-over if score exceeds stored record, displayed instantly on boot",
+    "Apple/Banana/Orange fruit pool with stem detail and green glow; Toxic hazard with dark inner bubbles and crimson glow"
+  ]
+}
