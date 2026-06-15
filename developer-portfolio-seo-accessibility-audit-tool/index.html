@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio SEO & Accessibility Audit Tool</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local project styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Navigation / Header -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon">🔍</span>
+            <div>
+                <h1 class="brand-title">AuditCraft</h1>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-top: -2px;">SEO & Accessibility Portfolio Analyzer</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <span>←</span> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                🌓
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Dashboard Grid Layout -->
+        <div class="dashboard-grid">
+            
+            <!-- Left Panel: Input Section -->
+            <section class="card">
+                <div class="card-title">
+                    <span>📝</span> HTML Code Input
+                </div>
+                <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 1.25rem;">
+                    Paste your portfolio's raw HTML markup below or upload your HTML file to start the auditing process.
+                </p>
+
+                <!-- Template Selector -->
+                <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <span style="font-size: 0.85rem; font-weight: 600;">Load Demo Templates:</span>
+                    <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="loadTemplate('clean')">Perfect Portfolio</button>
+                    <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="loadTemplate('buggy')">Buggy / Warning Heavy</button>
+                </div>
+
+                <!-- Drag & Drop / File Upload -->
+                <div class="file-upload-zone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                    <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">📁</span>
+                    <span style="font-weight: 500; font-size: 0.9rem;">Drag & drop your index.html file here, or <span style="color: var(--accent-color); font-weight: 600;">browse</span></span>
+                    <input type="file" id="fileInput" class="file-input" accept=".html,.htm" onchange="handleFileSelect(event)">
+                </div>
+
+                <!-- Text Area Editor -->
+                <div class="editor-wrapper">
+                    <textarea 
+                        id="htmlCodeInput" 
+                        class="html-textarea" 
+                        placeholder="<!-- Paste your portfolio HTML here -->&#10;<!DOCTYPE html>&#10;<html>&#10;...&#10;</html>"
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+
+                <!-- Bottom Action Controls -->
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="clearInput()">Clear Code</button>
+                    <button class="btn btn-primary" onclick="runAudit()">
+                        <span>⚡</span> Run Audit Report
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Panel: Audit Report & Metrics Dashboard -->
+            <section class="card">
+                <div class="card-title">
+                    <span>📊</span> Scorecard & Audit Report
+                </div>
+
+                <!-- Score Circular Indicators -->
+                <div class="scorecard-summary" id="scorecardSummary" style="display: none;">
+                    
+                    <!-- Overall Radial Gauge -->
+                    <div class="score-widget">
+                        <svg class="progress-ring" width="100" height="100">
+                            <circle class="progress-ring-circle" stroke="var(--border-color)" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
+                            <circle id="overallCircle" class="progress-ring-circle" stroke="var(--color-info)" stroke-width="8" fill="transparent" r="40" cx="50" cy="50" stroke-linecap="round"/>
+                            <text id="overallText" class="score-text" x="50" y="56" text-anchor="middle">0%</text>
+                        </svg>
+                        <span class="score-label">Overall</span>
+                    </div>
+
+                    <!-- SEO Radial Gauge -->
+                    <div class="score-widget">
+                        <svg class="progress-ring" width="80" height="80">
+                            <circle class="progress-ring-circle" stroke="var(--border-color)" stroke-width="6" fill="transparent" r="32" cx="40" cy="40"/>
+                            <circle id="seoCircle" class="progress-ring-circle" stroke="var(--color-warning)" stroke-width="6" fill="transparent" r="32" cx="40" cy="40" stroke-linecap="round"/>
+                            <text id="seoText" class="score-text" style="font-size: 1.15rem;" x="40" y="45" text-anchor="middle">0%</text>
+                        </svg>
+                        <span class="score-label">SEO</span>
+                    </div>
+
+                    <!-- Accessibility Radial Gauge -->
+                    <div class="score-widget">
+                        <svg class="progress-ring" width="80" height="80">
+                            <circle class="progress-ring-circle" stroke="var(--border-color)" stroke-width="6" fill="transparent" r="32" cx="40" cy="40"/>
+                            <circle id="accessCircle" class="progress-ring-circle" stroke="var(--color-success)" stroke-width="6" fill="transparent" r="32" cx="40" cy="40" stroke-linecap="round"/>
+                            <text id="accessText" class="score-text" style="font-size: 1.15rem;" x="40" y="45" text-anchor="middle">0%</text>
+                        </svg>
+                        <span class="score-label">A11y</span>
+                    </div>
+                </div>
+
+                <!-- Quick Statistic Pills -->
+                <div class="metrics-pill-grid" id="metricsPills" style="display: none;">
+                    <div class="pill-card errors">
+                        <span>Errors</span>
+                        <span id="errorCount" class="pill-value" style="color: var(--color-error);">0</span>
+                    </div>
+                    <div class="pill-card warnings">
+                        <span>Warnings</span>
+                        <span id="warningCount" class="pill-value" style="color: var(--color-warning);">0</span>
+                    </div>
+                    <div class="pill-card passed">
+                        <span>Passed</span>
+                        <span id="passedCount" class="pill-value" style="color: var(--color-success);">0</span>
+                    </div>
+                </div>
+
+                <!-- Audit Result list -->
+                <div id="auditResultsContainer">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🤖</div>
+                        <h3 class="empty-state-title">Audit Engine Ready</h3>
+                        <p style="font-size: 0.85rem;">Input your portfolio markup HTML code and press "Run Audit Report" to diagnose accessibility checkpoints and search metadata optimizations.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Global synchronizer scripts -->
+    <script src="../global-theme.js"></script>
+    <!-- Local app audit script -->
+    <script src="script.js"></script>
+</body>
+</html>
