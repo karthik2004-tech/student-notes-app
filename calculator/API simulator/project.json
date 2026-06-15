@@ -1,0 +1,20 @@
+{
+  "title": "API Request Simulator",
+  "description": "A Postman-style API sandbox with CRUD RESTful operations against an in-memory mock database, JSON body validation with CSS shake animation, syntax-highlighted JSON response viewer, async latency simulation, custom headers grid, and scrolling request history log.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["api", "rest", "crud", "http", "json", "simulator", "postman", "client", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "In-memory CRUD engine: db.products array with {id,title,price,stock}. Handlers for GET (collection or /:id), POST (JSON.parse validation + id auto-increment via nextId), PUT (id-targeted full replacement), DELETE (splice removal with 404 if missing)",
+    "Endpoint parser: strips /api/v1 prefix, splits into collection/id, validates against collections array — returns {collection, id} or {err} for unknown routes",
+    "JSON validation: try/catch around JSON.parse(bodyText) — on failure, CSS shake animation on textarea + status set to '400 Bad Request' with error overlay, no further processing",
+    "Async latency simulation: delay(ms) returning Promise with setTimeout, random 150–600ms per request to mimic server processing. Latency displayed in telemetry as 'Xms'",
+    "Syntax-highlighted JSON viewer: lightweight highlighter wrapping JSON.stringify(…,null,2) with regex replacements — keys in cyan (class 'key'), strings in green ('str'), numbers in pink ('num'), booleans in gold ('bool'), null in gray, brackets in muted white",
+    "Custom headers grid: dynamic key-value rows added via '+ HEADER' button, each row two inputs (Key/Value), user-extendable",
+    "Request history: per-request entries appended to scrolling log panel showing method (color-coded), endpoint, and HTTP status — GET=cyan, POST=green, PUT=amber, DELETE=magenta",
+    "Color-coded method selector: CSS class toggles on select element for border/text color (GET=#00f0ff, POST=#00ff66, PUT=#ffd700, DELETE=#ff2a5f)",
+    "Reset Server State: restores db.products to original 5 items + resets nextId to 6, clears response panel without page reload"
+  ]
+}
