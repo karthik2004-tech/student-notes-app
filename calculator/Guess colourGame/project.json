@@ -1,0 +1,19 @@
+{
+  "title": "Guess colourGame",
+  "description": "A color-space recognition game where players match a target RGB/HEX value against procedurally generated swatches, with proximity-offset hard mode, streak tracking, and localStorage best-score persistence.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["colour-game", "rgb", "hex", "color-puzzle", "recognition", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Dual-format target display: real-time switch between rgb(r,g,b) and #rrggbb string formats via format toggle buttons without resetting round state",
+    "Procedural color seeding: rand255() for each channel, decoys randomized independently in Easy mode or within ±20 proximity per channel in Hard mode",
+    "Fisher-Yates swatch shuffle: correct answer seeded at index 0 then shuffled into random position among decoys on every round",
+    "Exploit-safe input lock: locked boolean flag set on correct guess blocks all further click evaluations until next round or reset",
+    "Incorrect fade penalty: wrong swatch receives .fade class (opacity 0, pointer-events none, scale 0.8) with CSS transition, streak zeroed",
+    "Correct reveal cascade: all swatches transition to target colour via .revealAll class, target gets .reveal (cyan glow), targetPanel gets @keyframes pulseGlow emerald ring animation",
+    "Streak-best persistence: localStorage gcBest key updated on every correct guess if streak exceeds stored value, read on boot",
+    "Easy/Hard grid: Easy 3 swatches (random), Hard 6 swatches (proximity offsets), grid-template-columns repeat(3,1fr) with dynamic swatchCount"
+  ]
+}
