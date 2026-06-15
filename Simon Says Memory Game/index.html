@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simon Says Memory Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🎮 Simon Says Memory Game</h1>
+    <div id="game-board" class="game-board">
+      <div class="btn red" id="red"></div>
+      <div class="btn blue" id="blue"></div>
+      <div class="btn green" id="green"></div>
+      <div class="btn yellow" id="yellow"></div>
+    </div>
+
+    <div class="controls">
+      <button onclick="startGame()">Start Game</button>
+      <div id="status">Press Start to Play</div>
+      <div id="score">Score: 0 | High Score: 0</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
