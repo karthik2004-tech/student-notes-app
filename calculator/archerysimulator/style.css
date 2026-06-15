@@ -1,0 +1,290 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #05070c;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+#app {
+  width: min(96vmin, 680px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 1vmin, 10px);
+  align-items: center;
+}
+
+#telemetry {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(6px, 1.2vmin, 14px) clamp(8px, 1.6vmin, 18px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 255, 200, 0.12);
+  border-radius: clamp(6px, 1vmin, 12px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: clamp(40px, 8vmin, 70px);
+}
+
+.stat .label {
+  font-size: clamp(7px, 1.2vmin, 11px);
+  color: #475569;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.stat .value {
+  font-size: clamp(14px, 2.8vmin, 24px);
+  color: #e2e8f0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+}
+
+.stat .value.gold {
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+#difficulty {
+  display: flex;
+  gap: clamp(3px, 0.6vmin, 8px);
+}
+
+.diff-btn {
+  padding: clamp(4px, 0.7vmin, 10px) clamp(8px, 1.4vmin, 16px);
+  font-size: clamp(8px, 1.3vmin, 13px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: transparent;
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  color: #475569;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  font-family: inherit;
+}
+
+.diff-btn:hover {
+  border-color: rgba(0, 255, 200, 0.4);
+  color: #94a3b8;
+}
+
+.diff-btn.active {
+  border-color: #00ffc8;
+  color: #00ffc8;
+  box-shadow: 0 0 12px rgba(0, 255, 200, 0.15);
+  background: rgba(0, 255, 200, 0.06);
+}
+
+#canvasWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 640 / 400;
+  border-radius: clamp(6px, 1vmin, 12px);
+  overflow: hidden;
+  box-shadow:
+    0 0 24px rgba(0, 255, 200, 0.06),
+    inset 0 0 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 255, 200, 0.15);
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.info-msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffd700;
+  font-size: clamp(14px, 2.6vmin, 24px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  pointer-events: none;
+  animation: fadeUp 1.2s ease forwards;
+}
+
+@keyframes fadeUp {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -100%) scale(1.1); }
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 12, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  transition: opacity 0.4s ease;
+}
+
+.modal.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.modal-content {
+  background: rgba(10, 13, 22, 0.95);
+  border: 1px solid rgba(0, 255, 200, 0.15);
+  border-radius: clamp(10px, 1.6vmin, 18px);
+  padding: clamp(20px, 3.6vmin, 40px) clamp(24px, 4vmin, 48px);
+  max-width: min(90vw, 400px);
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0, 255, 200, 0.08);
+}
+
+.modal-content h2 {
+  font-size: clamp(18px, 3.2vmin, 28px);
+  color: #00ffc8;
+  letter-spacing: 4px;
+  font-weight: 300;
+  margin-bottom: clamp(16px, 2.8vmin, 28px);
+  text-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+}
+
+.modal-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(10px, 1.6vmin, 18px);
+  margin-bottom: clamp(16px, 2.8vmin, 28px);
+}
+
+.modal-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: clamp(8px, 1.4vmin, 16px);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.modal-label {
+  font-size: clamp(8px, 1.2vmin, 11px);
+  color: #475569;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.modal-val {
+  font-size: clamp(20px, 3.6vmin, 32px);
+  color: #e2e8f0;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.modal-val.gold {
+  color: #ffd700;
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.3);
+}
+
+.breakdown {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 2.4vmin, 28px);
+  margin-bottom: clamp(16px, 2.8vmin, 28px);
+  font-size: clamp(11px, 1.8vmin, 16px);
+}
+
+.breakdown span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+.breakdown .dot {
+  display: inline-block;
+  width: clamp(8px, 1.2vmin, 12px);
+  height: clamp(8px, 1.2vmin, 12px);
+  border-radius: 50%;
+}
+
+.dot.bullseye { background: #ffd700; box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
+.dot.inner   { background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+.dot.outer   { background: #3b82f6; box-shadow: 0 0 8px rgba(59, 130, 246, 0.4); }
+
+#restartBtn {
+  padding: clamp(10px, 1.8vmin, 18px) clamp(28px, 5vmin, 56px);
+  font-size: clamp(13px, 2.2vmin, 18px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #05070c;
+  background: #00ffc8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+}
+
+#restartBtn:hover {
+  background: #33ffd4;
+  box-shadow: 0 0 32px rgba(0, 255, 200, 0.4);
+  transform: translateY(-1px);
+}
+
+#restartBtn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  #telemetry {
+    padding: 6px 8px;
+  }
+  .stat {
+    min-width: auto;
+  }
+  .stat .label {
+    font-size: 7px;
+  }
+  .stat .value {
+    font-size: 13px;
+  }
+  .diff-btn {
+    padding: 3px 7px;
+    font-size: 8px;
+  }
+}
+
+/* UI/UX Enhancement: Dashboard layouts and typography alignments */
+#scoreboard {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+}
