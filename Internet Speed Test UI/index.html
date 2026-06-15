@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Internet Speed Test</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>⚡ Internet Speed Test</h1>
+
+    <div class="gauge-container">
+      <svg id="gauge" viewBox="0 0 200 100">
+        <path d="M10,90 A90,90 0 0,1 190,90" stroke="#ccc" stroke-width="10" fill="none"/>
+        <path id="needle" d="M100,90 L100,20" stroke="red" stroke-width="4"/>
+      </svg>
+      <div id="speedValue" class="speed-value">0 Mbps</div>
+    </div>
+
+    <div class="results">
+      <p id="ping">Ping: -- ms</p>
+      <p id="download">Download: -- Mbps</p>
+      <p id="rating">Rating: --</p>
+    </div>
+
+    <div class="controls">
+      <button onclick="runTest()">Run Test</button>
+    </div>
+
+    <div class="history">
+      <h2>Test History</h2>
+      <ul id="historyList"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
