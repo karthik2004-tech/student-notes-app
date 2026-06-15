@@ -339,9 +339,13 @@
 
 })();
 
-// Security: Sanitize text contents explicitly
-function escapeNoteHTML(str) {
-    return str.replace(/[&<>'"/]/g, function (m) {
-        return {'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;', '/': '&#x2F;'}[m];
-    });
+// Refactor: Encapsulate Note data structures into an ES6 model class
+class NoteModel {
+    constructor(id, text, x, y, color) {
+        this.id = id;
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.color = color;
+    }
 }
