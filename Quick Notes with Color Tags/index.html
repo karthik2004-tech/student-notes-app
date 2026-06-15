@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quick Notes with Color Tags</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>📝 Quick Notes with Color Tags</h1>
+
+    <div class="controls">
+      <textarea id="noteInput" placeholder="Write a quick note..."></textarea>
+      <select id="colorTag">
+        <option value="yellow">Yellow</option>
+        <option value="pink">Pink</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+      </select>
+      <button onclick="addNote()">Add Note</button>
+    </div>
+
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="Search notes..." oninput="renderNotes()">
+      <select id="filterTag" onchange="renderNotes()">
+        <option value="">Filter by Tag</option>
+        <option value="yellow">Yellow</option>
+        <option value="pink">Pink</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+      </select>
+    </div>
+
+    <div id="notesContainer" class="notes-container"></div>
+
+    <div class="actions">
+      <button onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
