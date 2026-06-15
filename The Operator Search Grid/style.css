@@ -300,3 +300,8 @@ body {
 
   .controls { flex-wrap: wrap; justify-content: center; }
 }
+
+/* UI/UX: Grid selection layout border states */
+.grid-cell.selected {
+    outline: 2px solid #3b82f6 !important;
+}

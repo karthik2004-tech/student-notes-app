@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Equipment Booking System | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 12px 25px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+        }
+
+        /* Two Column Layout */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Card Common */
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #ffd200;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+
+        /* Equipment List */
+        .equipment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .equipment-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .equipment-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .equipment-item.selected {
+            background: rgba(0,180,219,0.3);
+            border: 1px solid #00b4db;
+        }
+
+        .equipment-emoji {
+            font-size: 32px;
+        }
+
+        .equipment-info {
+            flex: 1;
+        }
+
+        .equipment-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .equipment-desc {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+        }
+
+        .equipment-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .status-available {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-booked {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Booking Form */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            outline: none;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .time-slot {
+            padding: 8px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .time-slot:hover {
+            background: rgba(0,180,219,0.5);
+        }
+
+        .time-slot.selected {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .book-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* My Bookings */
+        .bookings-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .booking-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .booking-info {
+            flex: 1;
+        }
+
+        .booking-equipment {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .booking-datetime {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .cancel-btn {
+            padding: 6px 15px;
+            border: none;
+            border-radius: 20px;
+            background: #dc3545;
+            color: white;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .empty-bookings {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Scrollbar */
+        .equipment-list::-webkit-scrollbar,
+        .bookings-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .equipment-list::-webkit-scrollbar-track,
+        .bookings-list::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .equipment-list::-webkit-scrollbar-thumb,
+        .bookings-list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Lab Equipment Booking System</h1>
+            <div class="subtitle">Book Microscopes, Centrifuges, Spectrophotometers & More</div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalEquipment">0</div>
+                <div class="stat-label">Total Equipment</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="availableCount">0</div>
+                <div class="stat-label">Available Now</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="myBookingsCount">0</div>
+                <div class="stat-label">My Bookings</div>
+            </div>
+        </div>
+
+        <div class="two-columns">
+            <!-- Left: Equipment List & Booking Form -->
+            <div class="card">
+                <div class="card-title">
+                    <span>🔧</span> Select Equipment
+                </div>
+                <div class="equipment-list" id="equipmentList">
+                    <!-- Dynamic equipment list -->
+                </div>
+
+                <div class="card-title" style="margin-top: 20px;">
+                    <span>📅</span> Booking Details
+                </div>
+                <div class="form-group">
+                    <label>📅 Select Date</label>
+                    <input type="date" id="bookingDate" min="">
+                </div>
+                <div class="form-group">
+                    <label>⏰ Select Time Slot</label>
+                    <div class="time-slots" id="timeSlots">
+                        <!-- Dynamic time slots -->
+                    </div>
+                </div>
+                <button class="book-btn" id="bookBtn">📖 Book Equipment</button>
+            </div>
+
+            <!-- Right: My Bookings -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📋</span> My Bookings
+                </div>
+                <div class="bookings-list" id="bookingsList">
+                    <!-- Dynamic bookings -->
+                </div>
+            </div>
+        </div>
+
+        <button class="reset-btn" id="resetBtn">🗑️ Cancel All My Bookings</button>
+    </div>
+
+    <script>
+        // Equipment Database
+        let equipment = [
+            { id: 1, name: "Microscope", emoji: "🔬", desc: "Binocular, 1000x magnification", available: true },
+            { id: 2, name: "Centrifuge", emoji: "🧪", desc: "5000 RPM, 12 tubes capacity", available: true },
+            { id: 3, name: "Spectrophotometer", emoji: "📊", desc: "UV-Vis, 200-800nm range", available: true },
+            { id: 4, name: "pH Meter", emoji: "⚗️", desc: "Digital, ±0.01 accuracy", available: true },
+            { id: 5, name: "Hot Plate", emoji: "🔥", desc: "Max 400°C, magnetic stirrer", available: true },
+            { id: 6, name: "Analytical Balance", emoji: "⚖️", desc: "0.1mg precision", available: true },
+            { id: 7, name: "Incubator", emoji: "🌡️", desc: "37°C, 50L capacity", available: true },
+            { id: 8, name: "Water Bath", emoji: "💧", desc: "Digital, 20-100°C", available: true }
+        ];
+
+        let bookings = [];
+        let selectedEquipmentId = null;
+        let selectedDate = '';
+        let selectedTimeSlot = '';
+
+        // Time slots (9 AM to 5 PM)
+        const timeSlots = [
+            "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+            "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
+        ];
+
+        // Load from localStorage
+        function loadData() {
+            const savedBookings = localStorage.getItem('labBookings');
+            if(savedBookings) {
+                bookings = JSON.parse(savedBookings);
+                // Update equipment availability based on bookings
+                updateEquipmentAvailability();
+            }
+            
+            const savedSelected = localStorage.getItem('labSelectedEquipment');
+            if(savedSelected) {
+                selectedEquipmentId = parseInt(savedSelected);
+            }
+            
+            renderEquipmentList();
+            renderBookings();
+            updateStats();
+            setupDatePicker();
+        }
+
+        // Save bookings
+        function saveBookings() {
+            localStorage.setItem('labBookings', JSON.stringify(bookings));
+            localStorage.setItem('labSelectedEquipment', selectedEquipmentId);
+            updateEquipmentAvailability();
+            renderEquipmentList();
+            renderBookings();
+            updateStats();
+        }
+
+        // Update equipment availability based on bookings
+        function updateEquipmentAvailability() {
+            const today = new Date().toISOString().split('T')[0];
+            
+            equipment.forEach(eq => {
+                // Check if there's a booking for today for this equipment
+                const todayBooking = bookings.find(b => 
+                    b.equipmentId === eq.id && b.date === today
+                );
+                eq.available = !todayBooking;
+            });
+        }
+
+        // Check if time slot is available for selected equipment and date
+        function isTimeSlotAvailable(equipmentId, date, timeSlot) {
+            return !bookings.some(b => 
+                b.equipmentId === equipmentId && 
+                b.date === date && 
+                b.timeSlot === timeSlot
+            );
+        }
+
+        // Render equipment list
+        function renderEquipmentList() {
+            const container = document.getElementById('equipmentList');
+            
+            container.innerHTML = equipment.map(eq => `
+                <div class="equipment-item ${selectedEquipmentId === eq.id ? 'selected' : ''}" onclick="selectEquipment(${eq.id})">
+                    <div class="equipment-emoji">${eq.emoji}</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">${escapeHtml(eq.name)}</div>
+                        <div class="equipment-desc">${escapeHtml(eq.desc)}</div>
+                    </div>
+                    <div class="equipment-status ${eq.available ? 'status-available' : 'status-booked'}">
+                        ${eq.available ? 'Available' : 'Booked Today'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Select equipment
+        function selectEquipment(id) {
+            const eq = equipment.find(e => e.id === id);
+            if(!eq || !eq.available) {
+                alert('This equipment is not available today!');
+                return;
+            }
+            selectedEquipmentId = id;
+            selectedTimeSlot = '';
+            renderEquipmentList();
+            renderTimeSlots();
+            saveBookings();
+        }
+
+        // Setup date picker (min today)
+        function setupDatePicker() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('bookingDate').min = today;
+            document.getElementById('bookingDate').value = today;
+            selectedDate = today;
+            
+            document.getElementById('bookingDate').addEventListener('change', (e) => {
+                selectedDate = e.target.value;
+                selectedTimeSlot = '';
+                renderTimeSlots();
+            });
+        }
+
+        // Render time slots
+        function renderTimeSlots() {
+            const container = document.getElementById('timeSlots');
+            
+            if(!selectedEquipmentId) {
+                container.innerHTML = '<div style="color:rgba(255,255,255,0.5); text-align:center;">Please select equipment first</div>';
+                return;
+            }
+            
+            const eq = equipment.find(e => e.id === selectedEquipmentId);
+            if(!eq || !eq.available) {
+                container.innerHTML = '<div style="color:#ff6b6b; text-align:center;">Equipment not available today</div>';
+                return;
+            }
+            
+            container.innerHTML = timeSlots.map(slot => {
+                const isAvailable = isTimeSlotAvailable(selectedEquipmentId, selectedDate, slot);
+                const isSelected = selectedTimeSlot === slot;
+                return `
+                    <button class="time-slot ${isSelected ? 'selected' : ''}" 
+                            ${!isAvailable ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''}
+                            onclick="selectTimeSlot('${slot}')">
+                        ${slot}
+                        ${!isAvailable ? '<br><span style="font-size:8px;">Booked</span>' : ''}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Select time slot
+        function selectTimeSlot(slot) {
+            if(isTimeSlotAvailable(selectedEquipmentId, selectedDate, slot)) {
+                selectedTimeSlot = slot;
+                renderTimeSlots();
+            } else {
+                alert('This time slot is already booked!');
+            }
+        }
+
+        // Book equipment
+        function bookEquipment() {
+            if(!selectedEquipmentId) {
+                alert('Please select equipment first!');
+                return;
+            }
+            
+            if(!selectedDate) {
+                alert('Please select a date!');
+                return;
+            }
+            
+            if(!selectedTimeSlot) {
+                alert('Please select a time slot!');
+                return;
+            }
+            
+            const eq = equipment.find(e => e.id === selectedEquipmentId);
+            if(!eq.available) {
+                alert('This equipment is not available today!');
+                return;
+            }
+            
+            if(!isTimeSlotAvailable(selectedEquipmentId, selectedDate, selectedTimeSlot)) {
+                alert('This time slot is already booked!');
+                return;
+            }
+            
+            const newBooking = {
+                id: Date.now(),
+                equipmentId: selectedEquipmentId,
+                equipmentName: eq.name,
+                equipmentEmoji: eq.emoji,
+                date: selectedDate,
+                timeSlot: selectedTimeSlot,
+                bookedAt: new Date().toLocaleString()
+            };
+            
+            bookings.push(newBooking);
+            saveBookings();
+            
+            // Reset selection
+            selectedTimeSlot = '';
+            renderTimeSlots();
+            
+            alert(`✅ Successfully booked ${eq.name} on ${selectedDate} at ${selectedTimeSlot}!`);
+        }
+
+        // Cancel booking
+        function cancelBooking(id) {
+            if(confirm('Cancel this booking?')) {
+                bookings = bookings.filter(b => b.id !== id);
+                saveBookings();
+                renderBookings();
+                updateStats();
+                
+                // Reset selection if needed
+                if(selectedEquipmentId) {
+                    renderTimeSlots();
+                }
+            }
+        }
+
+        // Cancel all bookings
+        function cancelAllBookings() {
+            if(confirm('⚠️ Cancel ALL your bookings? This cannot be undone!')) {
+                bookings = [];
+                saveBookings();
+                renderBookings();
+                updateStats();
+                selectedTimeSlot = '';
+                if(selectedEquipmentId) {
+                    renderTimeSlots();
+                }
+            }
+        }
+
+        // Render bookings list
+        function renderBookings() {
+            const container = document.getElementById('bookingsList');
+            
+            if(bookings.length === 0) {
+                container.innerHTML = '<div class="empty-bookings">📭 No bookings yet<br>Select equipment and make a booking!</div>';
+                document.getElementById('myBookingsCount').textContent = '0';
+                return;
+            }
+            
+            // Sort by date
+            const sorted = [...bookings].sort((a, b) => a.date.localeCompare(b.date));
+            
+            container.innerHTML = sorted.map(booking => `
+                <div class="booking-item">
+                    <div class="booking-info">
+                        <div class="booking-equipment">${booking.equipmentEmoji} ${escapeHtml(booking.equipmentName)}</div>
+                        <div class="booking-datetime">📅 ${booking.date} | ⏰ ${booking.timeSlot}</div>
+                    </div>
+                    <button class="cancel-btn" onclick="cancelBooking(${booking.id})">Cancel</button>
+                </div>
+            `).join('');
+            
+            document.getElementById('myBookingsCount').textContent = bookings.length;
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('totalEquipment').textContent = equipment.length;
+            document.getElementById('availableCount').textContent = equipment.filter(e => e.available).length;
+            document.getElementById('myBookingsCount').textContent = bookings.length;
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.getElementById('bookBtn').addEventListener('click', bookEquipment);
+        document.getElementById('resetBtn').addEventListener('click', cancelAllBookings);
+
+        // Make functions global
+        window.selectEquipment = selectEquipment;
+        window.selectTimeSlot = selectTimeSlot;
+        window.cancelBooking = cancelBooking;
+
+        // Initialize
+        loadData();
+        renderTimeSlots();
+    </script>
+</body>
+</html>

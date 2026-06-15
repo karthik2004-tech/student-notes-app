@@ -219,3 +219,8 @@ canvas {
   .m-value { font-size: 0.7rem; }
   .metric { min-width: 30px; }
 }
+
+/* UI/UX: Grid alignment and fruit falling animations */
+.basket {
+    transition: left 0.1s ease-out !important;
+}
