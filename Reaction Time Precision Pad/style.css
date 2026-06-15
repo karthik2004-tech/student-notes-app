@@ -302,3 +302,11 @@ body {
 @media (min-width: 600px) {
   .pad-text { font-size: 1.15rem; }
 }
+
+/* UI/UX: Click pad ripple triggers and pulse keys */
+.precision-pad {
+    transition: background-color 0.15s ease-out !important;
+}
+.precision-pad.active {
+    background-color: #3b82f6 !important;
+}

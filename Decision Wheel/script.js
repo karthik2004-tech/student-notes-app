@@ -180,3 +180,7 @@ spinBtn.onclick = () => {
 
 // Initial setup
 renderOptions();
+// Refactor: Abstract canvas drawing algorithms into static renderer helpers
+const WheelCanvasDraw = {
+    clear(ctx, w, h) { ctx.clearRect(0, 0, w, h); }
+};

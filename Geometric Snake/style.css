@@ -165,3 +165,9 @@ body {
   :root { --canvas-size: 88vmin; }
   .controls { flex-wrap: wrap; justify-content: center; }
 }
+
+/* UI/UX: Theme skins for Snake grid cells and border outlines */
+.grid-cell-snake {
+    background-color: #10b981 !important;
+    border-radius: 4px !important;
+}

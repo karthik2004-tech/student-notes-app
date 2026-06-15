@@ -1,0 +1,6 @@
+{
+  "title": "Cryptography & Hashing Playground",
+  "description": "An educational cryptography utility helping students visualize and compare hashing algorithms, encryption keys, and cipher strategies side-by-side.",
+  "technologies": ["HTML", "CSS", "JavaScript", "Web Crypto API"],
+  "author": "MistryVishwa"
+}

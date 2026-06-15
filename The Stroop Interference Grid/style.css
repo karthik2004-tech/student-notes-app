@@ -260,3 +260,9 @@ html,body{height:100%;background:var(--bg-primary);color:var(--text-primary);fon
   .color-name{font-size:11px}
   .color-badge{width:14px;height:14px}
 }
+
+/* UI/UX: Stroop choice display blocks layout spacing */
+.stroop-option {
+    padding: 12px 24px !important;
+    margin: 8px !important;
+}
