@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive SQL Database Query Playground</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code&display=swap" rel="stylesheet">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local project styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Load sql.js WebAssembly loader from cdnjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon">💾</span>
+            <div>
+                <h1 class="brand-title">SQLCraft</h1>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-top: -2px;">Interactive Browser-based SQL Query Playground</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <span>←</span> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                🌓
+            </button>
+        </div>
+    </header>
+
+    <!-- Split Screen Layout -->
+    <main class="playground-layout">
+        
+        <!-- Left Sidebar: Schema Visualizer & ERD Drawer -->
+        <aside class="schema-sidebar">
+            <!-- Part 1: Schema Outline -->
+            <div>
+                <h2 class="sidebar-title">📁 Database Schema</h2>
+                <div id="schemaList">
+                    <!-- Dynamic Tables & Columns list Injected here -->
+                </div>
+            </div>
+
+            <!-- Part 2: ERD Diagram -->
+            <div style="margin-top: 1rem;">
+                <h2 class="sidebar-title">📊 Entity Relationship Diagram (ERD)</h2>
+                <div id="erdList" class="erd-container">
+                    <!-- Dynamic ERD Entity boxes Injected here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Workspace: Selector, Editor & Live Results -->
+        <section class="workspace-container">
+            
+            <!-- Selector Header Row -->
+            <div class="playground-card selector-row">
+                <div>
+                    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Select Mock Database</h2>
+                    <p style="font-size: 0.8rem; opacity: 0.8;">Choose a pre-configured database schema to populate datasets.</p>
+                </div>
+                <select id="databaseSelect" class="select-db" onchange="switchDatabase()">
+                    <option value="ecommerce">🛒 E-Commerce System</option>
+                    <option value="university">🎓 University Library</option>
+                    <option value="hr">💼 Corporate HR Employees</option>
+                </select>
+            </div>
+
+            <!-- SQL Query Composer Card -->
+            <div class="playground-card">
+                <h2 style="font-size: 1.1rem; font-weight: 700;">SQL Editor</h2>
+                <p style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.75rem;">
+                    Write standard SQLite queries against the chosen schema. Support for SELECT, JOIN, INSERT, UPDATE, DELETE.
+                </p>
+
+                <!-- Editor Pane -->
+                <div class="query-editor-wrapper">
+                    <textarea 
+                        id="sqlEditorInput" 
+                        class="sql-textarea" 
+                        placeholder="-- Enter your SQL query here --"
+                        spellcheck="false"
+                    ></textarea>
+                </div>
+
+                <!-- Actions Controls Bar -->
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="resetActiveDatabase()">Reset DB</button>
+                    <button class="btn btn-primary" id="runQueryBtn" onclick="runSqlQuery()">
+                        <span>⚡</span> Execute Query
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Grid Display Card -->
+            <div class="playground-card" style="flex: 1; display: flex; flex-direction: column;">
+                <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">Console & Results</h2>
+                <div id="resultsViewport" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                    <!-- Table or Console Alerts Injected Here -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🤖</div>
+                        <h3 style="font-weight: 700; font-size: 1.15rem; margin-top: 0.5rem;">SQL Sandbox Active</h3>
+                        <p style="font-size: 0.8rem; opacity: 0.8;">Run a query in the SQL Editor to display output datasets in this console.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Global synchronizer scripts -->
+    <script src="../global-theme.js"></script>
+    <!-- Local database logic -->
+    <script src="script.js"></script>
+</body>
+</html>

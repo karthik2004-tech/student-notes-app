@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindRoot — Daily Growth Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="light">
+
+  <!-- ═══════════════════════════════════════════
+       SIDEBAR NAV
+  ═══════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="logo">
+        <span class="logo-leaf">🌿</span>
+        <span class="logo-text">MindRoot</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-page="home">
+          <span class="nav-icon">☀️</span>
+          <span class="nav-label">Today</span>
+        </a>
+        <a href="#" class="nav-item" data-page="checkin">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-label">Check-in</span>
+        </a>
+        <a href="#" class="nav-item" data-page="journal">
+          <span class="nav-icon">📓</span>
+          <span class="nav-label">Journal</span>
+        </a>
+        <a href="#" class="nav-item" data-page="breathwork">
+          <span class="nav-icon">🧘</span>
+          <span class="nav-label">Breathwork</span>
+        </a>
+        <a href="#" class="nav-item" data-page="ritual">
+          <span class="nav-icon">🌅</span>
+          <span class="nav-label">Ritual</span>
+        </a>
+        <a href="#" class="nav-item" data-page="affirmations">
+          <span class="nav-icon">🔥</span>
+          <span class="nav-label">Affirm</span>
+        </a>
+        <a href="#" class="nav-item" data-page="trends">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Trends</span>
+        </a>
+      </nav>
+    </div>
+    <div class="sidebar-bottom">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+        <span class="theme-label">Dark mode</span>
+      </button>
+      <div class="streak-badge">
+        <span class="streak-fire">🔥</span>
+        <span class="streak-count" id="sidebarStreak">0</span>
+        <span class="streak-label">day streak</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       MOBILE TOP BAR
+  ═══════════════════════════════════════════ -->
+  <header class="mobile-header">
+    <div class="logo">
+      <span class="logo-leaf">🌿</span>
+      <span class="logo-text">MindRoot</span>
+    </div>
+    <div class="mobile-header-right">
+      <button class="theme-toggle-mobile" id="themeToggleMobile">🌙</button>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- ─── PAGE: HOME / TODAY ─── -->
+    <section class="page active" id="page-home">
+      <div class="page-header">
+        <div>
+          <p class="page-eyebrow" id="todayDate">Loading...</p>
+          <h1 class="page-title">Good morning. <br><em>How are you rooting today?</em></h1>
+        </div>
+        <div class="quote-pill" id="dailyQuote">
+          <span class="quote-icon">✦</span>
+          <span class="quote-text">Loading quote...</span>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Mood Card -->
+        <div class="dash-card card-mood" id="openCheckin">
+          <div class="dash-card-inner">
+            <div class="dash-card-label">Today's mood</div>
+            <div class="mood-display" id="homeMoodDisplay">
+              <div class="mood-emoji-big" id="homeMoodEmoji">—</div>
+              <div class="mood-text" id="homeMoodText">Not logged yet</div>
+            </div>
+            <button class="card-cta">Log now →</button>
+          </div>
+        </div>
+
+        <!-- Streak Card -->
+        <div class="dash-card card-streak">
+          <div class="dash-card-inner">
+            <div class="dash-card-label">Current streak</div>
+            <div class="streak-big">
+              <span class="streak-number" id="streakNumber">0</span>
+              <span class="streak-unit">days</span>
+            </div>
+            <div class="streak-message" id="streakMsg">Start your streak today!</div>
+          </div>
+        </div>
+
+        <!-- Journal Card -->
+        <div class="dash-card card-journal" id="openJournal">
+          <div class="dash-card-inner">
+            <div class="dash-card-label">Today's prompt</div>
+            <div class="journal-preview" id="homePromptPreview">Loading...</div>
+            <button class="card-cta">Write now →</button>
+          </div>
+        </div>
+
+        <!-- Breathwork Card -->
+        <div class="dash-card card-breath" id="openBreath">
+          <div class="dash-card-inner">
+            <div class="dash-card-label">Breathwork</div>
+            <div class="breath-preview">
+              <div class="breath-orb-mini" id="homeBreathOrb"></div>
+              <div class="breath-mini-text">4-7-8 breathing<br><em>2 minutes</em></div>
+            </div>
+            <button class="card-cta">Begin →</button>
+          </div>
+        </div>
+
+        <!-- Ritual Card -->
+        <div class="dash-card card-ritual" id="openRitual">
+          <div class="dash-card-inner">
+            <div class="dash-card-label">Morning ritual</div>
+            <div class="ritual-progress-wrap">
+              <div class="ritual-progress-bar">
+                <div class="ritual-progress-fill" id="ritualProgressFill" style="width:0%"></div>
+              </div>
+              <span class="ritual-progress-text" id="ritualProgressText">0 / 0 done</span>
+            </div>
+            <button class="card-cta">Open ritual →</button>
+          </div>
+        </div>
+
+        <!-- Affirmation Card -->
+        <div class="dash-card card-affirm">
+          <div class="dash-card-inner">
+            <div class="dash-card-label">Today's affirmation</div>
+            <div class="affirm-preview" id="homeAffirmation">Loading...</div>
+            <button class="card-cta affirm-refresh" id="refreshAffirmation">New affirmation ↻</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PAGE: CHECK-IN ─── -->
+    <section class="page" id="page-checkin">
+      <div class="page-header">
+        <div>
+          <p class="page-eyebrow">CBT Check-in</p>
+          <h1 class="page-title">How are you <em>really</em> feeling?</h1>
+        </div>
+      </div>
+
+      <div class="checkin-flow">
+        <!-- Step 1: Mood -->
+        <div class="checkin-step active" id="step1">
+          <h2 class="step-title">Rate your mood right now</h2>
+          <div class="mood-selector">
+            <button class="mood-btn" data-mood="1" data-emoji="😞" data-label="Very low">😞<span>Very low</span></button>
+            <button class="mood-btn" data-mood="2" data-emoji="😕" data-label="Low">😕<span>Low</span></button>
+            <button class="mood-btn" data-mood="3" data-emoji="😐" data-label="Neutral">😐<span>Neutral</span></button>
+            <button class="mood-btn" data-mood="4" data-emoji="🙂" data-label="Good">🙂<span>Good</span></button>
+            <button class="mood-btn" data-mood="5" data-emoji="😄" data-label="Great">😄<span>Great</span></button>
+          </div>
+          <button class="btn-primary" id="step1Next" disabled>Next →</button>
+        </div>
+
+        <!-- Step 2: Energy -->
+        <div class="checkin-step" id="step2">
+          <h2 class="step-title">What's your energy level?</h2>
+          <div class="energy-slider-wrap">
+            <input type="range" min="1" max="10" value="5" class="energy-slider" id="energySlider" />
+            <div class="energy-labels">
+              <span>Drained</span>
+              <span class="energy-value" id="energyValue">5</span>
+              <span>Charged</span>
+            </div>
+          </div>
+          <button class="btn-primary" id="step2Next">Next →</button>
+        </div>
+
+        <!-- Step 3: Thoughts -->
+        <div class="checkin-step" id="step3">
+          <h2 class="step-title">Any negative thought patterns today?</h2>
+          <p class="step-sub">Based on CBT — select all that apply</p>
+          <div class="distortion-grid">
+            <button class="distortion-btn" data-distortion="all-or-nothing">All-or-nothing thinking</button>
+            <button class="distortion-btn" data-distortion="overgeneralizing">Overgeneralizing</button>
+            <button class="distortion-btn" data-distortion="catastrophizing">Catastrophizing</button>
+            <button class="distortion-btn" data-distortion="mind-reading">Mind reading</button>
+            <button class="distortion-btn" data-distortion="should-statements">"Should" statements</button>
+            <button class="distortion-btn" data-distortion="self-blame">Self-blame</button>
+            <button class="distortion-btn" data-distortion="filtering">Mental filtering</button>
+            <button class="distortion-btn" data-distortion="none">None of these ✓</button>
+          </div>
+          <button class="btn-primary" id="step3Next">Save Check-in ✓</button>
+        </div>
+
+        <!-- Step 4: Done -->
+        <div class="checkin-step" id="step4">
+          <div class="checkin-done">
+            <div class="done-emoji">🌿</div>
+            <h2>Check-in saved.</h2>
+            <p class="done-summary" id="checkinSummary">You're doing great.</p>
+            <div class="cbt-tip" id="cbtTip"></div>
+            <button class="btn-primary" id="checkinAgain">Check in again</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PAGE: JOURNAL ─── -->
+    <section class="page" id="page-journal">
+      <div class="page-header">
+        <div>
+          <p class="page-eyebrow">Guided Journal</p>
+          <h1 class="page-title">Write your <em>inner world</em> out.</h1>
+        </div>
+      </div>
+
+      <div class="journal-layout">
+        <div class="journal-left">
+          <div class="prompt-card">
+            <div class="prompt-source" id="promptSource">Stoicism</div>
+            <div class="prompt-text" id="journalPrompt">Loading prompt...</div>
+            <button class="btn-ghost" id="newPrompt">New prompt ↻</button>
+          </div>
+
+          <div class="past-entries-section">
+            <h3 class="section-heading">Past entries</h3>
+            <div class="entries-list" id="entriesList">
+              <p class="empty-state">No entries yet. Write your first one →</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="journal-right">
+          <div class="journal-editor">
+            <div class="editor-toolbar">
+              <span class="editor-date" id="editorDate">Today</span>
+              <button class="btn-ghost btn-sm" id="saveEntry">Save entry ✓</button>
+            </div>
+            <textarea
+              class="journal-textarea"
+              id="journalTextarea"
+              placeholder="Start writing... let your thoughts flow without judgment."
+              rows="18"
+            ></textarea>
+            <div class="editor-footer">
+              <span class="word-count" id="wordCount">0 words</span>
+              <span class="editor-tip">Your entries are saved locally on this device only.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PAGE: BREATHWORK ─── -->
+    <section class="page" id="page-breathwork">
+      <div class="page-header">
+        <div>
+          <p class="page-eyebrow">Breathwork</p>
+          <h1 class="page-title">Slow down. <em>Breathe.</em></h1>
+        </div>
+      </div>
+
+      <div class="breathwork-layout">
+        <!-- Pattern Selector -->
+        <div class="pattern-selector">
+          <button class="pattern-btn active" data-pattern="478" data-in="4" data-hold="7" data-out="8">
+            <span class="pattern-name">4-7-8</span>
+            <span class="pattern-desc">Calm anxiety</span>
+          </button>
+          <button class="pattern-btn" data-pattern="box" data-in="4" data-hold="4" data-out="4">
+            <span class="pattern-name">Box</span>
+            <span class="pattern-desc">Focus & reset</span>
+          </button>
+          <button class="pattern-btn" data-pattern="wimhof" data-in="2" data-hold="0" data-out="2">
+            <span class="pattern-name">Wim Hof</span>
+            <span class="pattern-desc">Energize</span>
+          </button>
+          <button class="pattern-btn" data-pattern="relaxing" data-in="4" data-hold="0" data-out="6">
+            <span class="pattern-name">4-6 Relax</span>
+            <span class="pattern-desc">Wind down</span>
+          </button>
+        </div>
+
+        <!-- Breathing Orb -->
+        <div class="breath-stage">
+          <div class="breath-orb-container">
+            <div class="breath-orb" id="breathOrb">
+              <div class="breath-instruction" id="breathInstruction">Press Start</div>
+              <div class="breath-count" id="breathCount"></div>
+            </div>
+          </div>
+          <div class="breath-meta">
+            <span class="breath-phase-label" id="breathPhaseLabel">Ready</span>
+            <span class="breath-cycles" id="breathCycles">Cycles: 0</span>
+          </div>
+          <div class="breath-controls">
+            <button class="btn-primary btn-breath" id="breathStart">Start</button>
+            <button class="btn-ghost btn-breath" id="breathStop" style="display:none">Stop</button>
+          </div>
+          <div class="breath-pattern-detail" id="breathPatternDetail">
+            Breathe in 4s · Hold 7s · Breathe out 8s
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PAGE: MORNING RITUAL ─── -->
+    <section class="page" id="page-ritual">
+      <div class="page-header">
+        <div>
+          <p class="page-eyebrow">Morning Ritual</p>
+          <h1 class="page-title">Build your <em>sacred routine.</em></h1>
+        </div>
+      </div>
+
+      <div class="ritual-layout">
+        <div class="ritual-left">
+          <div class="ritual-progress-card">
+            <div class="ritual-ring-wrap">
+              <svg class="ritual-ring" viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="52" />
+                <circle class="ring-fill" id="ritualRingFill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+              </svg>
+              <div class="ritual-ring-text">
+                <span class="ring-pct" id="ritualPct">0%</span>
+                <span class="ring-done">done</span>
+              </div>
+            </div>
+            <p class="ritual-encouragement" id="ritualEncouragement">Add your first ritual step!</p>
+          </div>
+
+          <!-- Add new step -->
+          <div class="add-step-card">
+            <h3>Add a step</h3>
+            <input type="text" class="step-input" id="stepName" placeholder="e.g. Meditate 10 min" />
+            <div class="step-type-row">
+              <select class="step-select" id="stepDuration">
+                <option value="5">5 min</option>
+                <option value="10">10 min</option>
+                <option value="15">15 min</option>
+                <option value="20">20 min</option>
+                <option value="30">30 min</option>
+              </select>
+              <select class="step-select" id="stepCategory">
+                <option value="mind">🧠 Mind</option>
+                <option value="body">💪 Body</option>
+                <option value="soul">🙏 Soul</option>
+                <option value="focus">🎯 Focus</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="addStep">Add to ritual +</button>
+          </div>
+        </div>
+
+        <div class="ritual-right">
+          <div class="ritual-list-header">
+            <h3>Your ritual</h3>
+            <button class="btn-ghost btn-sm" id="resetRitual">Reset all</button>
+          </div>
+          <div class="ritual-list" id="ritualList">
+            <p class="empty-state ritual-empty">No steps yet. Add your first one ←</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PAGE: AFFIRMATIONS ─── -->
+    <section class="page" id="page-affirmations">
+      <div class="page-header">
+        <div>
+          <p class="page-eyebrow">Affirmations</p>
+          <h1 class="page-title">Speak your <em>becoming.</em></h1>
+        </div>
+      </div>
+
+      <div class="affirm-layout">
+        <div class="affirm-main-card" id="affirmMainCard">
+          <div class="affirm-source" id="affirmSource">Positive Psychology</div>
+          <div class="affirm-text" id="affirmText">Loading...</div>
+          <div class="affirm-actions">
+            <button class="btn-ghost" id="affirmPrev">← Prev</button>
+            <button class="btn-primary" id="affirmNext">Next →</button>
+          </div>
+          <button class="btn-ghost btn-sm affirm-save" id="saveAffirmation">♡ Save this</button>
+        </div>
+
+        <div class="affirm-categories">
+          <h3>Browse by category</h3>
+          <div class="affirm-cat-grid">
+            <button class="affirm-cat active" data-cat="all">All</button>
+            <button class="affirm-cat" data-cat="confidence">Confidence</button>
+            <button class="affirm-cat" data-cat="peace">Peace</button>
+            <button class="affirm-cat" data-cat="growth">Growth</button>
+            <button class="affirm-cat" data-cat="purpose">Purpose</button>
+            <button class="affirm-cat" data-cat="vedic">Vedic</button>
+            <button class="affirm-cat" data-cat="stoic">Stoic</button>
+          </div>
+        </div>
+
+        <div class="saved-affirmations" id="savedAffirmWrapper">
+          <h3>Saved affirmations</h3>
+          <div class="saved-list" id="savedList">
+            <p class="empty-state">None saved yet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PAGE: TRENDS ─── -->
+    <section class="page" id="page-trends">
+      <div class="page-header">
+        <div>
+          <p class="page-eyebrow">Mood Trends</p>
+          <h1 class="page-title">Your inner <em>weather patterns.</em></h1>
+        </div>
+      </div>
+
+      <div class="trends-layout">
+        <div class="trends-chart-card">
+          <div class="chart-header">
+            <h3>Mood over last 14 days</h3>
+            <div class="chart-legend">
+              <span class="legend-dot mood-dot"></span><span>Mood</span>
+              <span class="legend-dot energy-dot"></span><span>Energy</span>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="moodChart" width="600" height="220"></canvas>
+            <div class="chart-empty" id="chartEmpty">
+              <p>📊 No data yet.<br>Complete a few check-ins to see your trends.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trends-stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Avg mood</div>
+            <div class="stat-value" id="avgMood">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg energy</div>
+            <div class="stat-value" id="avgEnergy">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Best day</div>
+            <div class="stat-value" id="bestDay">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total check-ins</div>
+            <div class="stat-value" id="totalCheckins">0</div>
+          </div>
+        </div>
+
+        <div class="distortions-card">
+          <h3>Common thought patterns</h3>
+          <div class="distortion-bars" id="distortionBars">
+            <p class="empty-state">Complete check-ins to see patterns.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Nav Bottom -->
+  <nav class="mobile-nav">
+    <a class="mobile-nav-item active" data-page="home">
+      <span>☀️</span><span>Today</span>
+    </a>
+    <a class="mobile-nav-item" data-page="checkin">
+      <span>🧠</span><span>Check-in</span>
+    </a>
+    <a class="mobile-nav-item" data-page="journal">
+      <span>📓</span><span>Journal</span>
+    </a>
+    <a class="mobile-nav-item" data-page="breathwork">
+      <span>🧘</span><span>Breathe</span>
+    </a>
+    <a class="mobile-nav-item" data-page="affirmations">
+      <span>🔥</span><span>Affirm</span>
+    </a>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
