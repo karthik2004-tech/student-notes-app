@@ -176,7 +176,5 @@ document.getElementById("themeBtn").addEventListener("click", () => {
         localStorage.setItem('theme', 'light');
     }
 });
-// Security: Escape excuse inputs before rendering to prevent DOM injections
-function escapeExcuse(str) {
-    return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
+// Refactor: Modularize category configuration array parameters
+const ExcuseCategories = ['academic', 'health', 'work', 'social'];
