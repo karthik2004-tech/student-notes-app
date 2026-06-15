@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GPA Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>📊 GPA Calculator</h1>
+
+    <div class="controls">
+      <label>Scale:
+        <select id="scaleSelect">
+          <option value="10">10-point (India)</option>
+          <option value="4">4-point (US)</option>
+        </select>
+      </label>
+      <button onclick="addSubject()">Add Subject</button>
+      <button onclick="calculateSGPA()">Calculate SGPA</button>
+      <button onclick="saveSemester()">Save Semester</button>
+      <button onclick="calculateCGPA()">Calculate CGPA</button>
+      <button onclick="exportResults()">Export Results</button>
+    </div>
+
+    <div id="subjects" class="subjects"></div>
+
+    <div id="sgpaResult" class="result"></div>
+    <div id="cgpaResult" class="result"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
