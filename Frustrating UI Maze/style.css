@@ -1,0 +1,281 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #060810;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+  overflow: hidden;
+  color: #475569;
+}
+
+#app {
+  width: min(96vmin, 960px);
+  height: min(92vmin, 740px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3px,0.4vmin,6px);
+}
+
+/* ─── Telemetry ──────────────────────────────────── */
+#telemetry {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px,0.8vmin,14px);
+  padding: clamp(5px,0.6vmin,9px) clamp(8px,1vmin,14px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,191,255,0.03);
+  border-radius: clamp(4px,0.5vmin,8px);
+  flex-wrap: wrap;
+  min-height: clamp(30px,4vmin,48px);
+}
+
+.tm { display: flex; align-items: center; gap: clamp(3px,0.4vmin,6px); font-size: clamp(7px,0.8vmin,10px); letter-spacing: 1px; white-space: nowrap; }
+.tl { color: #334155; text-transform: uppercase; }
+.tv { color: #64748b; font-weight: 700; font-variant-numeric: tabular-nums; transition: color 0.2s; }
+
+#rageBar {
+  width: clamp(40px,6vmin,70px);
+  height: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+#rageFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00bfff, #ff007f);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+#alertBanner {
+  margin-left: auto;
+  padding: clamp(2px,0.3vmin,5px) clamp(6px,0.8vmin,12px);
+  border: 1px solid rgba(255,0,127,0.04);
+  border-radius: 3px;
+  background: rgba(255,0,127,0.02);
+  max-width: clamp(120px,30vmin,300px);
+}
+#alertText {
+  font-size: clamp(6px,0.75vmin,10px);
+  color: #475569;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+
+/* ─── Maze ───────────────────────────────────────── */
+#maze {
+  flex: 1;
+  position: relative;
+  border: 1px solid rgba(0,191,255,0.02);
+  border-radius: clamp(4px,0.5vmin,8px);
+  overflow: hidden;
+  background: #050710;
+  cursor: none;
+}
+#maze.shake {
+  animation: mazeShake 0.45s ease-out;
+}
+@keyframes mazeShake {
+  0%,100%{ transform:translate(0,0); }
+  8%{ transform:translate(-5px,4px); }
+  16%{ transform:translate(4px,-3px); }
+  24%{ transform:translate(-4px,5px); }
+  32%{ transform:translate(3px,-4px); }
+  40%{ transform:translate(-5px,3px); }
+  48%{ transform:translate(4px,-5px); }
+  56%{ transform:translate(-3px,5px); }
+  64%{ transform:translate(5px,-3px); }
+  72%{ transform:translate(-4px,4px); }
+  80%{ transform:translate(3px,-5px); }
+  88%{ transform:translate(-5px,4px); }
+}
+
+/* Scanline overlay */
+#maze::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+  pointer-events:none;
+  z-index:50;
+}
+
+/* ─── Walls ──────────────────────────────────────── */
+.wall {
+  position: absolute;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.02);
+  pointer-events: auto;
+  z-index: 10;
+  transition: background 0.1s;
+}
+
+/* ─── Start Zone ─────────────────────────────────── */
+#startZone {
+  position: absolute;
+  width: clamp(50px,7vmin,80px);
+  height: clamp(50px,7vmin,80px);
+  left: clamp(8px,1.5vmin,14px);
+  top: clamp(8px,1.5vmin,14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(7px,0.9vmin,12px);
+  letter-spacing: 2px;
+  color: rgba(0,191,255,0.3);
+  border: 1px dashed rgba(0,191,255,0.08);
+  border-radius: 4px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ─── Finish Button ──────────────────────────────── */
+#finishBtn {
+  position: absolute;
+  width: clamp(44px,6vmin,64px);
+  height: clamp(44px,6vmin,64px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(6px,0.8vmin,10px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.7);
+  background: radial-gradient(circle at 35% 35%, #ff2a5f, #b8004a);
+  box-shadow: 0 0 clamp(8px,1.2vmin,16px) rgba(255,0,127,0.2);
+  border: 1px solid rgba(255,0,127,0.15);
+  z-index: 20;
+  cursor: none;
+  transition: transform 0.05s linear, left 0.1s ease, top 0.1s ease;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ─── Custom Cursor ──────────────────────────────── */
+#cursorDot {
+  position: absolute;
+  width: clamp(8px,1vmin,12px);
+  height: clamp(8px,1vmin,12px);
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 clamp(6px,0.8vmin,10px) rgba(0,240,255,0.4);
+  pointer-events: none;
+  z-index: 30;
+  transform: translate(-50%,-50%);
+  transition: opacity 0.15s;
+}
+
+/* ─── Proximity Trap ─────────────────────────────── */
+#trapZone {
+  position: absolute;
+  width: 12%;
+  height: 12%;
+  pointer-events: none;
+  z-index: 1;
+}
+.trap-hidden { display: none; }
+
+/* ─── Overlay ─────────────────────────────────────── */
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(6,8,16,0.85);
+  backdrop-filter: blur(4px);
+}
+#overlay.hidden { display: none; }
+
+.o-box {
+  width: min(50vmin,380px);
+  padding: clamp(20px,3vmin,40px);
+  border: 1px solid rgba(0,191,255,0.06);
+  border-radius: clamp(6px,0.8vmin,12px);
+  background: rgba(255,255,255,0.008);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px,1.5vmin,20px);
+}
+
+#oTitle {
+  font-size: clamp(18px,2.8vmin,34px);
+  font-weight: 700;
+  letter-spacing: 4px;
+}
+#oMsg {
+  font-size: clamp(9px,1.2vmin,15px);
+  color: #475569;
+  line-height: 1.5;
+}
+#oStats {
+  font-size: clamp(8px,1vmin,13px);
+  color: #64748b;
+  line-height: 1.6;
+}
+
+#oBtn {
+  padding: clamp(8px,1vmin,14px) clamp(20px,3vmin,40px);
+  background: transparent;
+  border: 1px solid rgba(0,191,255,0.1);
+  border-radius: 4px;
+  color: #00bfff;
+  font-family: inherit;
+  font-size: clamp(9px,1.2vmin,14px);
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+#oBtn:hover {
+  background: rgba(0,191,255,0.04);
+  border-color: rgba(0,191,255,0.25);
+}
+
+/* ─── Glitch overlay (on fail) ──────────────────── */
+.glitch-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,0,127,0.03);
+  pointer-events: none;
+  z-index: 60;
+  animation: glitchFade 0.5s ease-out forwards;
+}
+@keyframes glitchFade {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── Inversion badge ───────────────────────────── */
+.inv-badge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  font-size: clamp(24px,4vmin,48px);
+  color: rgba(255,0,127,0.04);
+  letter-spacing: 4px;
+  font-weight: 700;
+  pointer-events: none;
+  z-index: 1;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* ─── Responsive ────────────────────────────────── */
+@media (max-width: 480px) {
+  #app { width: 100vmin; height: 100vmin; }
+  #telemetry { gap: 3px; padding: 3px 6px; }
+  .tm { font-size: 5px; }
+  #alertBanner { max-width: 80px; }
+}

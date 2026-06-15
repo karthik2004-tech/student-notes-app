@@ -1,0 +1,19 @@
+{
+  "title": "Raycasting Maze Renderer",
+  "description": "A dual-canvas raycasting engine featuring a top-down 2D radar map alongside a first-person pseudo-3D viewport. Implements DDA (Digital Differential Analyzer) ray-marching with fish-eye correction, progressive depth shading, click-to-toggle wall editing, and keyboard-driven player navigation through procedurally generated mazes.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["raycasting", "wolfenstein-3d", "dda", "2d-3d", "maze", "canvas", "pseudo-3d", "first-person", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "DDA ray marching: per-column ray cast using deltaDistX/deltaDistY stepping, initial sideDist calculation from player sub-cell position, wall detection via grid[mapY][mapX] === 1 with O(√n) average steps",
+    "Fish-eye correction: correctedDist = rawDist × cos(rayAngle − playerAngle), applied to each column's perpendicular distance before slice height computation",
+    "Pseudo-3D projection: sliceH = (GRID / correctedDist) × (VW/2), vertically centered on viewport, with luminosity shading (shade = 1 − dist/maxRange) modulating RGB from #ff2a5f toward black",
+    "Dual-canvas rAF loop: 2D radar draws grid cells, fan-ray lines (every 3rd ray via i+=3), player dot with glow + heading line; 3D viewport paints sky (#0a0c14), floor (#0d0f18), and shaded wall slices per column",
+    "Keyboard polling: WASD/Arrow keys with object-literal key map, per-frame handleKeys() applying moveSpeed (0.045) and rotSpeed (0.035), AABB collision test with 9-cell neighborhood margin check preventing wall clipping",
+    "Click-to-toggle walls: on 2D canvas click, convert client coords → canvas coords → grid cell (r,c), toggle 0↔1 with boundary protection (r/c 1..GRID−2), live update block count telemetry",
+    "Procedural maze generation: border walls + 28% interior fill, carved spawn area at (1,1) and destination at (GRID−2,GRID−2)",
+    "Telemetry panel: heading angle (degrees modulo 360), wall block count, rays cast per frame, average column draw time (ms per rAF tick)"
+  ]
+}

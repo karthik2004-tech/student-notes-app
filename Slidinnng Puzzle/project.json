@@ -1,0 +1,18 @@
+{
+  "title": "Slidinnng Puzzle",
+  "description": "A classic sliding puzzle (15-puzzle) with guaranteed solvability, smooth CSS transform animations, keyboard + click controls, chronometer telemetry, and localStorage high-score persistence across 3×3 and 4×4 grids.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["sliding-puzzle", "15-puzzle", "brain-teaser", "logic", "cyberpunk", "vanilla-js", "game"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Solvability-sanity engine: Fisher-Yates shuffle looped through inversion-count parity check guaranteeing 100% solvability before every game start",
+    "2D coordinate sliding: Manhattan distance (|dx|+|dy|===1) collision check for both click and keyboard (arrows + WASD) input",
+    "CSS cubic-bezier transform transition: tiles glide via translate(x,y) with 0.14s ease-out overshoot curve",
+    "Chronometer system: setInterval 1s tick starts on first move, dual-digit MM:SS display, auto-freeze on victory",
+    "Bi-directional dimension switch: 3×3 and 4×4 modes with separate localStorage keys for independent best records",
+    "Per-tile HSL color gradient: each number receives a unique hue based on its value / total tiles on the 170-430 spectrum",
+    "Dark terminal glassmorphic aesthetic: #05070c base, frosted panel borders, cyan/amber/green telemetry triad"
+  ]
+}

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="16" fill="#05060b"/>
+  <!-- Radial glow -->
+  <ellipse cx="64" cy="64" rx="50" ry="50" fill="rgba(0,240,255,0.02)"/>
+  <!-- Strings -->
+  <g stroke-linecap="round" fill="none">
+    <!-- String 1 - C4 -->
+    <path d="M18,8 Q20,64 18,120" stroke="#00f0ff" stroke-width="1.2"/>
+    <!-- String 2 - D4 -->
+    <path d="M36,8 Q36,64 36,120" stroke="#00f0ff" stroke-width="1.2"/>
+    <!-- String 3 - E4 (being plucked - shifted toward pink) -->
+    <path d="M54,8 Q72,54 54,120" stroke="#ff3a6f" stroke-width="2.5"/>
+    <!-- Glow dot on plucked string -->
+    <circle cx="72" cy="54" r="1.5" fill="#ff3a6f" opacity="0.6"/>
+    <!-- String 4 - G4 -->
+    <path d="M72,8 Q72,64 72,120" stroke="#00f0ff" stroke-width="1.2"/>
+    <!-- String 5 - A4 -->
+    <path d="M90,8 Q90,64 90,120" stroke="#00f0ff" stroke-width="1.2"/>
+    <!-- String 6 - C5 -->
+    <path d="M108,8 Q108,64 108,120" stroke="#00f0ff" stroke-width="1.2"/>
+  </g>
+  <!-- Oscillation ghost (faint second position) -->
+  <path d="M54,8 Q40,60 54,120" stroke="rgba(0,240,255,0.08)" stroke-width="1" stroke-linecap="round" fill="none"/>
+  <!-- Telemetry bar -->
+  <rect x="4" y="4" width="120" height="14" rx="5" fill="rgba(255,255,255,0.01)" stroke="rgba(0,240,255,0.06)" stroke-width="0.5"/>
+  <text x="8" y="13" font-size="3" fill="#475569" font-family="monospace" letter-spacing="1">STRINGS</text>
+  <text x="7" y="17" font-size="4.5" fill="#e2e8f0" font-family="monospace" font-weight="700">2</text>
+  <text x="34" y="13" font-size="3" fill="#475569" font-family="monospace" letter-spacing="1">TENSION</text>
+  <text x="34" y="17" font-size="4.5" fill="#e2e8f0" font-family="monospace" font-weight="700">64%</text>
+  <text x="60" y="13" font-size="3" fill="#475569" font-family="monospace" letter-spacing="1">DAMPING</text>
+  <text x="60" y="17" font-size="4.5" fill="#e2e8f0" font-family="monospace" font-weight="700">0.009</text>
+  <text x="90" y="13" font-size="3" fill="#475569" font-family="monospace" letter-spacing="1">NOTE</text>
+  <text x="90" y="17" font-size="4.5" fill="#00f0ff" font-family="monospace" font-weight="700">E4</text>
+  <!-- Note labels at bottom -->
+  <text x="18" y="126" font-size="3" fill="rgba(0,240,255,0.15)" text-anchor="middle" font-family="monospace">C4</text>
+  <text x="36" y="126" font-size="3" fill="rgba(0,240,255,0.15)" text-anchor="middle" font-family="monospace">D4</text>
+  <text x="54" y="126" font-size="3" fill="rgba(0,240,255,0.5)" text-anchor="middle" font-family="monospace" font-weight="700">E4</text>
+  <text x="72" y="126" font-size="3" fill="rgba(0,240,255,0.15)" text-anchor="middle" font-family="monospace">G4</text>
+  <text x="90" y="126" font-size="3" fill="rgba(0,240,255,0.15)" text-anchor="middle" font-family="monospace">A4</text>
+  <text x="108" y="126" font-size="3" fill="rgba(0,240,255,0.15)" text-anchor="middle" font-family="monospace">C5</text>
+</svg>

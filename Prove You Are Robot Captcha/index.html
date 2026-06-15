@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prove You Are Robot — CAPTCHA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="header">
+      <div class="hstat"><span class="hlabel">SYSTEM</span><span class="hval" id="sysStatus">ACTIVE</span></div>
+      <div class="hstat"><span class="hlabel">INTEGRITY</span><span class="hval" id="integrityVal">100%</span></div>
+      <div class="hstat"><span class="hlabel">BIO DEV</span><span class="hval" id="bioDevVal">0.000px</span></div>
+    </div>
+
+    <div id="lineTest" class="panel">
+      <div class="panel-title"><span class="accent-green">◆</span> STRAIGHT LINE ANALYSIS</div>
+      <div class="drag-strip" id="dragStrip">
+        <canvas id="lineCanvas"></canvas>
+        <div class="strip-label left">A</div>
+        <div class="strip-label right">B</div>
+        <div class="strip-instr">DRAG FROM A → B</div>
+        <div class="strip-baseline" id="baseline"></div>
+      </div>
+      <div class="pbar">
+        <span>DEV: <span class="val" id="lineDevVal">0.000</span>px</span>
+        <span>PEAK: <span class="val" id="linePeakVal">0.000</span>px</span>
+        <span><span class="dot" id="lineDot"></span> <span id="lineStatus">STANDBY</span></span>
+      </div>
+    </div>
+
+    <div id="clickTest" class="panel">
+      <div class="panel-title"><span class="accent-cyan">◈</span> CLOCK SYNC TEST</div>
+      <div class="clock-area">
+        <div class="clock-display">
+          <span class="clock-target">TARGET: 750.00ms</span>
+          <span class="clock-delta">Δ: <span id="deltaVal">0.000</span>ms</span>
+        </div>
+        <button id="clockBtn">⬤ INITIATE</button>
+        <div class="clock-progress" id="clockProgress">
+          <div class="clock-fill" id="clockFill"></div>
+        </div>
+      </div>
+      <div class="pbar">
+        <span><span class="dot" id="clickDot"></span> <span id="clickStatus">STANDBY</span></span>
+      </div>
+    </div>
+
+    <div id="log" class="panel">
+      <div class="panel-title"><span class="accent-amber">◉</span> TELEMETRY LOG</div>
+      <div id="logEntries"></div>
+    </div>
+
+    <button id="resetBtn">⟲ RE-CALIBRATE SENSORS</button>
+  </div>
+
+  <div id="overlay" class="overlay hidden">
+    <div class="overlay-box">
+      <div class="overlay-icon" id="overlayIcon"></div>
+      <h2 id="overlayTitle">ACCESS DENIED</h2>
+      <p id="overlayMsg">TOO HUMAN</p>
+      <button id="overlayReset">⟲ RE-CALIBRATE</button>
+    </div>
+  </div>
+
+  <div id="scanlines"></div>
+  <script src="script.js"></script>
+</body>
+</html>

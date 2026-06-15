@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser-Based API Tester (Mini-Postman)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon"><i class="fas fa-paper-plane"></i></span>
+            <div>
+                <h1 class="brand-title">PostLite</h1>
+                <p class="brand-subtitle">Browser-Based HTTP API Testing Client</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace Split layout -->
+    <main class="workspace-container">
+        
+        <!-- Sidebar Panel: Request History -->
+        <aside class="history-sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-history"></i> History (Last 10)</h3>
+                <button class="btn-clear-history" onclick="clearRequestHistory()" title="Clear history">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="history-empty">No requests recorded yet.</div>
+            </div>
+        </aside>
+
+        <!-- Main Configuration Area -->
+        <section class="request-main-panel">
+            
+            <!-- Request URL bar group -->
+            <div class="card url-bar-card">
+                <div class="request-bar">
+                    <select id="requestMethod" class="method-select">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                    <input type="url" id="requestUrl" class="url-input" placeholder="https://api.example.com/endpoint" value="https://jsonplaceholder.typicode.com/posts/1">
+                    <button class="btn btn-primary btn-send" onclick="sendApiRequest()">
+                        <span>Send</span> <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Configuration Options (Headers, Body, Export Code) -->
+            <div class="card config-card">
+                <div class="tab-headers">
+                    <button class="tab-btn active" onclick="switchConfigTab(event, 'config-headers')">Headers</button>
+                    <button class="tab-btn" onclick="switchConfigTab(event, 'config-body')">Body (JSON)</button>
+                    <button class="tab-btn" onclick="switchConfigTab(event, 'config-export')">Export JS Fetch</button>
+                </div>
+
+                <div class="tab-content-container">
+                    <!-- 1. Headers config tab -->
+                    <div class="config-panel active" id="config-headers">
+                        <div class="headers-header">
+                            <h4>HTTP Headers</h4>
+                            <button class="btn btn-sm btn-secondary" onclick="addHeaderRow()">
+                                <i class="fas fa-plus"></i> Add Header
+                            </button>
+                        </div>
+                        <div class="headers-list" id="headersList">
+                            <!-- Populated with rows -->
+                        </div>
+                    </div>
+
+                    <!-- 2. JSON Body config tab -->
+                    <div class="config-panel" id="config-body">
+                        <div class="form-group">
+                            <label for="requestBody">Request Payload Body (raw JSON format)</label>
+                            <textarea id="requestBody" placeholder='{&#10;  "title": "foo",&#10;  "body": "bar",&#10;  "userId": 1&#10;}' spellcheck="false" oninput="compileFetchSnippet()"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 3. Export Code snippet tab -->
+                    <div class="config-panel" id="config-export">
+                        <div class="export-header">
+                            <h4>JavaScript Fetch Code Snippet</h4>
+                            <button class="btn btn-sm btn-secondary" onclick="copyFetchSnippet()">
+                                <i class="fas fa-copy" id="copySnippetIcon"></i> Copy Snippet
+                            </button>
+                        </div>
+                        <pre class="export-code-block"><code id="fetchCodeSnippet"></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Response Viewer Panel -->
+            <div class="card response-card">
+                <div class="response-header">
+                    <h3 class="card-title" style="margin-bottom: 0; border: none; padding-bottom: 0;">
+                        <i class="fas fa-reply"></i> Response
+                    </h3>
+                    
+                    <div class="response-meta" id="responseMeta" style="display: none;">
+                        <span class="status-badge" id="responseStatus">200 OK</span>
+                        <span class="meta-item"><i class="fas fa-tachometer-alt"></i> Time: <strong id="responseTime">0 ms</strong></span>
+                    </div>
+                </div>
+
+                <div class="response-viewport" id="responseViewport">
+                    <div class="response-placeholder">
+                        <i class="fas fa-network-wired placeholder-icon"></i>
+                        <p>Configure your endpoint and parameters, then click Send to launch request query.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Global theme script -->
+    <script src="../global-theme.js"></script>
+    <!-- Core logic script -->
+    <script src="script.js"></script>
+</body>
+</html>

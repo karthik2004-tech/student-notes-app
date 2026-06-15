@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Maze Runner — Neural Breach</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg: #020617;
+            --surface: #0f172a;
+            --accent: #22d3ee;
+            --accent-glow: rgba(34, 211, 238, 0.3);
+            --danger: #f43f5e;
+            --success: #10b981;
+            --text: #f8fafc;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .game-container {
+            width: 95%;
+            max-width: 700px;
+            background: var(--surface);
+            border: 2px solid var(--accent);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--accent-glow);
+            position: relative;
+            text-align: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin: 0;
+            letter-spacing: 4px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        #maze-canvas {
+            background: #000;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: none;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .controls-hint {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 22px;
+            padding: 40px;
+        }
+
+        .btn-neon {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 15px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-neon:hover {
+            background: var(--accent);
+            color: var(--bg);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .hidden { display: none !important; }
+
+        .danger-text { color: var(--danger); }
+        .success-text { color: var(--success); }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div id="start-screen" class="overlay">
+            <h1 style="font-size: 3rem; margin-bottom: 10px;">SHADOW MAZE</h1>
+            <p style="color: var(--accent); opacity: 0.8;">The darkness is your only companion.</p>
+            <ul style="text-align: left; font-size: 0.9rem; margin: 20px 0; line-height: 1.8;">
+                <li>🏃 Use <span style="color: var(--accent)">WASD</span> or <span style="color: var(--accent)">Arrows</span> to navigate.</li>
+                <li>🔦 Limited light radius - plan your path.</li>
+                <li>⚠️ Watch out for hidden <span style="color: var(--danger)">Trap Mines</span>.</li>
+                <li>🏁 Reach the <span style="color: var(--success)">Green Protocol</span> to breach the next level.</li>
+            </ul>
+            <button class="btn-neon" onclick="startGame()">Initiate Neural Link</button>
+        </div>
+
+        <div id="game-over-screen" class="overlay hidden">
+            <h1 id="status-title" class="danger-text">BREACH FAILED</h1>
+            <p id="status-msg" style="margin-bottom: 20px;"></p>
+            <button class="btn-neon" onclick="startGame()">Retry Protocol</button>
+        </div>
+
+        <header>
+            <h1>Neural Breach</h1>
+            <div class="stats">
+                <div class="stat-box">LVL: <span id="level-val">1</span></div>
+                <div class="stat-box">TIME: <span id="time-val">60</span>s</div>
+            </div>
+        </header>
+
+        <canvas id="maze-canvas"></canvas>
+
+        <div class="controls-hint">Navigate to the glowing exit before time expires.</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('maze-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let state = {
+            level: 1,
+            time: 60,
+            gridSize: 15,
+            cellSize: 30,
+            maze: [],
+            player: { x: 0, y: 0 },
+            exit: { x: 0, y: 0 },
+            traps: [],
+            lightRadius: 100,
+            active: false,
+            timer: null
+        };
+
+        function startGame() {
+            state.level = 1;
+            state.time = 60;
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            initLevel();
+        }
+
+        function initLevel() {
+            state.gridSize = 13 + (state.level * 2);
+            state.cellSize = Math.floor(450 / state.gridSize);
+            canvas.width = state.gridSize * state.cellSize;
+            canvas.height = state.gridSize * state.cellSize;
+            
+            state.lightRadius = Math.max(60, 120 - (state.level * 5));
+            state.maze = generateMaze(state.gridSize);
+            state.player = { x: 0, y: 0 };
+            state.exit = { x: state.gridSize - 1, y: state.gridSize - 1 };
+            state.traps = generateTraps(5 + state.level);
+            state.active = true;
+            
+            document.getElementById('level-val').innerText = state.level;
+            startTimer();
+            draw();
+        }
+
+        function generateMaze(size) {
+            const maze = Array.from({ length: size }, () => Array(size).fill(1));
+            const walk = (x, y) => {
+                maze[y][x] = 0;
+                const neighbors = [[x + 2, y], [x - 2, y], [x, y + 2], [x, y - 2]].sort(() => Math.random() - 0.5);
+                
+                neighbors.forEach(([nx, ny]) => {
+                    if (nx >= 0 && nx < size && ny >= 0 && ny < size && maze[ny][nx] === 1) {
+                        maze[ny + (y - ny) / 2][nx + (x - nx) / 2] = 0;
+                        walk(nx, ny);
+                    }
+                });
+            };
+            walk(0, 0);
+            maze[size-1][size-1] = 0; // Ensure exit is accessible
+            if (maze[size-2][size-1] === 1 && maze[size-1][size-2] === 1) maze[size-2][size-1] = 0;
+            return maze;
+        }
+
+        function generateTraps(count) {
+            const traps = [];
+            while (traps.length < count) {
+                const x = Math.floor(Math.random() * state.gridSize);
+                const y = Math.floor(Math.random() * state.gridSize);
+                if (state.maze[y][x] === 0 && (x !== 0 || y !== 0) && (x !== state.exit.x || y !== state.exit.y)) {
+                    traps.push({ x, y });
+                }
+            }
+            return traps;
+        }
+
+        function startTimer() {
+            clearInterval(state.timer);
+            state.timer = setInterval(() => {
+                state.time--;
+                document.getElementById('time-val').innerText = state.time;
+                if (state.time <= 0) endGame("TIME DEPLETED", true);
+            }, 1000);
+        }
+
+        function movePlayer(dx, dy) {
+            if (!state.active) return;
+            const nx = state.player.x + dx;
+            const ny = state.player.y + dy;
+            
+            if (nx >= 0 && nx < state.gridSize && ny >= 0 && ny < state.gridSize && state.maze[ny][nx] === 0) {
+                state.player.x = nx;
+                state.player.y = ny;
+                
+                // Check Trap
+                if (state.traps.some(t => t.x === nx && t.y === ny)) {
+                    state.time -= 10;
+                    state.player = { x: 0, y: 0 };
+                    // Flash red
+                    canvas.style.borderColor = 'var(--danger)';
+                    setTimeout(() => canvas.style.borderColor = 'var(--border)', 300);
+                }
+
+                // Check Win
+                if (nx === state.exit.x && ny === state.exit.y) {
+                    state.level++;
+                    state.time += 20;
+                    initLevel();
+                }
+                draw();
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const s = state.cellSize;
+
+            // Draw Maze
+            for (let y = 0; y < state.gridSize; y++) {
+                for (let x = 0; x < state.gridSize; x++) {
+                    if (state.maze[y][x] === 1) {
+                        ctx.fillStyle = '#1e293b';
+                        ctx.fillRect(x * s, y * s, s, s);
+                    }
+                }
+            }
+
+            // Draw Exit
+            ctx.fillStyle = '#10b981';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#10b981';
+            ctx.fillRect(state.exit.x * s + 5, state.exit.y * s + 5, s - 10, s - 10);
+
+            // Draw Player
+            ctx.fillStyle = '#22d3ee';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#22d3ee';
+            ctx.beginPath();
+            ctx.arc(state.player.x * s + s/2, state.player.y * s + s/2, s/3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Shadow Overlay
+            const gradient = ctx.createRadialGradient(
+                state.player.x * s + s/2, state.player.y * s + s/2, 0,
+                state.player.x * s + s/2, state.player.y * s + s/2, state.lightRadius
+            );
+            gradient.addColorStop(0, 'rgba(0,0,0,0)');
+            gradient.addColorStop(1, 'rgba(0,0,0,0.95)');
+
+            ctx.globalCompositeOperation = 'destination-atop';
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        function endGame(title, isLoss) {
+            state.active = false;
+            clearInterval(state.timer);
+            const screen = document.getElementById('game-over-screen');
+            const titleEl = document.getElementById('status-title');
+            titleEl.innerText = title;
+            titleEl.className = isLoss ? 'danger-text' : 'success-text';
+            document.getElementById('status-msg').innerText = `You reached Sector ${state.level}.`;
+            screen.classList.remove('hidden');
+        }
+
+        window.addEventListener('keydown', e => {
+            switch(e.key) {
+                case 'ArrowUp': case 'w': movePlayer(0, -1); break;
+                case 'ArrowDown': case 's': movePlayer(0, 1); break;
+                case 'ArrowLeft': case 'a': movePlayer(-1, 0); break;
+                case 'ArrowRight': case 'd': movePlayer(1, 0); break;
+            }
+        });
+    </script>
+</body>
+</html>

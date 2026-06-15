@@ -1,0 +1,332 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --creature-hue: 180;
+  --body-scale: 1;
+  --eye-scale: 1;
+  --anim-speed: 1;
+  --accent: #00f0ff;
+  --bg: #05070c;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+  overflow: hidden;
+  color: #475569;
+}
+
+::selection { background: rgba(0,240,255,0.1); }
+
+/* ─── Layout ─────────────────────────────────────── */
+#app {
+  width: min(98vmin, 1040px);
+  height: min(90vmin, 700px);
+  display: grid;
+  grid-template-columns: clamp(160px,22vmin,260px) 1fr clamp(120px,17vmin,200px);
+  gap: clamp(4px,0.6vmin,10px);
+}
+
+/* ─── Panels ──────────────────────────────────────── */
+#leftPanel, #rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px,0.5vmin,8px);
+  padding: clamp(8px,1.2vmin,16px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,240,255,0.04);
+  border-radius: clamp(5px,0.7vmin,9px);
+}
+
+.pnl-hdr {
+  font-size: clamp(7px,0.85vmin,11px);
+  color: #334155;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding-bottom: clamp(4px,0.5vmin,8px);
+  border-bottom: 1px solid rgba(0,240,255,0.04);
+}
+
+/* ─── Controls ────────────────────────────────────── */
+.ctrl {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px,0.2vmin,4px);
+}
+
+.cl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(7px,0.8vmin,10px);
+  color: #475569;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.cv {
+  color: var(--accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(7px,0.85vmin,11px);
+  transition: color 0.2s;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: clamp(10px,1.2vmin,14px);
+  height: clamp(10px,1.2vmin,14px);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px hsla(var(--creature-hue),70%,50%,0.25);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); border: none; cursor: pointer;
+}
+
+.actns {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px,0.5vmin,8px);
+  margin-top: auto;
+  padding-top: clamp(6px,0.8vmin,12px);
+}
+
+.actns button {
+  padding: clamp(5px,0.6vmin,9px) clamp(8px,1vmin,14px);
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(0,240,255,0.06);
+  border-radius: 3px;
+  color: #64748b;
+  font-family: inherit;
+  font-size: clamp(6px,0.75vmin,10px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.actns button:hover {
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(0,240,255,0.15);
+  color: #94a3b8;
+}
+
+.actns button:active {
+  transform: scale(0.97);
+}
+
+/* ─── Viewport ────────────────────────────────────── */
+#viewport {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(0,240,255,0.03);
+  border-radius: clamp(5px,0.7vmin,9px);
+  overflow: hidden;
+  background: #030408;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(0,240,255,0.005) 0%, transparent 70%),
+    linear-gradient(rgba(0,240,255,0.008) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.008) 1px, transparent 1px);
+  background-size: 100% 100%, clamp(16px,2vmin,24px) clamp(16px,2vmin,24px), clamp(16px,2vmin,24px) clamp(16px,2vmin,24px);
+}
+
+.vp-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,240,255,0.01) 0%, transparent 30%, transparent 70%, rgba(0,240,255,0.01) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.vp-badge {
+  position: absolute;
+  bottom: clamp(6px,0.8vmin,12px);
+  right: clamp(8px,1vmin,14px);
+  font-size: clamp(6px,0.7vmin,9px);
+  color: rgba(0,240,255,0.08);
+  letter-spacing: 2px;
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* ─── Creature ────────────────────────────────────── */
+#creatureContainer {
+  transform: scale(var(--body-scale));
+  z-index: 10;
+  transition: transform 0.15s ease;
+}
+
+#creature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#torso {
+  width: clamp(80px,12vmin,130px);
+  height: clamp(100px,15vmin,160px);
+  background: radial-gradient(
+    ellipse at 40% 30%,
+    hsl(var(--creature-hue), 70%, 58%),
+    hsl(var(--creature-hue), 55%, 32%)
+  );
+  border-radius: 50% 50% 45% 45%;
+  position: relative;
+  box-shadow:
+    0 0 clamp(20px,3vmin,40px) hsla(var(--creature-hue), 70%, 50%, 0.12),
+    inset 0 calc(-1 * clamp(8px,1.2vmin,16px)) clamp(20px,3vmin,40px) rgba(0,0,0,0.2);
+  animation: breath calc(3s / var(--anim-speed)) ease-in-out infinite;
+}
+
+@keyframes breath {
+  0%, 100% {
+    transform: scale(1) scaleX(1);
+    border-radius: 50% 50% 45% 45%;
+  }
+  50% {
+    transform: scale(1.04) scaleX(0.96);
+    border-radius: 45% 45% 52% 52%;
+  }
+}
+
+/* ─── Eyes ────────────────────────────────────────── */
+#eyes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.eye {
+  position: absolute;
+  width: calc(clamp(16px,2.4vmin,28px) * var(--eye-scale));
+  height: calc(clamp(16px,2.4vmin,28px) * var(--eye-scale));
+  background: radial-gradient(circle at 35% 35%, #ffffff, #c8d6e5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 clamp(4px,0.6vmin,8px) rgba(255,255,255,0.2),
+    inset 0 -1px 2px rgba(0,0,0,0.1);
+  transition: width 0.2s, height 0.2s;
+}
+
+.eye::after {
+  content: '';
+  position: absolute;
+  width: 42%;
+  height: 42%;
+  background: radial-gradient(circle at 45% 45%, #2d3436, #0a0a0a);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pupilJitter calc(4s / var(--anim-speed)) ease-in-out infinite;
+}
+
+@keyframes pupilJitter {
+  0%, 100% { transform: translate(-50%, -50%); }
+  20% { transform: translate(-45%, -52%); }
+  70% { transform: translate(-53%, -48%); }
+}
+
+/* ─── Legs ────────────────────────────────────────── */
+#legs {
+  display: flex;
+  justify-content: center;
+  gap: clamp(2px,0.3vmin,6px);
+  margin-top: calc(-1 * clamp(4px,0.5vmin,8px));
+}
+
+.leg {
+  width: clamp(6px,0.9vmin,12px);
+  height: clamp(40px,6vmin,70px);
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--creature-hue), 45%, 38%),
+    hsl(var(--creature-hue), 35%, 22%)
+  );
+  border-radius: 50% 50% 30% 30%;
+  transform-origin: center top;
+  animation: walkCycle calc(0.9s / var(--anim-speed)) ease-in-out infinite;
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15);
+}
+
+@keyframes walkCycle {
+  0%, 100% { transform: rotate(-20deg); }
+  25% { transform: rotate(-6deg); }
+  50% { transform: rotate(20deg); }
+  75% { transform: rotate(6deg); }
+}
+
+/* ─── Right Panel ─────────────────────────────────── */
+#dnaDisplay {
+  font-size: clamp(8px,1vmin,13px);
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 1px;
+  word-break: break-all;
+  padding: clamp(4px,0.6vmin,8px);
+  background: rgba(0,240,255,0.02);
+  border: 1px solid rgba(0,240,255,0.04);
+  border-radius: 3px;
+  min-height: clamp(24px,3.5vmin,40px);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+#telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px,0.3vmin,5px);
+}
+
+.tm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(6px,0.7vmin,9px);
+  letter-spacing: 1px;
+  padding: clamp(1px,0.15vmin,3px) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+
+.tmL { color: #334155; text-transform: uppercase; }
+.tmV { color: #64748b; font-weight: 700; font-variant-numeric: tabular-nums; transition: color 0.3s; }
+
+/* ─── Responsive ──────────────────────────────────── */
+@media (max-width: 640px) {
+  #app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    width: 100vmin;
+    height: 100vmin;
+  }
+  #rightPanel { order: 2; flex-direction: row; flex-wrap: wrap; padding: 6px; }
+  #rightPanel .pnl-hdr { display: none; }
+  #dnaDisplay { flex: 1; min-height: auto; font-size: 7px; }
+  #telemetry { flex-direction: row; gap: 6px; }
+  .actns { flex-direction: row; }
+}

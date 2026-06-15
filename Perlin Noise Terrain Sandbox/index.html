@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perlin Noise Terrain Sandbox</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <div class="pg"><span class="pl">SEA LEVEL</span><input type="range" id="seaSlider" min="0.20" max="0.60" value="0.35" step="0.005"><span id="seaVal" class="pv">0.350</span></div>
+      <div class="pg"><span class="pl">PEAK SCALE</span><input type="range" id="peakSlider" min="0.5" max="2.0" value="1.0" step="0.05"><span id="peakVal" class="pv">1.00</span></div>
+      <div class="pg"><span class="pl">NOISE SCALE</span><input type="range" id="noiseSlider" min="1" max="10" value="3" step="0.5"><span id="noiseVal" class="pv">3.0</span></div>
+      <div class="pg"><span class="pl">OCTAVES</span><input type="range" id="octSlider" min="1" max="6" value="4" step="1"><span id="octVal" class="pv">4</span></div>
+      <div class="pg"><span class="pl">PERSISTENCE</span><input type="range" id="persistSlider" min="0.2" max="0.8" value="0.5" step="0.05"><span id="persistVal" class="pv">0.50</span></div>
+      <select id="themeSel">
+        <option value="cyberpunk">Cyberpunk</option>
+        <option value="mars">Mars</option>
+        <option value="alien">Alien</option>
+      </select>
+    </div>
+
+    <div id="mainRow">
+      <div id="canvasWrap">
+        <canvas id="terrainCanvas"></canvas>
+      </div>
+
+      <div id="telemetry">
+        <div class="tm"><span class="tl">LAND/WATER</span><span id="ratioVal" class="tv">0.00</span></div>
+        <div class="tm"><span class="tl">HIGHEST PEAK</span><span id="peakVal2" class="tv">0.00</span></div>
+        <div class="tm"><span class="tl">SEED HASH</span><span id="seedVal" class="tv">0</span></div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <button id="genBtn">NEW SEED</button>
+      <button id="exportBtn">EXPORT PNG</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

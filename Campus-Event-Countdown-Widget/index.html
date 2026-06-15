@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campus Event Countdown Widget</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🎓 Campus Event Countdown</h1>
+
+    <div class="add-event">
+      <input type="text" id="eventName" placeholder="Event name (Exam, Fest...)">
+      <input type="datetime-local" id="eventDate">
+      <button onclick="addEvent()">➕ Add Event</button>
+    </div>
+
+    <div id="eventList" class="event-list"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Cache Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Top config -->
+  <div id="configBar">
+    <select id="algoSel">
+      <option value="lru">LRU</option>
+      <option value="lfu">LFU</option>
+      <option value="fifo">FIFO</option>
+    </select>
+    <div class="pg"><span class="pl">SLOTS</span><input type="range" id="slotSlider" min="4" max="12" value="6" step="1"><span id="slotVal" class="pv">6</span></div>
+    <div class="pg"><span class="pl">SPEED</span><input type="range" id="spdSlider" min="1" max="20" value="10" step="1"><span id="spdVal" class="pv">10</span></div>
+  </div>
+
+  <!-- Address input + cache display + telemetry -->
+  <div id="midRow">
+    <div id="addrCol">
+      <input type="text" id="addrInput" value="1,2,3,4,1,5,2,6,3,7,4,8" spellcheck="false">
+      <button id="stepBtn">STEP</button>
+    </div>
+    <div id="cacheCol">
+      <div id="cacheGrid"></div>
+    </div>
+    <div id="telemetry">
+      <div class="tm"><span class="tl">LOOKUPS</span><span id="lookVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">HITS</span><span id="hitVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">MISSES</span><span id="missVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">HIT RATIO</span><span id="ratioVal" class="tv">0%</span></div>
+      <div class="tm"><span class="tl">EVICTED</span><span id="evictVal" class="tv">—</span></div>
+    </div>
+  </div>
+
+  <!-- Graph -->
+  <div id="graphWrap"><canvas id="graphCanvas"></canvas></div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <button id="runBtn">RUN ALL</button>
+    <button id="resetBtn">PURGE & RESET</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

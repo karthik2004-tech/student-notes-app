@@ -1,0 +1,19 @@
+{
+  "title": "Local Storage Backup, Restore, and Note Exporting",
+  "description": "A comprehensive local database utility dashboard allowing users to visualize, search, edit, and delete browser localStorage keys. Supports exporting the entire database as JSON backups, restoring database keys via clean overwrites or merges, and exporting custom rich text notes as HTML, PDF, Markdown, or Plain Text.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "level": 3,
+  "tags": [
+    "database",
+    "localstorage",
+    "backup",
+    "restore",
+    "exporter",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

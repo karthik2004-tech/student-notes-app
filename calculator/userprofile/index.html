@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Card</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="profile-card">
+        <!-- Cover Photo -->
+        <div class="profile-header">
+            <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&q=80&w=800" alt="Cover" class="cover-img">
+            <div class="header-actions">
+                <button class="icon-btn"><i class="ph ph-share-network"></i></button>
+                <button class="icon-btn"><i class="ph ph-dots-three-outline-vertical"></i></button>
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="profile-body">
+            <div class="avatar-container">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Profile Picture" class="avatar">
+                <div class="status-badge online"></div>
+            </div>
+
+            <div class="user-details">
+                <h2 class="name">Elena Rodriguez
+                    <i class="ph-fill ph-seal-check verified-badge"></i>
+                </h2>
+                <p class="username">@elenarodz</p>
+                
+                <p class="bio">Digital artist & UI/UX Designer based in Barcelona. Passionate about creating seamless user experiences. 🎨✨</p>
+                
+                <div class="meta-info">
+                    <span class="meta-item"><i class="ph ph-map-pin"></i> Barcelona, Spain</span>
+                    <span class="meta-item"><i class="ph ph-link"></i> elena.design</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="profile-stats">
+                <div class="stat">
+                    <span class="stat-value">245</span>
+                    <span class="stat-label">Posts</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">12.4k</span>
+                    <span class="stat-label">Followers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">890</span>
+                    <span class="stat-label">Following</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="profile-actions">
+                <button class="btn btn-primary" id="follow-btn">Follow</button>
+                <button class="btn btn-secondary">Message</button>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="profile-tabs">
+            <div class="tab-list">
+                <button class="tab-btn active" data-target="portfolio">Portfolio</button>
+                <button class="tab-btn" data-target="about">About</button>
+                <button class="tab-btn" data-target="likes">Likes</button>
+            </div>
+            
+            <div class="tab-content">
+                <!-- Portfolio Tab -->
+                <div class="tab-pane active" id="portfolio">
+                    <div class="image-grid">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=300" alt="Work 1">
+                        <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=300" alt="Work 2">
+                        <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=300" alt="Work 3">
+                        <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&q=80&w=300" alt="Work 4">
+                    </div>
+                </div>
+
+                <!-- About Tab -->
+                <div class="tab-pane" id="about">
+                    <div class="about-section">
+                        <h3>Experience</h3>
+                        <p>Senior UI/UX Designer at Creative Studio (2020 - Present)</p>
+                        <p>Freelance Digital Artist (2018 - 2020)</p>
+                        <h3 style="margin-top: 15px;">Skills</h3>
+                        <div class="skills-tags">
+                            <span class="tag">Figma</span>
+                            <span class="tag">Illustration</span>
+                            <span class="tag">Interaction Design</span>
+                            <span class="tag">Procreate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Likes Tab -->
+                <div class="tab-pane" id="likes">
+                    <div class="empty-state">
+                        <i class="ph ph-heart-break"></i>
+                        <p>No liked posts yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

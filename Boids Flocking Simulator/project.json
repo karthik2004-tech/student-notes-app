@@ -1,0 +1,21 @@
+{
+  "title": "Boids Flocking Simulator",
+  "description": "A 2D implementation of Craig Reynolds' flocking algorithm featuring separation/alignment/cohesion steering behaviors, toroidal wrapping, predator evasion, click-to-spawn, and real-time telemetry.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["boids", "flocking", "swarm", "simulation", "craig-reynolds", "canvas", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Craig Reynolds' three steering behaviors: separation (proximity-weighted repel vector), alignment (neighbor average heading), cohesion (center-of-mass attraction), each with independent weight sliders",
+    "Neighbor perception: O(n²) distance-squared comparison within configurable radius (30-150px), using toroidal shortest-path distance for correct edge wrapping",
+    "Toroidal space: seamless edge wrapping — coordinates teleport to opposite boundary on exit, distance calculation uses min(dx, W-dx) for correct wrap-around proximity",
+    "Predator agent: red diamond-shaped boid that chases nearby boids; standard boids apply enhanced separation against predator, causing scattering evasion behavior",
+    "Click-to-spawn: canvas click/touch spawns 10 boids at cursor coordinates with randomized velocity vectors",
+    "Triangle rendering: per-boid isosceles triangle drawn via ctx.rotate(Math.atan2(vy, vx)) with size proportional to speed (7 + speed×2), neon cyan glow",
+    "Cluster estimation: BFS flood-fill grouping boids within 2× perception radius, displayed as cluster tally in telemetry",
+    "Telemetry panel: active agent count, mean group velocity (average speed magnitude), cluster count, updated per frame",
+    "Speed limiting: max speed slider (1-6) enforced via per-frame clamping of velocity magnitude",
+    "Resize handler: canvas buffer re-mapped on window resize, boid positions remain valid via toroidal clamping"
+  ]
+}

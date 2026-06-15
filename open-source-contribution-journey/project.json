@@ -1,0 +1,17 @@
+{
+  "title": "Open Source Contribution Journey Dashboard",
+  "description": "A premium client-side tracking application designed to help developers and students monitor their open-source contributions (Issues, Pull Requests, Reviews) across target programs like NSOC, GSSoC, Hacktoberfest, and LFX Mentorship.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "tags": [
+    "vanilla-js",
+    "open-source",
+    "dashboard",
+    "chartjs",
+    "analytics"
+  ],
+  "level": 3,
+  "entry": "index.html"
+}

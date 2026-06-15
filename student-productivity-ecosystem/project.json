@@ -1,0 +1,17 @@
+{
+  "title": "Aura Study Ecosystem",
+  "description": "A premium student productivity ecosystem enabling study schedules, milestone tracking, kanban assignment tracking, guided breathing pacing, ambient sound mixing, simulated LMS syncing, and simulated AI study buddy chatbot.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "tags": [
+    "vanilla-js",
+    "productivity",
+    "dashboard",
+    "web-audio-api",
+    "wellbeing"
+  ],
+  "level": 3,
+  "entry": "index.html"
+}

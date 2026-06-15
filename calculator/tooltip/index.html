@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Tooltip Component</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-btn" aria-label="Toggle dark mode">
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Component Name</h1>
+            <h2 class="subtitle">Tooltip</h2>
+        </header>
+
+        <div class="info-section">
+            <div class="column">
+                <h3>Features</h3>
+                <ul class="feature-list">
+                    <li>Hover and focus support</li>
+                    <li>Multiple placement options</li>
+                    <li>Smooth animations</li>
+                    <li>Responsive behavior</li>
+                    <li>Accessible design</li>
+                    <li>Light and dark mode support</li>
+                </ul>
+            </div>
+            
+            <div class="column">
+                <h3>Use Cases</h3>
+                <ul class="feature-list">
+                    <li>Form fields</li>
+                    <li>Buttons</li>
+                    <li>Icons</li>
+                    <li>Navigation elements</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Interactive Demo</h3>
+            
+            <div class="tooltip-showcase">
+                <div class="demo-row">
+                    <!-- Tooltip Top -->
+                    <div class="tooltip-container">
+                        <button class="demo-btn tooltip-trigger" aria-describedby="tooltip-top">Top Tooltip</button>
+                        <div id="tooltip-top" class="tooltip tooltip-top" role="tooltip">
+                            This is a tooltip on the top
+                            <div class="tooltip-arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tooltip Bottom -->
+                    <div class="tooltip-container">
+                        <button class="demo-btn tooltip-trigger" aria-describedby="tooltip-bottom">Bottom Tooltip</button>
+                        <div id="tooltip-bottom" class="tooltip tooltip-bottom" role="tooltip">
+                            This is a tooltip on the bottom
+                            <div class="tooltip-arrow"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-row">
+                    <!-- Tooltip Left -->
+                    <div class="tooltip-container">
+                        <button class="demo-btn tooltip-trigger" aria-describedby="tooltip-left">Left Tooltip</button>
+                        <div id="tooltip-left" class="tooltip tooltip-left" role="tooltip">
+                            This is a tooltip on the left
+                            <div class="tooltip-arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tooltip Right -->
+                    <div class="tooltip-container">
+                        <button class="demo-btn tooltip-trigger" aria-describedby="tooltip-right">Right Tooltip</button>
+                        <div id="tooltip-right" class="tooltip tooltip-right" role="tooltip">
+                            This is a tooltip on the right
+                            <div class="tooltip-arrow"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-row">
+                    <!-- Icon Tooltip -->
+                    <div class="tooltip-container inline-tooltip">
+                        <span>Hover over the icon for more info: </span>
+                        <button class="icon-btn tooltip-trigger" aria-describedby="tooltip-icon" aria-label="More information">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        </button>
+                        <div id="tooltip-icon" class="tooltip tooltip-top" role="tooltip">
+                            Here is some helpful information for the user!
+                            <div class="tooltip-arrow"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

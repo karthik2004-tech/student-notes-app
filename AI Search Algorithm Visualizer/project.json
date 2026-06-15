@@ -1,0 +1,18 @@
+{
+  "title": "AI Search Algorithm Visualizer",
+  "description": "A pathfinding algorithm workbench featuring 4 search heuristics (BFS, DFS, A*, Greedy Best-First) on a 30×20 grid with async step-by-step animation, click-and-drag wall placement, movable start/end nodes, random maze generation, and live telemetry.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["pathfinding", "bfs", "dfs", "a-star", "greedy", "search", "algorithm", "visualizer", "grid", "canvas", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "4 search algorithms: BFS (FIFO queue, uniform concentric expansion), DFS (LIFO stack, deep-dive single-path), A* (priority queue with f=g+h, Manhattan heuristic), Greedy Best-First (priority queue with f=h, heuristic-only drive) — each in dedicated async function with async/await + setTimeout delay",
+    "30×20 grid: CSS grid of 600 div cells with aspect-ratio:1, color-coded via CSS classes (wall=amber, start=green, end=red, visited=cyan, frontier=magenta, path=green). Render() rebuilds DOM on each step",
+    "Asynchronous exploration loop: each algorithm yields after processing a node via await delay(ms = max(10, 60-speed×2)), allowing frame-by-frame frontier expansion visible to the eye. Telemetry updates expanded count, visited frontier count, path length, and elapsed time on completion",
+    "Click-and-drag wall drawing: mousedown/mousemove/mouseup event chain with drawMode state ('wall', 'start', 'end'). Dragging over empty cells toggles wall on/off. Start and End nodes draggable to new positions with boundary checks against walls and each other",
+    "Reconstruct path: after target found, parent pointer chain traced back from end to start, coloring cells as 'path' class in emerald green. Path length displayed as steps count (total nodes − 1)",
+    "Random maze generation: 30% wall probability per cell, preserving start/end positions, re-renders grid",
+    "Clear Trail: removes only visited/frontier/path/current cell visual states without affecting walls or nodes; Hard Reset: full re-initialization to empty grid with default start/end positions"
+  ]
+}

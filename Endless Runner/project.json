@@ -1,0 +1,20 @@
+{
+  "title": "Endless Runner",
+  "description": "A 2D side-scrolling endless runner arcade game with gravity-based jumping, AABB collision detection, procedural obstacle spawning, progressive speed ramps, scrolling grid parallax, and localStorage high-score persistence.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["endless-runner", "arcade", "2d", "canvas", "physics", "procedural", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Gravity kinematics: per-frame vy += 0.6 when !grounded, ground clamp at GROUND_Y - h snaps player, jump applies vy = -10.5 impulse",
+    "One-touch input: mousedown, touchstart (with preventDefault), Space, and ArrowUp all dispatch doJump() guarded by grounded flag — multi-jump lock",
+    "AABB collision: a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y tested every frame between player and each obstacle",
+    "Procedural obstacle queue: 60% spawn chance per interval, two types (ground-level and elevated hanging), culled at x + w < -20",
+    "Speed ramp: BASE_SPEED 4 + floor(frameCount / 600) × 0.6, spawn interval 60 - speed×2 (min 28 frames) for progressive difficulty",
+    "Scrolling parallax grid: vertical/horizontal lines at 40px spacing with x-offset = -(frameCount × speed × 0.1) % gridSize for motion illusion",
+    "Running leg animation: grounded state drives leg offset via Math.sin(legPhase) × 3 for oscillating stride effect",
+    "Crash screen shake: CSS @keyframes crashShake 0.35s triggered via class toggle + reflow hack, game-over modal shows distance + final speed",
+    "localStorage erBest key: written on crash if distance exceeds stored record, displayed on boot and during gameplay"
+  ]
+}

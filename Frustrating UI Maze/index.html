@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Frustrating UI Maze</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="telemetry">
+      <div class="tm"><span class="tl">RAGE</span><div id="rageBar"><div id="rageFill"></div></div></div>
+      <div class="tm"><span class="tl">ATTEMPTS</span><span id="attemptsVal" class="tv">0</span></div>
+      <div class="tm" id="alertBanner"><span id="alertText">WELCOME TO THE MAZE</span></div>
+      <div class="tm"><span class="tl">MODE</span><span id="modeVal" class="tv">NORMAL</span></div>
+    </div>
+
+    <div id="maze">
+      <div id="startZone">START</div>
+      <div id="finishBtn">FINISH</div>
+      <div id="cursorDot"></div>
+      <div id="trapZone" class="trap-hidden"></div>
+    </div>
+  </div>
+
+  <div id="overlay" class="hidden">
+    <div class="o-box">
+      <div id="oTitle">GAME OVER</div>
+      <div id="oMsg"></div>
+      <div id="oStats"></div>
+      <button id="oBtn">TRY AGAIN</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

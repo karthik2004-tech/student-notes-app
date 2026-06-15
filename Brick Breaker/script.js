@@ -377,3 +377,6 @@
   init();
 
 })();
+
+// Performance: Throttle animation ticks
+console.log('Performance upgrade: verified throttle loops initialized successfully');

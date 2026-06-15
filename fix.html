@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symmetry Fix — Mirror Magic</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
+        :root {
+            --bg: #fff5f7;
+            --primary: #ff85a2;
+            --secondary: #7dd3fc;
+            --accent: #fef08a;
+            --text: #5e4d52;
+            --card: #ffffff;
+            --border: #fce4ec;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(#ffcad4 0.8px, transparent 0.8px);
+            background-size: 24px 24px;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: var(--card);
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 40px;
+            box-shadow: 0 20px 0px #f8bbd0;
+            border: 4px solid var(--border);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 10px;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 0px white;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: #fff0f3;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: var(--primary);
+            font-weight: 700;
+            border: 2px solid var(--border);
+        }
+
+        .grid-container {
+            display: grid;
+            gap: 6px;
+            background: #fff9fa;
+            padding: 10px;
+            border-radius: 25px;
+            border: 4px dashed var(--primary);
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #f1f5f9;
+            border: 2px solid rgba(0,0,0,0.05);
+        }
+
+        .cell.active {
+            background: var(--primary);
+            box-shadow: 0 4px 0 #d81b60;
+            transform: scale(0.95);
+        }
+
+        .cell.source {
+            cursor: default;
+            background: var(--secondary);
+            box-shadow: 0 4px 0 #0ea5e9;
+        }
+
+        .cell.source.active {
+            background: var(--secondary);
+        }
+
+        .mirror-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: var(--primary);
+            transform: translateX(-50%);
+            border-radius: 2px;
+            opacity: 0.3;
+        }
+
+        .btn-bubble {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 0px #d81b60;
+            transition: all 0.1s;
+            font-family: inherit;
+        }
+
+        .btn-bubble:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0px #d81b60;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 245, 247, 0.95);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 36px;
+            padding: 20px;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="start-screen" class="overlay">
+            <h1>Symmetry Fix 🎀</h1>
+            <p>Mirror the pattern on the right side to fix the symmetry!</p>
+            <button class="btn-bubble" onclick="startGame()">Start Quest</button>
+        </div>
+
+        <div id="win-screen" class="overlay hidden">
+            <h1 style="font-size: 3rem;">YAY! ✨</h1>
+            <p id="win-msg">Level 1 Complete!</p>
+            <button class="btn-bubble" onclick="nextLevel()">Next Pattern</button>
+        </div>
+
+        <div class="stats">
+            <div class="badge">Level: <span id="level-val">1</span></div>
+            <div class="badge">Score: <span id="score-val">0</span></div>
+        </div>
+
+        <div id="grid" class="grid-container">
+            <div class="mirror-line"></div>
+        </div>
+
+        <p style="font-size: 0.9rem; color: #94a3b8;">Tap the right side to match the left side.</p>
+    </div>
+
+    <script>
+        let state = {
+            level: 1,
+            score: 0,
+            size: 4,
+            grid: [],
+            playerGrid: []
+        };
+
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            initLevel();
+        }
+
+        function initLevel() {
+            state.size = state.level < 3 ? 4 : (state.level < 6 ? 6 : 8);
+            state.grid = Array.from({ length: state.size }, () => Array(state.size).fill(false));
+            state.playerGrid = Array.from({ length: state.size }, () => Array(state.size).fill(false));
+
+            // Generate random pattern on left half
+            const half = state.size / 2;
+            for (let y = 0; y < state.size; y++) {
+                for (let x = 0; x < half; x++) {
+                    state.grid[y][x] = Math.random() > 0.6;
+                }
+            }
+
+            renderGrid();
+            document.getElementById('level-val').innerText = state.level;
+            document.getElementById('score-val').innerText = state.score;
+        }
+
+        function renderGrid() {
+            const gridEl = document.getElementById('grid');
+            gridEl.innerHTML = '<div class="mirror-line"></div>';
+            gridEl.style.gridTemplateColumns = `repeat(${state.size}, 1fr)`;
+            gridEl.style.width = `${state.size * 45}px`;
+
+            for (let y = 0; y < state.size; y++) {
+                for (let x = 0; x < state.size; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const isLeft = x < state.size / 2;
+
+                    if (isLeft) {
+                        cell.classList.add('source');
+                        if (state.grid[y][x]) cell.classList.add('active');
+                    } else {
+                        if (state.playerGrid[y][x]) cell.classList.add('active');
+                        cell.onclick = () => toggleCell(x, y);
+                    }
+                    gridEl.appendChild(cell);
+                }
+            }
+        }
+
+        function toggleCell(x, y) {
+            state.playerGrid[y][x] = !state.playerGrid[y][x];
+            renderGrid();
+            checkWin();
+        }
+
+        function checkWin() {
+            const half = state.size / 2;
+            let won = true;
+            for (let y = 0; y < state.size; y++) {
+                for (let x = 0; x < half; x++) {
+                    const mirroredX = state.size - 1 - x;
+                    if (state.grid[y][x] !== state.playerGrid[y][mirroredX]) {
+                        won = false;
+                        break;
+                    }
+                }
+            }
+
+            if (won) {
+                state.score += 100;
+                document.getElementById('win-screen').classList.remove('hidden');
+                document.getElementById('win-msg').innerText = `Level ${state.level} Complete! Pattern Fixed.`;
+            }
+        }
+
+        function nextLevel() {
+            state.level++;
+            document.getElementById('win-screen').classList.add('hidden');
+            initLevel();
+        }
+    </script>
+</body>
+</html>

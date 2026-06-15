@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Periodic Table Interactive App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Interactive Periodic Table</h1>
+
+    <div class="filters">
+      <select id="category-filter">
+        <option value="All">All Categories</option>
+        <option value="Metal">Metals</option>
+        <option value="Nonmetal">Nonmetals</option>
+        <option value="Metalloid">Metalloids</option>
+      </select>
+      <input type="text" id="search-input" placeholder="🔍 Search element...">
+    </div>
+
+    <div id="periodic-table" class="grid"></div>
+
+    <div id="element-details" class="card hidden">
+      <h2 id="element-name"></h2>
+      <p><strong>Atomic Number:</strong> <span id="atomic-number"></span></p>
+      <p><strong>Atomic Mass:</strong> <span id="atomic-mass"></span></p>
+      <p><strong>Category:</strong> <span id="element-category"></span></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

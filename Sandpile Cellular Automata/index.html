@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sandpile Cellular Automata</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="dash">
+      <div class="dgroup">
+        <button id="playBtn">&#9654; START</button>
+        <button id="stepBtn">&#9193; STEP</button>
+        <button id="clearBtn">&#10005; CLEAR</button>
+      </div>
+      <div class="dsep"></div>
+      <div class="dgroup">
+        <label class="dl">PRESET</label>
+        <select id="presetSelect">
+          <option value="central">Central Peak Tower</option>
+          <option value="cross">Cross-Grid Matrix</option>
+          <option value="random">Random Cosmic Dusting</option>
+          <option value="corner">Corner Cascade</option>
+        </select>
+      </div>
+      <div class="dsep"></div>
+      <div class="dgroup">
+        <label class="dl">DROP RATE</label>
+        <input type="range" id="rateSlider" min="0" max="100" value="5" step="1">
+        <span id="rateVal" class="dv">5</span>
+      </div>
+      <div class="dgroup">
+        <label class="dl">GRID</label>
+        <input type="range" id="resSlider" min="50" max="250" value="150" step="25">
+        <span id="resVal" class="dv">150</span>
+      </div>
+    </div>
+
+    <div id="viewport">
+      <canvas id="sandCanvas"></canvas>
+    </div>
+
+    <div id="telemetry">
+      <span class="tm"><span class="tl">GRAINS</span><span id="tmGrains" class="tv">0</span></span>
+      <span class="tm"><span class="tl">TOPPLES</span><span id="tmTopples" class="tv">0</span></span>
+      <span class="tm"><span class="tl">GENERATION</span><span id="tmGen" class="tv">0</span></span>
+      <span class="tm"><span class="tl">CRITICALITY</span><span id="tmCrit" class="tv">STABLE</span></span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

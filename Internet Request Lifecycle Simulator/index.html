@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Internet Request Lifecycle Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="topRow">
+    <div id="urlBar">
+      <input type="text" id="urlInput" value="https://gamedev.org" spellcheck="false">
+      <select id="statusSel">
+        <option value="200">200 OK</option>
+        <option value="404">404 Not Found</option>
+        <option value="500">500 Server Error</option>
+        <option value="504">504 Gateway Timeout</option>
+      </select>
+    </div>
+    <div id="telemetry">
+      <div class="tm"><span class="tl">DNS</span><span id="dnsVal" class="tv">—</span></div>
+      <div class="tm"><span class="tl">SERVER</span><span id="srvVal" class="tv">—</span></div>
+      <div class="tm"><span class="tl">DB</span><span id="dbVal" class="tv">—</span></div>
+      <div class="tm"><span class="tl">RTT</span><span id="rttVal" class="tv">—</span></div>
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <div id="canvasWrap"><canvas id="netCanvas"></canvas></div>
+
+  <!-- Waterfall + History -->
+  <div id="chartsRow">
+    <div id="waterfallWrap">
+      <div class="wfRow"><span class="wfLbl">DNS</span><div class="wfBar"><div id="wfDns" class="wfFill"></div></div></div>
+      <div class="wfRow"><span class="wfLbl">SRV</span><div class="wfBar"><div id="wfSrv" class="wfFill"></div></div></div>
+      <div class="wfRow"><span class="wfLbl"> DB</span><div class="wfBar"><div id="wfDb" class="wfFill"></div></div></div>
+    </div>
+    <div id="historyWrap">
+      <div id="historyLog"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <button id="fireBtn">FIRE REQUEST</button>
+    <button id="resetBtn">RESET CIRCUIT</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

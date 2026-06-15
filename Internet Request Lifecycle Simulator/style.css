@@ -1,0 +1,170 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05060b;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(98vmin,1100px);
+  height:min(98vmin,780px);
+  display:flex;flex-direction:column;
+  gap:clamp(2px,0.2vmin,4px);
+}
+
+/* ─── Top row ────────────────────────────────── */
+#topRow{
+  display:flex;
+  gap:clamp(2px,0.2vmin,4px);
+}
+#urlBar{
+  flex:1;display:flex;gap:clamp(3px,0.3vmin,5px);
+  padding:clamp(4px,0.4vmin,6px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#urlInput{
+  flex:1;
+  padding:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.01);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#94a3b8;font-family:inherit;
+  font-size:clamp(7px,0.8vmin,11px);
+  outline:none;
+}
+#urlInput:focus{border-color:rgba(0,240,255,0.1);color:#cbd5e1}
+#urlInput::placeholder{color:#1e2a3a}
+#statusSel{
+  padding:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#64748b;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  outline:none;cursor:pointer;
+}
+#statusSel option{background:#05060b;color:#64748b}
+
+/* Telemetry */
+#telemetry{
+  display:flex;gap:clamp(6px,0.7vmin,12px);
+  padding:clamp(4px,0.4vmin,6px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  align-items:center;
+}
+.tm{display:flex;flex-direction:column;align-items:center;gap:1px}
+.tm .tl{
+  font-size:clamp(4px,0.4vmin,6px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.tm .tv{
+  font-size:clamp(6px,0.7vmin,10px);
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+#dnsVal{color:#00f0ff}
+#srvVal{color:#ffd700}
+#dbVal{color:#8a2be2}
+#rttVal{color:#00ff66}
+
+/* ─── Canvas ─────────────────────────────────── */
+#canvasWrap{
+  flex:1;position:relative;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#04050a;overflow:hidden;
+  min-height:0;
+}
+#netCanvas{display:block;width:100%;height:100%}
+
+/* ─── Charts row ─────────────────────────────── */
+#chartsRow{
+  display:flex;
+  gap:clamp(2px,0.2vmin,4px);
+  height:clamp(60px,8vmin,90px);
+  min-height:0;
+}
+/* Waterfall */
+#waterfallWrap{
+  width:clamp(120px,18vmin,200px);
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(3px,0.35vmin,5px);
+  padding:clamp(4px,0.4vmin,6px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+.wfRow{display:flex;align-items:center;gap:clamp(2px,0.2vmin,4px)}
+.wfLbl{
+  font-size:clamp(4px,0.45vmin,6px);
+  color:#334155;min-width:clamp(16px,2vmin,24px);
+  text-transform:uppercase;letter-spacing:1px;
+}
+.wfBar{flex:1;height:clamp(6px,0.7vmin,10px);background:rgba(255,255,255,0.02);border-radius:2px;overflow:hidden}
+.wfFill{height:100%;width:0%;border-radius:2px;transition:width 0.4s}
+#wfDns{background:#00f0ff}
+#wfSrv{background:#ffd700}
+#wfDb{background:#8a2be2}
+
+/* History */
+#historyWrap{
+  flex:1;overflow:hidden;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+#historyLog{
+  display:flex;gap:clamp(2px,0.2vmin,4px);
+  padding:clamp(3px,0.35vmin,5px);
+  overflow-x:auto;height:100%;align-items:center;
+}
+.histEntry{
+  white-space:nowrap;
+  padding:clamp(2px,0.2vmin,4px) clamp(5px,0.55vmin,8px);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  font-size:clamp(5px,0.55vmin,7px);
+  color:#475569;flex-shrink:0;
+}
+
+/* ─── Footer ─────────────────────────────────── */
+#footer{
+  display:flex;justify-content:center;
+  gap:clamp(6px,0.8vmin,12px);
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#footer button{
+  padding:clamp(4px,0.4vmin,6px) clamp(10px,1.2vmin,16px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#footer button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#footer button:disabled{opacity:0.3;pointer-events:none}
+
+.statusBadge{
+  display:inline-block;padding:1px 5px;border-radius:2px;
+  font-size:clamp(5px,0.5vmin,7px);font-weight:700;
+}
+.statusBadge.s200{color:#00ff66;border:1px solid rgba(0,255,102,0.2)}
+.statusBadge.s404{color:#ff2a5f;border:1px solid rgba(255,42,95,0.2)}
+.statusBadge.s500{color:#ff2a5f;border:1px solid rgba(255,42,95,0.2)}
+.statusBadge.s504{color:#ffd700;border:1px solid rgba(255,215,0,0.2)}
+
+@media(max-width:600px){
+  #telemetry{gap:3px;flex-wrap:wrap}
+  #chartsRow{flex-direction:column;height:auto}
+  #waterfallWrap{width:auto}
+}

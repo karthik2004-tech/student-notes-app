@@ -1,0 +1,19 @@
+{
+  "title": "Procedural CSS Creature Builder",
+  "description": "A bio-engineering laboratory sandbox that procedurally generates animated CSS creatures with adjustable body morphology, eye arrays, limb counts, and real-time DNA sequence serialization.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["procedural-generation", "css-custom-properties", "creature-builder", "animation", "vanilla-js", "interactive"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Real-time CSS custom property pipeline — slider mutations instantly route to --body-scale, --creature-hue, --eye-scale, and --anim-speed",
+    "Procedural structural appendage constructor with variable-count DOM injection for eyes and limbs",
+    "Staggered animation delays on limbs for fluid multi-pedal walk cycles via per-element animationDelay",
+    "Hardware-accelerated @keyframes sequences: breath (scale + border-radius morph) and walkCycle (offset rotational transforms)",
+    "DNA string serializer compressing 6 live parameters into a portable text code (e.g., B100-H180-E2-S100-L4-A100) with one-click clipboard copy",
+    "Random mutation injector performing chaotic procedural sweep across all parameter axes",
+    "Hue-following accent color system syncs UI chrome with the creature's generated color vector",
+    "Frosted glassmorphic panels with grid-incubator viewport and live telemetry readout"
+  ]
+}

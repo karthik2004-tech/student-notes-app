@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procedural CSS Creature Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="leftPanel">
+      <div class="pnl-hdr">PARAMETERS</div>
+      <div class="ctrl">
+        <label class="cl">Body Scale <span id="bodyScaleVal" class="cv">100%</span></label>
+        <input type="range" id="bodyScale" min="30" max="180" value="100" step="5">
+      </div>
+      <div class="ctrl">
+        <label class="cl">Color Hue <span id="hueVal" class="cv">180°</span></label>
+        <input type="range" id="hue" min="0" max="360" value="180" step="1">
+      </div>
+      <div class="ctrl">
+        <label class="cl">Eye Count <span id="eyeCountVal" class="cv">2</span></label>
+        <input type="range" id="eyeCount" min="1" max="10" value="2" step="1">
+      </div>
+      <div class="ctrl">
+        <label class="cl">Eye Size <span id="eyeSizeVal" class="cv">100%</span></label>
+        <input type="range" id="eyeSize" min="30" max="200" value="100" step="5">
+      </div>
+      <div class="ctrl">
+        <label class="cl">Limb Count <span id="limbCountVal" class="cv">4</span></label>
+        <input type="range" id="limbCount" min="2" max="12" value="4" step="2">
+      </div>
+      <div class="ctrl">
+        <label class="cl">Anim Speed <span id="animSpeedVal" class="cv">1.0x</span></label>
+        <input type="range" id="animSpeed" min="20" max="250" value="100" step="5">
+      </div>
+      <div class="actns">
+        <button id="randomizeBtn">RANDOMIZE MUTATIONS</button>
+        <button id="copyBtn">COPY DNA STRING</button>
+      </div>
+    </div>
+
+    <div id="viewport">
+      <div class="vp-overlay"></div>
+      <div id="creatureContainer">
+        <div id="creature">
+          <div id="torso">
+            <div id="eyes"></div>
+          </div>
+          <div id="legs"></div>
+        </div>
+      </div>
+      <div class="vp-badge">INCUBATOR ACTIVE</div>
+    </div>
+
+    <div id="rightPanel">
+      <div class="pnl-hdr">DNA SEQUENCE</div>
+      <div id="dnaDisplay">B100-H180-E2-S100-L4-A100</div>
+      <div class="pnl-hdr" style="margin-top:auto;">TELEMETRY</div>
+      <div id="telemetry">
+        <div class="tm"><span class="tmL">BODY</span><span class="tmV" id="tmBody">--</span></div>
+        <div class="tm"><span class="tmL">HUE</span><span class="tmV" id="tmHue">--</span></div>
+        <div class="tm"><span class="tmL">EYES</span><span class="tmV" id="tmEyes">--</span></div>
+        <div class="tm"><span class="tmL">LIMBS</span><span class="tmV" id="tmLimbs">--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

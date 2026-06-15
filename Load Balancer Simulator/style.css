@@ -1,0 +1,175 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05060b;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(98vmin,1100px);
+  height:min(98vmin,780px);
+  display:flex;flex-direction:column;
+  gap:clamp(2px,0.2vmin,4px);
+}
+
+/* ─── Top panel ──────────────────────────────── */
+#topPanel{
+  display:flex;align-items:center;
+  gap:clamp(6px,0.6vmin,10px);
+  padding:clamp(4px,0.4vmin,6px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  flex-wrap:wrap;
+}
+#topPanel select{
+  padding:clamp(3px,0.35vmin,5px);
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#64748b;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  outline:none;cursor:pointer;
+}
+#topPanel select option{background:#05060b;color:#64748b}
+.pg{display:flex;align-items:center;gap:clamp(2px,0.2vmin,4px)}
+.pl{
+  font-size:clamp(5px,0.5vmin,7px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.pv{
+  font-size:clamp(6px,0.7vmin,9px);
+  color:#00f0ff;font-weight:700;
+  min-width:clamp(14px,1.8vmin,22px);text-align:center;
+}
+#topPanel input[type=range]{
+  width:clamp(35px,4.5vmin,60px);
+  -webkit-appearance:none;appearance:none;
+  height:3px;background:rgba(0,240,255,0.05);border-radius:2px;outline:none;
+}
+#topPanel input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:10px;height:10px;border-radius:50%;
+  background:#00f0ff;cursor:pointer;box-shadow:0 0 5px rgba(0,240,255,0.3);
+}
+
+/* Telemetry */
+#telemetry{
+  display:flex;gap:clamp(6px,0.7vmin,12px);margin-left:auto;
+  align-items:center;
+}
+.tm{display:flex;flex-direction:column;align-items:center;gap:1px}
+.tm .tl{
+  font-size:clamp(4px,0.4vmin,6px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.tm .tv{
+  font-size:clamp(6px,0.7vmin,10px);
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+#inVal{color:#00f0ff}
+#dropVal{color:#ff2a5f}
+#peakVal{color:#ffd700}
+#effVal{color:#00ff66}
+
+/* ─── Canvas ─────────────────────────────────── */
+#canvasWrap{
+  flex:1;position:relative;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#04050a;overflow:hidden;
+  min-height:0;
+}
+#lbCanvas{display:block;width:100%;height:100%}
+
+/* ─── Server row ─────────────────────────────── */
+#serverRow{
+  display:flex;gap:clamp(2px,0.2vmin,4px);
+  height:clamp(50px,6vmin,72px);
+}
+.svCard{
+  flex:1;display:flex;flex-direction:column;
+  padding:clamp(2px,0.25vmin,4px);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  gap:1px;
+  overflow:hidden;
+}
+.svHead{
+  font-size:clamp(5px,0.5vmin,7px);
+  color:#00f0ff;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+}
+.svStat{
+  display:flex;align-items:center;gap:clamp(2px,0.2vmin,4px);
+}
+.svLab{
+  font-size:clamp(4px,0.4vmin,6px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.svConn{
+  font-size:clamp(6px,0.7vmin,9px);
+  color:#64748b;font-weight:700;
+}
+.wgtSlider{
+  width:clamp(20px,3vmin,40px);
+  -webkit-appearance:none;appearance:none;
+  height:2px;background:rgba(0,240,255,0.05);border-radius:2px;outline:none;
+}
+.wgtSlider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:8px;height:8px;border-radius:50%;
+  background:#ffd700;cursor:pointer;
+}
+.wgtVal{
+  font-size:clamp(5px,0.55vmin,7px);
+  color:#ffd700;font-weight:700;min-width:8px;
+}
+.svState{
+  font-size:clamp(4px,0.45vmin,6px);
+  font-weight:700;text-transform:uppercase;
+  padding:0 3px;
+}
+.svState.healthy{color:#00ff66}
+.svState.degraded{color:#ffd700}
+.svState.crashed{color:#ff2a5f}
+
+.svBtns{display:flex;gap:clamp(1px,0.15vmin,3px);margin-top:1px}
+.svBtns button{
+  flex:1;padding:clamp(1px,0.15vmin,3px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:2px;
+  color:#334155;font-family:inherit;
+  font-size:clamp(4px,0.4vmin,6px);
+  cursor:pointer;letter-spacing:1px;text-transform:uppercase;
+}
+.svBtns button:hover{border-color:rgba(0,240,255,0.08);color:#475569}
+
+/* ─── Footer ─────────────────────────────────── */
+#footer{
+  display:flex;justify-content:center;
+  gap:clamp(6px,0.8vmin,12px);
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#footer button{
+  padding:clamp(4px,0.4vmin,6px) clamp(10px,1.2vmin,16px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#footer button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#footer button:disabled{opacity:0.3;pointer-events:none}
+
+@media(max-width:600px){
+  #serverRow{flex-wrap:wrap;height:auto}
+  .svCard{min-width:45%}
+  #telemetry{gap:3px}
+}

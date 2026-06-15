@@ -1,0 +1,19 @@
+{
+  "title": "Generative Audio-Reactive SVG Mandala",
+  "description": "A creative studio tool that generates rotational-symmetry SVG mandalas from mouse/touch drawing, with real-time audio reactivity via Web Audio API FFT analysis driving stroke width, color interpolation, and scale transformations.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["svg", "mandala", "audio-reactive", "web-audio-api", "fft", "rotational-symmetry", "vanilla-js", "generative-art"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Trigonometric rotation matrix engine: for each drawn segment, N-fold symmetry replicates paths at θ = i × 2π/N using Math.cos/sin with optional mirror reflection across sector axes",
+    "Web Audio API asynchronous microphone capture via getUserMedia, routed through AnalyserNode with configurable FFT 256-bin resolution and smoothing time constant 0.8",
+    "Real-time frequency mapping: sub-bass (bins 0-5) drives center scale, mids (bins 6-19) modulate stroke width, highs (bins 20-39) cycle color palette with lerp interpolation",
+    "SVG DOM node injection: each replicated segment drawn as a native <line> element with stroke, stroke-width, opacity, and stroke-linecap attributes",
+    "Fallback synthetic oscillator generating sine-wave frequency data when no microphone is available, ensuring full testability",
+    "Native SVG file exporter: XMLSerializer().serializeToString() builds a valid standalone .svg document with download via Blob URL",
+    "Four themed color palettes: Cyan→Magenta, Green→Gold, Purple→Pink, Monochrome with real-time audio-reactive hue mixing",
+    "Adjustable symmetry (2-24 slices), stroke width (0.5-6), mirror toggle, and auto-pruning of excess paths to maintain performance"
+  ]
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmonic Pendulum Wave</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <div class="pg">
+        <span class="pl">PENDULUMS</span>
+        <input type="range" id="countSlider" min="8" max="20" value="15" step="1">
+        <span id="countVal" class="pv">15</span>
+      </div>
+      <div class="pg">
+        <span class="pl">SPEED</span>
+        <input type="range" id="speedSlider" min="0.1" max="3" value="1" step="0.05">
+        <span id="speedVal" class="pv">1.00</span>
+      </div>
+      <div class="pg">
+        <span class="pl">AMPLITUDE</span>
+        <input type="range" id="ampSlider" min="10" max="80" value="45" step="1">
+        <span id="ampVal" class="pv">45</span>
+      </div>
+      <div class="pg">
+        <span class="pl">DAMPING</span>
+        <input type="range" id="dampSlider" min="0" max="0.05" value="0" step="0.001">
+        <span id="dampVal" class="pv">0.000</span>
+      </div>
+    </div>
+
+    <div id="stage">
+      <div id="pendulumContainer"></div>
+    </div>
+
+    <div id="telemetry">
+      <div class="tm"><span class="tl">TIME</span><span id="timeVal" class="tv">0.000s</span></div>
+      <div class="tm"><span class="tl">COHESION</span><span id="cohVal" class="tv">1.000</span></div>
+      <div class="tm"><span class="tl">STATE</span><span id="stateVal" class="tv">IDLE</span></div>
+    </div>
+
+    <div id="footer">
+      <button id="toggleBtn">INITIATE MOTION</button>
+      <button id="resetBtn">RESET VECTORS</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

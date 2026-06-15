@@ -1,0 +1,19 @@
+{
+  "title": "The Frustrating UI Maze",
+  "description": "An adversarial puzzle game where the UI actively fights back — walls trigger collision shake, the finish button runs from your cursor using evasive vector math, controls invert at the midline, and proximity traps deploy blocking barriers.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["puzzle", "maze", "adversarial-ui", "evasive-button", "inverted-controls", "vanilla-js", "game"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Rigorous collision maze with mouseenter wall traps triggering shake animation, sarcastic fail messages, and rage quotient tracking",
+    "Evasive finish button using 2D Euclidean distance threshold (120px sensory radius) with vector-angle opposite translation and corner-escape teleportation",
+    "Dynamic coordinate axis inversion field at maze midline — custom cursor inverts delta motion below the boundary",
+    "Proximity barrier trap that deploys a blocking wall when cursor enters a defined zone",
+    "Custom cursor dot rendered via CSS with hidden system cursor (cursor: none) for full control",
+    "Glitch flash overlay, terminal shake keyframes, and scanning overlay for cyberpunk aesthetic",
+    "Attempt counter, rage quotient gauge, and passive-aggressive alert banner with rotating message pool",
+    "Full-screen victory overlay with stats and randomized mocking win messages"
+  ]
+}

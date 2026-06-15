@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorting Algorithm Orchestration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="panel">
+      <select id="algoSel">
+        <option value="bubble">Bubble Sort</option>
+        <option value="insertion">Insertion Sort</option>
+        <option value="quick" selected>Quick Sort</option>
+        <option value="selection">Selection Sort</option>
+      </select>
+      <div class="pg"><span class="pl">SIZE</span><input type="range" id="sizeSlider" min="15" max="150" value="50" step="1"><span id="sizeVal" class="pv">50</span></div>
+      <div class="pg"><span class="pl">SPEED</span><input type="range" id="spdSlider" min="1" max="100" value="40" step="1"><span id="spdVal" class="pv">40</span></div>
+      <select id="waveSel">
+        <option value="sine">Sine</option>
+        <option value="triangle">Triangle</option>
+        <option value="sawtooth">Sawtooth</option>
+      </select>
+    </div>
+
+    <div id="mainRow">
+      <div id="canvasWrap">
+        <canvas id="sortCanvas"></canvas>
+      </div>
+
+      <div id="telemetry">
+        <div class="tm"><span class="tl">COMPS</span><span id="compVal" class="tv">0</span></div>
+        <div class="tm"><span class="tl">SWAPS</span><span id="swapVal" class="tv">0</span></div>
+        <div class="tm"><span class="tl">TIME</span><span id="timeVal" class="tv">0.00s</span></div>
+        <div class="tm"><span class="tl">COMPLEXITY</span><span id="compLabel" class="tv">O(n log n)</span></div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <button id="genBtn">NEW ARRAY</button>
+      <button id="sortBtn">ORCHESTRATE SORT</button>
+      <button id="stopBtn">STOP / RESET</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

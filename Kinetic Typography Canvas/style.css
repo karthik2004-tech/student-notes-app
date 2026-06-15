@@ -1,0 +1,200 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #04050a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+  overflow: hidden;
+}
+
+#app {
+  width: min(96vmin, 960px);
+  height: min(90vmin, 680px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.6vmin, 8px);
+}
+
+/* ─── Console ────────────────────────────────────────── */
+#console {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(6px, 0.8vmin, 12px);
+  padding: clamp(8px, 1vmin, 14px);
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(0, 240, 255, 0.06);
+  border-radius: clamp(6px, 0.8vmin, 10px);
+}
+
+.cgroup {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.5vmin, 8px);
+}
+
+.clbl {
+  font-size: clamp(7px, 0.9vmin, 11px);
+  color: #475569;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cinput {
+  display: flex;
+  gap: 4px;
+}
+
+#textInput {
+  width: clamp(80px, 18vmin, 200px);
+  padding: clamp(3px, 0.4vmin, 6px) clamp(6px, 0.8vmin, 10px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  border-radius: 3px;
+  color: #94a3b8;
+  font-family: inherit;
+  font-size: clamp(9px, 1.1vmin, 13px);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#textInput:focus {
+  border-color: rgba(0, 240, 255, 0.3);
+  color: #e2e8f0;
+}
+
+#applyBtn {
+  padding: clamp(3px, 0.4vmin, 6px) clamp(8px, 1vmin, 14px);
+  background: transparent;
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 3px;
+  color: #00f0ff;
+  font-family: inherit;
+  font-size: clamp(8px, 1vmin, 12px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+#applyBtn:hover {
+  background: rgba(0, 240, 255, 0.06);
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: clamp(60px, 12vmin, 120px);
+  height: 2px;
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: clamp(10px, 1.2vmin, 14px);
+  height: clamp(10px, 1.2vmin, 14px);
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #00f0ff; border: none; cursor: pointer;
+}
+
+.cval {
+  font-size: clamp(8px, 1vmin, 12px);
+  color: #00f0ff;
+  min-width: clamp(30px, 5vmin, 50px);
+  font-variant-numeric: tabular-nums;
+}
+
+#presetSelect {
+  padding: clamp(3px, 0.4vmin, 5px) clamp(6px, 0.8vmin, 10px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  border-radius: 3px;
+  color: #94a3b8;
+  font-family: inherit;
+  font-size: clamp(8px, 1vmin, 12px);
+  outline: none;
+  cursor: pointer;
+  max-width: clamp(80px, 16vmin, 160px);
+}
+
+#presetSelect:focus { border-color: rgba(0, 240, 255, 0.3); }
+
+/* ─── Viewport ──────────────────────────────────────── */
+#viewport {
+  flex: 1;
+  border: 1px solid rgba(0, 240, 255, 0.04);
+  border-radius: clamp(6px, 0.8vmin, 10px);
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+}
+
+#kineticBody {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: clamp(12px, 2vmin, 28px);
+  font-size: clamp(18px, 3vmin, 36px);
+  line-height: 1.5;
+  color: #00f0ff;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.char-span {
+  display: inline-block;
+  position: relative;
+  will-change: transform;
+  white-space: pre;
+  text-shadow: 0 0 4px rgba(0, 240, 255, 0.15);
+  transition: text-shadow 0.1s;
+}
+
+/* ─── Diagnostics ────────────────────────────────────── */
+#diag {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 2vmin, 32px);
+  padding: clamp(4px, 0.6vmin, 8px);
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(0, 240, 255, 0.04);
+  border-radius: clamp(6px, 0.8vmin, 10px);
+  font-size: clamp(8px, 1vmin, 12px);
+  color: #475569;
+  letter-spacing: 1px;
+}
+
+#diag span span {
+  color: #64748b;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  #app { width: 100vmin; height: 100vmin; }
+  #console { padding: 6px; gap: 4px; }
+  .cgroup { flex-wrap: wrap; }
+  #textInput { width: 100px; font-size: 8px; }
+  #kineticBody { font-size: 14px; padding: 8px; }
+}

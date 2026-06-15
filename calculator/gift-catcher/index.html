@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift Catcher — #1062</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header id="hud">
+      <div class="hud-cell">
+        <span class="hud-label">Score</span>
+        <span id="scoreValue" class="hud-value">0</span>
+      </div>
+      <div class="hud-cell">
+        <span class="hud-label">Lives</span>
+        <span id="livesValue" class="hud-value">♥♥♥</span>
+      </div>
+      <div class="hud-cell">
+        <span class="hud-label">Best</span>
+        <span id="bestValue" class="hud-value">0</span>
+      </div>
+    </header>
+
+    <div id="canvasWrapper">
+      <canvas id="gameCanvas" width="500" height="700"></canvas>
+
+      <div id="startOverlay" class="overlay">
+        <div class="overlay-box">
+          <h1>GIFT CATCHER</h1>
+          <p class="sub">Use your <kbd>Mouse</kbd> or <kbd>←</kbd> <kbd>→</kbd> to catch the gifts!</p>
+          <p class="sub">Avoid the unwanted items — they cost a life!</p>
+          <p class="sub-sm">Press <kbd>P</kbd> to pause</p>
+          <button id="startBtn" class="btn">START</button>
+        </div>
+      </div>
+
+      <div id="pauseOverlay" class="overlay hidden">
+        <div class="overlay-box">
+          <h2>PAUSED</h2>
+          <p class="sub">Press <kbd>P</kbd> to resume</p>
+        </div>
+      </div>
+
+      <div id="gameOverOverlay" class="overlay hidden">
+        <div class="overlay-box">
+          <h2>GAME OVER</h2>
+          <div class="report">
+            <div class="r-row"><span>Score</span><span id="finalScore">0</span></div>
+            <div class="r-row"><span>Best</span><span id="finalBest">0</span></div>
+          </div>
+          <button id="restartBtn" class="btn">TRY AGAIN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

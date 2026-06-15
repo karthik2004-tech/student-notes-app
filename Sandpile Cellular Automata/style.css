@@ -1,0 +1,175 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #05060b;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+  overflow: hidden;
+  color: #475569;
+}
+
+#app {
+  width: min(96vmin, 960px);
+  height: min(94vmin, 760px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3px, 0.4vmin, 7px);
+}
+
+/* ─── Dashboard ──────────────────────────────────── */
+#dash {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(3px, 0.5vmin, 8px);
+  padding: clamp(5px, 0.7vmin, 10px) clamp(8px, 1vmin, 14px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,191,255,0.04);
+  border-radius: clamp(4px,0.6vmin,8px);
+}
+
+.dgroup { display: flex; align-items: center; gap: clamp(3px, 0.4vmin, 6px); }
+
+.dsep {
+  width: 1px;
+  height: clamp(12px, 1.8vmin, 20px);
+  background: rgba(0,191,255,0.06);
+}
+
+.dl {
+  font-size: clamp(6px, 0.75vmin, 10px);
+  color: #334155;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dv {
+  font-size: clamp(7px, 0.85vmin, 11px);
+  color: #00bfff;
+  font-weight: 700;
+  min-width: clamp(20px, 3vmin, 36px);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.dgroup button {
+  padding: clamp(3px, 0.4vmin, 6px) clamp(7px, 0.9vmin, 12px);
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 3px;
+  color: #475569;
+  font-family: inherit;
+  font-size: clamp(7px, 0.8vmin, 10px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.dgroup button:hover {
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(255,255,255,0.08);
+  color: #94a3b8;
+}
+#playBtn.running { color: #00ff88; border-color: rgba(0,255,136,0.15); }
+
+#presetSelect {
+  padding: clamp(2px, 0.3vmin, 5px) clamp(5px, 0.6vmin, 8px);
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 3px;
+  color: #475569;
+  font-family: inherit;
+  font-size: clamp(6px, 0.75vmin, 10px);
+  outline: none;
+  cursor: pointer;
+}
+#presetSelect:focus { border-color: rgba(0,191,255,0.15); }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: clamp(50px, 8vmin, 90px);
+  height: 2px;
+  background: rgba(0,191,255,0.08);
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: clamp(8px, 1vmin, 12px);
+  height: clamp(8px, 1vmin, 12px);
+  border-radius: 50%;
+  background: #00bfff;
+  box-shadow: 0 0 6px rgba(0,191,255,0.2);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #00bfff; border: none; cursor: pointer;
+}
+
+/* ─── Viewport ───────────────────────────────────── */
+#viewport {
+  flex: 1;
+  position: relative;
+  border: 1px solid rgba(0,191,255,0.02);
+  border-radius: clamp(4px,0.6vmin,8px);
+  overflow: hidden;
+  background: #030408;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#sandCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ─── Telemetry ──────────────────────────────────── */
+#telemetry {
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 2vmin, 30px);
+  padding: clamp(4px, 0.5vmin, 8px);
+  background: rgba(255,255,255,0.005);
+  border: 1px solid rgba(0,191,255,0.04);
+  border-radius: clamp(4px,0.6vmin,8px);
+  flex-wrap: wrap;
+}
+
+.tm {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.5vmin, 8px);
+  font-size: clamp(7px, 0.85vmin, 11px);
+  letter-spacing: 1px;
+}
+
+.tl { color: #334155; text-transform: uppercase; }
+
+.tv {
+  color: #64748b;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s;
+}
+
+/* ─── Responsive ─────────────────────────────────── */
+@media (max-width: 600px) {
+  #app { width: 100vmin; height: 100vmin; }
+  #dash { gap: 2px; padding: 4px; }
+  .dgroup button { font-size: 5px; padding: 2px 4px; }
+  #presetSelect { font-size: 5px; max-width: 80px; }
+  input[type="range"] { width: 40px; }
+}

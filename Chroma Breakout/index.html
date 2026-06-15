@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chroma Breakout</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <aside class="panel left-panel">
+    <div class="panel-header">
+      <div class="brand">CHROMA BREAKOUT</div>
+      <div class="brand-sub">// Color Collision Deck</div>
+    </div>
+
+    <div class="telemetry-deck">
+      <div class="telem-card">
+        <span class="telem-label">Score</span>
+        <span id="telem-score" class="telem-value">0</span>
+      </div>
+      <div class="telem-card">
+        <span class="telem-label">High Score</span>
+        <span id="telem-highscore" class="telem-value">0</span>
+      </div>
+      <div class="telem-card">
+        <span class="telem-label">Ball State</span>
+        <span id="telem-ball" class="telem-value ball-green">GREEN</span>
+      </div>
+      <div class="telem-card">
+        <span class="telem-label">Lives</span>
+        <span id="telem-lives" class="telem-value">3</span>
+      </div>
+      <div class="telem-card">
+        <span class="telem-label">Time Elapsed</span>
+        <span id="telem-time" class="telem-value">0:00</span>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button id="btn-launch" class="action-btn primary">LAUNCH SIMULATION INSTANCE</button>
+    </div>
+
+    <div class="difficulty-group">
+      <span class="diff-label">Difficulty</span>
+      <div class="diff-toggles" id="diff-toggles">
+        <button class="diff-btn active" data-diff="1">1×</button>
+        <button class="diff-btn" data-diff="2">2×</button>
+        <button class="diff-btn" data-diff="3">3×</button>
+      </div>
+    </div>
+
+    <div class="diagnostics-bar">
+      <span id="diag-status" class="diag-status">AWAITING INITIALIZATION FLIGHT</span>
+    </div>
+  </aside>
+
+  <main class="viewport">
+    <header class="viewport-header">
+      <span class="sim-source">INTERACTIVE CANVAS ARENA</span>
+      <span id="velocity-display" class="velocity-display">v: (0, 0)</span>
+    </header>
+    <div class="canvas-stage" id="canvas-stage">
+      <canvas id="game-canvas"></canvas>
+      <div id="color-timer-ring" class="color-timer-ring"></div>
+    </div>
+  </main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

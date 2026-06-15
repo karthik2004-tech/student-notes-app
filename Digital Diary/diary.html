@@ -197,6 +197,11 @@
 </div>
 
 <script>
+        af
+    const escapeHTML = (str) => { const node = document.createElement('div'); node.textContent = str; return node.innerHTML; };
+
+    const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        main
     let entries = JSON.parse(localStorage.getItem('journal_entries')) || [];
     let selectedMood = '😊';
     let isLocked = true;
@@ -298,11 +303,11 @@
             div.className = 'glass-card entry-card';
             div.innerHTML = `
                 <div class="entry-header">
-                    <span>${e.date}</span>
-                    <span>${e.mood}</span>
+                    <span>${escapeHTML(e.date)}</span>
+                    <span>${escapeHTML(e.mood)}</span>
                 </div>
-                <div class="entry-title">${e.title}</div>
-                <div class="entry-body">${e.content}</div>
+                <div class="entry-title">${escapeHTML(e.title)}</div>
+                <div class="entry-body">${escapeHTML(e.content)}</div>
                 <button onclick="deleteEntry(${e.id})" 
                         style="position: absolute; top: 1.5rem; right: 1.5rem; background: none; color: var(--text-muted); font-size: 0.8rem; padding: 4px;">
                     Delete

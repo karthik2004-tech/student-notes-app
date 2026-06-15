@@ -1,0 +1,19 @@
+{
+  "title": "Jump Challenge",
+  "description": "A 2D side-scrolling platformer arcade game with procedural platform generation, AABB collision physics, gravity-based kinematics, difficulty scaling, and localStorage high-score persistence.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["platformer", "arcade", "2d", "canvas", "physics", "endless-runner", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Gravity kinematics: per-frame vy += 0.55 with instantaneous negative impulse jump (vy = -11) locked to grounded state only",
+    "AABB landing detection: horizontal overlap check + descending-base threshold (playerBot ∈ [pTop, pTop + vy + 6]) snaps player to platform surface",
+    "Procedural platform queue: platforms spawned at randomized x-offsets with currentGap() widening per difficulty level, culled behind cameraX - 200",
+    "Camera tracking: lerp-based (0.08) smooth follow with 0.3W leading offset for lookahead",
+    "Difficulty curves: speed BASE_SPEED + (level-1)×0.35, gap PLAT_MIN_GAP + (level-1)×4px, 20 levels max, incremented every 300 score",
+    "localStorage persistence: jcBest key read on boot, written on game-over if score exceeds stored record",
+    "Canvas resize handler: re-maps canvas buffer to parent container dimensions via getBoundingClientRect on orientation change",
+    "Multi-modal input: mousedown, touchstart (with preventDefault), and Space keydown all trigger doJump() if player is grounded"
+  ]
+}

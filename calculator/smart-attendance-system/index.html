@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance System</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="ph-fill ph-check-circle"></i>
+                <span>Attendify</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active"><i class="ph ph-squares-four"></i> Dashboard</a>
+                <a href="#" class="nav-item"><i class="ph ph-users"></i> Students</a>
+                <a href="#" class="nav-item"><i class="ph ph-calendar-check"></i> Mark Attendance</a>
+                <a href="#" class="nav-item"><i class="ph ph-file-text"></i> Reports</a>
+                <a href="#" class="nav-item"><i class="ph ph-gear"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h2>Attendance Dashboard</h2>
+                    <p class="date-display" id="current-date">October 24, 2026</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-bar">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Search students...">
+                    </div>
+                    <button class="icon-btn"><i class="ph ph-bell"></i></button>
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Profile" class="profile-img">
+                </div>
+            </header>
+
+            <!-- Stats Overview -->
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon total"><i class="ph ph-users"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Students</h3>
+                        <p class="stat-value" id="total-count">45</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon present"><i class="ph ph-check"></i></div>
+                    <div class="stat-info">
+                        <h3>Present</h3>
+                        <p class="stat-value" id="present-count">38</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon absent"><i class="ph ph-x"></i></div>
+                    <div class="stat-info">
+                        <h3>Absent</h3>
+                        <p class="stat-value" id="absent-count">5</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon leave"><i class="ph ph-envelope-open"></i></div>
+                    <div class="stat-info">
+                        <h3>On Leave</h3>
+                        <p class="stat-value" id="leave-count">2</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Actions & Table -->
+            <section class="attendance-section">
+                <div class="section-header">
+                    <h3>Mark Attendance</h3>
+                    <div class="filters">
+                        <select class="filter-select">
+                            <option>Class 10-A</option>
+                            <option>Class 10-B</option>
+                            <option>Class 11-A</option>
+                        </select>
+                        <button class="btn btn-outline"><i class="ph ph-export"></i> Export</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-list">
+                            <!-- Rows will be injected by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="save-btn">Save Attendance</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

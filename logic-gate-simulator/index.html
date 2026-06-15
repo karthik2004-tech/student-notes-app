@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Logic Gate Circuit Simulator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon"><i class="fas fa-microchip"></i></span>
+            <div>
+                <h1 class="brand-title">LogicGate Studio</h1>
+                <p class="brand-subtitle">Interactive Digital Logic & Circuit Simulator</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="app-container">
+        
+        <!-- Toolbox Sidebar -->
+        <aside class="toolbox-sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-box-open"></i> Toolbox</h3>
+            </div>
+            
+            <div class="toolbox-items">
+                <div class="toolbox-section-title">Inputs & Outputs</div>
+                <button class="btn btn-toolbox" onclick="addNode('switch')">
+                    <i class="fas fa-toggle-on text-success"></i> Input Switch
+                </button>
+                <button class="btn btn-toolbox" onclick="addNode('bulb')">
+                    <i class="fas fa-lightbulb text-warning"></i> Output Bulb
+                </button>
+                
+                <div class="toolbox-section-title">Logic Gates</div>
+                <button class="btn btn-toolbox" onclick="addNode('and')">
+                    <span class="gate-icon">AND</span> Conjunct Gate
+                </button>
+                <button class="btn btn-toolbox" onclick="addNode('or')">
+                    <span class="gate-icon">OR</span> Disjunct Gate
+                </button>
+                <button class="btn btn-toolbox" onclick="addNode('not')">
+                    <span class="gate-icon">NOT</span> Inverter Gate
+                </button>
+                <button class="btn btn-toolbox" onclick="addNode('nand')">
+                    <span class="gate-icon">NAND</span> NAND Gate
+                </button>
+                <button class="btn btn-toolbox" onclick="addNode('nor')">
+                    <span class="gate-icon">NOR</span> NOR Gate
+                </button>
+                <button class="btn btn-toolbox" onclick="addNode('xor')">
+                    <span class="gate-icon">XOR</span> Exclusive Gate
+                </button>
+            </div>
+
+            <div class="toolbox-actions">
+                <button class="btn btn-primary" onclick="clearCanvas()">
+                    <i class="fas fa-trash-alt"></i> Clear Canvas
+                </button>
+                <button class="btn btn-secondary" onclick="loadDemoCircuit()">
+                    <i class="fas fa-magic"></i> Load Demo
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Canvas -->
+        <section class="canvas-viewport" id="canvasViewport">
+            <!-- SVG wire connections layer -->
+            <svg class="canvas-connections" id="connectionsSvg"></svg>
+            
+            <!-- Nodes elements container -->
+            <div class="canvas-nodes" id="canvasNodes"></div>
+        </section>
+
+        <!-- Right Side Panel: Truth Table Generator -->
+        <aside class="truth-table-panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-table"></i> Live Truth Table</h3>
+                <button class="btn btn-sm btn-secondary" onclick="generateTruthTable()" title="Refresh truth table">
+                    <i class="fas fa-sync"></i>
+                </button>
+            </div>
+            
+            <div class="table-container" id="truthTableContainer">
+                <div class="table-placeholder">
+                    <i class="fas fa-calculator placeholder-icon"></i>
+                    <p>Place Input Switches and Output Bulbs to automatically calculate truth tables.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Global theme script -->
+    <script src="../global-theme.js"></script>
+    <!-- Core logic script -->
+    <script src="script.js"></script>
+</body>
+</html>

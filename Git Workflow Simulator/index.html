@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Git Workflow Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="mainRow">
+    <!-- Terminal -->
+    <div id="termCol">
+      <div id="termOutput"></div>
+      <div id="termInputRow">
+        <span class="termPrompt">$</span>
+        <input type="text" id="termInput" placeholder="git commit -m &quot;msg&quot;" spellcheck="false">
+      </div>
+    </div>
+
+    <!-- Canvas -->
+    <div id="canvasWrap"><canvas id="gitCanvas"></canvas></div>
+
+    <!-- Telemetry -->
+    <div id="telemetry">
+      <div class="tm"><span class="tl">HEAD</span><span id="headVal" class="tv">main</span></div>
+      <div class="tm"><span class="tl">BRANCHES</span><span id="branchVal" class="tv">1</span></div>
+      <div class="tm"><span class="tl">COMMITS</span><span id="commitVal" class="tv">1</span></div>
+      <div class="tm"><span class="tl">STAGING</span><span id="stageVal" class="tv">clean</span></div>
+    </div>
+  </div>
+
+  <!-- Quick buttons -->
+  <div id="btnRow">
+    <button class="gitBtn" data-cmd="commit -m &quot;work&quot;">COMMIT</button>
+    <button class="gitBtn" data-cmd="branch feature">BRANCH</button>
+    <button class="gitBtn" data-cmd="checkout">CHECKOUT</button>
+    <button class="gitBtn" data-cmd="merge">MERGE</button>
+    <button class="gitBtn" data-cmd="rebase">REBASE</button>
+    <button class="gitBtn" data-cmd="reset">HARD RESET</button>
+  </div>
+
+  <!-- Conflict overlay -->
+  <div id="conflictOverlay" class="hidden">
+    <div id="conflictBox">
+      <div id="conflictMsg">MERGE CONFLICT</div>
+      <div id="conflictOpts">
+        <button id="conflictCurrent">ACCEPT CURRENT (main)</button>
+        <button id="conflictIncoming">ACCEPT INCOMING (feature)</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

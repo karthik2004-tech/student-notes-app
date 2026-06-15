@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binaural Beat Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <span class="eyebrow">Web Audio API</span>
+        <h1>Binaural Beat Focus Synthesizer</h1>
+        <p>
+          Native browser audio synthesis with an isolated stereo node graph. No external media assets, no streaming loops — just real-time oscillator-based binaural beats for cognitive focus.
+        </p>
+      </div>
+      <div class="audio-card">
+        <div class="status-row">
+          <span id="statusLabel" class="status-label">Stopped</span>
+          <span id="frequencyLabel" class="frequency-label">100Hz / 114Hz</span>
+        </div>
+
+        <div class="control-group">
+          <button id="startBtn" class="action-btn primary">Start</button>
+          <button id="stopBtn" class="action-btn secondary" disabled>Stop</button>
+        </div>
+
+        <div class="preset-grid">
+          <button data-preset-id="beta" class="preset-btn active">Beta 14Hz</button>
+          <button data-preset-id="alpha" class="preset-btn">Alpha 10Hz</button>
+          <button data-preset-id="theta" class="preset-btn">Theta 7Hz</button>
+        </div>
+
+        <div class="slider-group">
+          <label for="volumeRange">Master Volume</label>
+          <input id="volumeRange" type="range" min="0" max="1" step="0.01" value="0.25" />
+        </div>
+
+        <div class="info-block">
+          <p><strong>How it works:</strong> Two independent <code>OscillatorNode</code> sources are merged into a stereo pair with <code>ChannelMergerNode</code>. The left channel carries the base frequency and the right channel carries the offset frequency to create a binaural beat in the brain.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="script.js"></script>
+</body>
+</html>

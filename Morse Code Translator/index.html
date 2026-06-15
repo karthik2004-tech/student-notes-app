@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Morse Code Translator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>📡 Morse Code Translator</h1>
+
+    <div class="translator">
+      <textarea id="textInput" placeholder="Enter text..."></textarea>
+      <button onclick="textToMorse()">Convert to Morse</button>
+      <textarea id="morseOutput" placeholder="Morse code output..."></textarea>
+      <button onclick="morseToText()">Convert to Text</button>
+    </div>
+
+    <div class="actions">
+      <button onclick="playMorse()">▶️ Play Morse Audio</button>
+      <button onclick="copyOutput()">📋 Copy Output</button>
+      <button onclick="clearAll()">🧹 Clear</button>
+    </div>
+
+    <div id="status"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

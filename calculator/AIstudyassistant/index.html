@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Left Sidebar: History & Topics -->
+        <aside class="sidebar left-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="ph-fill ph-brain"></i>
+                    <span>StudyAI</span>
+                </div>
+            </div>
+            
+            <button class="new-chat-btn">
+                <i class="ph ph-plus"></i> New Study Session
+            </button>
+
+            <div class="nav-section">
+                <h3>Recent Topics</h3>
+                <ul class="history-list">
+                    <li class="active"><i class="ph ph-chat-circle"></i> Cellular Biology</li>
+                    <li><i class="ph ph-chat-circle"></i> World War II Timeline</li>
+                    <li><i class="ph ph-chat-circle"></i> Calculus: Derivatives</li>
+                    <li><i class="ph ph-chat-circle"></i> Python Data Structures</li>
+                </ul>
+            </div>
+
+            <div class="user-profile">
+                <img src="https://i.pravatar.cc/150?img=47" alt="User" class="avatar">
+                <div class="user-info">
+                    <span class="name">Jamie Doe</span>
+                    <span class="plan">Pro Student</span>
+                </div>
+                <i class="ph ph-gear"></i>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-area">
+            <header class="chat-header">
+                <h2>Cellular Biology</h2>
+                <div class="header-actions">
+                    <button class="icon-btn"><i class="ph ph-export"></i></button>
+                    <button class="icon-btn"><i class="ph ph-dots-three"></i></button>
+                </div>
+            </header>
+
+            <div class="chat-messages" id="chat-messages">
+                
+                <!-- AI Message -->
+                <div class="message ai-message">
+                    <div class="msg-avatar"><i class="ph-fill ph-robot"></i></div>
+                    <div class="msg-content">
+                        <p>Hello Jamie! Ready to dive into Cellular Biology? We can review the mitochondria, cell membranes, or start a pop quiz. What would you like to do?</p>
+                    </div>
+                </div>
+
+                <!-- User Message -->
+                <div class="message user-message">
+                    <div class="msg-content">
+                        <p>Can you explain how the sodium-potassium pump works in the cell membrane?</p>
+                    </div>
+                </div>
+
+                <!-- AI Message -->
+                <div class="message ai-message">
+                    <div class="msg-avatar"><i class="ph-fill ph-robot"></i></div>
+                    <div class="msg-content">
+                        <p>Absolutely! The <strong>sodium-potassium pump</strong> is a vital mechanism for active transport in cells. Here is a simple breakdown:</p>
+                        <ul>
+                            <li>It moves <strong>3 sodium ions (Na+) OUT</strong> of the cell.</li>
+                            <li>It moves <strong>2 potassium ions (K+) INTO</strong> the cell.</li>
+                            <li>Because it moves ions against their concentration gradient, it requires energy in the form of <strong>ATP</strong>.</li>
+                        </ul>
+                        <p>Would you like me to generate a quick flashcard for this?</p>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <button class="attach-btn"><i class="ph ph-paperclip"></i></button>
+                    <input type="text" id="chat-input" placeholder="Ask a question or paste your notes here...">
+                    <button class="send-btn" id="send-btn"><i class="ph-fill ph-paper-plane-right"></i></button>
+                </div>
+                <div class="input-footer">
+                    StudyAI can make mistakes. Consider verifying important facts.
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar: Tools & Actions -->
+        <aside class="sidebar right-sidebar">
+            <div class="sidebar-header">
+                <h3>Study Tools</h3>
+            </div>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon" style="background: #eef2ff; color: #4f46e5;"><i class="ph ph-cards"></i></div>
+                    <h4>Flashcards</h4>
+                    <p>Auto-generate from chat</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon" style="background: #fdf2f8; color: #db2777;"><i class="ph ph-exam"></i></div>
+                    <h4>Pop Quiz</h4>
+                    <p>Test your knowledge</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon" style="background: #ecfdf5; color: #059669;"><i class="ph ph-text-align-center"></i></div>
+                    <h4>Summarize</h4>
+                    <p>Condense long notes</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon" style="background: #fffbeb; color: #d97706;"><i class="ph ph-translate"></i></div>
+                    <h4>Explain Like I'm 5</h4>
+                    <p>Simplify complex topics</p>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <h3>Daily Goal</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-info">
+                        <span>Study Time</span>
+                        <span>45 / 60 min</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

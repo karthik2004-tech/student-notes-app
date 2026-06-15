@@ -1,0 +1,19 @@
+{
+  "title": "AI Prompt Library Manager",
+  "description": "A developer productivity dashboard designed to store, tag, search, and compile templates prompts for ChatGPT, Gemini, Claude, and Midjourney. Features dynamic placeholder variables compile sandboxes, favorite triggers, usage copy stats trackers, and purple/orange/green/black light & dark themes.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "level": 3,
+  "tags": [
+    "ai",
+    "prompt-engineering",
+    "productivity",
+    "sandbox",
+    "darkmode",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}

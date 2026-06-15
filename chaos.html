@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Tap — The Quirky Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap');
+
+        :root {
+            --bg: #ffe0f0; /* Soft Pink */
+            --card: #ffffff;
+            --primary: #ff69b4; /* Hot Pink */
+            --secondary: #8a2be2; /* Blue Violet */
+            --accent: #ffdf00; /* Gold */
+            --text: #333;
+            --text-light: #666;
+            --border: #ffafcc; /* Light Pink */
+            --success: #66bb6a;
+            --error: #ef5350;
+
+            /* Button Colors */
+            --btn-red: #ff5252;
+            --btn-blue: #2196f3;
+            --btn-green: #4caf50;
+            --btn-yellow: #ffeb3b;
+            --btn-purple: #9c27b0;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at center, #fffafa 0%, var(--bg) 100%);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-container {
+            background: var(--card);
+            width: 95%;
+            max-width: 550px;
+            padding: 30px;
+            border-radius: 40px;
+            box-shadow: 0 15px 0px var(--border), 0 25px 50px rgba(0, 0, 0, 0.1);
+            border: 4px solid var(--primary);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: 'Bubblegum Sans', cursive;
+            color: var(--primary);
+            margin: 0 0 10px;
+            font-size: 3rem;
+            text-shadow: 3px 3px 0px var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: #fff0f3;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: var(--primary);
+            font-weight: 700;
+            border: 2px solid var(--border);
+            box-shadow: 0 2px 0px var(--border);
+        }
+
+        #rule-display {
+            font-size: 1.8rem;
+            font-family: 'Bubblegum Sans', cursive;
+            color: var(--secondary);
+            background: #e0f2f7; /* Light blue background for rule */
+            border: 2px dashed var(--secondary);
+            border-radius: 25px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            position: relative;
+            animation: pulseText 1.5s infinite ease-in-out;
+        }
+        #rule-display::before {
+            content: 'RULE:';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); text-shadow: 0 0 0px var(--secondary); }
+            50% { transform: scale(1.02); text-shadow: 0 0 8px var(--secondary); }
+            100% { transform: scale(1); text-shadow: 0 0 0px var(--secondary); }
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            min-height: 250px;
+        }
+
+        .chaos-btn {
+            aspect-ratio: 1;
+            border-radius: 50%; /* Default to circle */
+            border: 3px solid #ccc;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 0px rgba(0,0,0,0.2);
+            animation: wobble 1s ease-in-out infinite alternate;
+        }
+
+        .chaos-btn:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 8px 0px rgba(0,0,0,0.3);
+        }
+        .chaos-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 0px rgba(0,0,0,0.1);
+        }
+
+        .chaos-btn.square { border-radius: 15px; }
+        .chaos-btn.triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); border-radius: 0; }
+        .chaos-btn.star { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); border-radius: 0; }
+
+        .dot-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 70%;
+            height: 70%;
+            justify-content: center;
+            align-items: center;
+        }
+        .dot {
+            width: 15px;
+            height: 15px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        @keyframes wobble {
+            0% { transform: rotate(-1deg); }
+            100% { transform: rotate(1deg); }
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 240, 245, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 36px;
+            padding: 20px;
+        }
+
+        .btn-play {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 0px #d81b60;
+            transition: all 0.1s;
+            font-family: 'Bubblegum Sans', cursive;
+            letter-spacing: 1px;
+        }
+
+        .btn-play:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0px #d81b60;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div id="start-screen" class="overlay">
+            <h1>Chaos Tap! 🤪</h1>
+            <p style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 30px;">Follow the quirky rules and tap the correct buttons before time runs out!</p>
+            <button class="btn-play" onclick="startGame()">Start Mayhem!</button>
+        </div>
+
+        <div id="game-over-screen" class="overlay hidden">
+            <h1 id="result-title">Time's Up! ⏳</h1>
+            <p id="result-message" style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 30px;">You reached Level 1 with 0 points.</p>
+            <button class="btn-play" onclick="startGame()">Try Again!</button>
+        </div>
+
+        <h1>Chaos Tap</h1>
+        
+        <div class="stats">
+            <div class="badge">Level: <span id="level-val">1</span></div>
+            <div class="badge">Score: <span id="score-val">0</span></div>
+            <div class="badge">Time: <span id="time-val">10</span>s</div>
+        </div>
+
+        <div id="rule-display">Tap the RED CIRCLE!</div>
+
+        <div class="button-grid" id="button-grid">
+            <!-- Buttons will be generated here -->
+        </div>
+    </div>
+
+    <script>
+        const COLORS = {
+            red: 'var(--btn-red)',
+            blue: 'var(--btn-blue)',
+            green: 'var(--btn-green)',
+            yellow: 'var(--btn-yellow)',
+            purple: 'var(--btn-purple)'
+        };
+        const SHAPES = ['circle', 'square', 'triangle', 'star'];
+        const COUNTS = [1, 2, 3, 4]; // Number of dots inside
+
+        let state = {
+            level: 1,
+            score: 0,
+            time: 10,
+            timerInterval: null,
+            currentRule: {},
+            buttons: [],
+            active: false
+        };
+
+        function startGame() {
+            state.level = 1;
+            state.score = 0;
+            state.active = true;
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            initLevel();
+        }
+
+        function initLevel() {
+            clearInterval(state.timerInterval);
+            state.timerMax = Math.max(5, 15 - (state.level * 0.5));
+            state.time = state.timerMax;
+
+            updateStats();
+            generateRule();
+            generateButtons();
+            renderButtons();
+            startTimer();
+        }
+
+        function generateRule() {
+            const ruleTypes = ['color_shape', 'count'];
+            const selectedRuleType = ruleTypes[Math.floor(Math.random() * ruleTypes.length)];
+
+            if (selectedRuleType === 'color_shape') {
+                const colorKey = Object.keys(COLORS)[Math.floor(Math.random() * Object.keys(COLORS).length)];
+                const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+                state.currentRule = { type: 'color_shape', color: colorKey, shape: shape };
+                document.getElementById('rule-display').innerText = `Tap the ${colorKey.toUpperCase()} ${shape.toUpperCase()}! 🎨`;
+            } else {
+                const count = COUNTS[Math.floor(Math.random() * COUNTS.length)];
+                state.currentRule = { type: 'count', count: count };
+                document.getElementById('rule-display').innerText = `Find buttons with ${count} DOTS! 🔘`;
+            }
+        }
+
+        function generateButtons() {
+            const btnCount = Math.min(12, 6 + Math.floor(state.level / 2));
+            state.buttons = [];
+            state.buttons.push(createButtonData(true));
+            for (let i = 1; i < btnCount; i++) {
+                state.buttons.push(createButtonData());
+            }
+            state.buttons.sort(() => Math.random() - 0.5);
+        }
+
+        function createButtonData(forceCorrect = false) {
+            let color, shape, count, isCorrect = false;
+            if (forceCorrect) {
+                isCorrect = true;
+                if (state.currentRule.type === 'color_shape') {
+                    color = state.currentRule.color;
+                    shape = state.currentRule.shape;
+                    count = COUNTS[Math.floor(Math.random() * COUNTS.length)];
+                } else {
+                    color = Object.keys(COLORS)[Math.floor(Math.random() * Object.keys(COLORS).length)];
+                    shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+                    count = state.currentRule.count;
+                }
+            } else {
+                color = Object.keys(COLORS)[Math.floor(Math.random() * Object.keys(COLORS).length)];
+                shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+                count = COUNTS[Math.floor(Math.random() * COUNTS.length)];
+                if (state.currentRule.type === 'color_shape') {
+                    isCorrect = (color === state.currentRule.color && shape === state.currentRule.shape);
+                } else {
+                    isCorrect = (count === state.currentRule.count);
+                }
+            }
+            return { color, shape, count, isCorrect };
+        }
+
+        function renderButtons() {
+            const grid = document.getElementById('button-grid');
+            grid.innerHTML = '';
+            state.buttons.forEach(btn => {
+                const el = document.createElement('div');
+                el.className = `chaos-btn ${btn.shape}`;
+                el.style.backgroundColor = COLORS[btn.color];
+                if (btn.count > 0) {
+                    const dotContainer = document.createElement('div');
+                    dotContainer.className = 'dot-container';
+                    for (let i = 0; i < btn.count; i++) {
+                        const dot = document.createElement('div');
+                        dot.className = 'dot';
+                        dotContainer.appendChild(dot);
+                    }
+                    el.appendChild(dotContainer);
+                }
+                el.onclick = () => handleButtonClick(btn, el);
+                grid.appendChild(el);
+            });
+        }
+
+        function handleButtonClick(btn, el) {
+            if (!state.active) return;
+            if (btn.isCorrect) {
+                state.score += 10;
+                state.level++;
+                initLevel();
+            } else {
+                state.time = Math.max(0, state.time - 2);
+                el.style.animation = 'none';
+                el.offsetHeight; 
+                el.style.backgroundColor = 'var(--error)';
+                setTimeout(() => { if (state.active) el.style.backgroundColor = COLORS[btn.color]; }, 500);
+            }
+            updateStats();
+        }
+
+        function startTimer() {
+            clearInterval(state.timerInterval);
+            state.timerInterval = setInterval(() => {
+                state.time -= 0.1;
+                const displayTime = Math.max(0, Math.ceil(state.time));
+                document.getElementById('time-val').innerText = displayTime;
+                const bar = document.getElementById('timer-bar');
+                const pct = (state.time / state.timerMax) * 100;
+                bar.style.width = `${pct}%`;
+                if (state.time <= 0) endGame();
+            }, 100);
+        }
+
+        function updateStats() {
+            document.getElementById('level-val').innerText = state.level;
+            document.getElementById('score-val').innerText = state.score;
+        }
+
+        function endGame() {
+            state.active = false;
+            clearInterval(state.timerInterval);
+            const overlay = document.getElementById('game-over-screen');
+            document.getElementById('result-message').innerText = `You reached Level ${state.level} with ${state.score} points. 🍭`;
+            overlay.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackFlow | Professional Hackathon Planner & Submission Tracker</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Global theme integration -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-box">
+          <i data-lucide="terminal"></i>
+        </div>
+        <div class="logo-text">
+          <h2>HackFlow</h2>
+          <span>Hackathon Workspace</span>
+        </div>
+      </div>
+      
+      <!-- Nav Tabs -->
+      <nav class="sidebar-nav">
+        <button class="nav-tab active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-tab" data-tab="brainstorm">
+          <i data-lucide="lightbulb"></i>
+          <span>Brainstorming</span>
+        </button>
+        <button class="nav-tab" data-tab="tasks">
+          <i data-lucide="kanban-square"></i>
+          <span>Task Board</span>
+        </button>
+        <button class="nav-tab" data-tab="team">
+          <i data-lucide="users"></i>
+          <span>Team & Chat</span>
+        </button>
+        <button class="nav-tab" data-tab="submission">
+          <i data-lucide="send"></i>
+          <span>Submission Tracker</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Backup console -->
+      <div class="sidebar-section">
+        <h3>Backup Console</h3>
+        <div class="backup-actions">
+          <button class="btn btn-secondary btn-sm w-full mb-2" id="btn-export-backup">
+            <i data-lucide="download"></i>
+            <span>Export JSON</span>
+          </button>
+          <button class="btn btn-secondary btn-sm w-full" id="btn-import-trigger">
+            <i data-lucide="upload"></i>
+            <span>Import JSON</span>
+          </button>
+          <input type="file" id="import-file" accept=".json" style="display:none;">
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN PANELS CONTENT -->
+    <main class="app-main">
+      <!-- TOP ACTION HEADER -->
+      <header class="app-header">
+        <div class="header-left">
+          <!-- Countdown Clock -->
+          <div class="header-countdown" id="hackathon-countdown">
+            <span class="countdown-label"><i data-lucide="clock" class="text-orange"></i> Time Remaining:</span>
+            <div class="countdown-digits">
+              <span id="days">00</span>d : 
+              <span id="hours">00</span>h : 
+              <span id="minutes">00</span>m : 
+              <span id="seconds">00</span>s
+            </div>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Theme (Light / Dark)">
+            <i data-lucide="sun"></i>
+          </button>
+          <button class="btn btn-primary" id="btn-reset-workspace">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset Project</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD -->
+      <div class="tab-content active" id="tab-dashboard">
+        <section class="dashboard-hero">
+          <div class="hero-details">
+            <h2>Hackathon Project: <span id="project-title-display">HackFlow Planner</span></h2>
+            <p id="project-desc-display">Managing tasks, brainstorming ideas, and tracking requirements checklist for submissions success.</p>
+          </div>
+          <div class="hero-milestone-gauge">
+            <div class="gauge-percentage" id="gauge-value">0%</div>
+            <label>Project Progress</label>
+          </div>
+        </section>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card card-purple">
+            <div class="card-glow"></div>
+            <i data-lucide="lightbulb" class="stat-icon"></i>
+            <div class="stat-info">
+              <h3 id="stat-ideas">0</h3>
+              <p>Brainstormed Ideas</p>
+            </div>
+          </div>
+          <div class="stat-card card-orange">
+            <div class="card-glow"></div>
+            <i data-lucide="check-square" class="stat-icon"></i>
+            <div class="stat-info">
+              <h3 id="stat-tasks">0 / 0</h3>
+              <p>Tasks Completed</p>
+            </div>
+          </div>
+          <div class="stat-card card-green">
+            <div class="card-glow"></div>
+            <i data-lucide="milestone" class="stat-icon"></i>
+            <div class="stat-info">
+              <h3 id="stat-milestones">0 / 4</h3>
+              <p>Milestones Met</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestones Row -->
+        <div class="content-card">
+          <div class="card-header">
+            <h3>Hackathon Milestones</h3>
+            <p>Set targets to keep your team aligned with the hackathon timeline.</p>
+          </div>
+          <div class="card-body">
+            <div class="milestones-list" id="milestones-container">
+              <!-- Milestones list injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: BRAINSTORMING -->
+      <div class="tab-content" id="tab-brainstorm">
+        <div class="content-card">
+          <div class="card-header">
+            <div class="header-title">
+              <h3>Idea Brainstorming Sandbox</h3>
+              <p>Collaborate, refine, and vote on potential hackathon project concepts.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-add-idea">
+              <i data-lucide="plus"></i>
+              <span>Propose Concept</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="ideas-grid" id="ideas-grid">
+              <!-- Idea cards injected dynamically -->
+            </div>
+            <div class="empty-state" id="ideas-empty">
+              <i data-lucide="lightbulb" style="color: var(--clr-orange);"></i>
+              <h3>No Project Concepts Proposed</h3>
+              <p>Click "Propose Concept" to write down some brainstorming ideas!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: TASKS BOARD -->
+      <div class="tab-content" id="tab-tasks">
+        <div class="board-header-row">
+          <div class="board-title">
+            <h3>Kanban Sprint Board</h3>
+            <p>Assign tasks, set priorities, and track milestones progress.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-add-task">
+            <i data-lucide="plus"></i>
+            <span>Create Task</span>
+          </button>
+        </div>
+        
+        <div class="kanban-board">
+          <!-- Column 1 -->
+          <div class="kanban-col" data-status="todo">
+            <div class="col-header">
+              <span class="badge badge-purple">To Do</span>
+              <span class="col-count" id="count-todo">0</span>
+            </div>
+            <div class="col-cards" id="tasks-todo"></div>
+          </div>
+          
+          <!-- Column 2 -->
+          <div class="kanban-col" data-status="progress">
+            <div class="col-header">
+              <span class="badge badge-orange">In Progress</span>
+              <span class="col-count" id="count-progress">0</span>
+            </div>
+            <div class="col-cards" id="tasks-progress"></div>
+          </div>
+          
+          <!-- Column 3 -->
+          <div class="kanban-col" data-status="review">
+            <div class="col-header">
+              <span class="badge badge-black">In Review</span>
+              <span class="col-count" id="count-review">0</span>
+            </div>
+            <div class="col-cards" id="tasks-review"></div>
+          </div>
+          
+          <!-- Column 4 -->
+          <div class="kanban-col" data-status="done">
+            <div class="col-header">
+              <span class="badge badge-green">Done</span>
+              <span class="col-count" id="count-done">0</span>
+            </div>
+            <div class="col-cards" id="tasks-done"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: TEAM & COLLABORATION CHAT -->
+      <div class="tab-content" id="tab-team">
+        <div class="team-layout">
+          <!-- Team list -->
+          <div class="content-card team-list-card">
+            <div class="card-header">
+              <h3>Team Roster</h3>
+            </div>
+            <div class="card-body scroll-vertical" id="team-roster-container">
+              <!-- Team user cards injected dynamically -->
+            </div>
+          </div>
+
+          <!-- Chat simulator -->
+          <div class="content-card chat-card">
+            <div class="card-header chat-header">
+              <div class="header-details">
+                <h3>Simulated Team Chat Channel</h3>
+                <span class="status-online"><i class="dot"></i> 4 Team Members Online</span>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btn-launch-call">
+                <i data-lucide="video"></i>
+                <span>Start Call</span>
+              </button>
+            </div>
+            <div class="card-body chat-body-layout">
+              <div class="chat-messages-container" id="chat-messages">
+                <!-- Chat bubbles -->
+              </div>
+              <div class="chat-input-bar">
+                <button class="chat-attach-btn" id="btn-chat-file" title="Simulate File Attachment">
+                  <i data-lucide="paperclip"></i>
+                </button>
+                <input type="file" id="chat-file-input" style="display:none;">
+                <input type="text" id="chat-text-input" placeholder="Type a message to collaborate...">
+                <button class="chat-send-btn" id="btn-chat-send">
+                  <i data-lucide="send"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: SUBMISSION TRACKER -->
+      <div class="tab-content" id="tab-submission">
+        <div class="submission-layout">
+          <!-- Requirements Checklist -->
+          <div class="content-card">
+            <div class="card-header">
+              <h3>Submission Requirements Checklist</h3>
+              <p>Check off target items to ensure your submission passes validations.</p>
+            </div>
+            <div class="card-body">
+              <div class="checklist-items" id="submission-checklist">
+                <!-- Checklist rows -->
+              </div>
+              <div class="submission-trigger-row mt-4">
+                <button class="btn btn-primary btn-lg w-full" id="btn-submit-project">
+                  <i data-lucide="rocket"></i>
+                  <span>Mock Submit Project</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guidelines & Resources -->
+          <div class="sidebar-column">
+            <div class="content-card">
+              <div class="card-header">
+                <h3>Submission Resources</h3>
+              </div>
+              <div class="card-body">
+                <ul class="resources-list-links">
+                  <li>
+                    <a href="https://devpost.com" target="_blank">
+                      <i data-lucide="external-link"></i>
+                      <span>Devpost Submission Portal</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://devfolio.co" target="_blank">
+                      <i data-lucide="external-link"></i>
+                      <span>Devfolio Submission Guidelines</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/readme" target="_blank">
+                      <i data-lucide="file-code"></i>
+                      <span>Awesome GitHub Readme templates</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="content-card">
+              <div class="card-header">
+                <h3>Devpost Template Outline</h3>
+              </div>
+              <div class="card-body">
+                <pre class="readme-template-code">
+## Inspiration
+Describe what inspired your team...
+
+## What it does
+Summary of core operations...
+
+## How we built it
+Frameworks, APIs, databases...
+
+## Challenges we ran into
+Bugs resolved, time limits...
+                </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODAL: ADD IDEA -->
+    <div class="modal-overlay" id="modal-idea">
+      <div class="modal-container max-w-sm">
+        <div class="modal-header">
+          <h3>Propose Project Concept</h3>
+          <button class="btn-modal-close" id="btn-modal-close-idea">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="idea-title-input">Concept Title</label>
+            <input type="text" id="idea-title-input" placeholder="e.g. HealthTracker AR">
+          </div>
+          <div class="form-group">
+            <label for="idea-desc-input">Concept Pitch / Outline</label>
+            <textarea id="idea-desc-input" rows="4" placeholder="Describe the problem it solves and key technologies..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-modal-cancel-idea">Cancel</button>
+          <button class="btn btn-primary" id="btn-modal-save-idea">Propose</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: ADD TASK -->
+    <div class="modal-overlay" id="modal-task">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3>Create Kanban Task</h3>
+          <button class="btn-modal-close" id="btn-modal-close-task">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="task-title-input">Task Title</label>
+            <input type="text" id="task-title-input" placeholder="e.g. Implement OAuth Flow">
+          </div>
+          <div class="form-row mb-3">
+            <div class="form-group flex-1">
+              <label for="task-assignee">Assignee</label>
+              <select id="task-assignee">
+                <option value="vishwa">Vishwa (You)</option>
+                <option value="saitej">Saitej (Backend)</option>
+                <option value="karthik">Karthik (Design)</option>
+                <option value="priyanshi">Priyanshi (DevOps)</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label for="task-priority">Priority</label>
+              <select id="task-priority">
+                <option value="high">🔥 High</option>
+                <option value="medium" selected>⚡ Medium</option>
+                <option value="low">💤 Low</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="task-status">Status Column</label>
+              <select id="task-status">
+                <option value="todo">To Do</option>
+                <option value="progress">In Progress</option>
+                <option value="review">In Review</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label for="task-deadline">Deadline Date</label>
+              <input type="date" id="task-deadline">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-modal-cancel-task">Cancel</button>
+          <button class="btn btn-primary" id="btn-modal-save-task">Create Task</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: VIDEO CALL INITIALIZER -->
+    <div class="modal-overlay" id="modal-video-call">
+      <div class="modal-container max-w-sm">
+        <div class="modal-header">
+          <h3>Video Conference Room</h3>
+          <button class="btn-modal-close" id="btn-modal-close-video">&times;</button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div class="call-pulse-circle mb-3">
+            <i data-lucide="video" class="text-purple"></i>
+          </div>
+          <h4>Launch Workspace Meeting</h4>
+          <p class="text-muted max-w-xs mx-auto mt-2" style="font-size: 0.8rem; line-height: 1.4;">
+            Initiate a simulated workspace conference room meeting for alignment on project prototypes.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-video-cancel">Cancel</button>
+          <button class="btn btn-primary" id="btn-video-join">Join Room</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global scripts theme -->
+  <script src="../global-theme.js"></script>
+  <!-- Local script -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "title": "Minesweeper",
+  "description": "Classic Minesweeper with first-click safety, recursive flood-fill, right-click flagging, chronometer, localStorage best times, and three difficulty modes in a cyberpunk terminal aesthetic.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["minesweeper", "puzzle", "logic", "strategy", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "First-click safety: mine planting deferred until first reveal; clicked cell + 8 neighbors guaranteed mine-free via safeSet coordinate map",
+    "Recursive flood-fill: for cells with neighborCount === 0, cascading reveal sweeps outward in all 8 directions stopping at numbered boundaries",
+    "Dual-input binding: click for reveal, contextmenu with preventDefault for flag toggle, both gated by gameOver flag",
+    "Tri-color number palette: n1=#00f0ff, n2=#00ff88, n3=#ff2a5f, n4=#a855f7, n5=#dc2626, n6=#14b8a6, n7=#1e293b, n8=#475569",
+    "Game-over reveal engine: all mines shown with bomb glyph, tripped mine gets @keyframes minePulse glow animation, wrong-flagged cells marked with orange cross",
+    "Chronometer: setInterval 1s tick starts on first click, 3-digit padded display, freezes on win or loss",
+    "localStorage msBest-{difficulty}: per-difficulty shortest time saved on victory, displayed in best bar on boot and after each win",
+    "3 difficulty presets: Beginner 9×9/10 mines, Intermediate 16×16/40 mines, Expert 16×30/99 mines with dynamic grid-template-columns"
+  ]
+}

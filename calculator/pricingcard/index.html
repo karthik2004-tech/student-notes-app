@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Cards</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="pricing-container">
+        <div class="pricing-header">
+            <h2>Simple, transparent pricing</h2>
+            <p>No contracts. No surprise fees.</p>
+            
+            <div class="billing-toggle">
+                <span class="toggle-label" id="monthly-label">Monthly</span>
+                <label class="switch">
+                    <input type="checkbox" id="billing-checkbox">
+                    <span class="slider round"></span>
+                </label>
+                <span class="toggle-label" id="yearly-label">Yearly <span class="badge">Save 20%</span></span>
+            </div>
+        </div>
+
+        <div class="cards-wrapper">
+            <!-- Basic Plan -->
+            <div class="pricing-card">
+                <div class="card-header">
+                    <h3>Basic</h3>
+                    <p>Perfect for individuals starting out.</p>
+                </div>
+                <div class="card-price">
+                    <span class="currency">$</span>
+                    <span class="amount" data-monthly="9" data-yearly="7">9</span>
+                    <span class="period">/mo</span>
+                </div>
+                <ul class="features-list">
+                    <li><span class="check">&#10003;</span> 1 User Account</li>
+                    <li><span class="check">&#10003;</span> 10 Projects limit</li>
+                    <li><span class="check">&#10003;</span> Basic Analytics</li>
+                    <li class="disabled"><span class="cross">&#10005;</span> Priority Support</li>
+                    <li class="disabled"><span class="cross">&#10005;</span> Custom Domain</li>
+                </ul>
+                <button class="cta-btn outline">Get Started</button>
+            </div>
+
+            <!-- Pro Plan (Highlighted) -->
+            <div class="pricing-card popular">
+                <div class="popular-badge">Most Popular</div>
+                <div class="card-header">
+                    <h3>Professional</h3>
+                    <p>Ideal for growing teams and businesses.</p>
+                </div>
+                <div class="card-price">
+                    <span class="currency">$</span>
+                    <span class="amount" data-monthly="29" data-yearly="23">29</span>
+                    <span class="period">/mo</span>
+                </div>
+                <ul class="features-list">
+                    <li><span class="check">&#10003;</span> Up to 5 Users</li>
+                    <li><span class="check">&#10003;</span> Unlimited Projects</li>
+                    <li><span class="check">&#10003;</span> Advanced Analytics</li>
+                    <li><span class="check">&#10003;</span> Priority Support</li>
+                    <li class="disabled"><span class="cross">&#10005;</span> Custom Domain</li>
+                </ul>
+                <button class="cta-btn solid">Start Free Trial</button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card">
+                <div class="card-header">
+                    <h3>Enterprise</h3>
+                    <p>Advanced features for large organizations.</p>
+                </div>
+                <div class="card-price">
+                    <span class="currency">$</span>
+                    <span class="amount" data-monthly="99" data-yearly="79">99</span>
+                    <span class="period">/mo</span>
+                </div>
+                <ul class="features-list">
+                    <li><span class="check">&#10003;</span> Unlimited Users</li>
+                    <li><span class="check">&#10003;</span> Unlimited Projects</li>
+                    <li><span class="check">&#10003;</span> Custom Analytics</li>
+                    <li><span class="check">&#10003;</span> 24/7 Dedicated Support</li>
+                    <li><span class="check">&#10003;</span> Custom Domain</li>
+                </ul>
+                <button class="cta-btn outline">Contact Sales</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

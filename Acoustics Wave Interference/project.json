@@ -1,0 +1,20 @@
+{
+  "title": "Acoustics Wave Interference",
+  "description": "A 2D wave interference visualizer using direct pixel-buffer rendering, two-point-source superposition (sin(k·r₁ - ω·t) + sin(k·r₂ - ω·t)), neon cyan/magenta fringe color mapping, and interactive source repositioning.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["wave-interference", "acoustics", "physics", "visualizer", "superposition", "canvas", "cyberpunk", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "Direct pixel-buffer rendering: ctx.createImageData → Uint8ClampedArray mutation → ctx.putImageData, bypassing shape drawing for maximum throughput",
+    "Two-source superposition: Y = sin(k·r₁ - ω·t) + sin(k·r₂ - ω·t) computed per pixel, with Euclidean distance to each emitter",
+    "Neon fringe color palette: Y > 0 interpolates from background (#030509) to cyan (#00f0ff); Y < 0 interpolates to magenta (#ff2a5f); Y ≈ 0 renders as dark charcoal node",
+    "Resolution scaling slider: step values 1-6 control internal canvas division (W/step × H/step), image-rendering: pixelated for crisp downsampled preview",
+    "Click-to-reposition: alternates activeSource (1↔2) on each click, maps canvas-relative coordinates to internal pixel grid for precision",
+    "Separation slider: dynamically recalculates emitter positions symmetrically around center, divided by step for correct internal coordinate spacing",
+    "Telemetry sampling: ~1% of pixels (every 100th) sampled per frame for peak amplitude average, constructive ratio (|Y| > 1), and phase velocity (ω/k)",
+    "Pause/Resume: toggles t accumulation, maintains render loop for frozen inspection of interference pattern",
+    "Reset vectors: zeroes t, un-pauses, recalculates emitter positions from current separation value"
+  ]
+}

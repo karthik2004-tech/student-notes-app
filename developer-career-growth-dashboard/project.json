@@ -1,0 +1,17 @@
+{
+  "title": "Developer Career Growth Dashboard",
+  "description": "A premium career growth dashboard for software engineers tracking skill progression trees, GitHub/project contribution logs, interactive roadmap bookmarks, resume strength calculators, and DSA coding trackers.",
+  "author": {
+    "name": "Vishwa Mistry",
+    "github": "MistryVishwa"
+  },
+  "tags": [
+    "vanilla-js",
+    "career-development",
+    "dashboard",
+    "skills-matrix",
+    "portfolio"
+  ],
+  "level": 3,
+  "entry": "index.html"
+}

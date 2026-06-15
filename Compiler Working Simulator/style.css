@@ -1,0 +1,199 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05060b;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(96vmin,1100px);
+  height:min(96vmin,760px);
+  display:flex;flex-direction:column;
+  gap:clamp(2px,0.2vmin,4px);
+}
+
+/* ─── Top row ────────────────────────────────── */
+#topRow{
+  display:flex;
+  gap:clamp(2px,0.2vmin,4px);
+  height:clamp(80px,12vmin,140px);
+  min-height:0;
+}
+
+/* Editor */
+#editorWrap{
+  flex:1;
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  overflow:hidden;
+}
+#editorWrap.shake{animation:shake 0.25s}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-4px)}
+  40%{transform:translateX(4px)}
+  60%{transform:translateX(-3px)}
+  80%{transform:translateX(3px)}
+}
+#srcEditor{
+  width:100%;height:100%;resize:none;
+  background:rgba(255,255,255,0.01);
+  border:none;outline:none;
+  color:#94a3b8;font-family:inherit;
+  font-size:clamp(8px,0.95vmin,13px);
+  padding:clamp(5px,0.55vmin,8px);
+  line-height:1.6;tab-size:4;
+}
+#srcEditor:focus{color:#cbd5e1}
+#srcEditor::placeholder{color:#1e2a3a}
+
+/* Pipeline */
+#pipeline{
+  display:flex;align-items:center;
+  gap:clamp(2px,0.2vmin,4px);
+  padding:clamp(4px,0.4vmin,6px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+.pp{
+  padding:clamp(3px,0.35vmin,5px) clamp(5px,0.55vmin,8px);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  font-size:clamp(5px,0.55vmin,7px);
+  color:#334155;font-weight:700;letter-spacing:1px;
+  transition:all 0.3s;
+}
+.pp.act{border-color:#00f0ff;color:#00f0ff;background:rgba(0,240,255,0.04)}
+.pp.done{border-color:#00ff66;color:#00ff66;background:rgba(0,255,102,0.03)}
+.pp.err{border-color:#ff2a5f;color:#ff2a5f;background:rgba(255,42,95,0.04)}
+.ppArr{color:#1a2a3a;font-size:clamp(5px,0.5vmin,7px)}
+
+/* Telemetry */
+#telemetry{
+  width:clamp(80px,12vmin,130px);
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(3px,0.35vmin,6px);
+  padding:clamp(4px,0.4vmin,6px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+.tm{display:flex;justify-content:space-between;gap:2px}
+.tm .tl{
+  font-size:clamp(4px,0.45vmin,6px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.tm .tv{
+  font-size:clamp(7px,0.8vmin,11px);
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+#tokVal{color:#00f0ff}
+#depthVal{color:#00ff66}
+#cycleVal{color:#ffd700}
+#statusVal{color:#475569}
+#statusVal.ok{color:#00ff66}
+#statusVal.err{color:#ff2a5f}
+
+/* ─── Tabs ────────────────────────────────────── */
+#tabs{
+  display:flex;gap:clamp(2px,0.2vmin,4px);
+}
+.tab{
+  padding:clamp(3px,0.3vmin,5px) clamp(8px,0.9vmin,14px);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:3px;
+  font-size:clamp(5px,0.55vmin,7px);
+  color:#334155;font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;
+  background:rgba(255,255,255,0.005);
+  text-transform:uppercase;
+}
+.tab:hover{border-color:rgba(0,240,255,0.08);color:#475569}
+.tab.act{border-color:rgba(0,240,255,0.12);color:#00f0ff;background:rgba(0,240,255,0.02)}
+
+/* ─── Output ──────────────────────────────────── */
+#outputWrap{
+  flex:1;overflow:auto;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#04050a;
+  min-height:0;
+}
+#outputView{
+  padding:clamp(6px,0.65vmin,10px);
+  min-height:100%;
+}
+
+/* Token grid */
+.tkGrid{display:flex;flex-wrap:wrap;gap:clamp(3px,0.35vmin,5px);align-content:flex-start;}
+.tkBadge{
+  display:inline-flex;flex-direction:column;align-items:center;
+  padding:clamp(3px,0.3vmin,5px) clamp(5px,0.55vmin,8px);
+  border-radius:3px;font-size:clamp(7px,0.8vmin,11px);
+  border:1px solid rgba(255,255,255,0.04);
+}
+.tkBadge .tkType{font-size:clamp(4px,0.45vmin,6px);color:#334155;letter-spacing:1px;text-transform:uppercase}
+.tkBadge .tkVal{font-weight:700}
+.tkBadge.keyword{border-color:rgba(0,240,255,0.15)}.tkBadge.keyword .tkVal{color:#00f0ff}
+.tkBadge.identifier{border-color:rgba(0,255,102,0.15)}.tkBadge.identifier .tkVal{color:#00ff66}
+.tkBadge.number{border-color:rgba(255,215,0,0.15)}.tkBadge.number .tkVal{color:#ffd700}
+.tkBadge.operator{border-color:rgba(255,42,95,0.15)}.tkBadge.operator .tkVal{color:#ff2a5f}
+.tkBadge.assignment{border-color:rgba(255,255,255,0.08)}.tkBadge.assignment .tkVal{color:#94a3b8}
+.tkBadge.lparen,.tkBadge.rparen{border-color:rgba(0,240,255,0.08)}.tkBadge.lparen .tkVal,.tkBadge.rparen .tkVal{color:#475569}
+.tkBadge.semicolon{border-color:rgba(255,255,255,0.04)}.tkBadge.semicolon .tkVal{color:#334155}
+
+/* AST tree */
+.astNode{margin-left:clamp(6px,0.7vmin,10px);border-left:1px solid rgba(0,240,255,0.06);padding-left:clamp(4px,0.45vmin,6px);margin-top:clamp(2px,0.2vmin,4px)}
+.astRoot{font-weight:700;color:#00f0ff;font-size:clamp(8px,0.9vmin,12px);margin-bottom:clamp(3px,0.3vmin,5px)}
+.astLabel{color:#475569;font-size:clamp(6px,0.7vmin,10px)}
+.astLabel .astNum{color:#ffd700;font-weight:700}
+.astLabel .astId{color:#00ff66;font-weight:700}
+.astLabel .astOp{color:#ff2a5f;font-weight:700}
+
+/* Assembly */
+.asmBlock{font-size:clamp(7px,0.85vmin,11px);line-height:1.8}
+.asmLine{display:flex;gap:clamp(8px,1vmin,14px);padding:clamp(1px,0.1vmin,2px) 0}
+.asmAddr{color:#334155;min-width:clamp(24px,3vmin,36px)}
+.asmMnemonic{color:#00f0ff;font-weight:700;min-width:clamp(40px,5vmin,60px)}
+.asmArgs{color:#94a3b8}
+
+/* Error overlay */
+.errOverlay{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;color:#ff2a5f;
+  font-size:clamp(8px,0.9vmin,12px);
+  text-align:center;padding:20px;
+}
+
+/* ─── Footer ─────────────────────────────────── */
+#footer{
+  display:flex;justify-content:center;
+  gap:clamp(6px,0.8vmin,12px);
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#footer button{
+  padding:clamp(4px,0.4vmin,6px) clamp(10px,1.2vmin,16px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#footer button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#footer button:active{border-color:#00f0ff;color:#00f0ff}
+
+@media(max-width:600px){
+  #topRow{flex-wrap:wrap;height:auto}
+  #editorWrap{min-height:80px}
+  #telemetry{width:100%;flex-direction:row;gap:4px}
+  .tm{flex-direction:column}
+}

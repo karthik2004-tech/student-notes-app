@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Raycasting Maze Renderer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="panel">
+    <div class="pg"><span class="pl">FOV</span><input type="range" id="fovSlider" min="30" max="120" value="66" step="1"><span id="fovVal" class="pv">66</span></div>
+    <div class="pg"><span class="pl">RES</span><input type="range" id="resSlider" min="1" max="8" value="4" step="1"><span id="resVal" class="pv">4</span></div>
+    <div class="pg"><span class="pl">RANGE</span><input type="range" id="rangeSlider" min="4" max="20" value="12" step="1"><span id="rangeVal" class="pv">12</span></div>
+  </div>
+
+  <div id="mainRow">
+    <div id="canvasWrap2d"><canvas id="mapCanvas"></canvas><span class="cvLbl">RADAR</span></div>
+    <div id="canvasWrap3d"><canvas id="viewCanvas"></canvas><span class="cvLbl">VIEWPORT</span></div>
+  </div>
+
+  <div id="splitRow">
+    <div id="telemetry">
+      <div class="tm"><span class="tl">HEADING</span><span id="headVal" class="tv">0.0</span></div>
+      <div class="tm"><span class="tl">BLOCKS</span><span id="blockVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">RAYS</span><span id="rayVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">DRAW MS</span><span id="drawVal" class="tv">0.0</span></div>
+    </div>
+    <div id="footer">
+      <button id="genBtn">GENERATE MAZE</button>
+      <button id="resetBtn">RESET CAMERA</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

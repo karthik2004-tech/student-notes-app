@@ -388,7 +388,13 @@
                 return;
             }
             navigator.clipboard.writeText(text);
-            alert('Copied to clipboard! ✅');
+            
+            const copyBtn = document.querySelector('.copy-btn');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
         }
 
         // Theme toggle

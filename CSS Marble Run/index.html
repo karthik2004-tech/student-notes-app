@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Marble Run / Pachinko Machine</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="toolbar">
+      <div class="tgroup">
+        <button class="tbtn active" data-tool="peg" title="Place Peg">&#9679; PEG</button>
+        <button class="tbtn" data-tool="ramp-l" title="Place Left Ramp">&#9586; L-RAMP</button>
+        <button class="tbtn" data-tool="ramp-r" title="Place Right Ramp">&#9585; R-RAMP</button>
+      </div>
+      <div class="tsep"></div>
+      <div class="tgroup">
+        <button class="abtn" id="clearBtn">&#10005; CLEAR</button>
+      </div>
+      <div class="tsep"></div>
+      <div class="tgroup">
+        <button class="sbtn" id="dropBtn">&#9660; DROP</button>
+        <button class="sbtn" id="resetBtn">&#8634; RESET</button>
+      </div>
+      <div class="tsep"></div>
+      <div id="scoreArea">
+        <span class="slbl">SCORE</span>
+        <span id="scoreVal">0</span>
+      </div>
+    </div>
+
+    <div id="board">
+      <div id="marbleCount"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

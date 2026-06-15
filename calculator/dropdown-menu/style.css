@@ -1,0 +1,278 @@
+:root {
+    /* Light Mode Variables */
+    --bg-color: #f0f2f5;
+    --container-bg: #ffffff;
+    --text-color: #1e293b;
+    --text-muted: #64748b;
+    --primary-color: #3b82f6;
+    --btn-bg: #ffffff;
+    --btn-border: #cbd5e1;
+    --btn-hover-bg: #f8fafc;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --list-bullet: #3b82f6;
+    
+    /* Dropdown Specific Variables */
+    --dropdown-bg: #ffffff;
+    --dropdown-border: #cbd5e1;
+    --dropdown-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --item-hover: #f1f5f9;
+    --danger-color: #ef4444;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode Variables matching the provided image style */
+    --bg-color: #0b0f19;
+    --container-bg: #111827;
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary-color: #3b82f6;
+    --btn-bg: #1f2937;
+    --btn-border: #334155;
+    --btn-hover-bg: #334155;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    --list-bullet: #f8fafc;
+    
+    /* Dropdown Specific Variables */
+    --dropdown-bg: #1f2937;
+    --dropdown-border: #334155;
+    --dropdown-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+    --item-hover: #334155;
+    --danger-color: #f87171;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: var(--transition);
+    padding: 2rem;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.theme-toggle button {
+    background: var(--container-bg);
+    border: 1px solid var(--btn-border);
+    color: var(--text-color);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.theme-toggle button:hover {
+    background: var(--btn-hover-bg);
+    transform: scale(1.05);
+}
+
+.theme-toggle button:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+.container {
+    background: var(--container-bg);
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 800px;
+    transition: var(--transition);
+}
+
+header {
+    margin-bottom: 2.5rem;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.info-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.feature-list {
+    list-style: none;
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.feature-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--list-bullet);
+    font-weight: bold;
+}
+
+.demo-section {
+    border-top: 1px solid var(--btn-border);
+    padding-top: 2rem;
+    text-align: center;
+}
+
+/* Dropdown Container */
+.dropdown-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    height: 250px; /* Space for the dropdown menu */
+}
+
+/* --- Dropdown Styles --- */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+}
+
+.dropdown-toggle {
+    background: var(--btn-bg);
+    color: var(--text-color);
+    border: 1px solid var(--btn-border);
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-toggle:hover {
+    background: var(--btn-hover-bg);
+}
+
+.dropdown-toggle:focus-visible {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: var(--focus-ring);
+}
+
+.chevron {
+    transition: transform 0.3s ease;
+}
+
+.dropdown.open .chevron {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: 220px;
+    background: var(--dropdown-bg);
+    border: 1px solid var(--dropdown-border);
+    border-radius: 8px;
+    box-shadow: var(--dropdown-shadow);
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.95);
+    transform-origin: top left;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10;
+}
+
+.dropdown.open .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--item-hover);
+    outline: none;
+}
+
+.dropdown-item.danger {
+    color: var(--danger-color);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: var(--dropdown-border);
+    margin: 0.5rem 0;
+}
+
+.selection-result {
+    color: var(--text-muted);
+    font-style: italic;
+    min-height: 1.5rem;
+}
+
+/* Responsive Layout */
+@media (max-width: 640px) {
+    .info-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 2rem 1.5rem;
+    }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>SVG String Pull</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="telemetry">
+      <div class="stat"><span class="lbl">STRINGS</span><span class="val" id="tStrings">0</span></div>
+      <div class="stat"><span class="lbl">TENSION</span><span class="val" id="tTension">0%</span></div>
+      <div class="stat"><span class="lbl">DAMPING</span><span class="val" id="tDamping">0.010</span></div>
+      <div class="stat"><span class="lbl">NOTE</span><span class="val" id="tNote">—</span></div>
+    </div>
+    <div id="viewport">
+      <svg id="stringSvg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <filter id="glowSoft" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+      <div id="noteLabels"></div>
+    </div>
+  </div>
+  <div id="splash" class="splash">
+    <div class="splash-box">
+      <div class="splash-icon">♪</div>
+      <h1>String Pull</h1>
+      <p>Click & drag on any string to pluck it</p>
+      <button id="splashBtn">ENABLE AUDIO</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

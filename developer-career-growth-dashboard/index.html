@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Career Growth Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Global Theme CSS -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark">
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <i class="fa-solid fa-rocket logo-icon"></i>
+        <span class="logo-text">Dev Growth</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="profile">
+          <i class="fa-solid fa-user-astronaut"></i>
+          <span>Dev Profile</span>
+        </button>
+        <button class="nav-item" data-tab="skills">
+          <i class="fa-solid fa-diagram-project"></i>
+          <span>Skills Tree</span>
+        </button>
+        <button class="nav-item" data-tab="contributions">
+          <i class="fa-solid fa-code-fork"></i>
+          <span>Contributions</span>
+        </button>
+        <button class="nav-item" data-tab="roadmaps">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <span>Roadmaps Hub</span>
+        </button>
+        <button class="nav-item" data-tab="resume">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>Resume Score</span>
+        </button>
+        <button class="nav-item" data-tab="dsa">
+          <i class="fa-solid fa-terminal"></i>
+          <span>DSA Logger</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn" onclick="window.toggleGlobalTheme()">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          <span>Toggle Theme</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top header bar -->
+      <header class="top-header">
+        <div class="header-welcome">
+          <div class="role-wrapper">
+            <h1 id="welcome-message">Welcome, Aspiring Developer</h1>
+            <button id="edit-role-btn" class="edit-btn"><i class="fa-solid fa-pen"></i></button>
+          </div>
+          <p class="current-date" id="date-string">Tuesday, June 9, 2026</p>
+        </div>
+        <!-- Level & XP Indicator -->
+        <div class="user-level-badge">
+          <div class="level-circle">
+            <span class="level-label">LVL</span>
+            <span class="level-num" id="level-display">1</span>
+          </div>
+          <div class="xp-bar-container">
+            <div class="xp-progress-bar" id="xp-bar" style="width: 10%;"></div>
+            <div class="xp-tooltip" id="xp-text">10 / 100 XP</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- TAB 1: PROFILE / HOME -->
+      <section class="tab-panel active" id="tab-profile">
+        <div class="dashboard-grid">
+          
+          <!-- Career Card -->
+          <div class="glass-card profile-card glow-cyan">
+            <div class="card-header">
+              <h2>Dev Profile Summary</h2>
+              <i class="fa-solid fa-shield-halved rank-icon"></i>
+            </div>
+            <div class="role-display-box">
+              <h3 id="profile-role">Frontend Engineer</h3>
+              <span class="rank-badge" id="profile-rank">Novice Coder</span>
+            </div>
+            <div class="stats-mini-grid">
+              <div class="mini-stat-item">
+                <span class="stat-lbl">Skills Levelled</span>
+                <span class="stat-val" id="profile-skills-count">0/8</span>
+              </div>
+              <div class="mini-stat-item">
+                <span class="stat-lbl">Contributions logged</span>
+                <span class="stat-val" id="profile-contribs-count">0</span>
+              </div>
+              <div class="mini-stat-item">
+                <span class="stat-lbl">DSA Solved</span>
+                <span class="stat-val" id="profile-dsa-count">0</span>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-glow-cyan w-full" id="daily-log-btn">
+              <i class="fa-solid fa-keyboard"></i> Log 1 Hour Coding (+15 XP)
+            </button>
+          </div>
+
+          <!-- Resume Status Widget -->
+          <div class="glass-card progress-preview glow-purple">
+            <div class="card-header">
+              <h2>Resume Strength</h2>
+              <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <div class="circular-score-wrapper">
+              <svg width="120" height="120" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--input-border)" stroke-width="8"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--purple-solid)" stroke-width="8" 
+                        stroke-dasharray="251.2" stroke-dashoffset="251.2" id="dashboard-resume-ring"
+                        stroke-linecap="round" transform="rotate(-90 50 50)"/>
+              </svg>
+              <div class="score-number" id="dashboard-resume-score">0%</div>
+            </div>
+            <p class="score-desc text-muted">Complete sections in the Resume tab to boost your score.</p>
+          </div>
+
+          <!-- Recent Activities -->
+          <div class="glass-card activity-feed glow-orange">
+            <div class="card-header">
+              <h2>Activity Log</h2>
+              <button class="btn-clear-activities" id="clear-activities-btn"><i class="fa-solid fa-eraser"></i> Clear</button>
+            </div>
+            <ul class="activity-list" id="activity-log-list">
+              <!-- Dynamically logged milestones -->
+              <li class="activity-item system-item">🚀 Registered in Career Growth Platform!</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SKILLS TREE -->
+      <section class="tab-panel" id="tab-skills">
+        <div class="skills-tree-header">
+          <h2>Interactive Skill progression</h2>
+          <p>Click on any skill node to advance its tier level. Novice ➔ Intermediate ➔ Expert.</p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Column 1 -->
+          <div class="skills-branch glow-cyan">
+            <h3><i class="fa-brands fa-html5 text-cyan"></i> Frontend</h3>
+            <div class="skill-nodes-container" id="nodes-frontend">
+              <!-- Javascript rendering -->
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="skills-branch glow-purple">
+            <h3><i class="fa-solid fa-server text-purple"></i> Backend</h3>
+            <div class="skill-nodes-container" id="nodes-backend">
+              <!-- Javascript rendering -->
+            </div>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="skills-branch glow-orange">
+            <h3><i class="fa-solid fa-cloud-arrow-up text-orange"></i> DevOps</h3>
+            <div class="skill-nodes-container" id="nodes-devops">
+              <!-- Javascript rendering -->
+            </div>
+          </div>
+
+          <!-- Column 4 -->
+          <div class="skills-branch glow-green">
+            <h3><i class="fa-solid fa-gears text-green"></i> Fundamentals / DSA</h3>
+            <div class="skill-nodes-container" id="nodes-dsa">
+              <!-- Javascript rendering -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: CONTRIBUTIONS -->
+      <section class="tab-panel" id="tab-contributions">
+        <div class="contributions-header-bar">
+          <h2>GitHub & Project Contribution Logger</h2>
+          <button class="btn btn-primary btn-glow-cyan" id="open-contrib-modal">
+            <i class="fa-solid fa-plus"></i> Log Contribution
+          </button>
+        </div>
+
+        <!-- Dashboard Statistics -->
+        <div class="stats-mini-grid" style="margin-bottom: 24px;">
+          <div class="mini-stat-item">
+            <span class="stat-lbl">Pull Requests</span>
+            <span class="stat-val text-cyan" id="count-prs">0</span>
+          </div>
+          <div class="mini-stat-item">
+            <span class="stat-lbl">Issues Opened</span>
+            <span class="stat-val text-purple" id="count-issues">0</span>
+          </div>
+          <div class="mini-stat-item">
+            <span class="stat-lbl">Reviews Done</span>
+            <span class="stat-val text-orange" id="count-reviews">0</span>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Project Name</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Reference Link</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="contributions-tbody">
+                <!-- Javascript populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: ROADMAPS -->
+      <section class="tab-panel" id="tab-roadmaps">
+        <div class="roadmaps-layout">
+          <!-- Pre-populated roadmaps list -->
+          <div class="glass-card roadmap-sections glow-purple">
+            <div class="roadmap-tabs">
+              <button class="roadmap-tab-btn active" data-roadmap="system-design">System Design</button>
+              <button class="roadmap-tab-btn" data-roadmap="frontend-master">Frontend Mastery</button>
+              <button class="roadmap-tab-btn" data-roadmap="backend-master">Backend Mastery</button>
+            </div>
+            
+            <div class="roadmap-items-list" id="roadmap-items-wrapper">
+              <!-- Pre-populated nodes -->
+            </div>
+          </div>
+
+          <!-- Add Bookmark link widgets -->
+          <div class="glass-card bookmarks-list glow-orange">
+            <h2>Custom Resources & Bookmarks</h2>
+            <form id="bookmark-form" style="margin: 16px 0;">
+              <div class="form-group">
+                <input type="text" id="bm-title" required placeholder="Resource Title (e.g. Clean Code PDF)">
+              </div>
+              <div class="form-group">
+                <input type="url" id="bm-url" required placeholder="https://example.com/resource">
+              </div>
+              <button type="submit" class="btn btn-primary w-full">Add Bookmark</button>
+            </form>
+            
+            <ul class="bookmark-links-container" id="bookmarks-container">
+              <!-- Dynamically mapped bookmarks -->
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: RESUME SCORE -->
+      <section class="tab-panel" id="tab-resume">
+        <div class="resume-score-layout">
+          
+          <!-- Criteria checklists -->
+          <div class="glass-card glow-purple">
+            <h2>Resume Content Checklist</h2>
+            <p style="margin-bottom: 20px;" class="text-muted">Check off sections currently present in your developer CV.</p>
+            
+            <div class="checklist-container">
+              <label class="check-row">
+                <input type="checkbox" class="resume-chk" id="res-git" data-weight="15">
+                <div class="check-desc">
+                  <strong>GitHub Profile Link</strong>
+                  <span>Links to an active GitHub username.</span>
+                </div>
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="resume-chk" id="res-projects" data-weight="25">
+                <div class="check-desc">
+                  <strong>3+ Core Portfolio Projects</strong>
+                  <span>Shows complex builds with functional demo links.</span>
+                </div>
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="resume-chk" id="res-summary" data-weight="10">
+                <div class="check-desc">
+                  <strong>Professional Summary</strong>
+                  <span>Brief pitch explaining your stack and specialty.</span>
+                </div>
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="resume-chk" id="res-skills" data-weight="15">
+                <div class="check-desc">
+                  <strong>Structured Skills Section</strong>
+                  <span>Categorized list of coding tools and frameworks.</span>
+                </div>
+              </label>
+
+              <label class="check-row">
+                <input type="checkbox" class="resume-chk" id="res-certs" data-weight="15">
+                <div class="check-desc">
+                  <strong>Certifications / Education</strong>
+                  <span>Accreditation, degrees, or bootcamp completions.</span>
+                </div>
+              </label>
+            </div>
+            
+            <div class="experience-slider-group" style="margin-top: 24px;">
+              <label for="res-slider"><strong>Experience Quality Modifier:</strong> <span id="slider-val">20%</span></label>
+              <input type="range" id="res-slider" min="0" max="20" value="5" class="range-slider">
+              <p class="text-muted" style="font-size: 0.8rem; margin-top: 6px;">Applies additional weighting based on internships, freelance projects, or Hackathons completed.</p>
+            </div>
+          </div>
+
+          <!-- Dynamic score ring -->
+          <div class="glass-card align-center glow-cyan">
+            <h2>Calculated Score</h2>
+            <div class="gauge-wrapper">
+              <svg width="200" height="200" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--input-border)" stroke-width="8"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--cyan-solid)" stroke-width="8" 
+                        stroke-dasharray="251.2" stroke-dashoffset="251.2" id="resume-score-ring"
+                        stroke-linecap="round" transform="rotate(-90 50 50)"/>
+              </svg>
+              <div class="gauge-center">
+                <span class="score-percent" id="resume-score-display">0%</span>
+                <span class="score-verdict" id="resume-verdict-display">Poor</span>
+              </div>
+            </div>
+            <div class="verdict-banner" id="verdict-banner-msg">
+              Your resume needs more content. Try adding links to open-source contributions.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: DSA LOGGER -->
+      <section class="tab-panel" id="tab-dsa">
+        <div class="dsa-layout">
+          <!-- Solutions form -->
+          <div class="glass-card glow-green">
+            <h2>Log DSA Problem</h2>
+            <form id="dsa-form">
+              <div class="form-group">
+                <label for="dsa-title">Problem Name</label>
+                <input type="text" id="dsa-title" required placeholder="e.g. Two Sum">
+              </div>
+              <div class="form-group">
+                <label for="dsa-platform">Platform</label>
+                <select id="dsa-platform">
+                  <option>LeetCode</option>
+                  <option>HackerRank</option>
+                  <option>Codeforces</option>
+                  <option>GeeksforGeeks</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="dsa-difficulty">Difficulty</label>
+                <select id="dsa-difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="dsa-notes">Notes / Approach</label>
+                <input type="text" id="dsa-notes" placeholder="e.g. Used HashMap for O(N) lookup">
+              </div>
+              <button type="submit" class="btn btn-primary w-full">Save Problem</button>
+            </form>
+          </div>
+
+          <!-- Log list -->
+          <div class="dsa-list-box">
+            <h2>Solved Challenges</h2>
+            <div class="dsa-list-container" id="dsa-problems-list">
+              <!-- Dynamic items -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ROLE MODAL -->
+  <div class="modal-overlay" id="role-modal">
+    <div class="glass-card modal-content glow-cyan">
+      <h3>Edit Target Career Role</h3>
+      <form id="role-form">
+        <div class="form-group">
+          <label for="target-role-input">Career Title</label>
+          <input type="text" id="target-role-input" required placeholder="e.g. Fullstack Engineer">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="close-role-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Role</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONTRIBUTION LOG MODAL -->
+  <div class="modal-overlay" id="contrib-modal">
+    <div class="glass-card modal-content glow-cyan">
+      <h3>Log Git/Project Contribution</h3>
+      <form id="contrib-form">
+        <div class="form-group">
+          <label for="c-project">Project / Repo Name</label>
+          <input type="text" id="c-project" required placeholder="e.g. Web-Dev-Projects">
+        </div>
+        <div class="form-group">
+          <label for="c-type">Contribution Type</label>
+          <select id="c-type">
+            <option value="pr">Pull Request</option>
+            <option value="issue">Issue</option>
+            <option value="review">Code Review</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="c-desc">Description</label>
+          <input type="text" id="c-desc" required placeholder="e.g. Fixed alignment of pricing cards">
+        </div>
+        <div class="form-group">
+          <label for="c-url">Reference URL</label>
+          <input type="url" id="c-url" placeholder="https://github.com/.../pull/1">
+        </div>
+        <div class="form-group">
+          <label for="c-status">Status</label>
+          <select id="c-status">
+            <option value="open">Open</option>
+            <option value="merged">Merged</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="close-contrib-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Log Entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Theme Script -->
+  <script src="../global-theme.js"></script>
+  <!-- Local Application script -->
+  <script src="script.js"></script>
+</body>
+</html>

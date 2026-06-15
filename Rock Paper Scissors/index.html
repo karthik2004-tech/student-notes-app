@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="telemetry">
+      <div class="tm"><span class="tl">YOU</span><span id="playerVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">CPU</span><span id="cpuVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">TIES</span><span id="tiesVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">BEST</span><span id="bestVal" class="tv">0</span></div>
+    </div>
+
+    <div id="arena">
+      <div class="slot" id="playerSlot">
+        <div class="slot-label">PLAYER</div>
+        <div class="slot-icon" id="playerIcon">?</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="slot" id="cpuSlot">
+        <div class="slot-label">COMPUTER</div>
+        <div class="slot-icon" id="cpuIcon">?</div>
+      </div>
+    </div>
+
+    <div id="resultBar" class="result">Pick your move</div>
+
+    <div id="choices">
+      <button class="choice" data-move="rock">&#x1F44A; ROCK</button>
+      <button class="choice" data-move="paper">&#x270B; PAPER</button>
+      <button class="choice" data-move="scissors">&#x270C; SCISSORS</button>
+    </div>
+
+    <div id="actionRow">
+      <button id="resetBtn">RESET SCORES</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

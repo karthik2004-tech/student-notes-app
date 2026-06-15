@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Loading Spinner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-btn" aria-label="Toggle dark mode">
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Component Name</h1>
+            <h2 class="subtitle">Loading Spinner</h2>
+        </header>
+
+        <div class="info-section">
+            <div class="column">
+                <h3>Features</h3>
+                <ul class="feature-list">
+                    <li>Multiple spinner styles</li>
+                    <li>Customizable size</li>
+                    <li>Smooth animations</li>
+                    <li>Responsive design</li>
+                    <li>Light and dark mode support</li>
+                    <li>Lightweight implementation</li>
+                </ul>
+            </div>
+            
+            <div class="column">
+                <h3>Use Cases</h3>
+                <ul class="feature-list">
+                    <li>API requests</li>
+                    <li>Form submissions</li>
+                    <li>Page loading states</li>
+                    <li>Data fetching interfaces</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Interactive Demo</h3>
+            
+            <div class="spinners-showcase">
+                <div class="spinner-row">
+                    <h4>Standard Spinner</h4>
+                    <div class="spinner-group">
+                        <div class="spinner spinner-standard spinner-sm"></div>
+                        <div class="spinner spinner-standard spinner-md"></div>
+                        <div class="spinner spinner-standard spinner-lg"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-row">
+                    <h4>Dots Spinner</h4>
+                    <div class="spinner-group">
+                        <div class="spinner-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spinner-row">
+                    <h4>Pulse Spinner</h4>
+                    <div class="spinner-group">
+                        <div class="spinner-pulse spinner-sm"></div>
+                        <div class="spinner-pulse spinner-md"></div>
+                        <div class="spinner-pulse spinner-lg"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-row">
+                    <h4>Dual Ring Spinner</h4>
+                    <div class="spinner-group">
+                        <div class="spinner-dual-ring spinner-sm"></div>
+                        <div class="spinner-dual-ring spinner-md"></div>
+                        <div class="spinner-dual-ring spinner-lg"></div>
+                    </div>
+                </div>
+                
+                <div class="spinner-row">
+                    <h4>In Context (Button)</h4>
+                    <div class="spinner-group">
+                        <button class="demo-btn" id="demo-submit-btn">
+                            <span class="btn-text">Save Changes</span>
+                            <div class="spinner spinner-standard spinner-sm spinner-light btn-spinner"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

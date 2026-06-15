@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Tag / Badge</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-btn" aria-label="Toggle dark mode">
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Component Name</h1>
+            <h2 class="subtitle">Tag / Badge</h2>
+        </header>
+
+        <div class="info-section">
+            <div class="column">
+                <h3>Features</h3>
+                <ul class="feature-list">
+                    <li>Multiple variants</li>
+                    <li>Custom colors</li>
+                    <li>Rounded and pill styles</li>
+                    <li>Optional icons</li>
+                    <li>Responsive design</li>
+                    <li>Light and dark mode support</li>
+                </ul>
+            </div>
+            
+            <div class="column">
+                <h3>Use Cases</h3>
+                <ul class="feature-list">
+                    <li>Status indicators</li>
+                    <li>Categories</li>
+                    <li>User roles</li>
+                    <li>Product labels</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Interactive Demo</h3>
+            
+            <div class="badges-showcase">
+                <div class="badge-row">
+                    <h4>Solid Variants</h4>
+                    <span class="badge badge-primary">Primary</span>
+                    <span class="badge badge-success">Success</span>
+                    <span class="badge badge-warning">Warning</span>
+                    <span class="badge badge-danger">Danger</span>
+                    <span class="badge badge-info">Info</span>
+                </div>
+                
+                <div class="badge-row">
+                    <h4>Soft Variants</h4>
+                    <span class="badge badge-soft badge-primary">Primary</span>
+                    <span class="badge badge-soft badge-success">Success</span>
+                    <span class="badge badge-soft badge-warning">Warning</span>
+                    <span class="badge badge-soft badge-danger">Danger</span>
+                    <span class="badge badge-soft badge-info">Info</span>
+                </div>
+                
+                <div class="badge-row">
+                    <h4>Outline Variants</h4>
+                    <span class="badge badge-outline badge-primary">Primary</span>
+                    <span class="badge badge-outline badge-success">Success</span>
+                    <span class="badge badge-outline badge-warning">Warning</span>
+                    <span class="badge badge-outline badge-danger">Danger</span>
+                    <span class="badge badge-outline badge-info">Info</span>
+                </div>
+                
+                <div class="badge-row">
+                    <h4>Pill Shape</h4>
+                    <span class="badge badge-pill badge-primary">Admin</span>
+                    <span class="badge badge-pill badge-soft badge-success">Online</span>
+                    <span class="badge badge-pill badge-outline badge-warning">Pending</span>
+                </div>
+                
+                <div class="badge-row">
+                    <h4>With Icons</h4>
+                    <span class="badge badge-soft badge-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Completed
+                    </span>
+                    <span class="badge badge-soft badge-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        Error
+                    </span>
+                    <span class="badge badge-outline badge-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        New Report
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

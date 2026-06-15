@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaultKeeper | Local Storage Backup & Note Exporter</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Global CSS Integration -->
+  <link rel="stylesheet" href="../global-theme.css">
+  <!-- Local Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme-forced">
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i data-lucide="database"></i>
+          </div>
+          <div class="logo-text">
+            <h2>VaultKeeper</h2>
+            <span>LocalStorage Database & Note Export</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-nav">
+        <button class="nav-tab active" data-tab="explorer">
+          <i data-lucide="table"></i>
+          <span>Data Explorer</span>
+        </button>
+        <button class="nav-tab" data-tab="backup">
+          <i data-lucide="shield-alert"></i>
+          <span>Backup & Restore</span>
+        </button>
+        <button class="nav-tab" data-tab="exporter">
+          <i data-lucide="file-text"></i>
+          <span>Note Sandbox</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="app-main">
+      <!-- HERO STATS HEADER -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon icon-primary">
+            <i data-lucide="key"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="stat-keys-count">0</h3>
+            <p>Total Keys</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-success">
+            <i data-lucide="hard-drive"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="stat-db-size">0.00 KB</h3>
+            <p>Database Size</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-warning">
+            <i data-lucide="clock"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="stat-last-backup">Never</h3>
+            <p>Last Backup</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: DATA EXPLORER -->
+      <div class="tab-content active" id="tab-explorer">
+        <div class="content-card">
+          <div class="card-header">
+            <div class="header-title">
+              <h3>Browser Local Storage Records</h3>
+              <p>Explore, edit, and delete keys currently cached by student note tools.</p>
+            </div>
+            <div class="header-actions">
+              <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="search-keys" placeholder="Search keys or values...">
+              </div>
+              <button class="btn btn-primary btn-sm" id="btn-add-record">
+                <i data-lucide="plus"></i>
+                <span>Add Record</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th width="30%">Storage Key</th>
+                  <th width="40%">Data Value Preview</th>
+                  <th width="15%">Estimated Size</th>
+                  <th width="15%" class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="storage-rows">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+            <div class="empty-state" id="explorer-empty">
+              <i data-lucide="folder-open"></i>
+              <p>No LocalStorage records found in this browser context.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: BACKUP & RESTORE -->
+      <div class="tab-content" id="tab-backup">
+        <div class="backup-grid">
+          <!-- Backup Card -->
+          <div class="content-card">
+            <div class="card-body text-center py-5">
+              <div class="circle-icon icon-primary mx-auto mb-4">
+                <i data-lucide="download-cloud"></i>
+              </div>
+              <h3>Create Local Backup</h3>
+              <p class="text-muted max-w-sm mx-auto mb-4">
+                Download your complete notes application localStorage database as a structured JSON file. You can import this file later to restore all settings, notes, and dashboards.
+              </p>
+              <button class="btn btn-primary" id="btn-backup-db">
+                <i data-lucide="download"></i>
+                <span>Download JSON Backup</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Restore Card -->
+          <div class="content-card">
+            <div class="card-body text-center py-5">
+              <div class="circle-icon icon-success mx-auto mb-4">
+                <i data-lucide="upload-cloud"></i>
+              </div>
+              <h3>Restore from Backup</h3>
+              <p class="text-muted max-w-sm mx-auto mb-4">
+                Restore files from a previously exported VaultKeeper JSON backup. You will be prompted to choose between merging with current keys or overwriting everything.
+              </p>
+              <div class="restore-dropzone" id="restore-dropzone">
+                <i data-lucide="file-up"></i>
+                <span>Drag & drop JSON file here or <strong>browse</strong></span>
+                <input type="file" id="restore-file-input" accept=".json" style="display:none;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: NOTE SANDBOX EXPORTER -->
+      <div class="tab-content" id="tab-exporter">
+        <div class="exporter-layout">
+          <!-- Editor Section -->
+          <div class="content-card editor-card">
+            <div class="card-header">
+              <div class="header-title">
+                <h3>Rich Note Sandbox</h3>
+                <p>Create formatting notes and export them cleanly as PDF, Markdown, or Plain Text.</p>
+              </div>
+            </div>
+            <div class="card-body flex-column-layout">
+              <input type="text" id="note-title" class="note-title-input" placeholder="Title your note..." value="My Sandbox Note">
+              
+              <!-- Editor Toolbar -->
+              <div class="rich-toolbar">
+                <button class="tool-btn" data-command="bold" title="Bold">
+                  <i data-lucide="bold"></i>
+                </button>
+                <button class="tool-btn" data-command="italic" title="Italic">
+                  <i data-lucide="italic"></i>
+                </button>
+                <button class="tool-btn" data-command="underline" title="Underline">
+                  <i data-lucide="underline"></i>
+                </button>
+                <div class="toolbar-divider"></div>
+                <button class="tool-btn" data-command="insertOrderedList" title="Numbered List">
+                  <i data-lucide="list-ordered"></i>
+                </button>
+                <button class="tool-btn" data-command="insertUnorderedList" title="Bullet List">
+                  <i data-lucide="list"></i>
+                </button>
+                <div class="toolbar-divider"></div>
+                <button class="tool-btn" data-command="justifyLeft" title="Align Left">
+                  <i data-lucide="align-left"></i>
+                </button>
+                <button class="tool-btn" data-command="justifyCenter" title="Align Center">
+                  <i data-lucide="align-center"></i>
+                </button>
+                <button class="tool-btn" data-command="justifyRight" title="Align Right">
+                  <i data-lucide="align-right"></i>
+                </button>
+              </div>
+
+              <!-- ContentEditable Textarea -->
+              <div class="note-editor" id="note-content" contenteditable="true">
+                <p>Type your notes here... You can use formatting tools, bullet lists, and header alignments. Custom notes are autosaved to localStorage!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Options & Preview Sidebar -->
+          <div class="sidebar-layout">
+            <div class="content-card">
+              <div class="card-header">
+                <h3>Export Options</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label for="export-filename">Filename (without extension)</label>
+                  <input type="text" id="export-filename" placeholder="note_export">
+                </div>
+                <div class="export-actions">
+                  <button class="btn btn-pdf w-full mb-2" id="btn-export-pdf">
+                    <i data-lucide="file"></i>
+                    <span>Export to PDF (Print)</span>
+                  </button>
+                  <button class="btn btn-markdown w-full mb-2" id="btn-export-md">
+                    <i data-lucide="file-code"></i>
+                    <span>Export to Markdown</span>
+                  </button>
+                  <button class="btn btn-secondary w-full" id="btn-export-txt">
+                    <i data-lucide="file-text"></i>
+                    <span>Export to Plain Text</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card preview-card">
+              <div class="card-header">
+                <h3>Document Preview</h3>
+              </div>
+              <div class="card-body">
+                <div class="document-preview-box" id="document-preview">
+                  <!-- Live Preview Injected here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODAL: ADD/EDIT RECORD -->
+    <div class="modal-overlay" id="modal-record">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 id="modal-title">Add Local Storage Record</h3>
+          <button class="btn-modal-close" id="btn-modal-close-record">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="modal-key-input">Storage Key</label>
+            <input type="text" id="modal-key-input" placeholder="e.g. todo_items">
+          </div>
+          <div class="form-group">
+            <label for="modal-value-input">Storage Value (JSON or Plain Text)</label>
+            <textarea id="modal-value-input" rows="6" placeholder='{"items": []}'></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+          <button class="btn btn-primary" id="btn-modal-save">Save Record</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: RESTORE SELECTOR -->
+    <div class="modal-overlay" id="modal-restore-type">
+      <div class="modal-container max-w-sm">
+        <div class="modal-header">
+          <h3>Restore Database</h3>
+          <button class="btn-modal-close" id="btn-modal-close-restore">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3 text-muted">A valid JSON database backup file has been read. Select how you want to restore it:</p>
+          <div class="restore-options">
+            <div class="restore-option-card active" data-type="merge">
+              <div class="option-icon text-success">
+                <i data-lucide="git-merge"></i>
+              </div>
+              <div class="option-details">
+                <h4>Merge Database</h4>
+                <p>Adds new keys and updates matches. Preserves other unrelated local data.</p>
+              </div>
+            </div>
+            <div class="restore-option-card" data-type="overwrite">
+              <div class="option-icon text-danger">
+                <i data-lucide="refresh-cw"></i>
+              </div>
+              <div class="option-details">
+                <h4>Overwrite Clean</h4>
+                <p>Completely deletes all existing localStorage data and restores from backup.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-restore-cancel">Cancel</button>
+          <button class="btn btn-primary" id="btn-restore-confirm">Restore Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Script Integration -->
+  <script src="../global-theme.js"></script>
+  <!-- Local Script -->
+  <script src="script.js"></script>
+</body>
+</html>

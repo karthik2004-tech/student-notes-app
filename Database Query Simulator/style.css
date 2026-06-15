@@ -1,0 +1,188 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05060b;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(96vmin,1100px);
+  height:min(96vmin,760px);
+  display:flex;flex-direction:column;
+  gap:clamp(2px,0.2vmin,4px);
+}
+
+/* ─── Main row ───────────────────────────────── */
+#mainRow{
+  display:flex;
+  gap:clamp(2px,0.2vmin,4px);
+  height:clamp(160px,22vmin,260px);
+  min-height:0;
+}
+
+/* ─── Schema ─────────────────────────────────── */
+#schemaPanel{
+  width:clamp(130px,18vmin,200px);
+  display:flex;flex-direction:column;gap:clamp(4px,0.45vmin,8px);
+  padding:clamp(5px,0.5vmin,8px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  overflow-y:auto;
+}
+.schemaTable{
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;overflow:hidden;
+}
+.stHead{
+  padding:clamp(2px,0.25vmin,4px) clamp(4px,0.4vmin,6px);
+  background:rgba(0,240,255,0.03);
+  color:#00f0ff;font-size:clamp(6px,0.65vmin,9px);
+  font-weight:700;text-transform:uppercase;letter-spacing:1px;
+}
+.stRow{
+  display:flex;justify-content:space-between;
+  padding:clamp(1px,0.15vmin,3px) clamp(4px,0.4vmin,6px);
+  border-top:1px solid rgba(0,240,255,0.015);
+}
+.stCol{color:#475569;font-size:clamp(5px,0.55vmin,7px)}
+.stType{color:#1e2a3a;font-size:clamp(4px,0.5vmin,6px)}
+.keyHint{
+  font-size:clamp(5px,0.55vmin,7px);
+  color:#334155;text-align:center;padding:2px 0;
+}
+
+/* ─── Editor ─────────────────────────────────── */
+#editorPanel{
+  flex:1;
+  display:flex;flex-direction:column;gap:clamp(3px,0.3vmin,5px);
+  padding:clamp(4px,0.4vmin,6px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#presetRow{display:flex}
+#presetSel{
+  width:100%;
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#64748b;font-family:inherit;
+  font-size:clamp(6px,0.65vmin,9px);
+  outline:none;cursor:pointer;
+}
+#presetSel option{background:#05060b;color:#64748b}
+#sqlEditor{
+  flex:1;resize:none;
+  background:rgba(255,255,255,0.01);
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#94a3b8;font-family:inherit;
+  font-size:clamp(7px,0.8vmin,11px);
+  padding:clamp(4px,0.45vmin,7px);
+  outline:none;line-height:1.5;tab-size:4;
+}
+#sqlEditor:focus{border-color:rgba(0,240,255,0.1)}
+#sqlEditor::placeholder{color:#1e2a3a}
+
+/* ─── Telemetry ──────────────────────────────── */
+#telemetry{
+  width:clamp(70px,10vmin,100px);
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(5px,0.6vmin,9px);
+  padding:clamp(5px,0.5vmin,8px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+.tm{display:flex;flex-direction:column;gap:clamp(1px,0.1vmin,2px)}
+.tm .tl{
+  font-size:clamp(4px,0.45vmin,6px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.tm .tv{
+  font-size:clamp(8px,0.9vmin,13px);
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+#latVal{color:#ffd700}
+#recVal{color:#00ff66}
+#phaseVal{color:#00f0ff}
+#statusVal{color:#475569}
+#statusVal.err{color:#ff2a5f}
+#statusVal.ok{color:#00ff66}
+
+/* ─── Output ─────────────────────────────────── */
+#outputWrap{
+  flex:1;overflow:auto;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#04050a;
+  min-height:0;
+}
+#outputTable{
+  display:table;width:100%;border-collapse:collapse;
+  font-size:clamp(6px,0.7vmin,10px);
+}
+#outputTable .otHead{
+  display:table-row;
+  background:rgba(0,240,255,0.02);
+}
+#outputTable .otHead>span{
+  display:table-cell;
+  padding:clamp(3px,0.35vmin,6px) clamp(6px,0.65vmin,10px);
+  color:#00f0ff;font-weight:700;text-transform:uppercase;
+  letter-spacing:1px;
+  border-bottom:1px solid rgba(0,240,255,0.06);
+  white-space:nowrap;
+}
+#outputTable .otRow{
+  display:table-row;
+}
+#outputTable .otRow:nth-child(even){
+  background:rgba(255,255,255,0.005);
+}
+#outputTable .otRow>span{
+  display:table-cell;
+  padding:clamp(2px,0.25vmin,5px) clamp(6px,0.65vmin,10px);
+  color:#64748b;
+  border-bottom:1px solid rgba(0,240,255,0.015);
+  white-space:nowrap;
+}
+.errMsg{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;color:#ff2a5f;
+  font-size:clamp(8px,0.9vmin,12px);
+  text-align:center;padding:20px;
+}
+
+/* ─── Footer ─────────────────────────────────── */
+#footer{
+  display:flex;justify-content:center;
+  gap:clamp(6px,0.8vmin,12px);
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+}
+#footer button{
+  padding:clamp(4px,0.4vmin,6px) clamp(10px,1.2vmin,16px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;text-transform:uppercase;
+}
+#footer button:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+#footer button:active{border-color:#00f0ff;color:#00f0ff}
+
+@media(max-width:600px){
+  #mainRow{flex-wrap:wrap;height:auto}
+  #schemaPanel{width:100%;flex-direction:row;flex-wrap:wrap}
+  #editorPanel{min-height:120px}
+  #telemetry{width:100%;flex-direction:row;gap:4px}
+}

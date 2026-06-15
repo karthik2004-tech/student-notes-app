@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="16" fill="#03050a"/>
+  <!-- Grid -->
+  <g opacity="0.03">
+    <line x1="0" y1="20" x2="128" y2="20" stroke="#fff" stroke-width="0.3"/>
+    <line x1="0" y1="40" x2="128" y2="40" stroke="#fff" stroke-width="0.3"/>
+    <line x1="0" y1="60" x2="128" y2="60" stroke="#fff" stroke-width="0.3"/>
+    <line x1="0" y1="80" x2="128" y2="80" stroke="#fff" stroke-width="0.3"/>
+    <line x1="0" y1="100" x2="128" y2="100" stroke="#fff" stroke-width="0.3"/>
+    <line x1="32" y1="0" x2="32" y2="128" stroke="#fff" stroke-width="0.3"/>
+    <line x1="64" y1="0" x2="64" y2="128" stroke="#fff" stroke-width="0.3"/>
+    <line x1="96" y1="0" x2="96" y2="128" stroke="#fff" stroke-width="0.3"/>
+  </g>
+  <!-- Header bar -->
+  <rect x="4" y="4" width="120" height="16" rx="5" fill="rgba(255,255,255,0.01)" stroke="rgba(0,255,100,0.08)" stroke-width="0.5"/>
+  <text x="8" y="13" font-size="3" fill="#475569" font-family="monospace" letter-spacing="1">SYSTEM</text>
+  <text x="7" y="17" font-size="4.5" fill="#22c55e" font-family="monospace" font-weight="700">ACTIVE</text>
+  <text x="40" y="13" font-size="3" fill="#475569" font-family="monospace" letter-spacing="1">INTEGRITY</text>
+  <text x="40" y="17" font-size="4.5" fill="#22c55e" font-family="monospace" font-weight="700">87%</text>
+  <text x="80" y="13" font-size="3" fill="#475569" font-family="monospace" letter-spacing="1">BIO DEV</text>
+  <text x="80" y="17" font-size="4.5" fill="#fbbf24" font-family="monospace" font-weight="700">0.73px</text>
+  <!-- Drag strip -->
+  <rect x="4" y="24" width="120" height="20" rx="3" fill="rgba(0,255,100,0.02)" stroke="rgba(0,255,100,0.12)" stroke-width="0.5"/>
+  <text x="6" y="38" font-size="6" fill="#22c55e" font-family="monospace" font-weight="700">A</text>
+  <text x="118" y="38" font-size="6" fill="#22c55e" text-anchor="end" font-family="monospace" font-weight="700">B</text>
+  <!-- Green line path -->
+  <polyline points="12,34 30,34 50,34 70,35 90,36 110,38" fill="none" stroke="#22c55e" stroke-width="1.2"/>
+  <!-- Red fracture marker -->
+  <line x1="85" y1="30" x2="95" y2="38" stroke="#ef4444" stroke-width="0.8"/>
+  <!-- Clock test area -->
+  <rect x="4" y="48" width="120" height="32" rx="3" fill="rgba(255,255,255,0.01)" stroke="rgba(0,212,255,0.08)" stroke-width="0.5"/>
+  <text x="64" y="55" font-size="3" fill="#475569" text-anchor="middle" font-family="monospace">CLOCK SYNC TEST</text>
+  <rect x="32" y="58" width="64" height="16" rx="3" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+  <text x="64" y="69" font-size="5" fill="#00d4ff" text-anchor="middle" font-family="monospace" font-weight="700">INITIATE</text>
+  <text x="64" y="78" font-size="3" fill="#475569" text-anchor="middle" font-family="monospace">TARGET: 750.00ms</text>
+  <!-- Log panel -->
+  <rect x="4" y="84" width="120" height="32" rx="3" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+  <text x="6" y="90" font-size="2.5" fill="#fbbf24" font-family="monospace">◉ TELEMETRY LOG</text>
+  <text x="6" y="96" font-size="2.5" fill="#475569" font-family="monospace">[SYSTEM] Diagnostic suite init...</text>
+  <text x="6" y="100" font-size="2.5" fill="#eab308" font-family="monospace">[WARN] Micro-deviation: 0.73px</text>
+  <text x="6" y="104" font-size="2.5" fill="#ef4444" font-family="monospace">[DENIED] Too human.</text>
+  <!-- Reset button -->
+  <text x="64" y="118" font-size="3" fill="#475569" text-anchor="middle" font-family="monospace">⟲ RE-CALIBRATE SENSORS</text>
+</svg>

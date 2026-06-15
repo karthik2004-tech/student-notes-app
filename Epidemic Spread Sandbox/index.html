@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Epidemic Spread Sandbox</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div id="panel">
+    <div class="pg"><span class="pl">TRANS RATE</span><input type="range" id="transSlider" min="5" max="100" value="45" step="1"><span id="transVal" class="pv">45%</span></div>
+    <div class="pg"><span class="pl">RECOVERY</span><input type="range" id="recSlider" min="60" max="600" value="240" step="10"><span id="recVal" class="pv">240</span></div>
+    <div class="pg"><span class="pl">QUARANTINE</span><input type="range" id="quarSlider" min="0" max="100" value="0" step="1"><span id="quarVal" class="pv">0%</span></div>
+    <div class="pg"><span class="pl">POPULATION</span><input type="range" id="popSlider" min="50" max="500" value="200" step="10"><span id="popVal" class="pv">200</span></div>
+  </div>
+
+  <div id="midRow">
+    <div id="canvasWrap"><canvas id="simCanvas"></canvas></div>
+    <div id="telemetry">
+      <div class="tm"><span class="tl">SUSCEPTIBLE</span><span id="susVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">INFECTED</span><span id="infVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">RECOVERED</span><span class="tv" id="recDisp">0</span></div>
+    </div>
+  </div>
+
+  <div id="graphWrap"><canvas id="graphCanvas"></canvas></div>
+
+  <div id="footer">
+    <button id="initBtn">INITIALIZE SIMULATION</button>
+    <button id="clearBtn">CLEAR FIELD</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

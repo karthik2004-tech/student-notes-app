@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cram Study Scheduler | Japanese School Routine | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,100,100,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .view-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #ff6b6b, #c82333);
+            box-shadow: 0 0 15px rgba(255,107,107,0.3);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 12px 25px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd200;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+        }
+
+        /* Add Task Section */
+        .add-task-section {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .add-form input, .add-form select {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            outline: none;
+        }
+
+        .add-form input {
+            flex: 2;
+            min-width: 150px;
+        }
+
+        .add-form select {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .add-task-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Daily Schedule View */
+        .daily-schedule {
+            background: rgba(255,255,255,0.05);
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .day-name {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .day-stats {
+            color: #00ffcc;
+            font-size: 12px;
+        }
+
+        .time-slots {
+            padding: 10px;
+        }
+
+        /* Time Slot Item */
+        .time-slot {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            transition: 0.2s;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .time-slot:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .time-badge {
+            min-width: 100px;
+            padding: 6px 12px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #ffd200;
+            font-weight: 600;
+        }
+
+        .task-name {
+            flex: 1;
+            color: white;
+            font-size: 14px;
+        }
+
+        .task-category {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .category-revision { background: #ff6b6b; }
+        .category-practice { background: #4d96ff; }
+        .category-study { background: #20c997; }
+        .category-break { background: #ffd200; color: #333; }
+        .category-custom { background: #6c757d; }
+
+        .complete-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #28a745;
+        }
+
+        .delete-slot-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px;
+            transition: 0.2s;
+        }
+
+        .delete-slot-btn:hover {
+            color: #dc3545;
+        }
+
+        /* Completed task style */
+        .time-slot.completed {
+            opacity: 0.6;
+        }
+
+        .time-slot.completed .task-name {
+            text-decoration: line-through;
+        }
+
+        /* Weekly View (Grid) */
+        .weekly-view {
+            display: none;
+            overflow-x: auto;
+        }
+
+        .weekly-view.active {
+            display: block;
+        }
+
+        .weekly-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+            min-width: 800px;
+        }
+
+        .weekly-header {
+            display: contents;
+        }
+
+        .weekly-cell {
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .weekly-time {
+            background: rgba(255,255,255,0.05);
+            font-weight: bold;
+            color: #ffd200;
+        }
+
+        .weekly-task-cell {
+            padding: 8px;
+            font-size: 11px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.8);
+        }
+
+        .weekly-task-cell.completed {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .time-badge {
+                min-width: 80px;
+                font-size: 11px;
+            }
+            .task-name {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⏰ Cram Study Scheduler</h1>
+            <div class="subtitle">Japanese School Routine | 6-7 AM Revision | 7-9 PM Practice</div>
+        </div>
+
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="daily">📅 Daily View</button>
+            <button class="view-btn" data-view="weekly">📊 Weekly View</button>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTasks">0</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completedTasks">0</div>
+                <div class="stat-label">Completed ✅</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingTasks">0</div>
+                <div class="stat-label">Pending 📖</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="streakDays">0</div>
+                <div class="stat-label">Day Streak 🔥</div>
+            </div>
+        </div>
+
+        <div class="add-task-section">
+            <div class="section-title">➕ Add Custom Study Block</div>
+            <div class="add-form">
+                <input type="text" id="taskNameInput" placeholder="e.g., Review Chapter 3">
+                <select id="taskCategory">
+                    <option value="revision">📚 Revision</option>
+                    <option value="practice">✏️ Practice</option>
+                    <option value="study">📖 Study</option>
+                    <option value="break">☕ Break</option>
+                    <option value="custom">🎯 Custom</option>
+                </select>
+                <input type="time" id="startTime" value="09:00">
+                <input type="time" id="endTime" value="10:00">
+                <button class="add-task-btn" id="addTaskBtn">➕ Add</button>
+            </div>
+        </div>
+
+        <!-- Daily View -->
+        <div class="daily-schedule" id="dailyView">
+            <!-- Dynamic daily schedule -->
+        </div>
+
+        <!-- Weekly View -->
+        <div class="weekly-view" id="weeklyView">
+            <div class="weekly-grid" id="weeklyGrid"></div>
+        </div>
+
+        <button class="reset-btn" id="resetBtn">🗑️ Reset All Tasks</button>
+    </div>
+
+    <script>
+        // Data structure: tasks for each day of week
+        // 0 = Sunday, 1 = Monday, ... 6 = Saturday
+        let weeklyTasks = {
+            0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []
+        };
+        
+        let currentView = 'daily';
+        let streakDays = 0;
+
+        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const shortDayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        // Default Japanese school routine time slots
+        const defaultTasks = [
+            { name: "Morning Revision", category: "revision", startTime: "06:00", endTime: "07:00", completed: false },
+            { name: "School/College", category: "study", startTime: "08:00", endTime: "15:00", completed: false },
+            { name: "Homework Time", category: "study", startTime: "16:00", endTime: "18:00", completed: false },
+            { name: "Practice Session", category: "practice", startTime: "19:00", endTime: "21:00", completed: false },
+            { name: "Revision", category: "revision", startTime: "21:00", endTime: "22:00", completed: false }
+        ];
+
+        // Load from localStorage
+        function loadTasks() {
+            const saved = localStorage.getItem('cramScheduler');
+            if(saved) {
+                weeklyTasks = JSON.parse(saved);
+            } else {
+                // Initialize with default tasks for all days
+                for(let day = 0; day < 7; day++) {
+                    weeklyTasks[day] = defaultTasks.map(t => ({ ...t, id: Date.now() + day + Math.random() }));
+                }
+            }
+            loadStreak();
+            renderCurrentView();
+            updateStats();
+        }
+
+        // Save tasks
+        function saveTasks() {
+            localStorage.setItem('cramScheduler', JSON.stringify(weeklyTasks));
+            updateStats();
+        }
+
+        // Load streak
+        function loadStreak() {
+            const savedStreak = localStorage.getItem('cramStreak');
+            const lastDate = localStorage.getItem('lastStudyDate');
+            const today = new Date().toDateString();
+            
+            if(savedStreak) streakDays = parseInt(savedStreak);
+            else streakDays = 0;
+            
+            if(lastDate !== today) {
+                // Check if completed any task today
+                const todayTasks = weeklyTasks[new Date().getDay()];
+                const hasCompletedToday = todayTasks.some(t => t.completed);
+                if(!hasCompletedToday && lastDate === new Date(Date.now() - 86400000).toDateString()) {
+                    streakDays = 0;
+                }
+            }
+            updateStreakDisplay();
+        }
+
+        // Update streak
+        function updateStreak() {
+            const today = new Date().getDay();
+            const todayTasks = weeklyTasks[today];
+            const hasCompletedToday = todayTasks.some(t => t.completed);
+            const lastDate = localStorage.getItem('lastStudyDate');
+            const todayStr = new Date().toDateString();
+            
+            if(hasCompletedToday && lastDate !== todayStr) {
+                streakDays++;
+                localStorage.setItem('lastStudyDate', todayStr);
+            } else if(!hasCompletedToday && lastDate === todayStr) {
+                // Already counted
+            } else if(!hasCompletedToday && lastDate !== todayStr) {
+                // Streak broken
+                streakDays = 0;
+            }
+            
+            localStorage.setItem('cramStreak', streakDays);
+            updateStreakDisplay();
+        }
+
+        function updateStreakDisplay() {
+            document.getElementById('streakDays').textContent = streakDays;
+        }
+
+        // Add new task for specific day (default: today)
+        function addTask(day = null) {
+            const taskName = document.getElementById('taskNameInput').value.trim();
+            const category = document.getElementById('taskCategory').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            
+            if(!taskName) {
+                alert('Please enter a task name!');
+                return;
+            }
+            
+            const targetDay = day !== null ? day : new Date().getDay();
+            
+            const newTask = {
+                id: Date.now(),
+                name: taskName,
+                category: category,
+                startTime: startTime,
+                endTime: endTime,
+                completed: false
+            };
+            
+            weeklyTasks[targetDay].push(newTask);
+            // Sort by start time
+            weeklyTasks[targetDay].sort((a, b) => a.startTime.localeCompare(b.startTime));
+            saveTasks();
+            renderCurrentView();
+            
+            // Clear inputs
+            document.getElementById('taskNameInput').value = '';
+        }
+
+        // Delete task
+        function deleteTask(day, taskId) {
+            weeklyTasks[day] = weeklyTasks[day].filter(t => t.id !== taskId);
+            saveTasks();
+            renderCurrentView();
+        }
+
+        // Toggle complete
+        function toggleComplete(day, taskId) {
+            const task = weeklyTasks[day].find(t => t.id === taskId);
+            if(task) {
+                task.completed = !task.completed;
+                saveTasks();
+                renderCurrentView();
+                updateStreak();
+                updateStats();
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            let total = 0;
+            let completed = 0;
+            
+            for(let day = 0; day < 7; day++) {
+                total += weeklyTasks[day].length;
+                completed += weeklyTasks[day].filter(t => t.completed).length;
+            }
+            
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('pendingTasks').textContent = total - completed;
+        }
+
+        // Get category class
+        function getCategoryClass(category) {
+            const classes = {
+                revision: 'category-revision',
+                practice: 'category-practice',
+                study: 'category-study',
+                break: 'category-break',
+                custom: 'category-custom'
+            };
+            return classes[category] || 'category-custom';
+        }
+
+        // Get category emoji
+        function getCategoryEmoji(category) {
+            const emojis = {
+                revision: '📚',
+                practice: '✏️',
+                study: '📖',
+                break: '☕',
+                custom: '🎯'
+            };
+            return emojis[category] || '🎯';
+        }
+
+        // Render daily view
+        function renderDailyView() {
+            const today = new Date().getDay();
+            const tasks = weeklyTasks[today];
+            const container = document.getElementById('dailyView');
+            
+            if(tasks.length === 0) {
+                container.innerHTML = `
+                    <div class="day-header">
+                        <span class="day-name">${dayNames[today]}</span>
+                        <span class="day-stats">No tasks scheduled</span>
+                    </div>
+                    <div class="empty-state">📭 No study blocks for today. Add some!</div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="day-header">
+                    <span class="day-name">📅 ${dayNames[today]}</span>
+                    <span class="day-stats">${tasks.filter(t => t.completed).length}/${tasks.length} completed</span>
+                </div>
+                <div class="time-slots">
+                    ${tasks.map(task => `
+                        <div class="time-slot ${task.completed ? 'completed' : ''}">
+                            <div class="time-badge">${task.startTime} - ${task.endTime}</div>
+                            <div class="task-name">${escapeHtml(task.name)}</div>
+                            <div class="task-category ${getCategoryClass(task.category)}">${getCategoryEmoji(task.category)} ${task.category}</div>
+                            <input type="checkbox" class="complete-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleComplete(${today}, ${task.id})">
+                            <button class="delete-slot-btn" onclick="deleteTask(${today}, ${task.id})">🗑️</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Render weekly view
+        function renderWeeklyView() {
+            const container = document.getElementById('weeklyGrid');
+            
+            // Create header row
+            let html = `
+                <div class="weekly-header">
+                    <div class="weekly-cell weekly-time">Time / Day</div>
+                    ${shortDayNames.map(day => `<div class="weekly-cell">${day}</div>`).join('')}
+                </div>
+            `;
+            
+            // Time slots from 6 AM to 10 PM
+            const timeSlots = [];
+            for(let hour = 6; hour <= 22; hour++) {
+                timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
+            }
+            
+            for(let time of timeSlots) {
+                html += `<div class="weekly-header">
+                    <div class="weekly-cell weekly-time">${time}</div>`;
+                
+                for(let day = 0; day < 7; day++) {
+                    const taskAtTime = weeklyTasks[day].find(t => t.startTime <= time && t.endTime > time);
+                    if(taskAtTime) {
+                        html += `<div class="weekly-task-cell ${taskAtTime.completed ? 'completed' : ''}" style="background: rgba(0,0,0,0.2);">
+                            ${escapeHtml(taskAtTime.name.substring(0, 20))}
+                        </div>`;
+                    } else {
+                        html += `<div class="weekly-task-cell">—</div>`;
+                    }
+                }
+                html += `</div>`;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render current view
+        function renderCurrentView() {
+            if(currentView === 'daily') {
+                document.getElementById('dailyView').style.display = 'block';
+                document.getElementById('weeklyView').classList.remove('active');
+                renderDailyView();
+            } else {
+                document.getElementById('dailyView').style.display = 'none';
+                document.getElementById('weeklyView').classList.add('active');
+                renderWeeklyView();
+            }
+        }
+
+        // Reset all tasks
+        function resetAllTasks() {
+            if(confirm('⚠️ Delete ALL study tasks from ALL days? This cannot be undone!')) {
+                for(let day = 0; day < 7; day++) {
+                    weeklyTasks[day] = defaultTasks.map(t => ({ ...t, id: Date.now() + day + Math.random() }));
+                }
+                saveTasks();
+                renderCurrentView();
+                updateStats();
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.getElementById('addTaskBtn').addEventListener('click', () => addTask());
+        document.getElementById('resetBtn').addEventListener('click', resetAllTasks);
+        
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentView = btn.dataset.view;
+                renderCurrentView();
+            });
+        });
+
+        // Enter key for add task
+        document.getElementById('taskNameInput').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') addTask();
+        });
+
+        // Initialize
+        loadTasks();
+    </script>
+</body>
+</html>

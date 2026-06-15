@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farm Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🌾 Smart Farm Dashboard</h1>
+        <p>Manage your crops, expenses, and daily farming tasks.</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#crops">Crops</a></li>
+            <li><a href="#expenses">Expenses</a></li>
+            <li><a href="#tasks">Tasks</a></li>
+        </ul>
+    </nav>
+
+    <!-- Crop Section -->
+    <section id="crops" class="container">
+        <h2>🌱 Crop Management</h2>
+
+        <form id="cropForm">
+            <input type="text" id="cropName" placeholder="Crop Name" required>
+            <input type="date" id="plantDate" required>
+            <button type="submit">Add Crop</button>
+        </form>
+
+        <ul id="cropList"></ul>
+    </section>
+
+    <!-- Expense Section -->
+    <section id="expenses" class="container">
+        <h2>💰 Expense Tracker</h2>
+
+        <form id="expenseForm">
+            <input type="text" id="expenseName" placeholder="Expense Type" required>
+            <input type="number" id="expenseAmount" placeholder="Amount" required>
+            <button type="submit">Add Expense</button>
+        </form>
+
+        <ul id="expenseList"></ul>
+
+        <h3>Total Expenses: ₹<span id="totalExpense">0</span></h3>
+    </section>
+
+    <!-- Task Section -->
+    <section id="tasks" class="container">
+        <h2>📋 Farm Tasks</h2>
+
+        <form id="taskForm">
+            <input type="text" id="taskName" placeholder="Enter Task" required>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <ul id="taskList"></ul>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Smart Farm Dashboard</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

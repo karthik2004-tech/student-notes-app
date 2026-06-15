@@ -1,0 +1,163 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#05070c;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  font-family:'Consolas','Courier New','Lucida Console',monospace;
+  overflow:hidden;color:#475569;
+}
+
+#app{
+  width:min(98vmin,1100px);
+  height:min(98vmin,760px);
+  display:flex;flex-direction:column;
+  gap:clamp(2px,0.2vmin,4px);
+  position:relative;
+}
+
+/* ─── Main row ────────────────────────────────── */
+#mainRow{
+  flex:1;display:flex;
+  gap:clamp(2px,0.2vmin,4px);
+  min-height:0;
+}
+
+/* Terminal */
+#termCol{
+  width:clamp(130px,20vmin,220px);
+  display:flex;flex-direction:column;
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  overflow:hidden;
+}
+#termCol.shake{animation:termShake 0.2s}
+@keyframes termShake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-4px)}
+  75%{transform:translateX(4px)}
+}
+#termOutput{
+  flex:1;overflow-y:auto;
+  padding:clamp(4px,0.4vmin,6px);
+  font-size:clamp(5px,0.55vmin,8px);
+  color:#475569;line-height:1.5;
+}
+.termLine{display:block;word-break:break-all;margin-bottom:1px}
+.termLine.err{color:#ff2a5f}
+.termLine.ok{color:#00ff66}
+.termLine.info{color:#64748b}
+.termLine.cmd{color:#94a3b8}
+
+#termInputRow{
+  display:flex;align-items:center;
+  padding:clamp(3px,0.3vmin,5px);
+  border-top:1px solid rgba(0,240,255,0.03);
+  gap:clamp(2px,0.2vmin,4px);
+}
+.termPrompt{
+  color:#475569;font-size:clamp(7px,0.8vmin,11px);
+  font-weight:700;
+}
+#termInput{
+  flex:1;
+  background:transparent;border:none;outline:none;
+  color:#94a3b8;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+}
+#termInput::placeholder{color:#1e2a3a}
+
+/* Canvas */
+#canvasWrap{
+  flex:1;
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:#04050a;overflow:hidden;
+}
+#gitCanvas{display:block;width:100%;height:100%}
+
+/* Telemetry */
+#telemetry{
+  width:clamp(70px,10vmin,100px);
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(4px,0.45vmin,7px);
+  padding:clamp(4px,0.4vmin,6px);
+  border:1px solid rgba(0,240,255,0.02);
+  border-radius:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+}
+.tm{display:flex;flex-direction:column;align-items:center;gap:1px}
+.tm .tl{
+  font-size:clamp(4px,0.4vmin,6px);
+  color:#334155;text-transform:uppercase;letter-spacing:1px;
+}
+.tm .tv{
+  font-size:clamp(7px,0.8vmin,11px);
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+#headVal{color:#00f0ff}
+#branchVal{color:#ffd700}
+#commitVal{color:#00ff66}
+#stageVal{color:#475569}
+
+/* ─── Buttons ────────────────────────────────── */
+#btnRow{
+  display:flex;gap:clamp(3px,0.3vmin,6px);
+  padding:clamp(3px,0.3vmin,5px);
+  background:rgba(255,255,255,0.005);
+  border:1px solid rgba(0,240,255,0.03);
+  border-radius:clamp(3px,0.3vmin,5px);
+  flex-wrap:wrap;justify-content:center;
+}
+.gitBtn{
+  padding:clamp(3px,0.35vmin,5px) clamp(8px,0.9vmin,12px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.04);
+  border-radius:3px;
+  color:#475569;font-family:inherit;
+  font-size:clamp(5px,0.6vmin,8px);
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;
+  text-transform:uppercase;
+}
+.gitBtn:hover{border-color:rgba(0,240,255,0.12);color:#00f0ff}
+
+/* ─── Conflict overlay ───────────────────────── */
+#conflictOverlay{
+  position:absolute;inset:0;
+  display:flex;justify-content:center;align-items:center;
+  background:rgba(0,0,0,0.5);
+  z-index:100;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s;
+}
+#conflictOverlay.show{opacity:1;pointer-events:auto}
+#conflictBox{
+  background:#0a0c18;border:1px solid rgba(255,42,95,0.2);
+  border-radius:6px;padding:clamp(10px,1.2vmin,20px);
+  display:flex;flex-direction:column;gap:clamp(10px,1.2vmin,16px);
+  min-width:clamp(200px,30vmin,320px);
+  text-align:center;
+}
+#conflictMsg{
+  color:#ff2a5f;font-size:clamp(8px,1vmin,14px);
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;
+}
+#conflictOpts{display:flex;gap:clamp(6px,0.7vmin,10px);justify-content:center}
+#conflictOpts button{
+  padding:clamp(4px,0.5vmin,8px) clamp(10px,1.2vmin,18px);
+  background:transparent;
+  border:1px solid rgba(0,240,255,0.06);
+  border-radius:4px;
+  color:#64748b;font-family:inherit;
+  font-size:clamp(6px,0.7vmin,9px);
+  cursor:pointer;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+}
+#conflictOpts button:hover{border-color:rgba(0,240,255,0.1);color:#00f0ff}
+
+@media(max-width:600px){
+  #mainRow{flex-direction:column}
+  #termCol{width:100%;height:clamp(80px,12vmin,120px)}
+  #telemetry{width:100%;flex-direction:row;gap:3px}
+}

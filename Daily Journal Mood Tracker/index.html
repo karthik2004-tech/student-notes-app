@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Journal / Mood Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📔 Daily Journal / Mood Tracker</h1>
+    <p class="subtitle">Log your mood and write a short entry</p>
+
+    <div class="card mood-picker">
+      <h2>Pick Your Mood</h2>
+      <div class="moods">
+        <span class="mood" data-mood="😄">😄</span>
+        <span class="mood" data-mood="😐">😐</span>
+        <span class="mood" data-mood="😔">😔</span>
+        <span class="mood" data-mood="😤">😤</span>
+      </div>
+    </div>
+
+    <div class="card journal-entry">
+      <h2>Write Journal Entry</h2>
+      <textarea id="entry-input" placeholder="Write about your day..."></textarea>
+      <button id="save-btn">💾 Save Entry</button>
+    </div>
+
+    <div class="card past-entries">
+      <h2>📅 Past Entries</h2>
+      <ul id="entries-list"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

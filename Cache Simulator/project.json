@@ -1,0 +1,18 @@
+{
+  "title": "Cache Simulator",
+  "description": "A low-level cache memory simulator supporting LRU, LFU, and FIFO eviction policies with step-by-step or fully automatic address sequence processing, visual cache slot grid with hit/miss/eviction animations, and a real-time hit-ratio line graph rendered natively on Canvas.",
+  "author": "Girish Madarkar",
+  "github": "Girish0902",
+  "tags": ["cache", "memory", "lru", "lfu", "fifo", "eviction", "simulation", "canvas", "graph", "vanilla-js"],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.png",
+  "features": [
+    "3 eviction algorithms: LRU (scans for min lastAccess tick, O(n) per evict), LFU (min freq with lastAccess tiebreak, O(n) scan), FIFO (min insertOrder, O(n) scan) — each in dedicated function",
+    "Cache slot grid: up to 12 visual slots rendered as DOM cards showing block address, frequency counter, and last-access tick metadata. Slot .hit class triggers scale(1.1) keyframe + green glow (#00ff66 box-shadow), .miss class triggers pink background flash via flashMiss keyframe, .evict class applies crimson glow",
+    "Address sequence input: comma-separated integers parsed via split(',').map(parseInt). Step button processes one address at a time; Run All button asynchronously loops through remaining addresses with speed-gated delay (ms = max(50, 300 − speed×12)) using setTimeout Promise wrapper",
+    "Hit-ratio graph: 80-sample rolling window appended on each processAddress() call. Canvas renderer draws filled area (rgba(0,255,102,0.04)) + stroked line (#00ff66, width 1.5) with 5 horizontal grid lines at 20% intervals",
+    "Cache miss + eviction pipeline: on miss, if cache.length >= capacity, findEvict*() selects victim → removes via splice → flashes evicted slot → inserts new block with freq=1, insertOrder=++tick. Last evicted address shown in telemetry",
+    "Telemetry panel: total lookups, hits, misses, hit ratio percentage (hits/(hits+misses)×100), last evicted block address",
+    "Purge & Reset: zeroes all counters, empties cache array, clears ratio history, re-renders empty grid and blank graph without page reload"
+  ]
+}
