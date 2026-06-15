@@ -2,27 +2,25 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const apiRoutes = require('./routes/api');
-const corsValidator = require('./middleware/corsValidator');
+const { securityHeadersMiddleware } = require('./middleware/securityHeaders');
+const httpsEnforcement = require('./middleware/httpsEnforcement');
 const { config, getCorsConfig } = require('./config');
 
 const app = express();
-const PORT = config.PORT || 5000;
-const HOST = config.HOST || 'localhost';
+
+// Apply HTTPS enforcement (production only)
+app.use(httpsEnforcement(config));
 
 // Initialize CORS with whitelist
 const corsConfig = getCorsConfig(config);
 app.use(cors(corsConfig));
 
-// CORS validation middleware (development only)
-if (process.env.NODE_ENV === 'development') {
-  app.use(corsValidator);
-}
+// Apply security headers
+app.use(securityHeadersMiddleware(config));
 
-app.use(express.json());
-const { responseValidationMiddleware } = require('./middleware/responseValidator');
-const { config, getCorsConfig, logConfiguration } = require('./config');
-
-const app = express();
+// Configure request body parsing with size limits
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 try {
   // Log configuration on startup (development only)
@@ -34,14 +32,16 @@ try {
   const corsOptions = getCorsConfig(config);
   app.use(cors(corsOptions));
 
-  app.use(express.json());
-
-app.listen(PORT, HOST, () => {
-  console.debug(
-    `PatternWise server running on http://${HOST}:${PORT}`
+app.listen(config.PORT, config.HOST, () => {
+  console.log(
+    `[SERVER] PatternWise server running on http://${config.HOST}:${config.PORT}`
   );
-  if (process.env.NODE_ENV === 'development') {
-    console.debug(`CORS Allowed Origins: ${config.ALLOWED_ORIGINS}`);
+  console.log(`[SERVER] Environment: ${config.NODE_ENV}`);
+  if (config.NODE_ENV === 'development') {
+    console.log(`[SECURITY] CORS Allowed Origins: ${config.ALLOWED_ORIGINS}`);
+    console.log('[SECURITY] Running in development mode - relaxed policies applied');
+  } else {
+    console.log('[SECURITY] Running in production mode - strict security policies applied');
   }
 });
   // Response validation middleware (development only)
