@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sudoku Puzzle Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🧩 Sudoku Puzzle Game</h1>
+
+    <div class="controls">
+      <label>Difficulty:
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+      <button onclick="newGame()">New Game</button>
+      <div id="timer">00:00</div>
+    </div>
+
+    <div id="sudoku-grid" class="sudoku-grid"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
