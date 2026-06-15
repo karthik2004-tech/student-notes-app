@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balloon POOP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="telemetry">
+      <div class="tm"><span class="tl">SCORE</span><span id="scoreVal" class="tv">0</span></div>
+      <div class="tm"><span class="tl">MULTI</span><span id="multiVal" class="tv">1.0x</span></div>
+      <div class="tm"><span class="tl">TIME</span><span id="timeVal" class="tv">45</span></div>
+      <div class="tm"><span class="tl">BEST</span><span id="bestVal" class="tv">0</span></div>
+    </div>
+
+    <div id="sky" onclick="return false">
+      <div id="startOverlay">
+        <div class="so-title">BALLOON POOP</div>
+        <div class="so-sub">Pop balloons. Beat your high score.<br>45 seconds on the clock.</div>
+        <button id="startBtn">[ START GAME ]</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal" class="hidden">
+    <div class="mb">
+      <div class="mb-title">GAME OVER</div>
+      <div id="mbStats" class="mb-stats"></div>
+      <button id="restartBtn">[ PLAY AGAIN ]</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
