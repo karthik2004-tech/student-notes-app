@@ -6,6 +6,8 @@ const { securityHeadersMiddleware } = require('./middleware/securityHeaders');
 const httpsEnforcement = require('./middleware/httpsEnforcement');
 const { config, getCorsConfig } = require('./config');
 const { validateErrorCodeMapping } = require('./config/httpStatusMap');
+const { getJsonParserConfig, getUrlEncodedParserConfig, validateRequestBodyLimits } = require('./config/requestBodyParser');
+const { requestBodyValidatorMiddleware, payloadTooLargeErrorHandler } = require('./middleware/requestBodyValidator');
 const { responseFormattingMiddleware } = require('./utils/responseFormatter');
 
 const app = express();
@@ -15,6 +17,12 @@ try {
   validateErrorCodeMapping();
   if (config.NODE_ENV === 'development') {
     console.log('[STARTUP] HTTP Status Code Mapping validated successfully');
+  }
+
+  // Validate request body limits at startup
+  validateRequestBodyLimits();
+  if (config.NODE_ENV === 'development') {
+    console.log('[STARTUP] Request Body Size Limits validated successfully');
   }
 
   // Apply HTTPS enforcement (production only)
@@ -27,9 +35,15 @@ try {
   // Apply security headers
   app.use(securityHeadersMiddleware(config));
 
-  // Configure request body parsing with size limits
-  app.use(express.json({ limit: '10mb' }));
-  app.use(express.urlencoded({ limit: '10mb', extended: true }));
+  // Request body validator middleware (logs and enforces limits)
+  app.use(requestBodyValidatorMiddleware(config));
+
+  // Configure request body parsing with explicit size limits
+  app.use(express.json(getJsonParserConfig()));
+  app.use(express.urlencoded(getUrlEncodedParserConfig()));
+
+  // Error handler for payload too large
+  app.use(payloadTooLargeErrorHandler(config));
 
   // Apply response formatting middleware
   app.use(responseFormattingMiddleware);
