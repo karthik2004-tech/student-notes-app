@@ -338,3 +338,10 @@
   }
 
 })();
+
+// Security: Sanitize text contents explicitly
+function escapeNoteHTML(str) {
+    return str.replace(/[&<>'"/]/g, function (m) {
+        return {'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;', '/': '&#x2F;'}[m];
+    });
+}

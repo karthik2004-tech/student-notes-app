@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regex Sandbox & Pattern Generator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Global theme styles -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Local project styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="app-navbar">
+        <div class="brand-section">
+            <span class="brand-icon">🧩</span>
+            <div>
+                <h1 class="brand-title">RegexCraft</h1>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-top: -2px;">Interactive Regex Sandbox & Token Parser</p>
+            </div>
+        </div>
+        
+        <div class="navbar-controls">
+            <a href="../" class="back-link">
+                <span>←</span> Dashboard
+            </a>
+            <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle dark/light theme" onclick="window.toggleGlobalTheme()">
+                🌓
+            </button>
+        </div>
+    </header>
+
+    <!-- Sandbox Grid Layout -->
+    <main class="sandbox-layout">
+        
+        <!-- Sidebar: Curated Patterns Library -->
+        <aside class="pattern-sidebar">
+            <div>
+                <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Recipes Library</h2>
+                <p style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 1rem;">Select a pre-configured expression recipe to populate the workspace.</p>
+                <input 
+                    type="text" 
+                    id="recipeSearch" 
+                    class="search-bar" 
+                    placeholder="Search recipes (e.g. email, phone)..." 
+                    oninput="filterRecipes()"
+                >
+            </div>
+
+            <!-- Categories lists -->
+            <div class="recipe-list-container" id="recipeList">
+                <!-- Javascript will inject recipe cards here -->
+            </div>
+        </aside>
+
+        <!-- Right Workspace: Composer, Testers & Token Explainer -->
+        <section class="workspace-content">
+            
+            <!-- Editor & Composer Card -->
+            <div class="workspace-card">
+                <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Expression Composer</h2>
+                <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 1.25rem;">Define your regular expression pattern and select execution flags.</p>
+
+                <!-- Composer Input Row -->
+                <div class="regex-composer">
+                    <span class="regex-slash">/</span>
+                    <input 
+                        type="text" 
+                        id="regexInput" 
+                        class="regex-input" 
+                        placeholder="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                        oninput="onRegexChange()"
+                        value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                    >
+                    <span class="regex-slash">/</span>
+                    <input 
+                        type="text" 
+                        id="flagsInput" 
+                        class="regex-flags-input" 
+                        placeholder="g"
+                        oninput="onFlagsInputChange()"
+                        value="g"
+                    >
+                </div>
+
+                <!-- Flags Checkbox Selector Row -->
+                <div class="flags-toggle-container">
+                    <label class="flag-label">
+                        <input type="checkbox" id="flag-g" value="g" checked onchange="toggleFlag(this)">
+                        <span>global (g)</span>
+                    </label>
+                    <label class="flag-label">
+                        <input type="checkbox" id="flag-i" value="i" onchange="toggleFlag(this)">
+                        <span>ignoreCase (i)</span>
+                    </label>
+                    <label class="flag-label">
+                        <input type="checkbox" id="flag-m" value="m" onchange="toggleFlag(this)">
+                        <span>multiline (m)</span>
+                    </label>
+                    <label class="flag-label">
+                        <input type="checkbox" id="flag-s" value="s" onchange="toggleFlag(this)">
+                        <span>dotAll (s)</span>
+                    </label>
+                    <label class="flag-label">
+                        <input type="checkbox" id="flag-u" value="u" onchange="toggleFlag(this)">
+                        <span>unicode (u)</span>
+                    </label>
+                    <label class="flag-label">
+                        <input type="checkbox" id="flag-y" value="y" onchange="toggleFlag(this)">
+                        <span>sticky (y)</span>
+                    </label>
+                </div>
+
+                <!-- State Badge -->
+                <div id="regexStatus" class="match-status-badge status-valid">Valid Expression</div>
+            </div>
+
+            <!-- Testing Workspace Card -->
+            <div class="workspace-card">
+                <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Testing Board</h2>
+                <p style="font-size: 0.85rem; opacity: 0.8;">Enter test values to observe highlighting positions of matched occurrences.</p>
+
+                <!-- Dual Columns: Raw Input vs Highlighted Output -->
+                <div class="text-editor-container">
+                    <!-- Input pane -->
+                    <div class="editor-pane">
+                        <label for="testStringInput" class="pane-label">Test String</label>
+                        <textarea 
+                            id="testStringInput" 
+                            class="test-textarea" 
+                            placeholder="Type some text here to test against your regular expression. For example: info@example.com, developer.john@mywebsite.dev"
+                            oninput="updateHighlights()"
+                        >Contact us at info@example.com or support@company.org. You can also reach viswa@developer.dev!</textarea>
+                    </div>
+
+                    <!-- Highlighted Output pane -->
+                    <div class="editor-pane">
+                        <label class="pane-label">Match Highlights</label>
+                        <div id="highlightOutput" class="highlight-output-container"></div>
+                    </div>
+                </div>
+
+                <!-- Match Count indicator -->
+                <div style="margin-top: 1rem; font-weight: 600; font-size: 0.9rem;">
+                    Matches Found: <span id="matchCount" style="color: var(--accent-color);">0</span>
+                </div>
+            </div>
+
+            <!-- Token Parser Explainer Card -->
+            <div class="workspace-card">
+                <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Interactive Visual Explanation</h2>
+                <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 1.25rem;">An visual breakdown parsing your expression tokens, explaining anchors, ranges, sets, and groups.</p>
+                
+                <div id="tokenExplainerContainer">
+                    <!-- Token breakdown elements injected here -->
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Global synchronizer scripts -->
+    <script src="../global-theme.js"></script>
+    <!-- Local app scripting -->
+    <script src="script.js"></script>
+</body>
+</html>

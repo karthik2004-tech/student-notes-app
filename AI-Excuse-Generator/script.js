@@ -147,6 +147,25 @@ if (isDark) {
     document.body.classList.remove('dark');
 }
 
+         j
+if(localStorage.getItem("theme") === "true"){
+    document.body.classList.add("dark");
+}
+
+const clearHistoryBtn = document.getElementById('clear-history-btn');
+if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', () => {
+        // 1. Clear LocalStorage
+        localStorage.removeItem('excuses'); 
+        
+        // 2. Clear the UI
+        const historyContainer = document.querySelector('.history-container, #history-list'); 
+        if (historyContainer) {
+            historyContainer.textContent = ''; 
+        }
+    });
+}
+
 document.getElementById("themeBtn").addEventListener("click", () => {
     const willBeDark = !document.body.classList.contains('dark');
     if (willBeDark) {

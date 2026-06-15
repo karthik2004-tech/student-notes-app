@@ -296,3 +296,11 @@ body {
   .m-value { font-size: 0.75rem; }
   .metric { min-width: 34px; }
 }
+
+/* UI/UX: Custom target hit animations and transition timings */
+.target {
+    transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.target:active {
+    transform: scale(0.8) !important;
+}

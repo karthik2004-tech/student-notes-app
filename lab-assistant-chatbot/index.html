@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Lab Assistant Chatbot | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+            transition: background 0.3s;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe, #a5b4fc);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        body.light h1 {
+            color: #1e1b4b;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        body.light .subtitle {
+            color: #4a4a6a;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 15px;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            z-index: 100;
+        }
+
+        body.light .theme-toggle {
+            background: #1e1b4b;
+            color: white;
+        }
+
+        /* Chatbot Container */
+        .chatbot-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        body.light .chatbot-container {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: none;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .bot-info h3 {
+            color: white;
+            font-size: 18px;
+        }
+
+        .bot-info p {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+        }
+
+        /* Chat Messages Area */
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Message Bubbles */
+        .message {
+            display: flex;
+            gap: 10px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .message-bubble {
+            background: rgba(255,255,255,0.15);
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 100%;
+        }
+
+        body.light .message-bubble {
+            background: #e0e7ff;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #00ffcc;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        /* Quick Suggestions */
+        .quick-suggestions {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        body.light .suggestion-btn {
+            background: #e0e7ff;
+            color: #1e1b4b;
+        }
+
+        .suggestion-btn:hover {
+            background: #00b4db;
+            color: white;
+        }
+
+        /* Chat Input */
+        .chat-input-area {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            outline: none;
+        }
+
+        body.light .chat-input {
+            background: #e0e7ff;
+            color: #1e1b4b;
+        }
+
+        .send-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .clear-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: #dc3545;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Lab Safety Tips */
+        .safety-tips {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 15px 20px;
+        }
+
+        .safety-title {
+            color: #ffd200;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .safety-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .safety-tag {
+            background: rgba(255,210,0,0.15);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #ffd200;
+        }
+
+        body.light .safety-tag {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        @media (max-width: 600px) {
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span>🧪🔬</span>
+                Virtual Lab Assistant
+            </h1>
+            <div class="subtitle">Ask me anything about lab experiments, safety, and chemistry!</div>
+        </div>
+
+        <div class="chatbot-container">
+            <div class="chat-header">
+                <div class="bot-avatar">🤖</div>
+                <div class="bot-info">
+                    <h3>Lab Assistant Bot</h3>
+                    <p>Online • Ready to help</p>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-bubble">
+                        <div class="message-text">Hello! I'm your Virtual Lab Assistant. Ask me anything about lab experiments, chemical formulas, safety rules, or equipment!</div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span><span></span><span></span>
+                <span style="color: white; margin-left: 5px;">Bot is typing...</span>
+            </div>
+
+            <div class="quick-suggestions" id="quickSuggestions">
+                <button class="suggestion-btn">🧪 pH of water?</button>
+                <button class="suggestion-btn">⚗️ Lab safety rules</button>
+                <button class="suggestion-btn">🔬 Microscope parts</button>
+                <button class="suggestion-btn">🧴 HCl formula</button>
+                <button class="suggestion-btn">🧪 NaOH uses</button>
+                <button class="suggestion-btn">⚠️ First aid in lab</button>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your question...">
+                <button class="send-btn" id="sendBtn">Send</button>
+                <button class="clear-btn" id="clearBtn">Clear</button>
+            </div>
+        </div>
+
+        <!-- Lab Safety Tips -->
+        <div class="safety-tips">
+            <div class="safety-title">⚠️ LAB SAFETY TIPS</div>
+            <div class="safety-list" id="safetyTips">
+                <span class="safety-tag">👓 Wear safety goggles</span>
+                <span class="safety-tag">🧤 Use gloves for chemicals</span>
+                <span class="safety-tag">🧪 Never taste chemicals</span>
+                <span class="safety-tag">💨 Work in ventilated area</span>
+                <span class="safety-tag">🚿 Know emergency shower location</span>
+                <span class="safety-tag">🔥 Tie back long hair</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Q&A Database
+        const qaDatabase = [
+            { keywords: ["ph of water", "water ph", "what is ph of water"], answer: "💧 Pure water has a pH of 7 at 25°C, which is neutral. It's neither acidic nor basic!" },
+            { keywords: ["safety rules", "lab safety", "safety guidelines"], answer: "⚠️ Lab Safety Rules:\n1. Wear safety goggles and gloves\n2. No eating/drinking in lab\n3. Know emergency exits\n4. Handle chemicals carefully\n5. Wash hands after experiment" },
+            { keywords: ["microscope parts", "microscope", "parts of microscope"], answer: "🔬 Main microscope parts: Eyepiece, Objective lenses, Stage, Mirror/Light, Coarse/Fine focus knobs, Arm, and Base." },
+            { keywords: ["hcl formula", "hcl", "hydrochloric acid"], answer: "🧪 HCl is Hydrochloric Acid. It's a strong acid used in many lab experiments!" },
+            { keywords: ["naoh uses", "naoh", "sodium hydroxide"], answer: "🧴 NaOH (Sodium Hydroxide) is used to make soap, paper, and as a cleaning agent. It's also used in titrations!" },
+            { keywords: ["first aid lab", "lab first aid", "emergency"], answer: "🆘 Lab First Aid:\n1. Chemical splash: Rinse eyes 15 mins\n2. Burns: Cool with water\n3. Cuts: Apply pressure\n4. Always inform instructor!" },
+            { keywords: ["periodic table", "elements", "chemical elements"], answer: "📊 The Periodic Table has 118 elements arranged by atomic number. Most important: H, O, C, Na, Cl, Fe, Au, Ag!" },
+            { keywords: ["molarity", "molarity formula", "calculate molarity"], answer: "🧮 Molarity (M) = moles of solute / liters of solution. Unit: mol/L!" },
+            { keywords: ["titration", "what is titration"], answer: "🧪 Titration is used to find concentration of an unknown solution by reacting it with a known solution!" },
+            { keywords: ["bunsen burner", "how to use bunsen burner"], answer: "🔥 To use Bunsen burner:\n1. Connect to gas\n2. Close air hole\n3. Light match first\n4. Open gas and light\n5. Adjust air hole for blue flame" },
+            { keywords: ["centrifuge", "centrifuge use"], answer: "🧪 Centrifuge separates liquids based on density. Always balance tubes before spinning!" },
+            { keywords: ["distillation", "what is distillation"], answer: "💨 Distillation separates liquids based on boiling points. Used to purify water and make alcohol!" },
+            { keywords: ["lab glassware", "beaker", "flask", "test tube"], answer: "🔬 Common glassware: Beaker (mixing), Flask (heating), Test tube (small reactions), Pipette (measuring), Burette (titrations)!" },
+            { keywords: ["chemical storage", "store chemicals"], answer: "📦 Chemical storage rules:\n- Acids separate from bases\n- Flammables in safety cabinet\n- Label everything\n- Check expiration dates" },
+            { keywords: ["balance lab", "lab balance", "weighing"], answer: "⚖️ Always calibrate balance before use. Never pour chemicals directly on the pan!" },
+            { keywords: ["hello", "hi", "hey", "greetings"], answer: "Hello! I'm your Lab Assistant. How can I help you today? 🧪" },
+            { keywords: ["thank you", "thanks", "good job"], answer: "You're welcome! Keep exploring science! 🧪🔬" },
+            { keywords: ["help", "what can you do"], answer: "I can answer questions about:\n- Lab safety rules\n- Chemical formulas\n- Equipment uses\n- Experiments\n- Periodic table\n- Lab techniques!" }
+        ];
+
+        // Random lab tips for fallback
+        const fallbackResponses = [
+            "🔬 I'm not sure about that. Try asking about lab safety, chemicals, or equipment!",
+            "🧪 That's an interesting question! Ask me about pH, molarity, or titration.",
+            "⚗️ I specialize in lab-related questions. Ask me about safety rules or chemical formulas!",
+            "📊 Try asking: 'What is the pH of water?' or 'How to use a microscope?'",
+            "🧴 I can help with lab experiments, safety guidelines, and chemical properties!"
+        ];
+
+        let isTyping = false;
+
+        // Get current time
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Add message to chat
+        function addMessage(sender, text, avatar) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-bubble">
+                    <div class="message-text">${formatText(text)}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Format text (handle line breaks)
+        function formatText(text) {
+            return text.replace(/\n/g, '<br>');
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            if(isTyping) return;
+            isTyping = true;
+            document.getElementById('typingIndicator').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('typingIndicator').style.display = 'none';
+                isTyping = false;
+            }, 1000);
+        }
+
+        // Find answer for user question
+        function findAnswer(question) {
+            const lowerQuestion = question.toLowerCase();
+            
+            for(let q of qaDatabase) {
+                for(let keyword of q.keywords) {
+                    if(lowerQuestion.includes(keyword)) {
+                        return q.answer;
+                    }
+                }
+            }
+            
+            return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+        }
+
+        // Process user message
+        async function processUserMessage(message) {
+            if(!message.trim()) return;
+            
+            // Add user message
+            addMessage('user', message, '👤');
+            
+            // Clear input
+            document.getElementById('chatInput').value = '';
+            
+            // Show typing indicator
+            showTyping();
+            
+            // Find answer
+            const answer = findAnswer(message);
+            
+            // Simulate typing delay
+            setTimeout(() => {
+                addMessage('bot', answer, '🤖');
+            }, 800);
+        }
+
+        // Clear chat
+        function clearChat() {
+            if(confirm('Clear all chat messages?')) {
+                const messagesDiv = document.getElementById('chatMessages');
+                messagesDiv.innerHTML = `
+                    <div class="message bot">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-bubble">
+                            <div class="message-text">Chat cleared! Ask me anything about lab experiments, chemicals, or safety! 🧪</div>
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light');
+            const btn = document.getElementById('themeToggle');
+            if(document.body.classList.contains('light')) {
+                btn.textContent = '🌙 Dark';
+            } else {
+                btn.textContent = '☀️ Light';
+            }
+        }
+
+        // Quick suggestion click
+        function setupSuggestions() {
+            const suggestions = document.querySelectorAll('.suggestion-btn');
+            suggestions.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    processUserMessage(btn.textContent);
+                });
+            });
+        }
+
+        // Event listeners
+        document.getElementById('sendBtn').addEventListener('click', () => {
+            const input = document.getElementById('chatInput');
+            processUserMessage(input.value);
+        });
+        
+        document.getElementById('clearBtn').addEventListener('click', clearChat);
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                processUserMessage(e.target.value);
+            }
+        });
+
+        // Initialize
+        setupSuggestions();
+        
+        // Load saved theme preference
+        const savedTheme = localStorage.getItem('labChatTheme');
+        if(savedTheme === 'light') {
+            document.body.classList.add('light');
+            document.getElementById('themeToggle').textContent = '🌙 Dark';
+        }
+        
+        // Save theme preference
+        function saveThemePreference() {
+            localStorage.setItem('labChatTheme', document.body.classList.contains('light') ? 'light' : 'dark');
+        }
+        
+        const observer = new MutationObserver(() => {
+            saveThemePreference();
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    </script>
+</body>
+</html>
