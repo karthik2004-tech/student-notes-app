@@ -175,6 +175,7 @@
     </div>
 
     <script>
+        const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
         let notes = JSON.parse(localStorage.getItem('taskquest_v1.notes') || '[]');
         let currentFilter = 'All';
 
@@ -250,8 +251,8 @@
             grid.innerHTML = filtered.map(n => `
                 <div class="note-card">
                     <span class="note-tag tag-${n.category.toLowerCase()}">${n.category}</span>
-                    <h3 class="note-title">${n.title}</h3>
-                    <p class="note-content">${n.content}</p>
+                    <h3 class="note-title">${escapeHTML(n.title)}</h3>
+                    <p class="note-content">${escapeHTML(n.content)}</p>
                     <div class="note-actions">
                         <button class="action-btn delete" onclick="deleteNote(${n.id})" title="Delete note"><i class="ri-delete-bin-line"></i></button>
                     </div>

@@ -6,6 +6,7 @@
   'use strict';
 
   // ─── Constants ───
+  const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
   const STORAGE_KEY = 'stickyNotesBoard';
   const THEME_KEY = 'stickyNotesTheme';
   const MAX_CHARS = 200;
@@ -208,7 +209,7 @@
           <div class="note-body"
                contenteditable="true"
                data-placeholder="Write something..."
-               data-id="${note.id}">${note.text}</div>
+               data-id="${note.id}">${escapeHTML(note.text)}</div>
           <div class="note-footer">${formatTimestamp(note.updatedAt)}</div>
         </div>`;
       })

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Letters — A Gift for Later</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdfcf0; /* Warm cream */
+            --accent: #6b705c; /* Sage green */
+            --accent-light: #a5a58d;
+            --text: #3f4238;
+            --card: #ffffff;
+            --locked-bg: #f0ede4;
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .subtitle {
+            color: var(--accent-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        /* Form Style */
+        .letter-form {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-bottom: 40px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: var(--accent); }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #eee;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus { border-color: var(--accent-light); background: #fafafa; }
+
+        textarea { min-height: 150px; resize: vertical; }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover { background: var(--accent-light); transform: translateY(-2px); }
+
+        /* Letters Grid */
+        .letters-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .letter-card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .letter-card.locked {
+            background: var(--locked-bg);
+            border-style: dashed;
+            opacity: 0.8;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-title { font-size: 1.2rem; font-weight: 700; margin: 0; }
+        
+        .card-date {
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: var(--accent-light);
+            border: 1px solid #eee;
+        }
+
+        .card-preview {
+            font-size: 0.95rem;
+            color: #777;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .locked-msg {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: var(--accent-light);
+            padding: 0;
+        }
+
+        .action-btn:hover { text-decoration: underline; color: var(--accent); }
+        .action-btn.danger:hover { color: #e74c3c; }
+
+        /* Reader Overlay */
+        .reader-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .reader-card {
+            background: var(--bg);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="subtitle">Personal Time Capsule</div>
+            <h1>Future Letters</h1>
+            <p style="opacity: 0.7;">Write a note to who you will become.</p>
+        </header>
+
+        <section class="letter-form" id="letter-form">
+            <div class="form-group">
+                <label>To My Future Self...</label>
+                <input type="text" id="title" placeholder="A title for this moment (e.g., Graduation Day)">
+            </div>
+            <div class="form-group">
+                <label>The Message</label>
+                <textarea id="content" placeholder="What do you want to remember? What are your goals?"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Unlock Date</label>
+                <input type="date" id="unlockDate">
+            </div>
+            <button class="btn" onclick="saveLetter()">Seal the Envelope ✉️</button>
+        </section>
+
+        <div class="letters-list" id="letters-list">
+            <!-- Letters go here -->
+        </div>
+    </div>
+
+    <div class="reader-overlay" id="reader" onclick="closeReader()">
+        <div class="reader-card" onclick="event.stopPropagation()">
+            <h2 id="read-title" style="font-family: 'Playfair Display', serif;"></h2>
+            <div id="read-meta" style="font-size: 0.8rem; font-weight: 700; color: var(--accent-light); margin-bottom: 30px;"></div>
+            <div id="read-content" style="white-space: pre-wrap;"></div>
+            <button class="btn" style="margin-top: 40px;" onclick="closeReader()">Close Letter</button>
+        </div>
+    </div>
+
+    <script>
+        let letters = JSON.parse(localStorage.getItem('future_letters')) || [];
+
+        function saveLetter() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const unlockDate = document.getElementById('unlockDate').value;
+
+            if (!title || !content || !unlockDate) return alert("Please fill in all fields.");
+
+            const letter = {
+                id: Date.now(),
+                title,
+                content,
+                unlockDate,
+                created: new Date().toLocaleDateString()
+            };
+
+            letters.push(letter);
+            localStorage.setItem('future_letters', JSON.stringify(letters));
+            
+            // Clear form
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+            document.getElementById('unlockDate').value = '';
+            
+            render();
+        }
+
+        function deleteLetter(id) {
+            if (!confirm("Remove this letter forever?")) return;
+            letters = letters.filter(l => l.id !== id);
+            localStorage.setItem('future_letters', JSON.stringify(letters));
+            render();
+        }
+
+        function openLetter(id) {
+            const letter = letters.find(l => l.id === id);
+            const isLocked = new Date(letter.unlockDate) > new Date();
+            if (isLocked) return alert("This letter is still sealed.");
+
+            document.getElementById('read-title').innerText = letter.title;
+            document.getElementById('read-meta').innerText = `Written on ${letter.created} • Unlocked on ${letter.unlockDate}`;
+            document.getElementById('read-content').innerText = letter.content;
+            document.getElementById('reader').style.display = 'flex';
+        }
+
+        function closeReader() { document.getElementById('reader').style.display = 'none'; }
+
+        function render() {
+            const list = document.getElementById('letters-list');
+            list.innerHTML = '';
+            
+            letters.sort((a,b) => new Date(a.unlockDate) - new Date(b.unlockDate)).forEach(l => {
+                const isLocked = new Date(l.unlockDate) > new Date();
+                const card = document.createElement('div');
+                card.className = `letter-card ${isLocked ? 'locked' : ''}`;
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">${l.title}</h3>
+                        <span class="card-date">${isLocked ? 'Unlocks' : 'Unlocked'}: ${l.unlockDate}</span>
+                    </div>
+                    <div class="card-preview">${isLocked ? 'This content is sealed until the unlock date.' : l.content}</div>
+                    ${isLocked ? `<div class="locked-msg">🔒 Still Sealed</div>` : `<button class="btn" style="padding: 8px 16px; font-size: 0.8rem;" onclick="openLetter(${l.id})">Read Reflection</button>`}
+                    <div class="actions">
+                        <button class="action-btn danger" onclick="deleteLetter(${l.id})">Delete</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        render();
+    </script>
+</body>
+</html>

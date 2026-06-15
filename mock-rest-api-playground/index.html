@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Mock REST API Playground</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Theme CSS -->
+    <link rel="stylesheet" href="../global-theme.css">
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="topbar">
+        <div class="logo">
+            <i class="fas fa-server"></i>
+            <h1>Mock REST API Playground</h1>
+        </div>
+        <div class="topbar-actions">
+            <button class="theme-toggle" onclick="window.toggleGlobalTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <!-- Column 1: Route Builder -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-hammer"></i> Route Builder</h2>
+                <p>Define custom serverless endpoints.</p>
+            </div>
+            
+            <form id="route-form" class="form-layout">
+                <div class="input-group">
+                    <label>Method</label>
+                    <select id="route-method" required>
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Endpoint Path</label>
+                    <input type="text" id="route-path" placeholder="/api/v1/users" required>
+                </div>
+
+                <div class="input-group checkbox-group">
+                    <label class="check-item">
+                        <input type="checkbox" id="route-secure">
+                        <span class="checkmark"></span>
+                        Requires Bearer Token
+                    </label>
+                </div>
+
+                <div class="input-group">
+                    <label>JSON Response Body (Mock Data)</label>
+                    <textarea id="route-response" class="code-font" rows="6" placeholder='{&#10;  "status": "success",&#10;  "data": []&#10;}'></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Save Route</button>
+            </form>
+
+            <div class="saved-routes mt-4">
+                <h3>Saved Routes</h3>
+                <ul id="routes-list" class="route-list">
+                    <!-- Dynamic Routes will populate here -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Column 2: Client Console -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-terminal"></i> Client Console</h2>
+                <p>Send simulated requests to your routes.</p>
+            </div>
+
+            <form id="client-form" class="form-layout">
+                <div class="flex-row">
+                    <div class="input-group method-group">
+                        <select id="client-method">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                    <div class="input-group flex-grow">
+                        <input type="text" id="client-url" placeholder="/api/v1/users" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Headers (Key: Value)</label>
+                    <textarea id="client-headers" class="code-font" rows="3" placeholder="Authorization: Bearer test_token&#10;Content-Type: application/json"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Request Body (JSON)</label>
+                    <textarea id="client-body" class="code-font" rows="6" placeholder='{&#10;  "name": "Jane Doe"&#10;}'></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary btn-send"><i class="fas fa-paper-plane"></i> Send Request</button>
+            </form>
+        </section>
+
+        <!-- Column 3: Response Viewer -->
+        <section class="panel response-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-code"></i> Response Viewer</h2>
+                <p>Simulated server output.</p>
+            </div>
+
+            <div class="response-container">
+                <div class="response-meta" id="response-meta" style="display: none;">
+                    <div class="meta-item">
+                        <span class="meta-label">Status</span>
+                        <span id="res-status" class="badge">200 OK</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Time</span>
+                        <span id="res-time" class="time-text">12ms</span>
+                    </div>
+                </div>
+
+                <div class="response-body">
+                    <pre><code id="res-body" class="code-font">// Awaiting request...</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Theme JS -->
+    <script src="../global-theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

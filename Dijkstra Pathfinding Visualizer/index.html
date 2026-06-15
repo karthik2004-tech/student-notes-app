@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PATH-SPROUT // Graph Search Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <aside id="left-panel">
+      <div class="brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" width="32" height="32">
+          <rect x="2" y="2" width="28" height="28" rx="4" fill="none" stroke="#1b3a24" stroke-width="1.5"/>
+          <circle cx="8" cy="8" r="3" fill="#1b3a24"/>
+          <circle cx="16" cy="24" r="3" fill="#2e7d32"/>
+          <circle cx="24" cy="8" r="3" fill="#c62828"/>
+          <line x1="8" y1="8" x2="16" y2="24" stroke="#a5d6a7" stroke-width="1.5"/>
+          <line x1="16" y1="24" x2="24" y2="8" stroke="#2e7d32" stroke-width="2"/>
+          <line x1="8" y1="8" x2="24" y2="8" stroke="#e2ebd9" stroke-width="1"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">PATH-SPROUT</span>
+          <span class="brand-sub">// Graph Search Visualizer</span>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">Algorithm Traversal Selection</div>
+        <div class="algo-tabs" id="algo-tabs">
+          <button class="algo-tab active" data-algo="dijkstra">
+            <span class="algo-indicator" style="background:#2e7d32"></span>
+            <span class="algo-label">Dijkstra</span>
+          </button>
+          <button class="algo-tab" data-algo="astar">
+            <span class="algo-indicator" style="background:#009688"></span>
+            <span class="algo-label">A*</span>
+          </button>
+          <button class="algo-tab" data-algo="bfs">
+            <span class="algo-indicator" style="background:#4caf50"></span>
+            <span class="algo-label">BFS</span>
+          </button>
+          <button class="algo-tab" data-algo="dfs">
+            <span class="algo-indicator" style="background:#795548"></span>
+            <span class="algo-label">DFS</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">Grid Interaction Tool Palette</div>
+        <div class="tool-tabs" id="tool-tabs">
+          <button class="tool-tab active" data-mode="wall">
+            <span class="tool-icon">\u25A3</span>
+            <span class="tool-label">Draw Walls</span>
+          </button>
+          <button class="tool-tab" data-mode="erase">
+            <span class="tool-icon">\u25A1</span>
+            <span class="tool-label">Erase</span>
+          </button>
+          <button class="tool-tab" data-mode="start">
+            <span class="tool-icon">S</span>
+            <span class="tool-label">Drag Start</span>
+          </button>
+          <button class="tool-tab" data-mode="target">
+            <span class="tool-icon">T</span>
+            <span class="tool-label">Drag Target</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">Animation Speed</div>
+        <div class="control-row">
+          <div class="slider-group">
+            <input type="range" id="speed-slider" min="1" max="250" value="30">
+            <span id="speed-display">30 ms</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">Interactive Map Presets</div>
+        <div class="presets">
+          <button class="preset-btn" data-preset="subdivision">Sub-Division Hedge</button>
+          <button class="preset-btn" data-preset="forest">Dense Forest</button>
+          <button class="preset-btn" data-preset="blocked">No Path Trap</button>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">System Action Nodes</div>
+        <div class="action-buttons">
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btn-start">START PATHFINDING</button>
+            <button class="btn btn-secondary" id="btn-pause">PAUSE</button>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="btn-clear-vis">CLEAR FRONTIER</button>
+            <button class="btn btn-danger" id="btn-reset">RESET GRID</button>
+          </div>
+          <button class="btn btn-accent" id="btn-export">EXPORT HEURISTIC LOGS (CSV)</button>
+        </div>
+      </div>
+    </aside>
+
+    <main id="right-panel">
+      <div class="diag-header">
+        <div class="diag-item">
+          <span class="diag-label">Engine</span>
+          <span class="diag-value diag-engine" id="diag-engine">Dijkstra</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">Steps</span>
+          <span class="diag-value" id="diag-steps">0</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">Footprint</span>
+          <span class="diag-value" id="diag-footprint">0</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">Path Cost</span>
+          <span class="diag-value" id="diag-pathcost">-</span>
+        </div>
+        <div class="diag-item">
+          <span class="diag-label">Status</span>
+          <span class="diag-value diag-status" id="diag-status">
+            <span class="status-dot awaiting"></span>
+            IDLE
+          </span>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="grid-section">
+          <div class="section-header">
+            <span class="section-title">Interactive Matrix Grid Canvas</span>
+            <span class="section-badge" id="grid-info">20 x 40 | 800 cells</span>
+          </div>
+          <div class="grid-wrapper" id="grid-wrapper">
+            <div class="grid-container" id="grid-container"></div>
+          </div>
+        </div>
+
+        <div class="telemetry-section">
+          <div class="metric-cards">
+            <div class="metric-card">
+              <span class="metric-label">Visited Cell Volume</span>
+              <span class="metric-value" id="metric-volume">0%</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Efficiency Delta</span>
+              <span class="metric-value" id="metric-efficiency">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Convergence Velocity</span>
+              <span class="metric-value" id="metric-velocity">0</span>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="exploration-chart"></canvas>
+          </div>
+        </div>
+
+        <div class="log-section">
+          <div class="section-header">
+            <span class="section-title">Execution Telemetry Log</span>
+            <span class="section-badge" id="log-info">0 entries</span>
+          </div>
+          <div class="log-container">
+            <table id="log-table">
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>Cell Coord</th>
+                  <th>State Change</th>
+                  <th>F-Cost</th>
+                  <th>Queue Size</th>
+                </tr>
+              </thead>
+              <tbody id="log-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-banner" id="status-banner">
+        <span class="status-dot awaiting"></span>
+        <span class="status-text">AWAITING MATRIX SEED</span>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -70,10 +70,15 @@ function renderPalette() {
 
 function copyValue(id) {
   const text = document.getElementById(id).textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    copyMsg.classList.add('show');
-    setTimeout(() => copyMsg.classList.remove('show'), 1500);
-  });
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      copyMsg.classList.add('show');
+      setTimeout(() => copyMsg.classList.remove('show'), 1500);
+    })
+    .catch(err => {
+      console.error('Clipboard copy failed:', err);
+      alert("Failed to copy color. Please check your clipboard permissions.");
+    });
 }
 
 colorInput.addEventListener('input', updateColor);

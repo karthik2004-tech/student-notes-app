@@ -52,16 +52,24 @@ let activeTab = 'dashboard';
  * ==========================================================================
  */
 function saveState() {
-    localStorage.setItem('aura_users', JSON.stringify(state.users));
-    localStorage.setItem('aura_current_user', JSON.stringify(state.currentUser));
-    localStorage.setItem('aura_transactions', JSON.stringify(state.transactions));
-    localStorage.setItem('aura_budgets', JSON.stringify(state.budgets));
+    try {
+        localStorage.setItem('aura_users', JSON.stringify(state.users));
+        localStorage.setItem('aura_current_user', JSON.stringify(state.currentUser));
+        localStorage.setItem('aura_transactions', JSON.stringify(state.transactions));
+        localStorage.setItem('aura_budgets', JSON.stringify(state.budgets));
+    } catch (e) {
+        console.warn("LocalStorage is full or unavailable. Transactions will only be saved in memory for this session.");
+    }
 }
 
 function saveTransaction(transaction) {
     const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
     transactions.push(transaction);
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    try {
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+    } catch (e) {
+        console.warn("LocalStorage is full or unavailable. Transactions will only be saved in memory for this session.");
+    }
 }
 
 function loadTransactions() {

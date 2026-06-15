@@ -225,6 +225,9 @@
   // ─── GitHub API ───
   async function fetchProfile(username) {
     const res = await fetch(`${GITHUB_API}/users/${encodeURIComponent(username)}`);
+    if (res.status === 403 || res.status === 429) {
+      throw { type: 'RATE_LIMIT', message: 'Rate limit exceeded. Please try again later.' };
+    }
     if (res.status === 404) {
       throw { type: 'NOT_FOUND', message: `No GitHub profile matches "${username}".` };
     }
@@ -261,6 +264,8 @@
     } catch (err) {
       if (err.type === 'NOT_FOUND') {
         showError('User not found', err.message);
+      } else if (err.type === 'RATE_LIMIT') {
+        showError('Rate limit exceeded', 'Rate limit exceeded. Please try again later.');
       } else {
         showError('Something went wrong', err.message || 'An unexpected error occurred.');
       }

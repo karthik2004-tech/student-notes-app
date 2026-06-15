@@ -24,6 +24,7 @@ exports.getPatterns = (req, res) => {
 /**
  * GET /api/patterns/:id
  * Returns specific pattern with LeetCode problem statistics
+ * Isolates external API failures using Promise.allSettled for graceful degradation
  * Implements graceful fallback if LeetCode API fails for individual problems
  */
 exports.getPatternDetails = async (req, res) => {
@@ -41,7 +42,7 @@ exports.getPatternDetails = async (req, res) => {
 
   // Find pattern
   const pattern = patterns.find(p => p.id === id);
-  
+
   if (!pattern) {
     const response = formatError(
       ErrorCodes.PATTERN_NOT_FOUND,
@@ -52,6 +53,8 @@ exports.getPatternDetails = async (req, res) => {
   }
 
   try {
+    // Fetch problem stats with error isolation
+    // Use Promise.allSettled to handle individual problem failures without failing entire request
     // Fetch problem stats with graceful fallback for failures
     const problemsWithStats = await Promise.allSettled(
       pattern.problems.map(async (slug) => {
@@ -82,15 +85,23 @@ exports.getPatternDetails = async (req, res) => {
         if (result.status === 'fulfilled') {
           return result.value;
         } else {
-          failedProblems.push(pattern.problems[index]);
+          // External API call rejected
+          failedProblems.push({
+            titleSlug: pattern.problems[index],
+            error: result.reason?.message || 'Unknown error'
+          });
+
           // Return fallback for failed problem
           return {
             questionId: 'unknown',
             titleSlug: pattern.problems[index],
-            title: pattern.problems[index].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            title: pattern.problems[index]
+              .replace(/-/g, ' ')
+              .replace(/\b\w/g, l => l.toUpperCase()),
             difficulty: 'Unknown',
             acRate: 0,
-            topicTags: []
+            topicTags: [],
+            _fetchFailed: true // Flag for client to know this is fallback
           };
         }
       });
@@ -100,9 +111,12 @@ exports.getPatternDetails = async (req, res) => {
       problems
     };
 
-    // If some problems failed, still return with warning
+    // If some problems failed, return with warning but include partial data
     if (failedProblems.length > 0) {
-      console.warn(`Partial failure fetching problems for pattern ${id}:`, failedProblems);
+      console.warn(
+        `[PATTERN_DETAILS] Partial failure for pattern ${id}: ${failedProblems.length} problems failed`
+      );
+
       const response = formatError(
         ErrorCodes.PARTIAL_DATA_FAILURE,
         'Successfully fetched pattern but some problems had data fetch issues',
@@ -110,10 +124,13 @@ exports.getPatternDetails = async (req, res) => {
           failedProblems,
           patternId: id,
           totalProblems: pattern.problems.length,
-          successfulProblems: problems.length - failedProblems.length
+          successfulProblems: problems.length - failedProblems.length,
+          note: 'Pattern returned with fallback data for failed problems'
         }
       );
-      response.data = fullPattern; // Include partial data
+
+      // Include partial data even in error response
+      response.data = fullPattern;
       return res.status(200).json(response);
     }
 
@@ -121,7 +138,9 @@ exports.getPatternDetails = async (req, res) => {
     const response = formatSuccess(fullPattern);
     res.status(200).json(response);
   } catch (err) {
-    console.error(`Error in getPatternDetails for pattern ${id}:`, err.message);
+    // Unexpected error (shouldn't happen with Promise.allSettled, but just in case)
+    console.error(`[PATTERN_DETAILS] Unexpected error for pattern ${id}:`, err.message);
+
     const response = formatError(
       ErrorCodes.LEETCODE_FETCH_FAILED,
       'Failed to fetch problem statistics from LeetCode',
