@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Garden — Grow Your Wisdom</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+        :root {
+            --bg: #061008;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #4ade80; /* Green */
+            --accent-glow: rgba(74, 222, 128, 0.3);
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            background: radial-gradient(circle at top right, #062816 0%, #061008 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+        }
+
+        @media (max-width: 850px) {
+            .container { grid-template-columns: 1fr; }
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-val { font-size: 1.2rem; font-weight: 800; color: var(--accent); display: block; }
+        .stat-lbl { font-size: 0.7rem; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px; }
+
+        /* Garden Grid */
+        .garden-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .plot {
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px dashed var(--glass-border);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plot:hover { border-color: var(--accent); background: rgba(255, 255, 255, 0.02); }
+
+        .plot.active { border: 1px solid var(--glass-border); background: var(--card-bg); cursor: default; }
+
+        .plant-emoji { font-size: 3.5rem; margin-bottom: 10px; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .progress-circle {
+            position: absolute;
+            bottom: 15px;
+            width: 70%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s; }
+
+        /* Task Panel */
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-input-wrap {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .btn-add {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 12px 16px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+
+        .btn-check {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg);
+            font-weight: 800;
+        }
+
+        .btn-check:hover { background: var(--accent); }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="glass-card">
+            <header>
+                <h1>Knowledge Garden</h1>
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-val" id="streak-val">0</span>
+                        <span class="stat-lbl">Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val" id="water-val">0</span>
+                        <span class="stat-lbl">Water</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="garden-grid" id="garden-grid">
+                <!-- Plots -->
+            </div>
+
+            <p style="color: var(--text-dim); font-size: 0.85rem; text-align: center;">
+                Complete study tasks to earn water. Use water to grow your plants. 
+                <br>Maintain your streak for 2x growth!
+            </p>
+        </div>
+
+        <aside class="glass-card">
+            <div class="panel-title">📝 Study Tasks</div>
+            <div class="task-input-wrap">
+                <input type="text" id="task-input" placeholder="What will you learn?">
+                <button class="btn-add" onclick="addTask()">+</button>
+            </div>
+            <div class="task-list" id="task-list"></div>
+        </aside>
+    </div>
+
+    <script>
+        const PLANT_TYPES = [
+            { name: "Ivy", stages: ["🌱", "🌿", "🍀", "🍃"], max: 100 },
+            { name: "Flower", stages: ["🌱", "🌿", "🌸", "🌻"], max: 150 },
+            { name: "Tree", stages: ["🌱", "🌿", "🌲", "🌳"], max: 300 }
+        ];
+
+        let state = JSON.parse(localStorage.getItem('knowledge_garden')) || {
+            streak: 0,
+            water: 5,
+            lastVisit: null,
+            plants: Array(6).fill(null),
+            tasks: []
+        };
+
+        function save() {
+            localStorage.setItem('knowledge_garden', JSON.stringify(state));
+            render();
+        }
+
+        function checkStreak() {
+            const today = new Date().toDateString();
+            if (state.lastVisit !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (state.lastVisit === yesterday.toDateString()) {
+                    state.streak++;
+                } else if (state.lastVisit !== null) {
+                    state.streak = 0;
+                }
+                state.lastVisit = today;
+                save();
+            }
+        }
+
+        function addTask() {
+            const input = document.getElementById('task-input');
+            if (!input.value) return;
+            state.tasks.push({ id: Date.now(), text: input.value });
+            input.value = '';
+            save();
+        }
+
+        function completeTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            state.water += 10;
+            save();
+        }
+
+        function plantSeed(index) {
+            const type = PLANT_TYPES[Math.floor(Math.random() * PLANT_TYPES.length)];
+            state.plants[index] = {
+                type: type.name,
+                growth: 0,
+                stage: 0
+            };
+            save();
+        }
+
+        function waterPlant(index) {
+            if (state.water <= 0 || !state.plants[index]) return;
+            
+            const plant = state.plants[index];
+            const type = PLANT_TYPES.find(t => t.name === plant.type);
+            
+            if (plant.growth >= type.max) return;
+
+            state.water--;
+            const multiplier = state.streak > 0 ? 2 : 1;
+            plant.growth += 5 * multiplier;
+            
+            // Update stage
+            const stageSize = type.max / (type.stages.length - 1);
+            plant.stage = Math.min(type.stages.length - 1, Math.floor(plant.growth / stageSize));
+            
+            save();
+        }
+
+        function render() {
+            document.getElementById('streak-val').innerText = state.streak;
+            document.getElementById('water-val').innerText = state.water;
+
+            // Render Garden
+            const grid = document.getElementById('garden-grid');
+            grid.innerHTML = '';
+            state.plants.forEach((p, i) => {
+                const plot = document.createElement('div');
+                plot.className = `plot ${p ? 'active' : ''}`;
+                if (!p) {
+                    plot.innerHTML = `<span style="font-size: 0.8rem; color: var(--text-dim)">Empty Plot</span>`;
+                    plot.onclick = () => plantSeed(i);
+                } else {
+                    const type = PLANT_TYPES.find(t => t.name === p.type);
+                    plot.innerHTML = `
+                        <div class="plant-emoji">${type.stages[p.stage]}</div>
+                        <div class="progress-circle">
+                            <div class="progress-fill" style="width: ${Math.min(100, (p.growth / type.max) * 100)}%"></div>
+                        </div>
+                    `;
+                    plot.onclick = () => waterPlant(i);
+                }
+                grid.appendChild(plot);
+            });
+
+            // Render Tasks
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+            state.tasks.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'task-item';
+                item.innerHTML = `<span>${t.text}</span><button class="btn-check" onclick="completeTask(${t.id})">✓</button>`;
+                list.appendChild(item);
+            });
+        }
+
+        checkStreak();
+        render();
+    </script>
+</body>
+</html>

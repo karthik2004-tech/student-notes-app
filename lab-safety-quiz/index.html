@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Safety Checklist & Quiz | NSOC Contribution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,210,0,0.5);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        /* Two Column Layout */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Card Common Style */
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #ffd200;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+
+        /* Checklist Section */
+        .checklist-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            transition: 0.2s;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .checklist-item input {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #28a745;
+        }
+
+        .checklist-item label {
+            flex: 1;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .checklist-item.completed label {
+            text-decoration: line-through;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .checklist-emoji {
+            font-size: 20px;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #00ffcc);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Quiz Section */
+        .quiz-question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+        }
+
+        .question-text {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .option input {
+            cursor: pointer;
+        }
+
+        .option label {
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .option.correct-highlight {
+            background: rgba(40,167,69,0.3);
+            border: 1px solid #28a745;
+        }
+
+        .option.wrong-highlight {
+            background: rgba(220,53,69,0.3);
+            border: 1px solid #dc3545;
+        }
+
+        /* Quiz Actions */
+        .quiz-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .submit-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #ffd200, #ff9800);
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .reset-quiz-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd200;
+        }
+
+        .score-feedback {
+            color: white;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Certificate Badge */
+        .certificate-badge {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255,210,0,0.2), rgba(255,100,0,0.1));
+            border-radius: 20px;
+            border: 1px solid #ffd200;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(255,210,0,0.3); }
+            50% { box-shadow: 0 0 20px rgba(255,210,0,0.6); }
+        }
+
+        .certificate-text {
+            color: #ffd200;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .certificate-subtext {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Reset All Button */
+        .reset-all-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Scrollbar */
+        .checklist-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .checklist-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .checklist-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚠️ Lab Safety Checklist & Quiz</h1>
+            <div class="subtitle">Master Lab Safety | Test Your Knowledge | Get Certified</div>
+        </div>
+
+        <div class="two-columns">
+            <!-- Left: Safety Checklist -->
+            <div class="card">
+                <div class="card-title">
+                    <span>✅</span> Daily Lab Safety Checklist
+                </div>
+                <div class="checklist-container" id="checklistContainer">
+                    <!-- Dynamic checklist items -->
+                </div>
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>📋 Safety Compliance</span>
+                        <span id="checklistPercent">0%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" id="checklistFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Safety Quiz -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📝</span> Lab Safety Quiz
+                </div>
+                <div id="quizContainer">
+                    <!-- Dynamic quiz questions -->
+                </div>
+                <div class="quiz-actions">
+                    <button class="submit-btn" id="submitQuizBtn">✅ Submit Quiz</button>
+                    <button class="reset-quiz-btn" id="resetQuizBtn">🔄 Reset Quiz</button>
+                </div>
+                <div class="score-display" id="scoreDisplay" style="display: none;">
+                    <div class="score-number" id="scoreValue">0/10</div>
+                    <div class="score-feedback" id="scoreFeedback"></div>
+                </div>
+                <div id="certificateBadge" style="display: none;"></div>
+            </div>
+        </div>
+
+        <button class="reset-all-btn" id="resetAllBtn">🗑️ Reset Everything (Checklist + Quiz)</button>
+    </div>
+
+    <script>
+        // Safety Checklist Items
+        let checklistItems = [
+            { id: 1, text: "Wear safety goggles at all times", emoji: "👓", completed: false },
+            { id: 2, text: "Use gloves when handling chemicals", emoji: "🧤", completed: false },
+            { id: 3, text: "Tie back long hair", emoji: "💇", completed: false },
+            { id: 4, text: "No eating or drinking in the lab", emoji: "🚫🍔", completed: false },
+            { id: 5, text: "Know emergency exits and shower location", emoji: "🚪", completed: false },
+            { id: 6, text: "Wash hands after experiments", emoji: "🧼", completed: false },
+            { id: 7, text: "Dispose of chemicals properly", emoji: "🗑️", completed: false },
+            { id: 8, text: "Report accidents immediately", emoji: "📢", completed: false },
+            { id: 9, text: "Read labels before using chemicals", emoji: "🏷️", completed: false },
+            { id: 10, text: "Work in ventilated area", emoji: "💨", completed: false }
+        ];
+
+        // Quiz Questions
+        const quizQuestions = [
+            { question: "What should you always wear in a chemistry lab?", options: ["Sunglasses", "Safety Goggles", "Regular Glasses", "Nothing"], correct: 1 },
+            { question: "What should you do if you spill a chemical on your skin?", options: ["Ignore it", "Wipe with paper", "Rinse with water for 15 mins", "Apply lotion"], correct: 2 },
+            { question: "What is NOT allowed in a laboratory?", options: ["Eating", "Drinking", "Chewing gum", "All of the above"], correct: 3 },
+            { question: "What should you do with long hair in the lab?", options: ["Leave it loose", "Tie it back", "Wear a hat", "Nothing"], correct: 1 },
+            { question: "Where should you dispose of broken glass?", options: ["Regular trash", "Sink", "Broken glass container", "Leave on table"], correct: 2 },
+            { question: "What does the fire extinguisher symbol mean?", options: ["Fire hazard", "Flammable materials", "Fire safety equipment", "Hot surface"], correct: 2 },
+            { question: "What is the first step in any lab emergency?", options: ["Run away", "Inform the instructor", "Panic", "Clean up yourself"], correct: 1 },
+            { question: "Which of these is a safety equipment in lab?", options: ["Eye wash station", "Coffee machine", "Microwave", "TV"], correct: 0 },
+            { question: "What should you do before using a chemical?", options: ["Smell it", "Taste it", "Read the label", "Shake it"], correct: 2 },
+            { question: "What is the proper way to smell a chemical?", options: ["Deep inhale", "Wafting", "Direct sniff", "Hold near nose"], correct: 1 }
+        ];
+
+        let userAnswers = new Array(10).fill(null);
+        let quizSubmitted = false;
+
+        // Load from localStorage
+        function loadData() {
+            const savedChecklist = localStorage.getItem('labSafetyChecklist');
+            if(savedChecklist) {
+                checklistItems = JSON.parse(savedChecklist);
+            }
+            
+            const savedAnswers = localStorage.getItem('labSafetyQuizAnswers');
+            if(savedAnswers) {
+                userAnswers = JSON.parse(savedAnswers);
+            }
+            
+            const savedSubmitted = localStorage.getItem('labSafetyQuizSubmitted');
+            if(savedSubmitted === 'true') {
+                quizSubmitted = true;
+            }
+            
+            renderChecklist();
+            renderQuiz();
+            updateChecklistProgress();
+            if(quizSubmitted) displayScoreAndCertificate();
+        }
+
+        // Save checklist
+        function saveChecklist() {
+            localStorage.setItem('labSafetyChecklist', JSON.stringify(checklistItems));
+        }
+
+        // Save quiz answers
+        function saveQuizAnswers() {
+            localStorage.setItem('labSafetyQuizAnswers', JSON.stringify(userAnswers));
+            localStorage.setItem('labSafetyQuizSubmitted', quizSubmitted);
+        }
+
+        // Toggle checklist item
+        function toggleChecklist(id) {
+            const item = checklistItems.find(i => i.id === id);
+            if(item) {
+                item.completed = !item.completed;
+                saveChecklist();
+                renderChecklist();
+                updateChecklistProgress();
+            }
+        }
+
+        // Render checklist
+        function renderChecklist() {
+            const container = document.getElementById('checklistContainer');
+            container.innerHTML = checklistItems.map(item => `
+                <div class="checklist-item ${item.completed ? 'completed' : ''}">
+                    <span class="checklist-emoji">${item.emoji}</span>
+                    <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleChecklist(${item.id})">
+                    <label onclick="toggleChecklist(${item.id})">${escapeHtml(item.text)}</label>
+                </div>
+            `).join('');
+        }
+
+        // Update checklist progress
+        function updateChecklistProgress() {
+            const total = checklistItems.length;
+            const completed = checklistItems.filter(i => i.completed).length;
+            const percent = total === 0 ? 0 : (completed / total) * 100;
+            
+            document.getElementById('checklistPercent').textContent = `${Math.round(percent)}%`;
+            document.getElementById('checklistFill').style.width = `${percent}%`;
+        }
+
+        // Handle option select
+        function selectOption(questionIndex, optionIndex) {
+            if(quizSubmitted) return;
+            
+            userAnswers[questionIndex] = optionIndex;
+            saveQuizAnswers();
+            renderQuiz();
+        }
+
+        // Render quiz
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            
+            container.innerHTML = quizQuestions.map((q, idx) => `
+                <div class="quiz-question">
+                    <div class="question-text">${idx + 1}. ${escapeHtml(q.question)}</div>
+                    <div class="options">
+                        ${q.options.map((opt, optIdx) => {
+                            let extraClass = '';
+                            if(quizSubmitted) {
+                                if(optIdx === q.correct) {
+                                    extraClass = 'correct-highlight';
+                                } else if(userAnswers[idx] === optIdx && userAnswers[idx] !== q.correct) {
+                                    extraClass = 'wrong-highlight';
+                                }
+                            }
+                            const isChecked = userAnswers[idx] === optIdx;
+                            return `
+                                <div class="option ${extraClass}" onclick="selectOption(${idx}, ${optIdx})">
+                                    <input type="radio" name="q${idx}" ${isChecked ? 'checked' : ''} ${quizSubmitted ? 'disabled' : ''}>
+                                    <label>${escapeHtml(opt)}</label>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Calculate score
+        function calculateScore() {
+            let score = 0;
+            for(let i = 0; i < quizQuestions.length; i++) {
+                if(userAnswers[i] === quizQuestions[i].correct) {
+                    score++;
+                }
+            }
+            return score;
+        }
+
+        // Display score and certificate
+        function displayScoreAndCertificate() {
+            const score = calculateScore();
+            const total = quizQuestions.length;
+            const percentage = (score / total) * 100;
+            
+            let feedback = '';
+            if(percentage >= 80) {
+                feedback = "🎉 Excellent! You're a Lab Safety Expert! 🎉";
+            } else if(percentage >= 60) {
+                feedback = "👍 Good job! Review the safety rules to improve!";
+            } else {
+                feedback = "📚 Need improvement! Please review the safety checklist and try again!";
+            }
+            
+            document.getElementById('scoreDisplay').style.display = 'block';
+            document.getElementById('scoreValue').textContent = `${score}/${total}`;
+            document.getElementById('scoreFeedback').textContent = feedback;
+            
+            // Show certificate if score >= 80%
+            const certificateDiv = document.getElementById('certificateBadge');
+            if(percentage >= 80) {
+                certificateDiv.style.display = 'block';
+                certificateDiv.innerHTML = `
+                    <div class="certificate-badge">
+                        <div class="certificate-text">🏅 LAB SAFETY CERTIFICATE 🏅</div>
+                        <div class="certificate-subtext">You have successfully completed the Lab Safety Quiz with ${score}/${total} (${percentage}%)</div>
+                        <div class="certificate-subtext">⭐ Certified Lab Safety Champion ⭐</div>
+                    </div>
+                `;
+            } else {
+                certificateDiv.style.display = 'none';
+            }
+        }
+
+        // Submit quiz
+        function submitQuiz() {
+            // Check if all questions are answered
+            const allAnswered = userAnswers.every(a => a !== null);
+            if(!allAnswered) {
+                alert('Please answer all questions before submitting!');
+                return;
+            }
+            
+            quizSubmitted = true;
+            saveQuizAnswers();
+            renderQuiz();
+            displayScoreAndCertificate();
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            userAnswers = new Array(10).fill(null);
+            quizSubmitted = false;
+            saveQuizAnswers();
+            renderQuiz();
+            document.getElementById('scoreDisplay').style.display = 'none';
+            document.getElementById('certificateBadge').style.display = 'none';
+        }
+
+        // Reset everything
+        function resetEverything() {
+            if(confirm('⚠️ Reset ALL checklist progress AND quiz answers? This cannot be undone!')) {
+                // Reset checklist
+                checklistItems.forEach(item => item.completed = false);
+                saveChecklist();
+                
+                // Reset quiz
+                userAnswers = new Array(10).fill(null);
+                quizSubmitted = false;
+                saveQuizAnswers();
+                
+                // Re-render
+                renderChecklist();
+                renderQuiz();
+                updateChecklistProgress();
+                document.getElementById('scoreDisplay').style.display = 'none';
+                document.getElementById('certificateBadge').style.display = 'none';
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Make functions global
+        window.toggleChecklist = toggleChecklist;
+        window.selectOption = selectOption;
+
+        // Event listeners
+        document.getElementById('submitQuizBtn').addEventListener('click', submitQuiz);
+        document.getElementById('resetQuizBtn').addEventListener('click', resetQuiz);
+        document.getElementById('resetAllBtn').addEventListener('click', resetEverything);
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
