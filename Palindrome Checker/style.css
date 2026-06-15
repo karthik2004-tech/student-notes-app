@@ -1,0 +1,112 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+
+.app-container {
+  background: #fff;
+  margin: 40px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 700px;
+}
+
+
+h1 {
+  margin-bottom: 20px;
+}
+
+
+.input-section {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 300px;
+}
+
+
+button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #667eea;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+
+button:hover {
+  background: #764ba2;
+}
+
+
+.result {
+  font-size: 20px;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+
+.animation {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+
+.char {
+  padding: 10px;
+  border-radius: 6px;
+  background: #eee;
+  transition: background 0.5s ease;
+}
+
+
+.char.match {
+  background: #6bcB77;
+  color: white;
+}
+
+
+.char.mismatch {
+  background: #ff6b6b;
+  color: white;
+}
+
+
+.history {
+  text-align: left;
+}
+
+
+.history ul {
+  list-style: none;
+  padding: 0;
+}
+
+
+.history li {
+  margin: 5px 0;
+  padding: 8px;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
