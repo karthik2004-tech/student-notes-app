@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zen Focus Timer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🧘 Zen Focus Timer</h1>
+
+    <div class="controls">
+      <label>Duration:
+        <select id="durationSelect">
+          <option value="900">15 min</option>
+          <option value="1800">30 min</option>
+          <option value="3600">60 min</option>
+          <option value="custom">Custom</option>
+        </select>
+      </label>
+      <input type="number" id="customInput" placeholder="Custom (minutes)" style="display:none;">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+
+    <div id="timerDisplay" class="timer-display">00:00</div>
+    <div id="pulse" class="pulse"></div>
+
+    <div id="log" class="log">
+      <h2>Session Log</h2>
+      <ul id="logList"></ul>
+    </div>
+  </div>
+
+  <audio id="alertSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+  <script src="script.js"></script>
+</body>
+</html>
