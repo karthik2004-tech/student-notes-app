@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Study Topic Spinner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🎡 Random Study Topic Spinner</h1>
+
+    <div class="controls">
+      <input type="text" id="topicInput" placeholder="Enter study topic">
+      <button onclick="addTopic()">Add Topic</button>
+      <button onclick="clearTopics()">Clear Topics</button>
+    </div>
+
+    <div class="wheel-container">
+      <canvas id="wheelCanvas" width="400" height="400"></canvas>
+      <button onclick="spinWheel()">Spin</button>
+    </div>
+
+    <div id="result" class="result">Result: --</div>
+
+    <div id="topicList" class="topic-list"></div>
+  </div>
+
+  <audio id="spinSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
