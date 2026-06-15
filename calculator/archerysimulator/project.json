@@ -1,0 +1,17 @@
+{
+  "title": "Archery Game",
+  "description": "A precision archery simulation with parabolic trajectory physics, multi-ring target scoring, dynamic wind factors, and three difficulty tiers. Built with HTML5 Canvas, vanilla CSS3, and JavaScript ES6+.",
+  "author": {
+    "name": "Girish Madarkar",
+    "github": "Girish0902"
+  },
+  "tags": [
+    "archery",
+    "game",
+    "canvas",
+    "physics",
+    "vanilla-js"
+  ],
+  "entry": "index.html",
+  "thumbnail": "thumbnail.svg"
+}
