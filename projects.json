@@ -14,5 +14,5 @@
   { "name": "OS Contribution Journey", "path": "open-source-contribution-journey/index.html", "icon": "fas fa-route", "tag": "Utility" },
   { "name": "Startup Resource Hub", "path": "startup-resource-hub/index.html", "icon": "fas fa-lightbulb", "tag": "Utility" },
   { "name": "Git Command Visualizer", "path": "interactive-git-visualizer/index.html", "icon": "fas fa-code-branch", "tag": "Utility" },
-  { "name": "SaaS ROI Calculator", "path": "saas-pricing-calculator/index.html", "icon": "fas fa-chart-line", "tag": "Finance" }
+  { "name": "System Design Sandbox", "path": "interactive-system-design-sandbox/index.html", "icon": "fas fa-server", "tag": "Architecture" }
 ]

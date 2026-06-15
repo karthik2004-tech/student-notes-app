@@ -1,0 +1,6 @@
+{
+  "title": "Interactive System Design Architecture Sandbox",
+  "description": "A drag-and-drop canvas for users to map out cloud architectures, simulate traffic, calculate potential bottlenecks, and estimate costs.",
+  "technologies": ["HTML", "CSS", "JavaScript"],
+  "author": "MistryVishwa"
+}
