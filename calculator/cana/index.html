@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canvas Grapher</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Canvas Grapher</p>
+          <h1>Student Performance Visualizer</h1>
+          <p class="description">A modular HTML5 Canvas charting terminal built from scratch with responsive scaling, custom coordinate mapping, and hover interaction.</p>
+        </div>
+      </header>
+
+      <div class="canvas-frame">
+        <canvas id="chartCanvas" aria-label="Student metrics chart" role="img"></canvas>
+        <div id="tooltip" class="tooltip hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
