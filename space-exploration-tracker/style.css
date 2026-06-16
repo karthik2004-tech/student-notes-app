@@ -1,0 +1,155 @@
+:root {
+  --space-dark: #000000;
+  --space-blue: #0b1d3a;
+  --space-purple: #1e0b3a;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent: #38bdf8;
+  --panel-bg: rgba(15, 23, 42, 0.7);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-main);
+  background-color: var(--space-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated Space Background */
+.stars-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--space-dark) url('https://raw.githubusercontent.com/karthik2004-tech/student-notes-app/main/assets/stars.png') repeat top center;
+  z-index: -2;
+}
+
+.twinkling {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: transparent url('https://raw.githubusercontent.com/karthik2004-tech/student-notes-app/main/assets/twinkling.png') repeat top center;
+  z-index: -1;
+  animation: move-twink-back 200s linear infinite;
+}
+
+@keyframes move-twink-back {
+  from {background-position: 0 0;}
+  to {background-position: -10000px 5000px;}
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.apod-section {
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.section-header {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.section-header h2 { margin: 0; font-size: 1.25rem; }
+.date { color: var(--accent); font-weight: 600; font-family: monospace; font-size: 1.1rem; }
+
+.apod-content {
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  position: relative;
+}
+
+.apod-content img {
+  width: 100%;
+  max-height: 700px;
+  object-fit: contain;
+  display: block;
+}
+
+.apod-content iframe {
+  width: 100%;
+  height: 600px;
+  border: none;
+}
+
+.loader {
+  color: var(--accent);
+  font-family: monospace;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+.apod-info {
+  padding: 2rem;
+}
+
+.apod-info h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: var(--text-main);
+}
+
+.apod-info p {
+  line-height: 1.7;
+  color: #cbd5e1;
+  font-size: 1.05rem;
+}
+
+.copyright {
+  font-size: 0.85rem !important;
+  color: var(--text-muted) !important;
+  font-style: italic;
+  margin-top: 1rem !important;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 768px) {
+  .section-header { flex-direction: column; gap: 10px; text-align: center; }
+  .apod-content img, .apod-content iframe { max-height: 400px; }
+}
