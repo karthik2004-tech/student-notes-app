@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Catcher — Arcade</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header id="hud">
+      <div class="hud-cell">
+        <span class="hud-label">Score</span>
+        <span id="scoreDisplay" class="hud-value">0</span>
+      </div>
+      <div class="hud-cell">
+        <span class="hud-label">Speed</span>
+        <span id="speedDisplay" class="hud-value">1</span>
+      </div>
+      <div class="hud-cell">
+        <span class="hud-label">Lives</span>
+        <span id="livesDisplay" class="hud-value">3</span>
+      </div>
+      <div class="hud-cell">
+        <span class="hud-label">Best</span>
+        <span id="bestDisplay" class="hud-value">0</span>
+      </div>
+    </header>
+
+    <div id="canvasWrapper">
+      <div id="colorIndicator">
+        <span class="ci-label">ACTIVE COLOR</span>
+        <span id="ciSwatch" class="ci-swatch"></span>
+      </div>
+      <canvas id="gameCanvas" width="500" height="700"></canvas>
+
+      <div id="startOverlay" class="overlay">
+        <div class="overlay-box">
+          <h1>COLOR CATCHER</h1>
+          <p class="sub">Catch matching colors &bull; Avoid wrong ones!</p>
+          <div class="controls-hint">
+            <p>← → or mouse to move</p>
+            <p><kbd>SPACE</kbd> to shift color</p>
+          </div>
+          <button id="startBtn" class="btn">START GAME</button>
+        </div>
+      </div>
+
+      <div id="gameOverOverlay" class="overlay hidden">
+        <div class="overlay-box">
+          <h2>GAME OVER</h2>
+          <div class="report">
+            <div class="r-row"><span>Score</span><span id="finalScore">0</span></div>
+            <div class="r-row"><span>Best</span><span id="finalBest">0</span></div>
+          </div>
+          <button id="restartBtn" class="btn">PLAY AGAIN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
