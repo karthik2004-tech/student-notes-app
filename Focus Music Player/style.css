@@ -1,0 +1,65 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+  color: #fff;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.app-container {
+  background: #2d2d2d;
+  margin: 40px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  text-align: center;
+  width: 600px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.player-controls {
+  margin: 20px 0;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  border: none;
+  background: #667eea;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: #764ba2;
+  transform: scale(1.05);
+}
+
+input[type="range"] {
+  width: 200px;
+  margin-left: 10px;
+}
+
+.track-info {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.timer-controls {
+  margin-top: 30px;
+}
+
+.timer-display {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
