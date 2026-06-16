@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Journal for Students</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <h1>🌈 Mood Journal for Students</h1>
+
+    <div class="controls">
+      <label>Pick your mood:</label>
+      <div class="emoji-picker">
+        <span onclick="selectMood('😄')">😄</span>
+        <span onclick="selectMood('🙂')">🙂</span>
+        <span onclick="selectMood('😐')">😐</span>
+        <span onclick="selectMood('😔')">😔</span>
+        <span onclick="selectMood('😢')">😢</span>
+      </div>
+      <textarea id="note" placeholder="Add a short note..."></textarea>
+      <button onclick="saveEntry()">Save Entry</button>
+    </div>
+
+    <div id="streak" class="streak">Streak: 0 days</div>
+
+    <div id="calendar" class="calendar"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
