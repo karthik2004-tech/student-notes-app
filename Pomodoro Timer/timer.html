@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Focus Timer</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #1e293b; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-align: center; max-width: 400px; width: 100%; border: 1px solid #334155; }
+        h2 { color: #ef4444; margin-bottom: 10px; font-size: 24px; }
+        p { color: #94a3b8; margin-bottom: 25px; font-size: 14px; }
+        .timer-display { font-size: 64px; font-weight: bold; color: #fff; margin: 20px 0; font-family: monospace; }
+        .btn-group { display: flex; gap: 10px; justify-content: center; }
+        button { padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; transition: 0.2s; }
+        .start-btn { background: #22c55e; color: white; }
+        .start-btn:hover { background: #16a34a; }
+        .reset-btn { background: #ef4444; color: white; }
+        .reset-btn:hover { background: #dc2626; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>⏱️ Pomodoro Focus Timer</h2>
+        <p>Study for 25 minutes, then take a 5-minute break!</p>
+        <div class="timer-display" id="display">25:00</div>
+        <div class="btn-group">
+            <button class="start-btn" id="startBtn" onclick="toggleTimer()">Start</button>
+            <button class="reset-btn" onclick="resetTimer()">Reset</button>
+        </div>
+    </div>
+    <script>
+        let timeLeft = 25 * 60;
+        let timerId = null;
+        let isRunning = false;
+        function updateDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById('display').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerId);
+                document.getElementById('startBtn').innerText = "Start";
+                document.getElementById('startBtn').style.background = "#22c55e";
+                isRunning = false;
+            } else {
+                isRunning = true;
+                document.getElementById('startBtn').innerText = "Pause";
+                document.getElementById('startBtn').style.background = "#eab308";
+                timerId = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timerId);
+                        alert("Time's up! Take a break.");
+                        resetTimer();
+                    }
+                }, 1000);
+            }
+        }
+        function resetTimer() {
+            clearInterval(timerId);
+            timeLeft = 25 * 60;
+            isRunning = false;
+            document.getElementById('startBtn').innerText = "Start";
+            document.getElementById('startBtn').style.background = "#22c55e";
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
