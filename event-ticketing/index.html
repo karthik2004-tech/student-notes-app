@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Ticketing & RSVP</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- QR Code generation library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Registration Form Section -->
+        <div class="form-section" id="form-section">
+            <div class="header">
+                <h1>TechConf 2026</h1>
+                <p>Register to get your digital ticket and QR pass.</p>
+            </div>
+            
+            <form id="rsvp-form">
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="john@example.com">
+                </div>
+                
+                <div class="input-group">
+                    <label for="ticket-type">Ticket Type</label>
+                    <select id="ticket-type">
+                        <option value="General Admission">General Admission (Free)</option>
+                        <option value="VIP Access">VIP Access ($99)</option>
+                        <option value="Virtual Pass">Virtual Pass (Free)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn">Generate Ticket</button>
+            </form>
+        </div>
+
+        <!-- Ticket Display Section (Hidden initially) -->
+        <div class="ticket-section hidden" id="ticket-section">
+            <div class="ticket">
+                <div class="ticket-header">
+                    <h2>TechConf 2026</h2>
+                    <span class="badge" id="display-type">VIP Access</span>
+                </div>
+                
+                <div class="ticket-body">
+                    <div class="attendee-info">
+                        <p class="label">Attendee</p>
+                        <h3 id="display-name">John Doe</h3>
+                        <p class="label">Email</p>
+                        <p id="display-email" class="value">john@example.com</p>
+                        <p class="label">Date & Time</p>
+                        <p class="value">Oct 15, 2026 • 9:00 AM</p>
+                    </div>
+                    
+                    <div class="qr-container">
+                        <div id="qrcode"></div>
+                        <p class="scan-text">Scan for Entry</p>
+                    </div>
+                </div>
+                
+                <div class="ticket-footer">
+                    <p>Ticket ID: <span id="ticket-id">TC-8472910</span></p>
+                </div>
+            </div>
+            
+            <button class="btn btn-outline" id="reset-btn">Register Another Person</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
