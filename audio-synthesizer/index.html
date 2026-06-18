@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Audio Synthesizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="synth-container">
+        <header>
+            <h1>Web Audio Synthesizer</h1>
+        </header>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <h3>Oscillator</h3>
+                <div class="waveform-selector">
+                    <label>
+                        <input type="radio" name="waveform" value="sine" checked>
+                        <span>Sine</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="waveform" value="square">
+                        <span>Square</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="waveform" value="sawtooth">
+                        <span>Saw</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="waveform" value="triangle">
+                        <span>Triangle</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>Envelope</h3>
+                <div class="knobs">
+                    <div class="knob-container">
+                        <input type="range" id="attack" min="0.01" max="2" step="0.01" value="0.1" class="slider vertical">
+                        <label for="attack">Attack</label>
+                    </div>
+                    <div class="knob-container">
+                        <input type="range" id="release" min="0.01" max="3" step="0.01" value="0.5" class="slider vertical">
+                        <label for="release">Release</label>
+                    </div>
+                    <div class="knob-container">
+                        <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" class="slider vertical">
+                        <label for="volume">Volume</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="keyboard" id="keyboard">
+            <!-- White keys -->
+            <div class="key white" data-note="261.63"><span>C4</span></div>
+            <div class="key white" data-note="293.66"><span>D4</span></div>
+            <div class="key white" data-note="329.63"><span>E4</span></div>
+            <div class="key white" data-note="349.23"><span>F4</span></div>
+            <div class="key white" data-note="392.00"><span>G4</span></div>
+            <div class="key white" data-note="440.00"><span>A4</span></div>
+            <div class="key white" data-note="493.88"><span>B4</span></div>
+            <div class="key white" data-note="523.25"><span>C5</span></div>
+            
+            <!-- Black keys (absolute positioned) -->
+            <div class="key black cs" data-note="277.18"></div>
+            <div class="key black ds" data-note="311.13"></div>
+            <div class="key black fs" data-note="369.99"></div>
+            <div class="key black gs" data-note="415.30"></div>
+            <div class="key black as" data-note="466.16"></div>
+        </div>
+
+        <div class="instructions">
+            <p>Click or touch the keys to play. Use the controls to shape the sound.</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
